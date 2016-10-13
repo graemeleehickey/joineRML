@@ -4,7 +4,7 @@
 \alias{ranef.mjoint}
 \title{Extract random effects estimates from an \code{mjoint} object}
 \usage{
-ranef.mjoint(object, postVar = FALSE, ...)
+\method{ranef}{mjoint}(object, postVar = FALSE, ...)
 }
 \arguments{
 \item{object}{an object inheriting from class \code{mjoint} for a joint model

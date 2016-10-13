@@ -507,13 +507,14 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
 
     if (verbose) {
       cat("-------------------------------------------------------------\n\n")
-      cat(paste0("Interation: ", it,"\n\n"))
+      cat(paste0("Interation: ", it, "\n\n"))
     }
 
     nmc.iters <- c(nmc.iters, nMC)
 
     theta.new <- stepEM(theta = theta, l = l, t = t, z = z,
-                        nMC = nMC, verbose = verbose, approxInfo = approxInfo)
+                        nMC = nMC, verbose = verbose,
+                        approxInfo = con$approxInfo)
     all.iters[[it]] <- theta.new
     if (verbose) print(theta.new)
 

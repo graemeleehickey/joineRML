@@ -4,7 +4,7 @@
 \alias{getVarCov.mjoint}
 \title{Extract variance-covariance matrix from an \code{mjoint} object}
 \usage{
-getVarCov.mjoint(object, ...)
+\method{getVarCov}{mjoint}(object, ...)
 }
 \arguments{
 \item{object}{an object inheriting from class \code{mjoint} for a joint model

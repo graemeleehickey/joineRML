@@ -9,6 +9,8 @@
 #' @author Graeme L. Hickey (\email{graeme.hickey@@liverpool.ac.uk})
 #' @keywords methods
 #'
+#' @import nlme
+#'
 #' @references
 #'
 #' Pinheiro JC, Bates DM. \emph{Mixed-Effects Models in S and S-PLUS.} New York:
@@ -16,6 +18,7 @@
 #'
 #' @return A variance-covariance matrix.
 #' @export
+#' @importFrom nlme getVarCov
 #'
 #' @examples
 #' # Fit a joint model with bivariate longitudinal outcomes
