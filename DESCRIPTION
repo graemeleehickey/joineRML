@@ -1,0 +1,37 @@
+Package: joineRML
+Type: Package
+Title: Joint Modelling of Multivariate Longitudinal Data and Time-to-Event
+    Outcomes
+Version: 0.0.0.9000
+Authors@R: c(
+    person("Graeme L", "Hickey", email = "graeme.hickey@liverpool.ac.uk", role = c("cre", "aut")),
+    person("Ruwanthi", "Kolamunnage-Dona", email = "kdrr@liverpool.ac.uk", role = "aut"),
+    person("Pete", "Philipson", email = "pete.philipson@northumbria.ac.uk", role = "aut"),
+    person("Andrea", "Jorgensen", email = "aljorgen@liverpool.ac.uk", role = "aut")
+    )
+Maintainer: Graeme L. Hickey <graeme.hickey@liverpool.ac.uk>
+Date: 2016-10-13
+Description: This function fits the joint model proposed by Henderson et al.
+    (2000), but extended to the case of multiple continuous longitudinal measures.
+    The time-to-event data is modelled using a Cox proportional hazards regression
+    model with time-varying covariates. The multiple longitudinal outcomes are
+    modelled using a multivariate version of the Laird and Ware linear mixed model.
+    The association is captured by a multivariate latent Gaussian process. The model
+    is estimated using a Monte Carlo Expectation Maximization algorithm.
+License: GPL-2 | file LICENSE
+URL: https://github.com/graemeleehickey/joineRML/
+BugReports: https://github.com/graemeleehickey/joineRML/issues
+Encoding: UTF-8
+LazyData: true
+Depends:
+    R (>= 3.1)
+Imports:
+    Rcpp (>= 0.12.7),
+    nlme,
+    Matrix,
+    survival,
+    stats
+LinkingTo:
+    Rcpp,
+    RcppArmadillo
+RoxygenNote: 5.0.1
