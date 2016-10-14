@@ -3,10 +3,9 @@
 
 using namespace Rcpp;
 
-//---------------------------------------------------------
-// exp{W(tj, b)}
-//---------------------------------------------------------
-
+//' Calculation of exp{W(tj, b)}
+//'
+//' @keywords internal
 // [[Rcpp::export]]
 List expWArma(Rcpp::List imat_, Rcpp::List zt_,
               Rcpp::List b_, arma::mat gam) {
@@ -20,14 +19,12 @@ List expWArma(Rcpp::List imat_, Rcpp::List zt_,
   return(expw);
 }
 
-// expW <- expWArma(IW.fail, Zit.fail, bi.y, gamma.scale)
 
-//---------------------------------------------------------
-// E[exp{W(tj, b)}]
-//---------------------------------------------------------
-
+//' Calculation of E[exp{W(tj, b)}]
+//'
+//' @keywords internal
 // [[Rcpp::export]]
-List EexpWArma(Rcpp::List w_, Rcpp::List f_, 
+List EexpWArma(Rcpp::List w_, Rcpp::List f_,
                Rcpp::List d_) {
   List out(w_.size());
   for (int i=0; i<w_.size(); i++) {

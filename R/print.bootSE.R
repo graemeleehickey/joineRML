@@ -1,32 +1,36 @@
+#' Print tidy summary of object inheriting from class \code{bootSE}
+#'
+#' @keywords internal
+#' @export
 print.bootSE <- function(x, digits = max(4, getOption("digits") - 4), ...) {
- 
+
   if (!inherits(x, "bootSE")) {
     stop("Use only with 'bootSE' objects.\n")
   }
-  
+
   ci <- as.numeric(100*x$ci)
   if ((ci %% 1) == 0) {
     ci <- as.integer(ci)
   }
-  
-  cat("\nBootstrap SE estimates and percentile (", ci, "%) confidence intervals\n\n", 
+
+  cat("\nBootstrap SE estimates and percentile (", ci, "%) confidence intervals\n\n",
       sep = "")
-  
-  coefs.beta <- cbind("Value" = x$coefficients$beta, 
-                      "Std.Err" = x$beta.se, 
+
+  coefs.beta <- cbind("Value" = x$coefficients$beta,
+                      "Std.Err" = x$beta.se,
                       "CI.lower" = x$beta.ci[1, ],
                       "CI.upper" = x$beta.ci[2, ])
-  
-  coefs.gamma <- cbind("Value" = x$coefficients$gamma, 
-                       "Std.Err" = x$gamma.se, 
+
+  coefs.gamma <- cbind("Value" = x$coefficients$gamma,
+                       "Std.Err" = x$gamma.se,
                        "CI.lower" = x$gamma.ci[1, ],
                        "CI.upper" = x$gamma.ci[2, ])
-  
+
   coefs.sigma2 <- cbind("Value" = x$coefficients$sigma2,
                         "Std.Err" = x$sigma2.se,
                         "CI.lower" = x$sigma2.ci[1, ],
                         "CI.upper" = x$sigma2.ci[2, ])
-  
+
   out <- rbind(coefs.beta, coefs.gamma, coefs.sigma2)
   out <- round(out, digits)
   out <- as.data.frame(out)
@@ -43,10 +47,10 @@ print.bootSE <- function(x, digits = max(4, getOption("digits") - 4), ...) {
   print(out, row.names = FALSE)
   cat("\nBootstrap computational time:", round(x$boot.time, 1),
       attr(x$boot.time, "units"))
-  cat("\nBootstrap model convergence rate: ", 
+  cat("\nBootstrap model convergence rate: ",
       round(100 * x$conv / x$nboot, 1), "%", sep = "")
   cat("\n")
-  
+
   invisible(x)
-   
+
 }

@@ -2,7 +2,8 @@
 #'
 #' Plot diagnostics from an \code{mjoint} object.
 #'
-#' @inheritParams bootSE
+#' @param x an object inheriting from class \code{mjoint} for a joint model of
+#'   time-to-event and multivariate longitudinal data.
 #' @param type currently the only option is \code{type='convergence'} for
 #'   graphical examination of convergence over MCEM iteration.
 #' @param ... other parameters passed to \code{\link{plotConvergence}}.
@@ -32,14 +33,14 @@
 #'
 #' plot(fit2, type = "convergence", params = "gamma")
 #' }
-plot.mjoint <- function(object, type = "convergence", ...) {
+plot.mjoint <- function(x, type = "convergence", ...) {
 
-  if (!inherits(object, "mjoint")) {
+  if (!inherits(x, "mjoint")) {
     stop("Use only with 'mjoint' model objects.\n")
   }
 
   if (type == "convergence") {
-    plotConvergence(object, ...)
+    plotConvergence(x, ...)
   }
 
 }

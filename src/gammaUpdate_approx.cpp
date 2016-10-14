@@ -3,24 +3,24 @@
 
 using namespace Rcpp;
 
-//---------------------------------------------------------
-// Newton-Raphson updates of gamma (E-step and M-step)
-//---------------------------------------------------------
-
+//' Newton-Raphson updates of gamma (E-step and M-step) using an empirical
+//' infomration matrix approximation
+//'
+//' @keywords internal
 // [[Rcpp::export]]
-List gammaUpdate_approx(Rcpp::List b_, Rcpp::List z_, Rcpp::List w_, 
-                        Rcpp::List f_, Rcpp::List d_, arma::vec haz, 
+List gammaUpdate_approx(Rcpp::List b_, Rcpp::List z_, Rcpp::List w_,
+                        Rcpp::List f_, Rcpp::List d_, arma::vec haz,
                         Rcpp::List v_, Rcpp::List h_, int K, int q, int nev) {
-  
+
   // declare score and E[delta x v*]
   arma::mat Si = arma::zeros<arma::mat>(q+K, w_.size());
   arma::vec S = arma::zeros<arma::vec>(q+K);
   arma::mat Evstari = arma::zeros<arma::mat>(q+K, w_.size());
   arma::mat I = arma::zeros<arma::mat>(q+K, q+K);
-  
+
   // loop over subjects
   for (int i=0; i<w_.size(); i++) {
-    
+
     // extract matrices from lists for subject i
     arma::mat b = Rcpp::as<arma::mat>(b_[i]);
     arma::mat z = Rcpp::as<arma::mat>(z_[i]);
@@ -29,15 +29,15 @@ List gammaUpdate_approx(Rcpp::List b_, Rcpp::List z_, Rcpp::List w_,
     arma::vec v = Rcpp::as<arma::vec>(v_[i]);
     Rcpp::DataFrame h = Rcpp::as<Rcpp::DataFrame>(h_[i]);
     double d = Rcpp::as<double>(d_[i]);
-    
+
     // subjects who are censored before the first failure time
     // do not contribute towards \gamma estimation
     int tj_ind = h["tj.ind"];
     if (tj_ind == 0) continue;
-    
+
     int nj = w.n_cols;  // number of failures upto time T_i
     int delta = h["delta"]; // delta_i
-    
+
     arma::mat bzt = b * z; // b x t(z)
     arma::mat bztev = bzt % repmat(w, 1, K); // b x t(Z) . exp(v*gamma)
     arma::mat Eexpvj = (mean(w.each_col() % f, 0) / d) % trans(haz.subvec(0, nj-1));
@@ -46,16 +46,16 @@ List gammaUpdate_approx(Rcpp::List b_, Rcpp::List z_, Rcpp::List w_,
     arma::mat outj = (mean(bztev.each_col() % f, 0) / d) % hexpand;
 
     arma::mat Eb = mean(b.each_col() % f, 0) / d;
-    
+
     // loop of K longitudinal outcomes
     for(int k=0; k<K; k++) {
       // E[delta x v*(T_i)]
       Evstari(q+k, i) = delta * arma::dot(z.col(nj*(k+1)-1), Eb);
       // score elements for K Zb's
       Si(q+k, i) = Evstari(q+k, i) - arma::as_scalar(sum(outj.cols(nj*k, nj*(k+1)-1), 1));
-      
+
     } // end loop over outcomes k
-    
+
     // elements for q V_i's (only when q > 0)
     if (q > 0) {
       // E[delta x v]
@@ -63,17 +63,17 @@ List gammaUpdate_approx(Rcpp::List b_, Rcpp::List z_, Rcpp::List w_,
       // score elements
       Si.submat(0, i, q-1, i) = Evstari.submat(0, i, q-1, i) - v * Eexpv;
     }
-    
+
     S += Si.col(i);
     I += arma::kron(Si.col(i), Si.col(i).t()); // see below
 
-  } // end loop over subjects i 
-  
-  
+  } // end loop over subjects i
+
+
   // an approximate I-matrix using observed empirical information
-  //I = I - arma::kron(S, S.t()) / w_.size();
-  
-  return List::create( 
+  I = I - arma::kron(S, S.t()) / w_.size();
+
+  return List::create(
     _["gDelta"]  = 0.5 * solve(I, S),
     _["scorei"] = Si
   );

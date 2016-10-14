@@ -1,3 +1,6 @@
+#' Internal function for performing a single iteration of the MCEM algorithm
+#'
+#' @keywords internal
 stepEM <- function(theta, l, t, z, nMC, verbose, approxInfo) {
 
   # Input parameter estimates

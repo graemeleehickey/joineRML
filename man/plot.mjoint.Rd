@@ -4,11 +4,11 @@
 \alias{plot.mjoint}
 \title{Plot diagnostics from an \code{mjoint} object}
 \usage{
-\method{plot}{mjoint}(object, type = "convergence", ...)
+\method{plot}{mjoint}(x, type = "convergence", ...)
 }
 \arguments{
-\item{object}{an object inheriting from class \code{mjoint} for a joint model
-of time-to-event and multivariate longitudinal data.}
+\item{x}{an object inheriting from class \code{mjoint} for a joint model of
+time-to-event and multivariate longitudinal data.}
 
 \item{type}{currently the only option is \code{type='convergence'} for
 graphical examination of convergence over MCEM iteration.}

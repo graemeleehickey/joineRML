@@ -1,3 +1,6 @@
+#' Calculate the log-likelihood and posterior random effects at the maximizer
+#'
+#' @keywords internal
 jLike <- function(theta, l, t, z, nMC) {
 
   # MLE parameter estimates from EM algorithm
