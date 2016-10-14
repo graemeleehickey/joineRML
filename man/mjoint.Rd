@@ -5,7 +5,7 @@
 \title{Fit a joint model to time-to-event data and multivariate longitudinal data}
 \usage{
 mjoint(formLongFixed, formLongRandom, formSurv, data, survData = NULL,
-  timeVar, inits = NULL, verbose = TRUE, se.approx = TRUE, ll = TRUE,
+  timeVar, inits = NULL, verbose = FALSE, se.approx = TRUE, ll = TRUE,
   control = list(), ...)
 }
 \arguments{

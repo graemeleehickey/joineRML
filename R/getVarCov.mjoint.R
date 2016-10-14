@@ -10,6 +10,7 @@
 #' @keywords methods
 #'
 #' @import nlme
+#' @importFrom nlme getVarCov
 #'
 #' @references
 #'
@@ -18,7 +19,6 @@
 #'
 #' @return A variance-covariance matrix.
 #' @export
-#' @importFrom nlme getVarCov
 #'
 #' @examples
 #' # Fit a joint model with bivariate longitudinal outcomes

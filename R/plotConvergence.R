@@ -22,6 +22,7 @@
 #' @author Graeme L. Hickey (\email{graeme.hickey@@liverpool.ac.uk})
 #' @keywords methods dplot
 #'
+#' @importFrom graphics par plot
 #' @export
 plotConvergence <- function(object, params = "gamma") {
 

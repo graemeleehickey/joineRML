@@ -203,7 +203,7 @@
 #' summary(fit2)
 #' }
 mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NULL,
-                   timeVar, inits = NULL, verbose = TRUE,
+                   timeVar, inits = NULL, verbose = FALSE,
                    se.approx = TRUE, ll = TRUE, control = list(), ...) {
 
   #*****************************************************
@@ -600,7 +600,7 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
       message("Failed to converge!")
     }
 
-    flush.console()
+    utils::flush.console()
 
   }
 

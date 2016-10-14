@@ -91,7 +91,7 @@ bootSE <- function(object, nboot = 100, ci = 0.95, use.mle = TRUE,
   out <- list()
   conv.status <- vector(length = nboot)
   cat("\n\n")
-  pb <- txtProgressBar(min = 0, max = nboot, style = 3)
+  pb <- utils::txtProgressBar(min = 0, max = nboot, style = 3)
   for (b in 1:nboot) {
     # bootstrap sample data
     data.boot <- sampleData(object = object)
@@ -112,7 +112,7 @@ bootSE <- function(object, nboot = 100, ci = 0.95, use.mle = TRUE,
     )
     out[[b]] <- fit.boot$coefficients
     conv.status[b] <- fit.boot$conv
-    setTxtProgressBar(pb, b)
+    utils::setTxtProgressBar(pb, b)
   }
   close(pb)
 
