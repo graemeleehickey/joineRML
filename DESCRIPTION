@@ -2,7 +2,7 @@ Package: joineRML
 Type: Package
 Title: Joint Modelling of Multivariate Longitudinal Data and Time-to-Event
     Outcomes
-Version: 0.0.0.9004
+Version: 0.0.0.9005
 Authors@R: c(
     person("Graeme L", "Hickey", email = "graeme.hickey@liverpool.ac.uk", 
         role = c("cre", "aut")),
@@ -14,7 +14,7 @@ Authors@R: c(
         role = "aut")
     )
 Maintainer: Graeme L. Hickey <graeme.hickey@liverpool.ac.uk>
-Date: 2016-10-13
+Date: 2016-10-15
 Description: This function fits the joint model proposed by Henderson et al.
     (2000), but extended to the case of multiple continuous longitudinal measures.
     The time-to-event data is modelled using a Cox proportional hazards regression
@@ -42,3 +42,10 @@ LinkingTo:
     Rcpp,
     RcppArmadillo
 RoxygenNote: 5.0.1
+Suggests: 
+    knitr,
+    rmarkdown,
+    R.rsp
+VignetteBuilder: 
+    knitr,
+    R.rsp
