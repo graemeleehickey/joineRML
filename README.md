@@ -10,10 +10,14 @@ Why use joineRML?
 
 As noted in Hickey et al. (2016), there is a lack of statistical software available for fitting joint models to multivariate longitudinal data. This is contrary to a growing methodology in the statistical literature. `joineRML` is intended to fill this void.
 
+Please note that this is currently a **developmental version**, and caution is required when using it.
+
 How to install
 --------------
 
-You will need R version (version 3.1 or higher). You will also need some additional software depending on what platform you are using. Optionally, you can also $\\LaTeX$ if you want to install the vignettes.
+You will need R version (version 3.1 or higher). You will also need some additional software depending on what platform you are using. Optionally, you will also require LaTeX if you want to install the vignettes.
+
+Note that installation will be much simpler after submission to CRAN, and no additional software dependencies will be required.
 
 ### On Windows
 
@@ -23,61 +27,79 @@ If not already installed, you will need to install [Rtools](https://cran.r-proje
 
 If not already install, you will need to install Xcode Command Line Tools. To do this, open a new terminal and run
 
-    $ xcode-select --install
+``` bash
+$ xcode-select --install
+```
 
 To verify that the install was successful, run the following line in the terminal
 
-    $ xcode-select -p
+``` bash
+$ xcode-select -p
+```
 
 which should return the following
 
-    /Library/Developer/CommandLineTools
+``` bash
+/Library/Developer/CommandLineTools
+```
 
 ### From R
 
 The package is not yet available on CRAN, as it is still in development. To install it, you will need `devtools`. You can check you are using the correct version by running
 
-    pkg_check <- require('devtools')
-    if (pkg_check) {
-      pkg_check <- (packageVersion("devtools") >= 1.6)
-    }
-    if (!pkg_check) {
-      install.packages('devtools')
-    }
+``` bash
+pkg_check <- require('devtools')
+if (pkg_check) {
+  pkg_check <- (packageVersion("devtools") >= 1.6)
+}
+if (!pkg_check) {
+  install.packages('devtools')
+}
+```
 
 Once the prerequisite software is installed, you can install `joineRML` (**without** the vignettes) by running the following command in an R console
 
-    library('devtools')
-    install_github('graemeleehickey/joineRML')
+``` r
+library('devtools')
+install_github('graemeleehickey/joineRML')
+```
 
-If you have $\\LaTeX$ installed, you can install `joineRML` (**with** the vignettes) by running the following command in an R console
+If you have LaTeX installed, you can install `joineRML` (**with** the vignettes) by running the following command in an R console
 
-    library('devtools')
-    install_github('graemeleehickey/joineRML', build_vignettes = TRUE)
+``` r
+library('devtools')
+install_github('graemeleehickey/joineRML', build_vignettes = TRUE)
+```
+
+Note that LaTeX will need the following packages: `graphicx`, `amsmath`, `amssymb`, `amsfonts`, `setspace`, `enumitem`, `hyperref`.
 
 Example
 =======
 
 The main workhorse function is `mjoint`. As a simple example, we use the `heart.valve` dataset from the package and fit a bivariate joint model.
 
-    library(joineRML)
-    data(heart.valve)
-    hvd <- heart.valve[!is.na(heart.valve$log.grad) & !is.na(heart.valve$log.lvmi), ]
+``` r
+library(joineRML)
+data(heart.valve)
+hvd <- heart.valve[!is.na(heart.valve$log.grad) & !is.na(heart.valve$log.lvmi), ]
 
-    set.seed(12345)
-    fit <- mjoint(
-        formLongFixed = list("grad" = log.grad ~ time + sex + hs,
-                             "lvmi" = log.lvmi ~ time + sex),
-        formLongRandom = list("grad" = ~ 1 | num,
-                              "lvmi" = ~ time | num),
-        formSurv = Surv(fuyrs, status) ~ age,
-        data = list(hvd, hvd),
-        timeVar = "time")
+set.seed(12345)
+fit <- mjoint(
+    formLongFixed = list("grad" = log.grad ~ time + sex + hs,
+                         "lvmi" = log.lvmi ~ time + sex),
+    formLongRandom = list("grad" = ~ 1 | num,
+                          "lvmi" = ~ time | num),
+    formSurv = Surv(fuyrs, status) ~ age,
+    data = list(hvd, hvd),
+    timeVar = "time")
+```
 
 The fitted model is assigned to `fit`. We can apply a number of functions to this object, e.g. `coef`, `logLik`, `plot`, `print`, `ranef`, `summary`, `extractAIC`, `getVarCov`. For example,
 
-    summary(fit)
-    plot(fit, param = "gamma")
+``` r
+summary(fit)
+plot(fit, param = 'gamma')
+```
 
 `mjoint` automatically estimates approximate standard errors using the empirical information matrix (Lin et al., 2002), but the `bootSE` function can be used as an alternative.
 
@@ -91,7 +113,9 @@ Further learning
 
 For an overview of the model estimation being performed, please see the technical vignette, which can be accessed by
 
-    vignette('technical', package = "joineRML")
+``` r
+vignette('technical', package = 'joineRML')
+```
 
 References
 ==========

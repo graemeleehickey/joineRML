@@ -15,7 +15,7 @@
 \usepackage{amssymb}
 \usepackage{amsfonts}
 \usepackage{setspace}
-\usepackage{lineno}
+%\usepackage{lineno}
 \usepackage{enumitem}
 \usepackage{hyperref}
 \usepackage[backend=biber,doi=false,isbn=false,url=false,giveninits=true,sortcites,maxbibnames=6,minbibnames=3,maxcitenames=2, sorting=none]{biblatex}
@@ -66,7 +66,7 @@ where $\mu_{ik}(t)$ is the mean response, and $\varepsilon_{ik}(t)$ is the model
 where $x_{ik}(t)$ is a $p_k$-vector of (possibly) time-varying covariates with corresponding fixed effect terms $\beta_k$. $W_{1i}^{(k)}(t)$ is specified as
 %
 \begin{equation}\label{eqn:W1k}
-	W_{1i}^{(k)}(t) = x_{ik}^\top(t) \beta_k + z_{ik}^\top(t) b_{ik},
+	W_{1i}^{(k)}(t) = z_{ik}^\top(t) b_{ik},
 \end{equation}
 %
 where $z_{ik}(t)$ is an $r_k$-vector ($r_k \leq p_k$) of (possibly) time-varying covariates with corresponding subject-and-outcome random effect terms $b_{ik}$, which follow a zero-mean multivariate normal distribution with $r_k \times r_k$ variance-covariance matrix $D_{kk}$. To account for dependence between the different longitudinal outcome types, we let $\text{cov}(b_{ik},b_{il}) = D_{kl}$ for $k \neq l$. Furthermore, we assume $\varepsilon_{ik}(t)$ and $b_{ik}$ are uncorrelated, and that the censoring times are independent of the random effects; both are standard modelling assumptions. These distributional assumptions together with the model given by \eqref{eqn:long_model}--\eqref{eqn:W1k} is equivalent to the multivariate extension of the \textcite{Laird1982} mixed linear effects model. \textcite{Henderson2000} note that more flexible specifications of $W_{1i}^{(k)}(t)$ can be used, including, for example, stationary Gaussian processes. We do not consider these cases here.
@@ -80,7 +80,7 @@ The time-to-event sub-model, also referred to as the \emph{intensity process mod
 where $\lambda_0(\cdot)$ is an unspecified baseline hazard function, and $b_i = (b_{i1}^\top, \dots, b_{iK}^\top)$, $v_i(t)$ is a $q$-vector of (possibly) time-varying covariates with corresponding fixed effect terms $\gamma_v$. Conditional on $W_i(t)$ and the observed covariate data, the separate data generating processes are \emph{conditionally independent}. To establish a latent association, we specify $W_{2i}(t)$ as a linear combination of $\left\{W_{1i}^{(1)}(t), \dots, W_{1i}^{(K)}(t)\right\}$
 %
 \begin{equation*}
-	W_{2i}(t) = \sum_{k=1}^K \gamma_{yk} W_{1i}^{(k)}(t) \gamma_{yk},
+	W_{2i}(t) = \sum_{k=1}^K \gamma_{yk} W_{1i}^{(k)}(t),
 \end{equation*}
 %
 where $\gamma_y = (\gamma_{y1}, \dots, \gamma_{yK})$ are the joint model association parameters. To emphasise the dependence of $W_{2i}(t)$ on the random effects, we will explicitly write is as $W_{2i}(t, b_i)$ from here onwards. As noted above for $W_{1i}^{(k)}(t)$, $W_{2i}(t)$ can also be flexibly extended, for example to include subject-specific frailty effects \cite{Henderson2000}.
@@ -226,7 +226,7 @@ Two standard stopping rules for the deterministic EM algorithm used to declare c
 %
 \begin{eqnarray}
 	\Delta_1^{(m+1)} &=& \max\left\{\frac{|\hat{\theta}^{(m+1)} - \hat{\theta}^{(m)}|}{|\hat{\theta}^{(m)}| + \epsilon_1}\right\} < \epsilon_2, \mbox{  and} \label{eqn:rel_conv} \\
-	\Delta_2^{(m+1)} &=& \max\left\{|\hat{\theta}^{(m+1)} - \hat{\theta}^{(m)}\right\} < \epsilon_3 \label{eqn:abs_conv}
+	\Delta_2^{(m+1)} &=& \max\left\{|\hat{\theta}^{(m+1)} - \hat{\theta}^{(m)}|\right\} < \epsilon_3 \label{eqn:abs_conv}
 \end{eqnarray}
 %
 respectively, for some appropriate choice of $\epsilon_1$, $\epsilon_2$, and $\epsilon_3$. The \texttt{JM} package implements the relative difference stopping rule (in combination with another rule based on relative change in the likelihood), whereas the \texttt{joineR} package implements the absolute difference stopping rule.
@@ -285,8 +285,8 @@ As noted earlier, SE estimates other than those deriving from bootstrap estimati
 To assess properties of the model estimation algorithm, for example bias and coverage, it is necessary to simulate data from joint models of multivariate longitudinal data and time-to-event data. We consider simulation from two models with either
 %
 \begin{enumerate}
-	\item $W_{1i}^{(k)}(t) = b_{0k,0}$ (random-intercepts model), or
-	\item $W_{1i}^{(k)}(t) = b_{0k,0} + b_{1k,1}t$ (random-intercepts and random-slopes model).
+	\item $W_{1i}^{(k)}(t) = b_{ik,0}$ (random-intercepts model), or
+	\item $W_{1i}^{(k)}(t) = b_{ik,0} + b_{1k,1}t$ (random-intercepts and random-slopes model).
 \end{enumerate}
 %
 Conditional on model parameters, simulation of complete longitudinal data for subjects is trivial by sampling from multivariate normal distributions. In practice, it is preferable to simulate data for fixed time points $0, 1, \dots, T_{\max}$.
@@ -359,7 +359,7 @@ The score equations for $\gamma_v$ and $\gamma_y$ don't have closed-form solutio
 	&=& \sum_{i=1}^n \left[\delta_i \mathbb{E}\left[\tilde{v}_i(T_i)\right] - \sum_{j=1}^J\lambda_0(t_j)\mathbb{E}\left[\tilde{v}_i(t_j)\exp\{\tilde{v}_i(t_j)^\top \gamma\}\right]I(T_i \geq t_j)\right],
 \end{eqnarray*}
 %
-where $\tilde{v}_i(t) = \left(v_i^\top, z_{i1}^\top(t) b_{i1}, \dots, z_{iK}^\top(t) b_{iK}\right)$ is a $(q+K)$-vector, and the integration over the survival process has been replaced with a finite summation over the process evaluated at the unique failure times, since the non-parametric estimator of baseline hazard function is zero except at observed failure times \cite{Henderson2000}. As $\lambda_0(t_j)$ is a function of $\gamma$. this is not a closed-form solution. Substituting $\lambda_0(t)$ by $\hat{\lambda}_0(t)$ from \eqref{eqn:hazard_update}, which is a function of $\gamma$ and the observed data itself, gives a score that is independent of $\lambda_0(t)$. Discussion of this in the context of univariate joint modelling is given by \textcite{Hsieh2006}. An useful result is that the maximum profile likelihood estimator is the same as the maximum partial likelihood estimator \cite{Lin2000}.
+where $\tilde{v}_i(t) = \left(v_i^\top, z_{i1}^\top(t) b_{i1}, \dots, z_{iK}^\top(t) b_{iK}\right)$ is a $(q+K)$-vector, and the integration over the survival process has been replaced with a finite summation over the process evaluated at the unique failure times, since the non-parametric estimator of baseline hazard function is zero except at observed failure times \cite{Henderson2000}. As $\lambda_0(t_j)$ is a function of $\gamma$. this is not a closed-form solution. Substituting $\lambda_0(t)$ by $\hat{\lambda}_0(t)$ from \eqref{eqn:hazard_update}, which is a function of $\gamma$ and the observed data itself, gives a score that is independent of $\lambda_0(t)$. Discussion of this in the context of univariate joint modelling is given by \textcite{Hsieh2006}. A useful result is that the maximum profile likelihood estimator is the same as the maximum partial likelihood estimator \cite{Lin2000}.
 
 The observed information matrix for $\gamma$ is calculated by taking the partial derivative of the score above (with $\lambda_0(t)$ substituted by $\hat{\lambda}_0(t_j)$ defined by \eqref{eqn:hazard_update}), and is given by
 %
