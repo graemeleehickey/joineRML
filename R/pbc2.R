@@ -61,6 +61,8 @@
 #'   patient was dead, and 0 if the patient was alive or transplanted.}
 #'
 #'   }
+#' @keywords data
+#' @seealso \code{\link{heart.valve}}.
 #' @source \code{\link[JM]{pbc2}} and \code{\link[survival]{pbc}}.
 #' @references
 #'

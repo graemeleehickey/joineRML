@@ -8,6 +8,7 @@
 #'
 #' @author Graeme L. Hickey (\email{graeme.hickey@@liverpool.ac.uk})
 #' @keywords methods
+#' @seealso \code{\link[nlme]{getVarCov}} for the generic method description.
 #'
 #' @import nlme
 #' @importFrom nlme getVarCov

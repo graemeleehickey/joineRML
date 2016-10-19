@@ -6,6 +6,7 @@
 #'
 #' @author Graeme L. Hickey (\email{graeme.hickey@@liverpool.ac.uk})
 #' @keywords methods
+#' @seealso \code{\link[stats]{logLik}} for the generic method description.
 #'
 #' @references
 #'

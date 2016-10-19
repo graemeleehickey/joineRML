@@ -33,6 +33,7 @@
 #'
 #' @author Graeme L. Hickey (\email{graeme.hickey@@liverpool.ac.uk})
 #' @keywords multivariate survival methods
+#' @seealso \code{\link{mjoint}} for approximate standard errors.
 #'
 #' @references
 #'

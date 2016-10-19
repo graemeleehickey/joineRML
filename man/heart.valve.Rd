@@ -71,7 +71,7 @@
 
   }}
 \source{
-Mr Eric Lim (\url{http://www.drericlim.com})
+Mr Eric Lim (\url{http://www.drericlim.com}) and \code{\link[joineR]{heart.valve}}
 }
 \usage{
 data(heart.valve)
@@ -89,5 +89,8 @@ Lim E, Ali A, Theodorou P, Sousa I, Ashrafian H, Chamageorgakis
   predictors of left ventricular mass regression after stentless aortic valve
   replacement. \emph{Ann Thorac Surg.} 2008; \strong{85(6)}: 2026-2029.
 }
-\keyword{datasets}
+\seealso{
+\code{\link{pbc2}}.
+}
+\keyword{data}
 

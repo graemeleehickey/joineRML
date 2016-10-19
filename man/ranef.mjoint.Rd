@@ -54,5 +54,8 @@ Springer Verlag; 2000.
 Wulfsohn MS, Tsiatis AA. A joint model for survival and longitudinal data
 measured with error. \emph{Biometrics.} 1997; \strong{53(1)}: 330-339.
 }
+\seealso{
+\code{\link[nlme]{ranef}} for the generic method description.
+}
 \keyword{methods}
 

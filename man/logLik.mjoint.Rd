@@ -48,5 +48,8 @@ Henderson R, Diggle PJ, Dobson A. Joint modelling of longitudinal
 measurements and event time data. \emph{Biostatistics.} 2000; \strong{1(4)}:
 465-480.
 }
+\seealso{
+\code{\link[stats]{logLik}} for the generic method description.
+}
 \keyword{methods}
 

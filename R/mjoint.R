@@ -132,6 +132,9 @@
 #'
 #' @author Graeme L. Hickey (\email{graeme.hickey@@liverpool.ac.uk})
 #' @keywords multivariate survival methods
+#' @seealso \code{\link{mjoint.object}}, \code{\link{bootSE}},
+#'   \code{\link{plot.mjoint}}, \code{\link{summary.mjoint}},
+#'   \code{\link{getVarCov.mjoint}}, \code{\link{simData}}.
 #'
 #' @references
 #'

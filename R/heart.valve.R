@@ -73,6 +73,8 @@
 #'   \code{0=}stentless porcine tissue).}
 #'
 #'   }
+#' @keywords data
+#' @seealso \code{\link{pbc2}}.
 #' @source Mr Eric Lim (\url{http://www.drericlim.com}) and \code{\link[joineR]{heart.valve}}
 #' @references
 #'

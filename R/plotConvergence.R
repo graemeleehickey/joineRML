@@ -21,6 +21,8 @@
 #'
 #' @author Graeme L. Hickey (\email{graeme.hickey@@liverpool.ac.uk})
 #' @keywords methods dplot
+#' @seealso \code{\link{plot.mjoint}}, \code{\link[graphics]{plot.default}},
+#'   \code{\link[graphics]{par}}, \code{\link[graphics]{abline}}.
 #'
 #' @importFrom graphics par plot
 #' @export

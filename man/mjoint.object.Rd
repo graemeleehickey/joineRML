@@ -124,6 +124,9 @@ the generic functions \code{coef}, \code{logLik}, \code{plot}, \code{print},
 \author{
 Graeme L. Hickey (\email{graeme.hickey@liverpool.ac.uk})
 }
+\seealso{
+\code{\link{mjoint}}.
+}
 \keyword{multivariate}
 \keyword{survival}
 

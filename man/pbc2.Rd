@@ -78,5 +78,8 @@ Fleming T, Harrington D. \emph{Counting Processes and Survival Analysis}.
 Therneau T, Grambsch P. \emph{Modeling Survival Data: Extending the Cox
 Model}. 2000; New York: Springer-Verlag.
 }
-\keyword{datasets}
+\seealso{
+\code{\link{heart.valve}}.
+}
+\keyword{data}
 

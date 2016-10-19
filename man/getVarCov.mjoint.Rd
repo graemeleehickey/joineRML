@@ -47,5 +47,8 @@ Graeme L. Hickey (\email{graeme.hickey@liverpool.ac.uk})
 Pinheiro JC, Bates DM. \emph{Mixed-Effects Models in S and S-PLUS.} New York:
 Springer Verlag; 2000.
 }
+\seealso{
+\code{\link[nlme]{getVarCov}} for the generic method description.
+}
 \keyword{methods}
 

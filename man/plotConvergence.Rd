@@ -31,6 +31,10 @@ Wei GC, Tanner MA. A Monte Carlo implementation of the EM algorithm and the
 poor man’s data augmentation algorithms. \emph{J Am Stat Assoc.} 1990;
 \strong{85(411)}: 699-704.
 }
+\seealso{
+\code{\link{plot.mjoint}}, \code{\link[graphics]{plot.default}},
+  \code{\link[graphics]{par}}, \code{\link[graphics]{abline}}.
+}
 \keyword{dplot}
 \keyword{methods}
 

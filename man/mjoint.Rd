@@ -222,6 +222,11 @@ poor man’s data augmentation algorithms. \emph{J Am Stat Assoc.} 1990;
 Wulfsohn MS, Tsiatis AA. A joint model for survival and longitudinal data
 measured with error. \emph{Biometrics.} 1997; \strong{53(1)}: 330-339.
 }
+\seealso{
+\code{\link{mjoint.object}}, \code{\link{bootSE}},
+  \code{\link{plot.mjoint}}, \code{\link{summary.mjoint}},
+  \code{\link{getVarCov.mjoint}}, \code{\link{simData}}.
+}
 \keyword{methods}
 \keyword{multivariate}
 \keyword{survival}

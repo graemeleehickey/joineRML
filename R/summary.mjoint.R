@@ -9,6 +9,8 @@
 #'
 #' @author Graeme L. Hickey (\email{graeme.hickey@@liverpool.ac.uk})
 #' @keywords methods
+#' @seealso \code{\link{mjoint}}, \code{\link{mjoint.object}}, and
+#'   \code{\link[base]{summary}} for the generic method description.
 #'
 #' @references
 #'
@@ -30,7 +32,7 @@
 #' @export
 #'
 #' @examples
-#' #Fit a joint model with bivariate longitudinal outcomes
+#' # Fit a joint model with bivariate longitudinal outcomes
 #'
 #' \dontrun{
 #' data(heart.valve)

@@ -28,7 +28,7 @@ This function is primarily intended for internal use in the
   can be used for other purposes given a fitted \code{mjoint} object.
 }
 \examples{
-#Fit a joint model with bivariate longitudinal outcomes
+# Fit a joint model with bivariate longitudinal outcomes
 
 \dontrun{
 data(heart.valve)
@@ -49,6 +49,9 @@ sampleData(fit2, size = 10)
 }
 \author{
 Graeme L. Hickey (\email{graeme.hickey@liverpool.ac.uk})
+}
+\seealso{
+\code{\link{mjoint}}.
 }
 \keyword{datagen}
 \keyword{methods}

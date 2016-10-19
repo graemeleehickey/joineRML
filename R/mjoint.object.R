@@ -8,6 +8,7 @@
 #'
 #' @author Graeme L. Hickey (\email{graeme.hickey@@liverpool.ac.uk})
 #' @keywords multivariate survival
+#' @seealso \code{\link{mjoint}}.
 #' @return A list with the following components. \describe{
 #'
 #'   \item{coefficients}{a list with the estimated coefficients. The components

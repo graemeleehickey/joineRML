@@ -10,6 +10,8 @@
 #'
 #' @author Graeme L. Hickey (\email{graeme.hickey@@liverpool.ac.uk})
 #' @keywords methods dplot
+#' @seealso \code{\link[graphics]{plot.default}}, \code{\link[graphics]{par}},
+#'   \code{\link[graphics]{abline}}.
 #'
 #' @export
 #'

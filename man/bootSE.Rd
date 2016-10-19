@@ -125,6 +125,9 @@ Graeme L. Hickey (\email{graeme.hickey@liverpool.ac.uk})
 Efron B, Tibshirani R. \emph{An Introduction to the Bootstrap.} 2000; Boca
 Raton, FL: Chapman & Hall/CRC.
 }
+\seealso{
+\code{\link{mjoint}} for approximate standard errors.
+}
 \keyword{methods}
 \keyword{multivariate}
 \keyword{survival}

@@ -14,13 +14,14 @@
 #'
 #' @author Graeme L. Hickey (\email{graeme.hickey@@liverpool.ac.uk})
 #' @keywords methods datagen multivariate survival
+#' @seealso \code{\link{mjoint}}.
 #'
 #' @return A list of 2 data.frames: one recording the requisite longitudinal
 #'   outcomes data, and the other recording the time-to-event data.
 #' @export
 #'
 #' @examples
-#' #Fit a joint model with bivariate longitudinal outcomes
+#' # Fit a joint model with bivariate longitudinal outcomes
 #'
 #' \dontrun{
 #' data(heart.valve)

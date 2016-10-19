@@ -26,7 +26,7 @@ A list containing the coefficient matrices for the longitudinal and
 This function provides a summary of an \code{mjoint} object.
 }
 \examples{
-#Fit a joint model with bivariate longitudinal outcomes
+# Fit a joint model with bivariate longitudinal outcomes
 
 \dontrun{
 data(heart.valve)
@@ -59,6 +59,10 @@ measurements and event time data. \emph{Biostatistics.} 2000; \strong{1(4)}:
 Lin H, McCulloch CE, Mayne ST. Maximum likelihood estimation in the joint
 analysis of time-to-event and multiple longitudinal variables. \emph{Stat
 Med.} 2002; \strong{21}: 2369-2382.
+}
+\seealso{
+\code{\link{mjoint}}, \code{\link{mjoint.object}}, and
+  \code{\link[base]{summary}} for the generic method description.
 }
 \keyword{methods}
 
