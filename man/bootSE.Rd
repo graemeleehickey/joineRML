@@ -96,9 +96,9 @@ This function is computationally intensive. A dynamic progress bar is
   need to be refitted with changes to the \code{control} arguments.
 }
 \examples{
+\dontrun{
 # Fit a joint model with bivariate longitudinal outcomes
 
-\dontrun{
 data(heart.valve)
 hvd <- heart.valve[!is.na(heart.valve$log.grad) & !is.na(heart.valve$log.lvmi), ]
 

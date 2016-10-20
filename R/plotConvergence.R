@@ -4,7 +4,7 @@
 #' Plot convergence time series for parameter vectors from an \code{mjoint}
 #' object.
 #'
-#' @inheritParams bootSE
+#' @inheritParams fixef.mjoint
 #' @param params a string indicating what parameters are to be shown. Options
 #'   are \code{params='gamma'} for the time-to-event sub-model covariate
 #'   coefficients, including the latent association parameters;

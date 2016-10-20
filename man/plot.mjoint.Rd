@@ -19,9 +19,9 @@ graphical examination of convergence over MCEM iteration.}
 Plot diagnostics from an \code{mjoint} object.
 }
 \examples{
+\dontrun{
 # Fit a joint model with bivariate longitudinal outcomes
 
-\dontrun{
 data(heart.valve)
 hvd <- heart.valve[!is.na(heart.valve$log.grad) & !is.na(heart.valve$log.lvmi), ]
 

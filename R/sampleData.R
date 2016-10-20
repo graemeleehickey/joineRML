@@ -3,7 +3,7 @@
 #' Generic function used to sample a subset of data from an object of class
 #' \code{mjoint}, with a specific size of number of subjects.
 #'
-#' @inheritParams bootSE
+#' @inheritParams fixef.mjoint
 #' @param size number of subjects to include in the sampled subset. If
 #'   \code{size=NULL} (default), then size is set equal to the number of
 #'   subjects used to fit the \code{mjoint} model.
@@ -21,9 +21,9 @@
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' # Fit a joint model with bivariate longitudinal outcomes
 #'
-#' \dontrun{
 #' data(heart.valve)
 #' hvd <- heart.valve[!is.na(heart.valve$log.grad) & !is.na(heart.valve$log.lvmi), ]
 #'

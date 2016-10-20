@@ -13,7 +13,7 @@ of time-to-event and multivariate longitudinal data.}
 \item{postVar}{logical: if \code{TRUE} the variance of the posterior
 distribution is also returned.}
 
-\item{...}{options passed to the \code{control} argument.}
+\item{...}{additional arguments; currently none are used.}
 }
 \value{
 A numeric matrix with rows denoting the individuals and columns the
@@ -24,9 +24,9 @@ A numeric matrix with rows denoting the individuals and columns the
 Extract random effects estimates from an \code{mjoint} object.
 }
 \examples{
+\dontrun{
 # Fit a joint model with bivariate longitudinal outcomes
 
-\dontrun{
 data(heart.valve)
 hvd <- heart.valve[!is.na(heart.valve$log.grad) & !is.na(heart.valve$log.lvmi), ]
 
@@ -55,7 +55,8 @@ Wulfsohn MS, Tsiatis AA. A joint model for survival and longitudinal data
 measured with error. \emph{Biometrics.} 1997; \strong{53(1)}: 330-339.
 }
 \seealso{
-\code{\link[nlme]{ranef}} for the generic method description.
+\code{\link[nlme]{ranef}} for the generic method description, and
+  \code{\link{fixef.mjoint}}.
 }
 \keyword{methods}
 

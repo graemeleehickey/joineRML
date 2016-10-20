@@ -28,9 +28,9 @@ This function is primarily intended for internal use in the
   can be used for other purposes given a fitted \code{mjoint} object.
 }
 \examples{
+\dontrun{
 # Fit a joint model with bivariate longitudinal outcomes
 
-\dontrun{
 data(heart.valve)
 hvd <- heart.valve[!is.na(heart.valve$log.grad) & !is.na(heart.valve$log.lvmi), ]
 

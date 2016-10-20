@@ -14,7 +14,7 @@ of time-to-event and multivariate longitudinal data.}
 corresponding model. If \code{bootSE=NULL}, the summary will attempt to
 print approximate standard error estimates if available.}
 
-\item{...}{options passed to the \code{control} argument.}
+\item{...}{additional arguments; currently none are used.}
 }
 \value{
 A list containing the coefficient matrices for the longitudinal and
@@ -26,9 +26,9 @@ A list containing the coefficient matrices for the longitudinal and
 This function provides a summary of an \code{mjoint} object.
 }
 \examples{
+\dontrun{
 # Fit a joint model with bivariate longitudinal outcomes
 
-\dontrun{
 data(heart.valve)
 hvd <- heart.valve[!is.na(heart.valve$log.grad) & !is.na(heart.valve$log.lvmi), ]
 

@@ -1,15 +1,19 @@
-#' Extract random effects estimates from an \code{mjoint} object
+#' Extract fixed effects estimates from an \code{mjoint} object
 #'
-#' Extract random effects estimates from an \code{mjoint} object.
+#' Extract fixed effects estimates from an \code{mjoint} object.
 #'
-#' @inheritParams fixef.mjoint
-#' @param postVar logical: if \code{TRUE} the variance of the posterior
-#'   distribution is also returned.
+#' @param object an object inheriting from class \code{mjoint} for a joint model
+#'   of time-to-event and multivariate longitudinal data.
+#' @param process character string: if \code{process='Longitudinal'} the fixed
+#'   effects coefficients from (multivariate) longitudinal sub-model are
+#'   returned. Else, if \code{process='Event'}, the coefficients from the
+#'   time-to-event sub-model are returned.
+#' @param ... additional arguments; currently none are used.
 #'
 #' @author Graeme L. Hickey (\email{graeme.hickey@@liverpool.ac.uk})
 #' @keywords methods
-#' @seealso \code{\link[nlme]{ranef}} for the generic method description, and
-#'   \code{\link{fixef.mjoint}}.
+#' @seealso \code{\link[nlme]{fixef}} for the generic method description, and
+#'   \code{\link{ranef.mjoint}}.
 #'
 #' @references
 #'
@@ -19,9 +23,7 @@
 #' Wulfsohn MS, Tsiatis AA. A joint model for survival and longitudinal data
 #' measured with error. \emph{Biometrics.} 1997; \strong{53(1)}: 330-339.
 #'
-#' @return A numeric matrix with rows denoting the individuals and columns the
-#'   random effects (e.g., intercepts, slopes, etc.). If \code{postVar=TRUE},
-#'   the numeric matrix has an extra attribute ``postVar".
+#' @return A named vector of length equal to the number of sub-model coefficients estimated.
 #' @export
 #'
 #' @examples
@@ -42,20 +44,20 @@
 #'     timeVar = "time",
 #'     verbose = TRUE)
 #'
-#' ranef(fit2)
+#' fixef(fit2, process = "Longitudinal")
+#' fixef(fit2, process = "Event")
 #' }
-ranef.mjoint <- function(object, postVar = FALSE, ...) {
+fixef.mjoint <- function(object, process = c("Longitudinal", "Event"), ...) {
 
   if (!inherits(object, "mjoint")) {
     stop("Use only with 'mjoint' model objects.\n")
   }
 
-  out <- object$Eb
-
-  if (postVar) {
-    attr(out, "postVar") <- object$Vb
+  process <- match.arg(process)
+  if (process == "Longitudinal") {
+    object$coefficients$beta
+  } else {
+    object$coefficients$gamma
   }
-
-  out
 
 }

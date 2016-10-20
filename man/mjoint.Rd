@@ -157,10 +157,10 @@ Function \code{mjoint} fits joint models for time-to-event and
   Ripatti et al. (2002) for further details.
 }
 \examples{
+\dontrun{
 # Fit a classical univariate joint model with a single longitudinal outcome
 # and a single time-to-event outcome
 
-\dontrun{
 data(heart.valve)
 hvd <- heart.valve[!is.na(heart.valve$log.grad) & !is.na(heart.valve$log.lvmi), ]
 
@@ -173,9 +173,9 @@ fit1 <- mjoint(formLongFixed = log.lvmi ~ time + age,
 summary(fit1)
 }
 
-# Fit a joint model with bivariate longitudinal outcomes.
-
 \dontrun{
+# Fit a joint model with bivariate longitudinal outcomes
+
 data(heart.valve)
 hvd <- heart.valve[!is.na(heart.valve$log.grad) & !is.na(heart.valve$log.lvmi), ]
 

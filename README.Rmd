@@ -102,7 +102,7 @@ fit <- mjoint(
     timeVar = "time")
 ```
 
-The fitted model is assigned to `fit`. We can apply a number of functions to this object, e.g. `coef`, `logLik`, `plot`, `print`, `ranef`, `summary`, `extractAIC`, `getVarCov`. For example,
+The fitted model is assigned to `fit`. We can apply a number of functions to this object, e.g. `coef`, `logLik`, `plot`, `print`, `ranef`, `fixef`, `summary`, `extractAIC`, `getVarCov`. For example,
 
 ```r
 summary(fit)

@@ -2,7 +2,8 @@
 #'
 #' Extract log-likelihood from an \code{mjoint} object.
 #'
-#' @inheritParams bootSE
+#' @inheritParams fixef.mjoint
+#' @param ... further arguments; currently none are used.
 #'
 #' @author Graeme L. Hickey (\email{graeme.hickey@@liverpool.ac.uk})
 #' @keywords methods
@@ -20,9 +21,9 @@
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' # Fit a joint model with bivariate longitudinal outcomes
 #'
-#' \dontrun{
 #' data(heart.valve)
 #' hvd <- heart.valve[!is.na(heart.valve$log.grad) & !is.na(heart.valve$log.lvmi), ]
 #' fit2 <- mjoint(

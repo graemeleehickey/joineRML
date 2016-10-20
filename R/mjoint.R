@@ -171,10 +171,10 @@
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' # Fit a classical univariate joint model with a single longitudinal outcome
 #' # and a single time-to-event outcome
 #'
-#' \dontrun{
 #' data(heart.valve)
 #' hvd <- heart.valve[!is.na(heart.valve$log.grad) & !is.na(heart.valve$log.lvmi), ]
 #'
@@ -187,9 +187,9 @@
 #' summary(fit1)
 #' }
 #'
-#' # Fit a joint model with bivariate longitudinal outcomes.
-#'
 #' \dontrun{
+#' # Fit a joint model with bivariate longitudinal outcomes
+#'
 #' data(heart.valve)
 #' hvd <- heart.valve[!is.na(heart.valve$log.grad) & !is.na(heart.valve$log.lvmi), ]
 #'

@@ -2,7 +2,7 @@
 #'
 #' This function provides a summary of an \code{mjoint} object.
 #'
-#' @inheritParams bootSE
+#' @inheritParams fixef.mjoint
 #' @param bootSE an object inheriting from class \code{bootSE} for the
 #'   corresponding model. If \code{bootSE=NULL}, the summary will attempt to
 #'   print approximate standard error estimates if available.
@@ -32,9 +32,9 @@
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' # Fit a joint model with bivariate longitudinal outcomes
 #'
-#' \dontrun{
 #' data(heart.valve)
 #' hvd <- heart.valve[!is.na(heart.valve$log.grad) & !is.na(heart.valve$log.lvmi), ]
 #'

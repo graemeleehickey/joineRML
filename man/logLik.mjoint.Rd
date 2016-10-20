@@ -10,7 +10,7 @@
 \item{object}{an object inheriting from class \code{mjoint} for a joint model
 of time-to-event and multivariate longitudinal data.}
 
-\item{...}{options passed to the \code{control} argument.}
+\item{...}{further arguments; currently none are used.}
 }
 \value{
 Returns an object of class \code{logLik}. This is a number with two
@@ -21,9 +21,9 @@ Returns an object of class \code{logLik}. This is a number with two
 Extract log-likelihood from an \code{mjoint} object.
 }
 \examples{
+\dontrun{
 # Fit a joint model with bivariate longitudinal outcomes
 
-\dontrun{
 data(heart.valve)
 hvd <- heart.valve[!is.na(heart.valve$log.grad) & !is.na(heart.valve$log.lvmi), ]
 fit2 <- mjoint(
