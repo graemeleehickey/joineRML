@@ -86,7 +86,7 @@ sim <- simData(n = 250, beta = beta, D = D, sigma2 = c(0.25, 0.25),
                censlam = exp(-0.2), gamma.y = c(-.2, 1), ntms = 8)
 }
 \author{
-Graeme L. Hickey (\email{graeme.hickey@liverpool.ac.uk})
+Pete Philipson (\email{pete.philipson@northumbria.ac.uk})
 }
 \references{
 Austin PC. Generating survival times to simulate Cox proportional hazards

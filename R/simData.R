@@ -46,7 +46,7 @@
 #'   methodology of Bender et al. (2005) is used to simulate the time, whilst in
 #'   the case of latter, the approach of Austin (2012) is used.
 #'
-#' @author Graeme L. Hickey (\email{graeme.hickey@@liverpool.ac.uk})
+#' @author Pete Philipson (\email{pete.philipson@northumbria.ac.uk})
 #' @keywords datagen multivariate survival
 #'
 #' @references
