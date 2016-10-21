@@ -9,9 +9,18 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
+```{r, echo = FALSE, message = FALSE}
+#knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
+library(Matrix)
+library(nlme)
+library(survival)
+library(joineR)
+library(joineRML)
+```
+
 # Introduction
 
-The joineRML package implements methods for analysing data from *multiple* longitudinal studies in which the responses from each subject consists of time-sequences of repeated measurements and a possibly censored time-to-event outcome. The modelling framework for the repeated measurements is the multivariate linear mixed effects model. The model for the time-to-event outcome is a Cox proportional hazards model with log-Gaussian frailty. Stochastic dependence is captured by allowing the Gaussian random effects of the linear model to be correlated with the frailty term of the Cox proportional hazards model. For full details of the model, please consult the technical vignette by running
+The joineRML package implements methods for analyzing data from *multiple* longitudinal studies in which the responses from each subject consists of time-sequences of repeated measurements and a possibly censored time-to-event outcome. The modelling framework for the repeated measurements is the multivariate linear mixed effects model. The model for the time-to-event outcome is a Cox proportional hazards model with log-Gaussian frailty. Stochastic dependence is captured by allowing the Gaussian random effects of the linear model to be correlated with the frailty term of the Cox proportional hazards model. For full details of the model, please consult the technical vignette by running
 
 ```{r vignette, eval=FALSE}
 vignette("technical", package = "joineRML")
@@ -21,7 +30,7 @@ vignette("technical", package = "joineRML")
 
 ## Data
 
-The simplest way to explain the concepts of the package is through an example. `joineRML` comes with the dataset `heart.valve`. This dataset is in so-called *long* or *unbalanced* format:
+The simplest way to explain the concepts of the package is through an example. `joineRML` comes with the data set `heart.valve`. This data set is in so-called *long* or *unbalanced* format:
 
 ```{r heart.valve_data}
 library("joineRML")
@@ -29,7 +38,7 @@ data("heart.valve")
 head(heart.valve)
 ```
 
-The data refer to `r length(unique(heart.valve$num))` patients and are stored in the unbalanced format, which is convenient here because measurement times were unique to each subject. The data are stored as a single R object, `heart.valve`, which is a dataframe of dimension `r nrow(heart.valve)` by `r ncol(heart.valve)`. The average number of repeated measurements per subject is therefore `r nrow(heart.valve)`/`r length(unique(heart.valve$num))` = `r round(nrow(heart.valve) / length(unique(heart.valve$num)), 2)`. As with any unbalanced dataset, values of time-constant variables are repeated over all rows that refer to the same subject. The dimensionality of the dataset can be confirmed by a call to the `dim()` function, whilst the names of the 25 variables can be listed by a call to the `names()` function:
+The data refer to `r length(unique(heart.valve$num))` patients and are stored in the unbalanced format, which is convenient here because measurement times were unique to each subject. The data are stored as a single R object, `heart.valve`, which is a data frame of dimension `r nrow(heart.valve)` by `r ncol(heart.valve)`. The average number of repeated measurements per subject is therefore `r nrow(heart.valve)`/`r length(unique(heart.valve$num))` = `r round(nrow(heart.valve) / length(unique(heart.valve$num)), 2)`. As with any unbalanced data set, values of time-constant variables are repeated over all rows that refer to the same subject. The dimensionality of the data set can be confirmed by a call to the `dim()` function, whilst the names of the 25 variables can be listed by a call to the `names()` function:
 
 ```{r heart.valve_dimnames}
 dim(heart.valve)
@@ -42,7 +51,7 @@ We will only analyse a subset of this data, namely records with case-complete da
 hvd <- heart.valve[!is.na(heart.valve$grad) & !is.na(heart.valve$lvmi), ]
 ```
 
-Strictly speaking, this is not neccessary because `joineRML` can handle the situation of different measurement schedules *within* subjects That is, a subject does not need to have all multiple longitudinal outcomes recorded at each visit. It is conceivable that some biomarkers will be measured more or less frequently than others. For example, invasive measurements may only be recorded annually, whereas a simple biomarker measurement might be recorded more frequently. `joineRML` can handle this situation by specifying each longitudinal outcome its own dataframe.
+Strictly speaking, this is not necessary because `joineRML` can handle the situation of different measurement schedules *within* subjects That is, a subject does not need to have all multiple longitudinal outcomes recorded at each visit. It is conceivable that some biomarkers will be measured more or less frequently than others. For example, invasive measurements may only be recorded annually, whereas a simple biomarker measurement might be recorded more frequently. `joineRML` can handle this situation by specifying each longitudinal outcome its own data frame.
 
 ## Model fitting
 
@@ -73,7 +82,7 @@ fit <- mjoint(
   timeVar = "time")
 ```
 
-Details on the model estimation algorithm are provided in the technical details vignette. There are a number of other useful arguments in the `mjoint` function; for example, `inits` for specifying (partial) initial values, `control` for controlling the optimisation algorithm, `verbose` for monitoring the convergence output in real-time. A full list of all arguments with explanation are given in the help documentation, accessed by running `help("mjoint")`.
+Details on the model estimation algorithm are provided in the technical details vignette. There are a number of other useful arguments in the `mjoint` function; for example, `inits` for specifying (partial) initial values, `control` for controlling the optimization algorithm, `verbose` for monitoring the convergence output in real-time. A full list of all arguments with explanation are given in the help documentation, accessed by running `help("mjoint")`.
 
 ## Post-fit analysis
 
@@ -83,7 +92,7 @@ Once we have a fitted `mjoint` object, we can begin to extract relevant informat
 summary(fit)
 ```
 
-One can also extract the coeffiients, fixed effects, and random effects using standard generic functions:
+One can also extract the coefficients, fixed effects, and random effects using standard generic functions:
 
 ```{r hvd_model_generics}
 coef(fit)
@@ -94,23 +103,25 @@ head(ranef(fit))
 
 Although a model fit may indicate convergence, it is generally a good idea to examine the convergence plots. These can be viewed using the `plot` function for each group of model parameters.
 
-```{r hvd_model_conv, fig.height=8, fig.width=6}
+```{r hvd_model_conv, fig.height=8, fig.width=7.25}
 plot(fit, params = "gamma")
 plot(fit, params = "beta")
 ```
 
 ## Bootstrap standard errors
 
-Once an `mjoint` model has converged, and assuming the `se.approx` argument is `TRUE` (default), then approximated standard errors are calculated based on the empirical information matrix of the profile likelihood at the maximiser. Theoretically, these standard errors will be underestimated (see the technical vignette). In principle, residual Monte Carlo error will oppose this through an increase in uncertainty. Nonetheless, we recommend that the final model standard errors are calculated by the bootstrap method.
+Once an `mjoint` model has converged, and assuming the `se.approx` argument is `TRUE` (default), then approximated standard errors are calculated based on the empirical information matrix of the profile likelihood at the maximizer. Theoretically, these standard errors will be underestimated (see the technical vignette). In principle, residual Monte Carlo error will oppose this through an increase in uncertainty. Nonetheless, we recommend that the final model standard errors are calculated by the bootstrap method.
 
 ```{r hvd_model_boot, cache=TRUE}
-fit.se <- bootSE(fit, nboot = 50, use.mle = TRUE,
-                 control = list(nMCmax = 10000, earlyPhase = 20, 
-                                mcmaxIter = 100, convCrit = "either",
-                                tol0 = 9e-03, tol2 = 9e-03))
+fit.se <- bootSE(fit, nboot = 25, use.mle = TRUE, control = list(
+    nMCmax = 10000, earlyPhase = 20, mcmaxIter = 50, 
+    convCrit = "either", tol0 = 1e-02, tol2 = 1e-02),
+  progress = FALSE)
 ```
 
-Bootstrapping is a computationally intensive method, possibly taking many hours to fit. For this reason, the `bootSE` function makes use of the `use.mle` argument, which automatically initializes each model fit to the maximizer of the fitted model, `fit`. Also, one might relax the control parameter constraints on the optimisation algorithm for each bootstrap model; however, this will be at the expense of inflated standard errors due to Monte Carlo error.
+Bootstrapping is a computationally intensive method, possibly taking many hours to fit. For this reason, the `bootSE` function makes use of the `use.mle` argument, which automatically initializes each model fit to the maximizer of the fitted model, `fit`. Also, one might relax the control parameter constraints on the optimization algorithm for each bootstrap model; however, this will be at the expense of inflated standard errors due to Monte Carlo error.
+
+Note that in the interests of compiling this vignette in a minimum amount of time, we have limited `bootSE` to only 25 iterations. In general, users will want at least 100-200 iterations. Also, we have increased the convergence tolerance limits to $10^{-2}$. In general, stricter criteria will be required for reliable standard error estimates; the default is $5 \times 10^{-3}$.
 
 We can call the `bootSE` object to interrogate it
 
@@ -126,7 +137,7 @@ summary(fit, bootSE = fit.se)
 
 # Univariate joint models: `joineRML` versus `joineR`
 
-There are a growing number of software options for fitting joint models of a single longitudinal outcome and a single time-to-event outcome; what we call here *univariate* joint models. `joineR` (version 1.0-3) is one package available in R for fitting such models, however `joineRML` can fit these models too, since the univariate model is simply a special case of the multivariate model. It is useful to constrast these two packages. There are theoretical and practical implementation differences between the packages beyond just univariate versus multivariate capability:
+There are a growing number of software options for fitting joint models of a single longitudinal outcome and a single time-to-event outcome; what we call here *univariate* joint models. `joineR` (version 1.0-3) is one package available in R for fitting such models, however `joineRML` can fit these models too, since the univariate model is simply a special case of the multivariate model. It is useful to contrast these two packages. There are theoretical and practical implementation differences between the packages beyond just univariate versus multivariate capability:
 
 * `joineR` uses Gauss-Hermite quadrature (with 3 nodes) for numerical integration, whereas `joineRML` uses Monte Carlo integration with an automated selection of sample size.
 
@@ -136,12 +147,13 @@ There are a growing number of software options for fitting joint models of a sin
 
 * `joineR` does not calculate approximate standard errors.
 
-* `joineR` requires a data pre-processing step in order to generate a `joint.data` object, whereas `joineRML` can work straight from the dataframe.
+* `joineR` requires a data pre-processing step in order to generate a `joint.data` object, whereas `joineRML` can work straight from the data frame.
 
 To fit a univariate model in `joineR` we run the following code for the `hvd` data
 
 ```{r joineR, cache=TRUE}
-hvd.surv <- UniqueVariables(hvd, var.col = c("fuyrs","status"), id.col = "num")
+library(joineR, quietly = TRUE)
+hvd.surv <- UniqueVariables(hvd, var.col = c("fuyrs", "status"), id.col = "num")
 hvd.cov <- UniqueVariables(hvd, "age", id.col = "num")
 hvd.long <- hvd[, c("num", "time", "log.lvmi")]
 
@@ -151,13 +163,14 @@ hvd.jd <- jointdata(longitudinal = hvd.long,
                     id.col = "num", 
                     time.col = "time")
 
-system.time(fit.joiner <- joineR::joint(data = hvd.jd, 
-                              long.formula = log.lvmi ~ time + age, 
-                              surv.formula = Surv(fuyrs, status) ~ age, 
-                              model = "intslope"))
+system.time(fit.joiner <- joint(data = hvd.jd,
+                                long.formula = log.lvmi ~ time + age, 
+                                surv.formula = Surv(fuyrs, status) ~ age, 
+                                model = "intslope"))
+
 summary(fit.joiner)
 
-fit.joiner.boot <- system.time(joineR::jointSE(fit.joiner, n.boot = 100))
+system.time(fit.joiner.boot <- jointSE(fit.joiner, n.boot = 100))
 fit.joiner.boot
 ```
 
@@ -170,17 +183,20 @@ fit.joinerml <- mjoint(formLongFixed = log.lvmi ~ time + age,
                        formSurv = Surv(fuyrs, status) ~ age,
                        data = hvd,
                        timeVar = "time")
+
 summary(fit.joinerml)
 
-fit.joinerml.boot <- bootSE(fit1, 50, use.mle = TRUE, 
-                            control = list(earlyPhase = 25, convCrit = "either",
-                            tol0 = 8e-03, tol2 = 8e-03, mcmaxIter = 60))
+fit.joinerml.boot <- bootSE(fit.joinerml, nboot = 25, use.mle = TRUE, control = 
+                              list(earlyPhase = 25, convCrit = "either", 
+                                   tol0 = 1e-02, tol2 = 1e-02, mcmaxIter = 60),
+                            progress = FALSE)
+
 fit.joinerml.boot
 ```
 
-In addition to just comparing model parameter estimates, we can also extract the preidcted (or posterior) random effects from each model and plot them.
+In addition to just comparing model parameter estimates, we can also extract the predicted (or posterior) random effects from each model and plot them.
 
-```{r re_comp_plot}
+```{r re_comp_plot, fig.width=7.25, fig.height=4}
 id <- as.numeric(row.names(fit.joiner$coefficients$random))
 id.ord <- order(id) # joineR rearranges patient ordering during EM fit
 par(mfrow = c(1, 2))

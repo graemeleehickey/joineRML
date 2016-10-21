@@ -10,13 +10,14 @@ mjoint(formLongFixed, formLongRandom, formSurv, data, survData = NULL,
 }
 \arguments{
 \item{formLongFixed}{a list of formulae for the fixed effects component of
-each longitudinal outcome. If a single formula is given (either as a list
-of length 1 or a formula), then it is assumed that a standard univariate
-joint model is being fitted.}
+each longitudinal outcome. The left hand-hand side defines the response,
+and the right-hand side specifies the fixed effect terms. If a single
+formula is given (either as a list of length 1 or a formula), then it is
+assumed that a standard univariate joint model is being fitted.}
 
-\item{formLongRandom}{a list of formulae for the fixed effects component of
-each longitudinal outcome. The length of the list must be equal to
-\code{formLongFixed}.}
+\item{formLongRandom}{a list of one-sided formulae specifying the model for
+the random effects effects of each longitudinal outcome. The length of the
+list must be equal to \code{formLongFixed}.}
 
 \item{formSurv}{a formula specifying the proportional hazards regression
 model (not including the latent association structure). See
