@@ -14,6 +14,9 @@
 #' @param use.mle logical: should the algorithm use the maximiser from the
 #'   converged model in \code{object} as initial values for coefficients in each
 #'   bootstrap iteration. Default is \code{use.mle=TRUE}.
+#' @param progress logical: should a progress bar be shown on the console to
+#'   indicate the percentage of bootstrap iterations completed? Default is
+#'   \code{progress=TRUE}.
 #' @inheritParams mjoint
 #'
 #' @details Standard errors and confidence intervals are obtained by repeated
@@ -66,7 +69,8 @@
 #'                tol0 = 6e-03, tol2 = 6e-03, mcmaxIter = 60))
 #' }
 bootSE <- function(object, nboot = 100, ci = 0.95, use.mle = TRUE,
-                   verbose = FALSE, control = list(), ...) {
+                   verbose = FALSE, control = list(), progress = TRUE,
+                   ...) {
 
   if (!inherits(object, "mjoint")) {
     stop("Use only with 'mjoint' model objects.\n")
@@ -91,8 +95,10 @@ bootSE <- function(object, nboot = 100, ci = 0.95, use.mle = TRUE,
 
   out <- list()
   conv.status <- vector(length = nboot)
-  cat("\n\n")
-  pb <- utils::txtProgressBar(min = 0, max = nboot, style = 3)
+  if (progress) {
+    cat("\n\n")
+    pb <- utils::txtProgressBar(min = 0, max = nboot, style = 3)
+  }
   for (b in 1:nboot) {
     # bootstrap sample data
     data.boot <- sampleData(object = object)
@@ -113,9 +119,13 @@ bootSE <- function(object, nboot = 100, ci = 0.95, use.mle = TRUE,
     )
     out[[b]] <- fit.boot$coefficients
     conv.status[b] <- fit.boot$conv
-    utils::setTxtProgressBar(pb, b)
+    if (progress) {
+      utils::setTxtProgressBar(pb, b)
+    }
   }
-  close(pb)
+  if (progress) {
+    close(pb)
+  }
 
   # Checks
   if (mean(conv.status) <= 0.1) {

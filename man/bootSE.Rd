@@ -5,7 +5,7 @@
 \title{Standard errors via bootstrap for an \code{mjoint} object}
 \usage{
 bootSE(object, nboot = 100, ci = 0.95, use.mle = TRUE, verbose = FALSE,
-  control = list(), ...)
+  control = list(), progress = TRUE, ...)
 }
 \arguments{
 \item{object}{an object inheriting from class \code{mjoint} for a joint model
@@ -66,6 +66,10 @@ algorithm. Default is \code{FALSE}.}
   \strong{Details}. Default is \code{5e-03}.}
 
   }}
+
+\item{progress}{logical: should a progress bar be shown on the console to
+indicate the percentage of bootstrap iterations completed? Default is
+\code{progress=TRUE}.}
 
 \item{...}{options passed to the \code{control} argument.}
 }
