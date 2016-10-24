@@ -1,0 +1,64 @@
+#' Extract an approximate variance-covariance matrix of estimated parameters
+#' from an \code{mjoint} object
+#'
+#' @inheritParams fixef.mjoint
+#' @param ... further arguments; currently none are used.
+#'
+#' @details This is a generic function that extracts the variance-covariance
+#'   matrix of parameters from an \code{mjoint} model fit. It is based on a
+#'   profile likelihood, so no estimates are given for the baseline hazard
+#'   function, which is generally considered a nuisance parameter. It is based
+#'   on the empiricial information matrix (see Lin et al. 2002, and McLachlan
+#'   and Krishnan 2008 for details), so is only approximate.
+#'
+#' @note This function is not to be confused with \code{\link{getVarCov}}, which
+#'   returns the extracted variance-covariance matrix for the random effects
+#'   distribution.
+#'
+#' @author Graeme L. Hickey (\email{graeme.hickey@@liverpool.ac.uk})
+#' @keywords methods
+#' @seealso \code{\link[stats]{vcov}} for the generic method description.
+#'
+#' @references
+#'
+#' Lin H, McCulloch CE, Mayne ST. Maximum likelihood estimation in the joint
+#' analysis of time-to-event and multiple longitudinal variables. \emph{Stat
+#' Med.} 2002; \strong{21}: 2369-2382.
+#'
+#' McLachlan GJ, Krishnan T. \emph{The EM Algorithm and Extensions}. Second
+#' Edition. Wiley-Interscience; 2008.
+#'
+#' @import stats
+#'
+#' @return A variance-covariance matrix.
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' # Fit a joint model with bivariate longitudinal outcomes
+#'
+#' data(heart.valve)
+#' hvd <- heart.valve[!is.na(heart.valve$log.grad) & !is.na(heart.valve$log.lvmi), ]
+#'
+#' fit2 <- mjoint(
+#'     formLongFixed = list("grad" = log.grad ~ time + sex + hs,
+#'                          "lvmi" = log.lvmi ~ time + sex),
+#'     formLongRandom = list("grad" = ~ 1 | num,
+#'                           "lvmi" = ~ time | num),
+#'     formSurv = Surv(fuyrs, status) ~ age,
+#'     data = list(hvd, hvd),
+#'     inits = list("gamma" = c(0.11, 1.51, 0.80)),
+#'     timeVar = "time",
+#'     verbose = TRUE)
+#'
+#' vcov(fit2)
+#' }
+vcov.mjoint <- function(object, ...) {
+
+  if (!inherits(object, "mjoint")) {
+    stop("Use only with 'mjoint' model objects.\n")
+  }
+
+  object$vcov
+
+}

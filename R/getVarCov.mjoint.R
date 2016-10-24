@@ -1,6 +1,8 @@
-#' Extract variance-covariance matrix from an \code{mjoint} object
+#' Extract variance-covariance matrix of random effects from an \code{mjoint}
+#' object
 #'
-#' Extract variance-covariance matrix from an \code{mjoint} object.
+#' Extract variance-covariance matrix of random effects from an \code{mjoint}
+#' object.
 #'
 #' @inheritParams fixef.mjoint
 #' @param ... further arguments; currently none are used.

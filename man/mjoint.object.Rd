@@ -11,74 +11,75 @@ mjoint.object
 \value{
 A list with the following components. \describe{
 
-  \item{\code{coefficients}}{a list with the estimated coefficients. The components
-  of this list are: \describe{
+  \item{\code{coefficients}}{a list with the estimated coefficients. The
+  components of this list are: \describe{
 
   \item{\code{beta}}{the vector of fixed effects for the linear mixed effects
   sub-model.}
 
   \item{\code{D}}{the variance-covariance matrix of the random effects.}
 
-  \item{\code{sigma2}}{the measurement error standard deviations for the linear
-  mixed effects sub-model.}
+  \item{\code{sigma2}}{the measurement error standard deviations for the
+  linear mixed effects sub-model.}
 
-  \item{\code{haz}}{the estimated baseline hazard values for each unique failure
-  time.}
+  \item{\code{haz}}{the estimated baseline hazard values for each unique
+  failure time.}
 
-  \item{\code{gamma}}{the vector of baseline covariates for the survival model and
-  the latent association coefficient parameter estimates.}
+  \item{\code{gamma}}{the vector of baseline covariates for the survival
+  model and the latent association coefficient parameter estimates.}
 
   }}
 
-  \item{\code{history}}{a matrix with parameter estimates at each iteration of the
-  MCEM algorithm.}
+  \item{\code{history}}{a matrix with parameter estimates at each iteration
+  of the MCEM algorithm.}
 
-  \item{\code{nMC.hx}}{a vector with the number of Monte Carlo samples for each MCEM
-  algorithm iteration.}
+  \item{\code{nMC.hx}}{a vector with the number of Monte Carlo samples for
+  each MCEM algorithm iteration.}
 
-  \item{\code{formLongFixed}}{a list of formulae for the fixed effects component of
-  each longitudinal outcome.}
+  \item{\code{formLongFixed}}{a list of formulae for the fixed effects
+  component of each longitudinal outcome.}
 
-  \item{\code{formLongRandom}}{a list of formulae for the fixed effects component of
-  each longitudinal outcome. The length of the list will be equal to
-  \code{formLongFixed}.}
+  \item{\code{formLongRandom}}{a list of formulae for the fixed effects
+  component of each longitudinal outcome. The length of the list will be
+  equal to \code{formLongFixed}.}
 
-  \item{\code{formSurv}}{a formula specifying the proportional hazards regression
-  model (not including the latent association structure).}
+  \item{\code{formSurv}}{a formula specifying the proportional hazards
+  regression model (not including the latent association structure).}
 
   \item{\code{data}}{a list of data.frames for each longitudinal outcome.}
 
   \item{\code{survData}}{a data.frame of the time-to-event dataset.}
 
-  \item{\code{timeVar}}{a character string denoting the column name for time in
-  \code{data}.}
+  \item{\code{timeVar}}{a character string denoting the column name for time
+  in \code{data}.}
 
-  \item{\code{id}}{a character string denoting the column name for subject IDs in
-  \code{data} and \code{survData}.}
+  \item{\code{id}}{a character string denoting the column name for subject
+  IDs in \code{data} and \code{survData}.}
 
   \item{\code{dims}}{a list giving the dimensions of model parameters with
   components: \describe{
 
-  \item{\code{p}}{a vector of the number of fixed effects for each longitudinal
-  outcome.}
+  \item{\code{p}}{a vector of the number of fixed effects for each
+  longitudinal outcome.}
 
-  \item{\code{r}}{a vector of the number of random effects for each longitudinal
-  outcome.}
+  \item{\code{r}}{a vector of the number of random effects for each
+  longitudinal outcome.}
 
-  \item{\code{K}}{an integer of the number of different longitudinal outcome types.}
+  \item{\code{K}}{an integer of the number of different longitudinal outcome
+  types.}
 
   \item{\code{q}}{an integer of the number of baseline covariates in the
   time-to-event sub-model.}
 
   \item{\code{n}}{an integer of the total number of subjects in the study.}
 
-  \item{\code{nk}}{a vector of the number of measurements for each longitudinal
-  outcome.}
+  \item{\code{nk}}{a vector of the number of measurements for each
+  longitudinal outcome.}
 
   }}
 
-  \item{\code{sfit}}{an object of class \code{coxph} for the separate time-to-event
-  model fit. See \code{\link[survival]{coxph}} for details.}
+  \item{\code{sfit}}{an object of class \code{coxph} for the separate
+  time-to-event model fit. See \code{\link[survival]{coxph}} for details.}
 
   \item{\code{lfit}}{a list of objects each of class \code{lme} from fitting
   separate linear mixed effects models; one per each longitudinal outcome
@@ -88,34 +89,34 @@ A list with the following components. \describe{
 
   \item{\code{log.lik}}{the log-likelihood from the joint model fit.}
 
-  \item{\code{control}}{a list of control parameters used in the estimation of the
-  joint model. See \code{\link{mjoint}} for details.}
+  \item{\code{control}}{a list of control parameters used in the estimation
+  of the joint model. See \code{\link{mjoint}} for details.}
 
-  \item{\code{finalnMC}}{the final number of Monte Carlo samples required prior to
-  convergence.}
+  \item{\code{finalnMC}}{the final number of Monte Carlo samples required
+  prior to convergence.}
 
-  \item{\code{vcov}}{if \code{se.approx=TRUE} in the call to \code{mjoint}, the
-  variance-covariance matrix of model parameters, as approximated by the
+  \item{\code{vcov}}{if \code{se.approx=TRUE} in the call to \code{mjoint},
+  the variance-covariance matrix of model parameters, as approximated by the
   empirical information matrix, is reported. See \code{\link{mjoint}} for
   details.}
 
-  \item{\code{SE.approx}}{if \code{se.approx=TRUE} in the call to \code{mjoint}, the
-  square-root of the diagonal of \code{vcov} is returned, which are estimates
-  of the standard errors for the parameters.}
+  \item{\code{SE.approx}}{if \code{se.approx=TRUE} in the call to
+  \code{mjoint}, the square-root of the diagonal of \code{vcov} is returned,
+  which are estimates of the standard errors for the parameters.}
 
   \item{\code{Eb}}{a matrix with the estimated random effects values for each
   subject.}
 
-  \item{\code{Vb}}{an array with the estimated variance-covariance matrices for the
-  random effects values for each subject.}
+  \item{\code{Vb}}{an array with the estimated variance-covariance matrices
+  for the random effects values for each subject.}
 
   \item{\code{call}}{the matched call.}
 
-  \item{\code{conv}}{logical: did the MCEM algorithm converge within the specified
-  maximum number of iterations?}
+  \item{\code{conv}}{logical: did the MCEM algorithm converge within the
+  specified maximum number of iterations?}
 
-  \item{\code{comp.time}}{an object of class \code{difftime} that reports the time
-  taken for model fitting.}
+  \item{\code{comp.time}}{an object of class \code{difftime} that reports the
+  time taken for model fitting.}
 
   }
 }

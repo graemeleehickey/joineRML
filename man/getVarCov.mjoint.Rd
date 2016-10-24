@@ -2,7 +2,8 @@
 % Please edit documentation in R/getVarCov.mjoint.R
 \name{getVarCov.mjoint}
 \alias{getVarCov.mjoint}
-\title{Extract variance-covariance matrix from an \code{mjoint} object}
+\title{Extract variance-covariance matrix of random effects from an \code{mjoint}
+object}
 \usage{
 \method{getVarCov}{mjoint}(object, ...)
 }
@@ -16,7 +17,8 @@ of time-to-event and multivariate longitudinal data.}
 A variance-covariance matrix.
 }
 \description{
-Extract variance-covariance matrix from an \code{mjoint} object.
+Extract variance-covariance matrix of random effects from an \code{mjoint}
+object.
 }
 \examples{
 \dontrun{
