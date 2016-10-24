@@ -25,8 +25,8 @@
 #'
 #' @references
 #'
-#' Wulfsohn MS, Tsiatis AA. A joint model for survival and longitudinal data
-#' measured with error. \emph{Biometrics.} 1997; \strong{53(1)}: 330-339.
+#' McLachlan GJ, Krishnan T. \emph{The EM Algorithm and Extensions.} Second
+#' Edition. Wiley-Interscience; 2008.
 #'
 #' Henderson R, Diggle PJ, Dobson A. Joint modelling of longitudinal
 #' measurements and event time data. \emph{Biostatistics.} 2000; \strong{1(4)}:
@@ -35,6 +35,9 @@
 #' Lin H, McCulloch CE, Mayne ST. Maximum likelihood estimation in the joint
 #' analysis of time-to-event and multiple longitudinal variables. \emph{Stat
 #' Med.} 2002; \strong{21}: 2369-2382.
+#'
+#' Wulfsohn MS, Tsiatis AA. A joint model for survival and longitudinal data
+#' measured with error. \emph{Biometrics.} 1997; \strong{53(1)}: 330-339.
 #'
 #' @return A matrix containing the confidence intervals for either the
 #'   longitudinal, time-to-event, or both sub-models.
