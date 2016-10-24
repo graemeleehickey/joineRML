@@ -214,8 +214,7 @@ approxSE <- function(theta, l, t, z, nMC) {
   # Although RHS term = 0 in theory, in practice with MC integration
   # not all terms are vanishingly small, so we add it in
   ses <- ses - (rowSums(si) %*% t(rowSums(si))) / ncol(si)
-  ses <- sqrt(diag(solve(ses)))
-  names(ses) <- rownames(si)
+  rownames(ses) <- colnames(ses) <- rownames(si)
 
   return(ses)
 

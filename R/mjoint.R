@@ -44,28 +44,29 @@
 #'   calculated after the model has converged. Default is \code{TRUE}.
 #' @param control a list of control values with components: \describe{
 #'
-#'   \item{nMC}{integer: the initial number of Monte Carlo samples to be used
-#'   for integration in the early phase of the MCEM. Default is \code{nMC=100}.}
+#'   \item{\code{nMC}}{integer: the initial number of Monte Carlo samples to be
+#'   used for integration in the early phase of the MCEM. Default is
+#'   \code{nMC=100}.}
 #'
-#'   \item{nMCscale}{integer: the scale factor for the increase in Monte Carlo
-#'   size when Monte Carlo has not reduced from the previous iteration. Default
-#'   is \code{nMCscale=3}.}
+#'   \item{\code{nMCscale}}{integer: the scale factor for the increase in Monte
+#'   Carlo size when Monte Carlo has not reduced from the previous iteration.
+#'   Default is \code{nMCscale=3}.}
 #'
-#'   \item{nMCmax}{integer: the maximum number of Monte Carlo samples that the
-#'   algorithm is allowed to reach. Default is \code{nMCmax=20000}.}
+#'   \item{\code{nMCmax}}{integer: the maximum number of Monte Carlo samples
+#'   that the algorithm is allowed to reach. Default is \code{nMCmax=20000}.}
 #'
-#'   \item{earlyPhase}{integer: the number of iterations for early phase of the
-#'   optimization algorithm. It is computationally inefficient to use a large
-#'   number of Monte Carlo samples early on until one is approximately near the
-#'   maximum likelihood estimate. Default is \code{earlyPhase=30}.}
+#'   \item{\code{earlyPhase}}{integer: the number of iterations for early phase
+#'   of the optimization algorithm. It is computationally inefficient to use a
+#'   large number of Monte Carlo samples early on until one is approximately
+#'   near the maximum likelihood estimate. Default is \code{earlyPhase=30}.}
 #'
-#'   \item{mcmaxIter}{integer: the maximum number of MCEM algorithm iterations
-#'   allowed. Default is \code{mcmaxIter=200}.}
+#'   \item{\code{mcmaxIter}}{integer: the maximum number of MCEM algorithm
+#'   iterations allowed. Default is \code{mcmaxIter=200}.}
 #'
-#'   \item{convCrit}{character string: the convergence criterion to be used. See
-#'   \strong{Details}.}
+#'   \item{\code{convCrit}}{character string: the convergence criterion to be
+#'   used. See \strong{Details}.}
 #'
-#'   \item{approxInfo}{logical: should the information matrix in the
+#'   \item{\code{approxInfo}}{logical: should the information matrix in the
 #'   Newton-Raphson step for the \eqn{\gamma} parameters be calculated using an
 #'   approximation based on the empirical information matrix? If it is used,
 #'   then the step-length is adjusted by a nominal scaling parameter of 0.5 in
@@ -73,14 +74,14 @@
 #'   algorithm is increased at each iteration (McLachlan and Krishnan, 2008).
 #'   Default is \code{FALSE}, which corresponds to an exact calculation.}
 #'
-#'   \item{tol0}{numeric: tolerance value for convergence in the parameters; see
-#'   \strong{Details}. Default is \code{5e-03}.}
+#'   \item{\code{tol0}}{numeric: tolerance value for convergence in the
+#'   parameters; see \strong{Details}. Default is \code{5e-03}.}
 #'
-#'   \item{tol1}{numeric: tolerance value for convergence in the parameters; see
-#'   \strong{Details}. Default is \code{1e-03}.}
+#'   \item{\code{tol1}}{numeric: tolerance value for convergence in the
+#'   parameters; see \strong{Details}. Default is \code{1e-03}.}
 #'
-#'   \item{tol2}{numeric: tolerance value for convergence in the parameters; see
-#'   \strong{Details}. Default is \code{5e-03}.}
+#'   \item{\code{tol2}}{numeric: tolerance value for convergence in the
+#'   parameters; see \strong{Details}. Default is \code{5e-03}.}
 #'
 #'   }
 #' @param ... options passed to the \code{control} argument.
@@ -593,7 +594,7 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
       # Approximate SEs
       if (se.approx) {
         message("Calculating approximate standard errors...\n")
-        ses <- approxSE(theta = theta, l = l, t = t, z = z, nMC = max(nMC, 10000))
+        vcov <- approxSE(theta = theta, l = l, t = t, z = z, nMC = max(nMC, 10000))
       }
       break
     } else {
@@ -644,7 +645,8 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
   out$control <- con
   out$finalnMC <- nMC # not same as control nMC (used for early phase)
   if (conv && se.approx) {
-    out$SE.approx <- ses
+    out$vcov <- vcov
+    out$SE.approx <- sqrt(diag(solve(vcov)))
   }
   if (conv && ll) {
     out$log.lik <- log.lik$ll
