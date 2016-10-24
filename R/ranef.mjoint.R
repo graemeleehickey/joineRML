@@ -2,7 +2,7 @@
 #'
 #' Extract random effects estimates from an \code{mjoint} object.
 #'
-#' @inheritParams fixef.mjoint
+#' @inheritParams confint.mjoint
 #' @param postVar logical: if \code{TRUE} the variance of the posterior
 #'   distribution is also returned.
 #'

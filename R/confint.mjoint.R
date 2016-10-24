@@ -1,13 +1,27 @@
-#' Summary of an \code{mjoint} object
+#' Confidence intervals for model parameters of an \code{mjoint} object
 #'
-#' This function provides a summary of an \code{mjoint} object.
+#' This function computes confidence intervals for one or more parameters in a
+#' fitted \code{mjoint} object.
 #'
-#' @inheritParams confint.mjoint
+#' @param object an object inheriting from class \code{mjoint} for a joint model
+#'   of time-to-event and multivariate longitudinal data.
+#' @param parm a character string specifying which sub-model parameter
+#'   confidence intervals should be returned for. Can be specified as
+#'   \code{parm='Longitudinal'} (multvariate longitudinal sub-model),
+#'   \code{parm='Event'} (time-to-event sub-model), or \code{parm='both'}
+#'   (default).
+#' @param level the confidence level required. Default is \code{level=0.95} for
+#'   a 95\% confidence interval.
+#' @param bootSE an object inheriting from class \code{bootSE} for the
+#'   corresponding model. If \code{bootSE=NULL}, the function will attempt to
+#'   utilize approximate standard error estimates (if available) calculated from
+#'   the empirical information matrix.
+#' @param ... additional arguments; currently none are used.
 #'
 #' @author Graeme L. Hickey (\email{graeme.hickey@@liverpool.ac.uk})
 #' @keywords methods
-#' @seealso \code{\link{mjoint}}, \code{\link{mjoint.object}}, and
-#'   \code{\link[base]{summary}} for the generic method description.
+#' @seealso \code{\link{mjoint}}, \code{\link{bootSE}}, and
+#'   \code{\link[stats]{confint}} for the generic method description.
 #'
 #' @references
 #'
@@ -22,10 +36,8 @@
 #' analysis of time-to-event and multiple longitudinal variables. \emph{Stat
 #' Med.} 2002; \strong{21}: 2369-2382.
 #'
-#' @return A list containing the coefficient matrices for the longitudinal and
-#'   time-to-event sub-models; variance-covariance matrix for the random
-#'   effects; residual error variances; log-likelihood of joint model; AIC and
-#'   BIC statistics; and model fit objects.
+#' @return A matrix containing the confidence intervals for either the
+#'   longitudinal, time-to-event, or both sub-models.
 #' @export
 #'
 #' @examples
@@ -45,19 +57,24 @@
 #'     inits = list("gamma" = c(0.11, 1.51, 0.80)),
 #'     timeVar = "time",
 #'     verbose = TRUE)
-#' summary(fit2)
+#' confint(fit2)
 #' }
-summary.mjoint <- function(object, bootSE = NULL, ...) {
+confint.mjoint <- function(object, parm = c("Both", "Longitudinal", "Event"),
+                           level = 0.95, bootSE = NULL, ...) {
 
   if (!inherits(object, "mjoint")) {
     stop("Use only with 'mjoint' model objects.\n")
   }
+
+  parm <- match.arg(parm)
 
   dims <- object$dims
   num.d <- with(dims, sum(r) * (sum(r) + 1) / 2) # number of RE covariance params
   num.b <- sum(dims$p)                           # number of beta coefficients
   num.s <- dims$K                                # number of error variances
   num.g <- with(dims, q + K)                     # number of gamma coefficients
+
+  q <- qnorm((1 - level) / 2, lower.tail = FALSE)
 
   beta <- object$coefficients$beta
   beta.inds <- (num.d + 1):(num.d + num.b)
@@ -66,10 +83,9 @@ summary.mjoint <- function(object, bootSE = NULL, ...) {
   } else {
     beta.se <- bootSE$beta.se
   }
-  coefs.beta <- cbind("Value" = beta,
-                      "Std.Err" = beta.se,
-                      "z-value" = beta / beta.se,
-                      "p-value" = 2 * pnorm(abs(beta / beta.se), lower.tail = FALSE))
+
+  beta.ci <- cbind("lower" = beta - q * beta.se,
+                   "upper" = beta + q * beta.se)
 
   gamma <- object$coefficients$gamma
   gamma.inds <- (num.d + num.b + num.s + 1):(num.d + num.b + num.s + num.g)
@@ -78,38 +94,20 @@ summary.mjoint <- function(object, bootSE = NULL, ...) {
   } else {
     gamma.se <- bootSE$gamma.se
   }
-  coefs.gamma <- cbind("Value" = gamma,
-                       "Std.Err" = gamma.se,
-                       "z-value" = gamma / gamma.se,
-                       "p-value" = 2 * pnorm(abs(gamma / gamma.se), lower.tail = FALSE))
 
-  out <- list("coefs.long" = coefs.beta,
-              "coefs.surv" = coefs.gamma,
-              D = getVarCov(object),
-              sigma = sqrt(object$coefficients$sigma2),
-              logLik = as.vector(logLik(object)),
-              AIC = AIC(object),
-              BIC = AIC(object, k = log(dims$n)))
+  gamma.ci <- cbind("lower" = gamma - q * gamma.se,
+                    "upper" = gamma + q * gamma.se)
 
-  out$formLongFixed <- object$formLongFixed
-  out$formLongRandom <- object$formLongRandom
-  out$formSurv <- object$formSurv
-  out$sfit <- object$sfit
-  out$lfit <- object$lfit
-  out$timeVar <- object$timeVar
-  out$dims <- object$dims
-  out$control <- object$control
-  out$finalnMC <- object$finalnMC
-  out$call <- object$call
-  out$comp.time <- object$comp.time
-  out$conv <- object$conv
-  out$se.type <- ifelse(is.null(bootSE), "approx", "boot")
-  if (!is.null(bootSE)) {
-    out$boot.time <- bootSE$boot.time
-    out$nboot <- bootSE$nboot
+  if (parm == "Both") {
+    ci.mat <- rbind(beta.ci, gamma.ci)
+  } else if (parm == "Longitudinal") {
+    ci.mat <- beta.ci
+  } else {
+    ci.mat <- gamma.ci
   }
 
-  class(out) <- "summary.mjoint"
-  out
+  colnames(ci.mat) <- c(paste0((1 - level)*50, "%"),
+                        paste0(100 - (1 - level)*50, "%"))
+  return(ci.mat)
 
 }

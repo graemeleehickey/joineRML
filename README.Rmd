@@ -123,6 +123,12 @@ For an overview of the model estimation being performed, please see the technica
 vignette('technical', package = 'joineRML')
 ```
 
+For a demonstration of the package, please see the introductory vignette, which can be accessed by
+
+```r
+vignette('joineRML', package = 'joineRML')
+```
+
 # References
 
 1. Cox DR. Regression models and life-tables. *J R Stat Soc Ser B Stat Methodol.* 1972; 34(2): 187-220.

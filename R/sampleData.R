@@ -3,7 +3,7 @@
 #' Generic function used to sample a subset of data from an object of class
 #' \code{mjoint}, with a specific size of number of subjects.
 #'
-#' @inheritParams fixef.mjoint
+#' @inheritParams confint.mjoint
 #' @param size number of subjects to include in the sampled subset. If
 #'   \code{size=NULL} (default), then size is set equal to the number of
 #'   subjects used to fit the \code{mjoint} model.

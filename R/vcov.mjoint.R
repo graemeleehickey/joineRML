@@ -1,8 +1,7 @@
 #' Extract an approximate variance-covariance matrix of estimated parameters
 #' from an \code{mjoint} object
 #'
-#' @inheritParams fixef.mjoint
-#' @param ... further arguments; currently none are used.
+#' @inheritParams confint.mjoint
 #'
 #' @details This is a generic function that extracts the variance-covariance
 #'   matrix of parameters from an \code{mjoint} model fit. It is based on a
