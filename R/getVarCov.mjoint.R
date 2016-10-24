@@ -4,8 +4,7 @@
 #' Extract variance-covariance matrix of random effects from an \code{mjoint}
 #' object.
 #'
-#' @inheritParams fixef.mjoint
-#' @param ... further arguments; currently none are used.
+#' @inheritParams confint.mjoint
 #'
 #' @author Graeme L. Hickey (\email{graeme.hickey@@liverpool.ac.uk})
 #' @keywords methods

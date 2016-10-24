@@ -11,7 +11,7 @@
 of time-to-event and multivariate longitudinal data.}
 
 \item{process}{character string: if \code{process='Longitudinal'} the fixed
-effects coefficients from (multivariate) longitudinal sub-model are
+effects coefficients from the (multivariate) longitudinal sub-model are
 returned. Else, if \code{process='Event'}, the coefficients from the
 time-to-event sub-model are returned.}
 
