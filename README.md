@@ -15,7 +15,7 @@ Please note that this is currently a **developmental version**, and caution is r
 How to install
 --------------
 
-You will need R version (version 3.1 or higher). You will also need some additional software depending on what platform you are using. Optionally, you will also require LaTeX if you want to install the vignettes.
+You will need R version (version 3.1 or higher). You will also need some additional software depending on what platform you are using.
 
 Note that installation will be much simpler after submission to CRAN, and no additional software dependencies will be required.
 
@@ -71,7 +71,7 @@ library('devtools')
 install_github('graemeleehickey/joineRML', build_vignettes = TRUE)
 ```
 
-Note that LaTeX will need the following packages: `graphicx`, `amsmath`, `amssymb`, `amsfonts`, `setspace`, `enumitem`, `hyperref`.
+Note that LaTeX will need the following packages: `graphicx`, `amsmath`, `amssymb`, `amsfonts`, `setspace`, `enumitem`, `hyperref`. Note, however, that one of the vignettes requires quite a bit of time to run and compile (approx. 10 minutes), so you may wish to skip this process.
 
 Example
 =======
@@ -115,6 +115,12 @@ For an overview of the model estimation being performed, please see the technica
 
 ``` r
 vignette('technical', package = 'joineRML')
+```
+
+For a demonstration of the package, please see the introductory vignette, which can be accessed by
+
+``` r
+vignette('joineRML', package = 'joineRML')
 ```
 
 References
