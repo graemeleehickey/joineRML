@@ -234,8 +234,14 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
   }
 
   # data does not need to a list if K=1
+  # if K>1 and not a list, assume data balanced
   if (class(data) != "list") {
     data <- list(data)
+    if (K > 1) {
+      for (k in 2:K) {
+        data[[k]] <- data[[1]]
+      }
+    }
   }
 
   id <- as.character(nlme::splitFormula(formLongRandom[[1]], "|")[[2]])[2]
