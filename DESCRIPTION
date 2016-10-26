@@ -21,7 +21,8 @@ Description: This function fits the joint model proposed by Henderson et al.
     model with time-varying covariates. The multiple longitudinal outcomes are
     modelled using a multivariate version of the Laird and Ware linear mixed model.
     The association is captured by a multivariate latent Gaussian process. The model
-    is estimated using a Monte Carlo Expectation Maximization algorithm.
+    is estimated using a Monte Carlo Expectation Maximization algorithm. This project
+    is funded by the Medical Research Council (Grant number MR/M013227/1).
 License: GPL-2 | file LICENSE
 URL: https://github.com/graemeleehickey/joineRML/
 BugReports: https://github.com/graemeleehickey/joineRML/issues

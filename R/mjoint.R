@@ -217,7 +217,7 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
 
   Call <- match.call()
 
-  # package dependecies
+  # package dependencies
   pkgs <- c("nlme", "Matrix", "survival")
   for (i in pkgs) {
     test <- require(i, character.only = TRUE)

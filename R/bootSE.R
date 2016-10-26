@@ -64,9 +64,9 @@
 #'     timeVar = "time",
 #'     verbose = TRUE)
 #'
-#' fit2.boot <- bootSE(fit1, 50, use.mle = TRUE,
-#' control = list(earlyPhase = 25, convCrit = "either",
-#'                tol0 = 6e-03, tol2 = 6e-03, mcmaxIter = 60))
+#' fit2.boot <- bootSE(fit1, 50, use.mle = TRUE, control = list(
+#'     earlyPhase = 25, convCrit = "either",
+#'     tol0 = 6e-03, tol2 = 6e-03, mcmaxIter = 60))
 #' }
 bootSE <- function(object, nboot = 100, ci = 0.95, use.mle = TRUE,
                    verbose = FALSE, control = list(), progress = TRUE,

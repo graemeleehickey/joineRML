@@ -5,7 +5,7 @@
 #' longitudinal and time-to-event data. Objects of this class have methods for
 #' the generic functions \code{coef}, \code{logLik}, \code{plot}, \code{print},
 #' \code{ranef}, \code{fixef}, \code{summary}, \code{extractAIC}, and
-#' \code{getVarCov}.
+#' \code{getVarCov}, \code{vcov}, \code{confint}.
 #'
 #' @author Graeme L. Hickey (\email{graeme.hickey@@liverpool.ac.uk})
 #' @keywords multivariate survival
