@@ -34,7 +34,7 @@ arma::mat lambdaUpdate(Rcpp::List b_, Rcpp::List imat_, Rcpp::List zt_,
     arma::mat expW_new = exp((b * gam) * trans(I * zt));
     arma::mat EexpVstar = mean(expW_new.each_col() % f, 0) / d;
     if (q > 0) {
-      EexpVstar *= arma::as_scalar(exp(v * gam_vec.subvec(0, q-1)));
+      EexpVstar *= arma::as_scalar(exp(v.t() * gam_vec.subvec(0, q-1)));
     }
     haz.subvec(0, EexpVstar.n_cols-1) += EexpVstar.t();
 
