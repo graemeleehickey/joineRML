@@ -60,6 +60,16 @@ stepEM <- function(theta, l, t, z, nMC, verbose, approxInfo) {
   z = Zi, zt = Zit, s = Sigmai.inv,
   SIMPLIFY = FALSE)
 
+  # # If Ai is non-PSD, approximate Ai by nearest PD matrix
+  # Ai <- lapply(Ai, FUN = function(a) {
+  #   if (any(eigen(a, symmetric = TRUE)$values < 0)) {
+  #     print("Non-PSD matrix detected!")
+  #     a <- nearPD(a)
+  #   } else {
+  #     a
+  #   }
+  # })
+
   # MVN mean vector for [y | b]
   Mi <- mapply(function(a, z, s, y, X) {
     a %*% (z %*% s %*% (y - X %*% beta))
