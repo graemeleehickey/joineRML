@@ -125,7 +125,7 @@ An object returned by the \code{mjoint} function, inheriting from class
 \code{mjoint} and representing a fitted joint model for multivariate
 longitudinal and time-to-event data. Objects of this class have methods for
 the generic functions \code{coef}, \code{logLik}, \code{plot}, \code{print},
-\code{ranef}, \code{fixef}, \code{summary}, \code{extractAIC}, and
+\code{ranef}, \code{fixef}, \code{summary}, \code{AIC}, and
 \code{getVarCov}, \code{vcov}, \code{confint}.
 }
 \author{
