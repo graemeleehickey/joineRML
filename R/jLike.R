@@ -132,7 +132,7 @@ jLike <- function(theta, l, t, z, nMC) {
 
   # Var(b)
   Vb <- mapply(function(b, f, d, mu) {
-    v <- crossprod(b, (b * f)) / (nMC * d) - tcrossprod(mu)
+    v <- crossprod(b, (b * f)) / (nrow(b) * d) - tcrossprod(mu)
     rownames(v) <- colnames(v) <- colnames(D)
     v
   },

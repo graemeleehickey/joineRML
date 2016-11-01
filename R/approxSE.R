@@ -127,7 +127,7 @@ approxSE <- function(theta, l, t, z, nMC) {
 
   # E[bb^T]
   EbbT <- mapply(function(b, f, d) {
-    crossprod(b, (b * f)) / (nMC * d)
+    crossprod(b, (b * f)) / (nrow(b) * d)
   },
   b = bi.y, f = fti, d = den,
   SIMPLIFY = FALSE)
@@ -203,7 +203,6 @@ approxSE <- function(theta, l, t, z, nMC) {
   }
 
   rownames(ssigma2) <- paste0("sigma2_", 1:K)
-
 
   #-----------------------------------------------------
 

@@ -581,8 +581,9 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
         cat(paste("CV statistic (new) =", round(cv, 6), "\n\n"))
       }
       if (cv > cv.old) {
+        nMC.old <- nMC
         nMC <- min(nMC + floor(nMC / con$nMCscale), con$nMCmax)
-        if (verbose) {
+        if (verbose & (nMC > nMC.old)) {
           cat(paste("Changing M to", nMC, "\n\n"))
         }
       }

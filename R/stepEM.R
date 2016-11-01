@@ -141,7 +141,7 @@ stepEM <- function(theta, l, t, z, nMC, verbose, approxInfo) {
 
   # E[bb^T]
   EbbT <- mapply(function(b, f, d) {
-    crossprod(b, (b * f)) / (nMC * d)
+    crossprod(b, (b * f)) / (nrow(b) * d)
   },
   b = bi.y, f = fti, d = den,
   SIMPLIFY = FALSE)
@@ -244,7 +244,6 @@ stepEM <- function(theta, l, t, z, nMC, verbose, approxInfo) {
 
   theta.new <- list("D" = D.new, "beta" = beta.new, "sigma2" = sigma2.new,
                     "haz" = haz.new, "gamma" = gamma.new)
-  theta = theta.new
 
   t3 <- Sys.time()
 
