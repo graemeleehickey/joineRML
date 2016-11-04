@@ -6,8 +6,8 @@ nearPD <- function (M, eig.tol = 1e-06, conv.tol = 1e-07, posd.tol = 1e-08,
   # Code is from JM package (v. 1.4-5) by Dimitris Rizopoulos
   # Copied here due to function being non-exported by JM package, and also because
   # the Matrix package version is an order of magnitude slower.
-  # Rizopoulos notes that this code is based on function nearcor() submitted to R-help
-  # by Jens Oehlschlagel on 2007-07-13, and function posdefify() from package `sfsmisc'
+  # This code is originally based on function nearcor() submitted to R-help by
+  # Jens Oehlschlagel on 2007-07-13, and function posdefify() from package `sfsmisc'
   if (!(is.numeric(M) && is.matrix(M))) {
     stop("Input matrix M must be square and symmetric.\n")
   }

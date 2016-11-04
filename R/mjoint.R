@@ -527,7 +527,9 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
                         nMC = nMC, verbose = verbose,
                         approxInfo = con$approxInfo)
     all.iters[[it]] <- theta.new
-    if (verbose) print(theta.new)
+    if (verbose) {
+      print(theta.new[-which(names(theta.new) == "haz")])
+    }
 
     theta.monitor <- names(theta.new)[names(theta.new) %in% c("D", "beta", "sigma2",
                                                               "gamma")]
@@ -596,12 +598,12 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
         message("EM algorithm has converged!\n")
         # Likelihood at MLE
         message("Calculating final model log-likelihood...\n")
-        log.lik <- jLike(theta = theta, l = l, t = t, z = z, nMC = max(nMC, 10000))
+        log.lik <- jLike(theta = theta, l = l, t = t, z = z, nMC = nMC)
       }
       # Approximate SEs
       if (se.approx) {
         message("Calculating approximate standard errors...\n")
-        vcov <- approxSE(theta = theta, l = l, t = t, z = z, nMC = max(nMC, 10000))
+        vcov <- approxSE(theta = theta, l = l, t = t, z = z, nMC = nMC)
       }
       break
     } else {
