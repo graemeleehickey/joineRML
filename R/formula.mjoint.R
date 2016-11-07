@@ -3,6 +3,8 @@
 #' Extract model formulae from an \code{mjoint} object.
 #'
 #' @inheritParams confint.mjoint
+#' @param x an object inheriting from class \code{mjoint} for a joint model
+#'   of time-to-event and multivariate longitudinal data.
 #' @param process character string: if \code{process='Longitudinal'} the fixed
 #'   effects coefficients from the (multivariate) longitudinal sub-model are
 #'   returned. Else, if \code{process='Event'}, the coefficients from the
