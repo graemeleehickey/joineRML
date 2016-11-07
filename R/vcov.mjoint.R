@@ -2,6 +2,8 @@
 #' from an \code{mjoint} object
 #'
 #' @inheritParams confint.mjoint
+#' @param correlation logical: if \code{TRUE} returns the correlation matrix,
+#'   otherwise returns the variance-covariance matrix (default).
 #'
 #' @details This is a generic function that extracts the variance-covariance
 #'   matrix of parameters from an \code{mjoint} model fit. It is based on a
@@ -16,7 +18,9 @@
 #'
 #' @author Graeme L. Hickey (\email{graeme.hickey@@liverpool.ac.uk})
 #' @keywords methods
-#' @seealso \code{\link[stats]{vcov}} for the generic method description.
+#' @seealso \code{\link[stats]{vcov}} for the generic method description, and
+#'   \code{\link[stats]{cov2cor}} for details of efficient scaling of a
+#'   covariance matrix into the corresponding correlation matrix.
 #'
 #' @references
 #'
@@ -52,12 +56,16 @@
 #'
 #' vcov(fit2)
 #' }
-vcov.mjoint <- function(object, ...) {
+vcov.mjoint <- function(object, correlation = FALSE, ...) {
 
   if (!inherits(object, "mjoint")) {
     stop("Use only with 'mjoint' model objects.\n")
   }
 
-  object$vcov
+  if (!correlation) {
+    object$vcov
+  } else {
+    stats::cov2cor(vcov)
+  }
 
 }

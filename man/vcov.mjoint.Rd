@@ -5,11 +5,14 @@
 \title{Extract an approximate variance-covariance matrix of estimated parameters
 from an \code{mjoint} object}
 \usage{
-\method{vcov}{mjoint}(object, ...)
+\method{vcov}{mjoint}(object, correlation = FALSE, ...)
 }
 \arguments{
 \item{object}{an object inheriting from class \code{mjoint} for a joint model
 of time-to-event and multivariate longitudinal data.}
+
+\item{correlation}{logical: if \code{TRUE} returns the correlation matrix,
+otherwise returns the variance-covariance matrix (default).}
 
 \item{...}{additional arguments; currently none are used.}
 }
@@ -66,7 +69,9 @@ McLachlan GJ, Krishnan T. \emph{The EM Algorithm and Extensions}. Second
 Edition. Wiley-Interscience; 2008.
 }
 \seealso{
-\code{\link[stats]{vcov}} for the generic method description.
+\code{\link[stats]{vcov}} for the generic method description, and
+  \code{\link[stats]{cov2cor}} for details of efficient scaling of a
+  covariance matrix into the corresponding correlation matrix.
 }
 \keyword{methods}
 

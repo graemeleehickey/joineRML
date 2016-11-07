@@ -18,7 +18,8 @@ time-to-event sub-model are returned.}
 \item{...}{additional arguments; currently none are used.}
 }
 \value{
-A named vector of length equal to the number of sub-model coefficients estimated.
+A named vector of length equal to the number of sub-model
+  coefficients estimated.
 }
 \description{
 Extract fixed effects estimates from an \code{mjoint} object.

@@ -21,7 +21,8 @@
 #' Wulfsohn MS, Tsiatis AA. A joint model for survival and longitudinal data
 #' measured with error. \emph{Biometrics.} 1997; \strong{53(1)}: 330-339.
 #'
-#' @return A named vector of length equal to the number of sub-model coefficients estimated.
+#' @return A named vector of length equal to the number of sub-model
+#'   coefficients estimated.
 #' @export
 #'
 #' @examples
