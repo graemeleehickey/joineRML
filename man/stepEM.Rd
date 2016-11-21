@@ -4,10 +4,14 @@
 \alias{stepEM}
 \title{Internal function for performing a single iteration of the MCEM algorithm}
 \usage{
-stepEM(theta, l, t, z, nMC, verbose, approxInfo, ll)
+stepEM(theta, l, t, z, nMC, verbose, approxInfo, ll, se.approx)
 }
 \description{
-Internal function for performing a single iteration of the MCEM algorithm
+Also takes logical arguments \code{ll} and \code{se.approx}, which calculates
+the log-likelihood (and posterior mean and variance of the random effects)
+and approximate standard errors, respectively. When either of these arguments
+are \code{TRUE}, the function does not return the maaximizer from the MCEM
+algorithm iteration, and instead reports the called for post-fit statistics.
 }
 \keyword{internal}
 

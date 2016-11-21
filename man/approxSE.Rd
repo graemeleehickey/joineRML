@@ -4,7 +4,7 @@
 \alias{approxSE}
 \title{Approximate standard errors using the empirical information matrix}
 \usage{
-approxSE(theta, l, t, z, nMC)
+approxSE(theta, l, t, z, m)
 }
 \description{
 Approximate standard errors using the empirical information matrix

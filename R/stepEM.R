@@ -1,7 +1,13 @@
 #' Internal function for performing a single iteration of the MCEM algorithm
 #'
+#' Also takes logical arguments \code{ll} and \code{se.approx}, which calculates
+#' the log-likelihood (and posterior mean and variance of the random effects)
+#' and approximate standard errors, respectively. When either of these arguments
+#' are \code{TRUE}, the function does not return the maaximizer from the MCEM
+#' algorithm iteration, and instead reports the called for post-fit statistics.
+#'
 #' @keywords internal
-stepEM <- function(theta, l, t, z, nMC, verbose, approxInfo, ll) {
+stepEM <- function(theta, l, t, z, nMC, verbose, approxInfo, ll, se.approx) {
 
   # Input parameter estimates
   D <- theta$D
@@ -139,38 +145,34 @@ stepEM <- function(theta, l, t, z, nMC, verbose, approxInfo, ll) {
   b = bi.y, f = fti, d = den,
   SIMPLIFY = FALSE)
 
-  if (!ll) { # only calculate when running the MCEM algorithm
+  # E[bb^T]
+  EbbT <- mapply(function(b, f, d) {
+    crossprod(b, (b * f)) / (nrow(b) * d)
+  },
+  b = bi.y, f = fti, d = den,
+  SIMPLIFY = FALSE)
 
-    # E[bb^T]
-    EbbT <- mapply(function(b, f, d) {
-      crossprod(b, (b * f)) / (nrow(b) * d)
-    },
-    b = bi.y, f = fti, d = den,
-    SIMPLIFY = FALSE)
+  # E[exp{W(tj, b)}]
+  EexpW <- EexpWArma(expW, fti, den)
+  names(EexpW) <- names(Ai)
 
-    # E[exp{W(tj, b)}]
-    EexpW <- EexpWArma(expW, fti, den)
-    names(EexpW) <- names(Ai)
+  # exp{v %*% gamma_v + W(tj)}
+  expvstargam <- mapply(function(w, v) {
+    w * exp(v)
+  },
+  w = expW, v = Vtgamma,
+  SIMPLIFY = FALSE)
 
-    # exp{v %*% gamma_v + W(tj)}
-    expvstargam <- mapply(function(w, v) {
-      w * exp(v)
-    },
-    w = expW, v = Vtgamma,
-    SIMPLIFY = FALSE)
+  # lambda0(t) for profile score function of beta
+  haz.hat <- hazHat(expvstargam, fti, den, nev)
+  haz.hat <- as.vector(haz.hat)
 
-    # lambda0(t) for profile score function of beta
-    haz.hat <- hazHat(expvstargam, fti, den, nev)
-    haz.hat <- as.vector(haz.hat)
-
-    if (approxInfo) {
-      gDelta <- gammaUpdate_approx(bi.y, Zit.fail, expvstargam, fti, den, haz.hat,
-                                   V, survdat2.list, K, q, nev.uniq)$gDelta
-    } else {
-      gDelta <- gammaUpdate(bi.y, Zit.fail, expvstargam, fti, den, haz.hat,
-                            V, survdat2.list, K, q, nev.uniq)$gDelta
-    }
-
+  if (approxInfo) {
+    gDelta <- gammaUpdate_approx(bi.y, Zit.fail, expvstargam, fti, den, haz.hat,
+                                 V, survdat2.list, K, q, nev.uniq)$gDelta
+  } else {
+    gDelta <- gammaUpdate(bi.y, Zit.fail, expvstargam, fti, den, haz.hat,
+                          V, survdat2.list, K, q, nev.uniq)$gDelta
   }
 
   t2 <- Sys.time()
@@ -179,81 +181,94 @@ stepEM <- function(theta, l, t, z, nMC, verbose, approxInfo, ll) {
   # M-step starts here
   #*****************************************************
 
-  if (!ll) { # only calculate when running the MCEM algorithm
+  # D
+  D.new <- Reduce("+", EbbT) / n
+  rownames(D.new) <- colnames(D.new) <- rownames(D)
 
-    # D
-    D.new <- Reduce("+", EbbT) / n
-    rownames(D.new) <- colnames(D.new) <- rownames(D)
+  #-----------------------------------------------------
 
-    #-----------------------------------------------------
+  # beta
+  XtSX <- mapply(function(xt, x) {
+    xt %*% x
+  },
+  xt = Xit, x = Xi,
+  SIMPLIFY = FALSE)
+  XtSX.sum <- Reduce("+", XtSX)
 
-    # beta
-    XtSX <- mapply(function(xt, x) {
-      xt %*% x
+  rr <- mapply(function(xt, y, z, b) {
+    xt %*% (y - z %*% b)
+  },
+  xt = Xit, y = yi, z = Zi, b = Eb)
+  rr.sum <- rowSums(rr)
+
+  beta.new <- solve(XtSX.sum, rr.sum)
+  names(beta.new) <- names(beta)
+
+  #-----------------------------------------------------
+
+  # sigma_k^2
+  beta.inds <- cumsum(c(0, p))
+  b.inds <- cumsum(c(0, r))
+  sigma2.new <- vector(length = K)
+
+  for (k in 1:K) {
+    beta.k <- beta.new[(beta.inds[k] + 1):(beta.inds[k + 1])]
+    SSq <- mapply(function(y, x, z, b, b2) {
+      b.k <- b[(b.inds[k] + 1):(b.inds[k + 1])]
+      bbT.k <- b2[(b.inds[k] + 1):(b.inds[k + 1]), (b.inds[k] + 1):(b.inds[k + 1])]
+      residFixed <- (y - x %*% beta.k)
+      t(residFixed) %*% (residFixed - 2*(z %*% b.k)) + sum(diag((t(z) %*% z) %*% bbT.k))
     },
-    xt = Xit, x = Xi,
-    SIMPLIFY = FALSE)
-    XtSX.sum <- Reduce("+", XtSX)
-
-    rr <- mapply(function(xt, y, z, b) {
-      xt %*% (y - z %*% b)
-    },
-    xt = Xit, y = yi, z = Zi, b = Eb)
-    rr.sum <- rowSums(rr)
-
-    beta.new <- solve(XtSX.sum, rr.sum)
-    names(beta.new) <- names(beta)
-
-    #-----------------------------------------------------
-
-    # sigma_k^2
-    beta.inds <- cumsum(c(0, p))
-    b.inds <- cumsum(c(0, r))
-    sigma2.new <- vector(length = K)
-
-    for (k in 1:K) {
-      beta.k <- beta.new[(beta.inds[k] + 1):(beta.inds[k + 1])]
-      SSq <- mapply(function(y, x, z, b, b2) {
-        b.k <- b[(b.inds[k] + 1):(b.inds[k + 1])]
-        bbT.k <- b2[(b.inds[k] + 1):(b.inds[k + 1]), (b.inds[k] + 1):(b.inds[k + 1])]
-        residFixed <- (y - x %*% beta.k)
-        t(residFixed) %*% (residFixed - 2*(z %*% b.k)) + sum(diag((t(z) %*% z) %*% bbT.k))
-      },
-      y = yik[[k]], x = Xik.list[[k]], z = Zik.list[[k]], b = Eb, b2 = EbbT)
-      sigma2.new[k] <- sum(SSq) / nk[[k]]
-    }
-
-    names(sigma2.new) <- paste0("sigma2_", 1:K)
-
-    #-----------------------------------------------------
-
-    # gamma
-    gamma.new <- gamma + as.vector(gDelta)
-
-    #-----------------------------------------------------
-
-    # lambda0(tj)
-
-    # Expanded gamma_y (repeated for each random effect term)
-    # - using the latest EM iteration estimate
-    if (q > 0) {
-      gamma.new.scale <- diag(rep(gamma.new[-(1:q)], r))
-    } else {
-      gamma.new.scale <- diag(rep(gamma.new, r))
-    }
-
-    haz.new <- lambdaUpdate(bi.y, IW.fail, Zi.fail, fti, V, den,
-                            gamma.new.scale, gamma.new, q, nev, survdat2.list)
-    haz.new <- as.vector(haz.new)
-
-    theta.new <- list("D" = D.new, "beta" = beta.new, "sigma2" = sigma2.new,
-                      "haz" = haz.new, "gamma" = gamma.new)
-
+    y = yik[[k]], x = Xik.list[[k]], z = Zik.list[[k]], b = Eb, b2 = EbbT)
+    sigma2.new[k] <- sum(SSq) / nk[[k]]
   }
 
-  #*****************************************************
-  # Post model fit processing
-  #*****************************************************
+  names(sigma2.new) <- paste0("sigma2_", 1:K)
+
+  #-----------------------------------------------------
+
+  # gamma
+  gamma.new <- gamma + as.vector(gDelta)
+
+  #-----------------------------------------------------
+
+  # lambda0(tj)
+
+  # Expanded gamma_y (repeated for each random effect term)
+  # - using the latest EM iteration estimate
+  if (q > 0) {
+    gamma.new.scale <- diag(rep(gamma.new[-(1:q)], r))
+  } else {
+    gamma.new.scale <- diag(rep(gamma.new, r))
+  }
+
+  haz.new <- lambdaUpdate(bi.y, IW.fail, Zi.fail, fti, V, den,
+                          gamma.new.scale, gamma.new, q, nev, survdat2.list)
+  haz.new <- as.vector(haz.new)
+
+  theta.new <- list("D" = D.new, "beta" = beta.new, "sigma2" = sigma2.new,
+                    "haz" = haz.new, "gamma" = gamma.new)
+
+  t3 <- Sys.time()
+
+  if (verbose && !ll) {
+    tdiff1 <- t1 - t0
+    cat(paste("Step 1: Time to setup Monte Carlo expectations", round(tdiff1, 2),
+              attr(tdiff1, "units"), "\n"))
+    tdiff2 <- t2 - t1
+    cat(paste("Step 2: Time to perform E-step", round(tdiff2, 2),
+              attr(tdiff2, "units"), "\n"))
+    tdiff3 <- t3 - t2
+    cat(paste("Step 3: Time to perform M-step", round(tdiff3, 2),
+              attr(tdiff3, "units"), "\n"))
+    tdiff4 <- t3 - t0
+    cat(paste("Total time for EM algorithm", round(tdiff4, 2),
+              attr(tdiff4, "units"), "\n"))
+  }
+
+  #*********************************************************
+  # Post model fit processing: log-likehood + posterior REs
+  #*********************************************************
 
   if (ll) {
 
@@ -286,32 +301,37 @@ stepEM <- function(theta, l, t, z, nMC, verbose, approxInfo, ll) {
     b = bi.y, f = fti, d = den, mu = Eb,
     SIMPLIFY = "array")
 
-    Eb <- t(simplify2array(Eb))
-    colnames(Eb) <- colnames(D)
+    Eb.flat <- t(simplify2array(Eb))
+    colnames(Eb.flat) <- colnames(D)
+
+    jLik <- list(ll = ll, Eb = Eb.flat, Vb = Vb)
 
   }
 
-  t3 <- Sys.time()
+  #*********************************************************
+  # Approximate standard errors
+  #*********************************************************
 
-  if (verbose && !ll) {
-    tdiff1 <- t1 - t0
-    cat(paste("Step 1: Time to setup Monte Carlo expectations", round(tdiff1, 2),
-              attr(tdiff1, "units"), "\n"))
-    tdiff2 <- t2 - t1
-    cat(paste("Step 2: Time to perform E-step", round(tdiff2, 2),
-              attr(tdiff2, "units"), "\n"))
-    tdiff3 <- t3 - t2
-    cat(paste("Step 3: Time to perform M-step", round(tdiff3, 2),
-              attr(tdiff3, "units"), "\n"))
-    tdiff4 <- t3 - t0
-    cat(paste("Total time for EM algorithm", round(tdiff4, 2),
-              attr(tdiff4, "units"), "\n"))
+  if (se.approx) {
+
+    m <- list()
+    m$Sigmai.inv <- Sigmai.inv
+    m$Eb <- Eb
+    m$EbbT <- EbbT
+    m$bi.y <- bi.y
+    m$expvstargam <- expvstargam
+    m$fti <- fti
+    m$den <- den
+    m$haz.hat <- haz.hat
+
+    jLik$ses <- approxSE(theta, l, t, z, m)
+
   }
 
-  if (!ll) {
-    return(theta.new)
+  if (ll || se.approx) {
+    return(jLik)
   } else {
-    return(list(ll = ll, Eb = Eb, Vb = Vb))
+    return(theta.new)
   }
 
 }

@@ -306,7 +306,7 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
 
     # Longitudinal outcomes
     yik[[k]] <- by(data[[k]][, all.vars(formLongFixed[[k]])[1]], data[[k]][, id],
-                  as.vector)
+                   as.vector)
 
     # X design matrix
     Xik[[k]] <- data.frame("id" = data[[k]][, id],
@@ -549,8 +549,8 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
     nmc.iters <- c(nmc.iters, nMC)
 
     theta.new <- stepEM(theta = theta, l = l, t = t, z = z,
-                        nMC = nMC, verbose = verbose,
-                        approxInfo = con$approxInfo, ll = FALSE)
+                        nMC = nMC, verbose = verbose, approxInfo = con$approxInfo,
+                        ll = FALSE, se.approx = FALSE)
     all.iters[[it]] <- theta.new
     if (verbose) {
       print(theta.new[-which(names(theta.new) == "haz")])
@@ -620,28 +620,25 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
     # Once converged: calculate SEs and likelihood
     if (conv) {
       theta <- theta.new
-      if (ll) {
+      if (ll || se.approx) {
         message("EM algorithm has converged!\n")
-        # Likelihood at MLE
-        message("Calculating final model log-likelihood...\n")
-        log.lik <- stepEM(theta = theta, l = l, t = t, z = z,
-                          nMC = nMC, verbose = FALSE,
-                          approxInfo = FALSE, ll = TRUE)
-      }
-      # Approximate SEs
-      if (se.approx) {
-        message("Calculating approximate standard errors...\n")
-        vcov <- approxSE(theta = theta, l = l, t = t, z = z, nMC = nMC)
+        if (ll) {
+          message("Calculating final model log-likelihood...\n")
+        }
+        if (se.approx) {
+          message("Calculating approximate standard errors...\n")
+        }
+        postFitCalcs <- stepEM(theta = theta, l = l, t = t, z = z,
+                               nMC = nMC, verbose = FALSE, approxInfo = FALSE,
+                               ll = ll, se.approx = se.approx)
       }
       break
     } else {
       theta <- theta.new
     }
-
     if ((it == con$mcmaxIter) & !conv) {
       message("Failed to converge!")
     }
-
     utils::flush.console()
 
   }
@@ -682,13 +679,13 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
   out$control <- con
   out$finalnMC <- nMC # not same as control nMC (used for early phase)
   if (conv && se.approx) {
-    out$vcov <- vcov
-    out$SE.approx <- sqrt(diag(solve(vcov)))
+    out$vcov <- postFitCalcs$ses
+    out$SE.approx <- sqrt(diag(solve(out$vcov)))
   }
   if (conv && ll) {
-    out$log.lik <- log.lik$ll
-    out$Eb <- log.lik$Eb # Posterior RE means
-    out$Vb <- log.lik$Vb # Posterior RE variances
+    out$log.lik <- postFitCalcs$ll
+    out$Eb <- postFitCalcs$Eb # Posterior RE means
+    out$Vb <- postFitCalcs$Vb # Posterior RE variances
   }
   out$call <- Call
   out$conv <- conv
@@ -706,7 +703,3 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
   invisible(out)
 
 }
-
-
-
-
