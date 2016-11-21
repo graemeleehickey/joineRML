@@ -23,19 +23,21 @@ list must be equal to \code{formLongFixed}.}
 model (not including the latent association structure). See
 \code{\link[survival]{coxph}} for examples.}
 
-\item{data}{a list of data.frame objects for each longitudinal outcome in
-which to interpret the variables named in the \code{formLongFixed} and
+\item{data}{a list of \code{data.frame} objects for each longitudinal outcome
+in which to interpret the variables named in the \code{formLongFixed} and
 \code{formLongRandom}. The list structure enables one to include multiple
 longitduinal outcomes with different measurement protocols. If the multiple
 longitudinal outcomes are measured at the same time points for each
-patient, then a data.frame object can be given instead of a list. It is
-assumed that each data.frame is in long format.}
+patient, then a \code{data.frame} object can be given instead of a list. It
+is assumed that each data frame is in long format.}
 
 \item{survData}{a data.frame in which to interpret the variables named in the
 \code{formSurv}.}
 
 \item{timeVar}{a character string indicating the time variable in the linear
-mixed effects model.}
+mixed effects model. If there are multiple longitudinal outcomes and the
+time variable is labelled differently in each model, then a character
+string vector can be given instead.}
 
 \item{inits}{a list of initial values for some or all of the parameters
 estimated in the model. Default is \code{NULL}, with initial values

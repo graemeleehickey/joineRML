@@ -176,6 +176,6 @@ bootSE <- function(object, nboot = 100, ci = 0.95, use.mle = TRUE,
   out.list$conv <- sum(conv.status)
 
   class(out.list) <- "bootSE"
-  out.list
+  invisible(out.list)
 
 }

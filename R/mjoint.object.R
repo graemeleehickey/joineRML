@@ -51,8 +51,8 @@
 #'
 #'   \item{\code{survData}}{a data.frame of the time-to-event dataset.}
 #'
-#'   \item{\code{timeVar}}{a character string denoting the column name for time
-#'   in \code{data}.}
+#'   \item{\code{timeVar}}{a character string vector of length K denoting the
+#'   column name(s) for time in \code{data}.}
 #'
 #'   \item{\code{id}}{a character string denoting the column name for subject
 #'   IDs in \code{data} and \code{survData}.}

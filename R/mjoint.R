@@ -20,17 +20,19 @@
 #' @param formSurv a formula specifying the proportional hazards regression
 #'   model (not including the latent association structure). See
 #'   \code{\link[survival]{coxph}} for examples.
-#' @param data a list of data.frame objects for each longitudinal outcome in
-#'   which to interpret the variables named in the \code{formLongFixed} and
+#' @param data a list of \code{data.frame} objects for each longitudinal outcome
+#'   in which to interpret the variables named in the \code{formLongFixed} and
 #'   \code{formLongRandom}. The list structure enables one to include multiple
 #'   longitduinal outcomes with different measurement protocols. If the multiple
 #'   longitudinal outcomes are measured at the same time points for each
-#'   patient, then a data.frame object can be given instead of a list. It is
-#'   assumed that each data.frame is in long format.
+#'   patient, then a \code{data.frame} object can be given instead of a list. It
+#'   is assumed that each data frame is in long format.
 #' @param survData a data.frame in which to interpret the variables named in the
 #'   \code{formSurv}.
 #' @param timeVar a character string indicating the time variable in the linear
-#'   mixed effects model.
+#'   mixed effects model. If there are multiple longitudinal outcomes and the
+#'   time variable is labelled differently in each model, then a character
+#'   string vector can be given instead.
 #' @param inits a list of initial values for some or all of the parameters
 #'   estimated in the model. Default is \code{NULL}, with initial values
 #'   estimated using separate linear mixed and Cox proportional hazard
@@ -221,7 +223,9 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
   pkgs <- c("nlme", "Matrix", "survival")
   for (i in pkgs) {
     test <- require(i, character.only = TRUE)
-    if (!test) stop(paste("mjoint requires the package", i, ". Please re-install."))
+    if (!test) {
+      stop(paste("mjoint requires the package", i))
+    }
   }
 
   # formulas do not need to be given as lists if K=1
@@ -243,13 +247,24 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
       }
     }
   }
+  if (length(data) != K) {
+    stop(paste("The number of datasets expected is K =", K))
+  }
 
   id <- as.character(nlme::splitFormula(formLongRandom[[1]], "|")[[2]])[2]
   n <- length(unique(data[[1]][, id]))
 
+  # incase timeVar not a vector when K>1
+  if (length(timeVar) == 1 & (K > 1)) {
+    timeVar <- rep(timeVar, K)
+  }
+  if (length(timeVar) != K) {
+    stop(paste("The length of timeVar must equal", K))
+  }
+
   # order the data + id -> factor
   for (k in 1:K) {
-    data[[k]] <- data[[k]][order(xtfrm(data[[k]][, id]), data[[k]][, timeVar]), ]
+    data[[k]] <- data[[k]][order(xtfrm(data[[k]][, id]), data[[k]][, timeVar[k]]), ]
     data[[k]][, id] <- as.factor(data[[k]][, id])
   }
 
@@ -400,6 +415,15 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
   t <- list(V = V, survdat2 = survdat2, survdat2.list = survdat2.list,
             q = q, nev = nev, nev.uniq = nev.uniq)
 
+  # # Longitudinal data should not be recorded *after* event time
+  for (k in 1:K) {
+    for (i in survdat2$id) {
+      if (max(data[[k]][data[[k]][, id] == i, timeVar[k]]) > survdat2[survdat2$id == i, "T"]) {
+        stop("Longitudinal measurements should not be recorded after the event time")
+      }
+    }
+  }
+
   # Separate models log-likelihood
   # NB: adjusts for number of events as sfit loglik is a partial estimate
   log.lik0 <- sum(sapply(lfit, logLik)) + sfit$loglik[ifelse(q > 0, 2, 1)] - sfit$nevent
@@ -420,12 +444,13 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
     simplify = FALSE))
   )
   names(Zdat.fail)[1] <- id
-  if(ncol(Zdat.fail) == 2) names(Zdat.fail)[2] <- timeVar
 
   Zik.fail <- list()
   Zik.fail.list <- list()
 
   for(k in 1:K) {
+
+    if (ncol(Zdat.fail) == 2) names(Zdat.fail)[2] <- timeVar[k]
 
     # Z design matrix
     ffk <- nlme::splitFormula(formLongRandom[[k]], "|")[[1]]
@@ -518,7 +543,7 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
 
     if (verbose) {
       cat("-------------------------------------------------------------\n\n")
-      cat(paste0("Interation: ", it, "\n\n"))
+      cat(paste0("Iteration: ", it, "\n\n"))
     }
 
     nmc.iters <- c(nmc.iters, nMC)

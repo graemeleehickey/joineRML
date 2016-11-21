@@ -63,9 +63,9 @@ The main function in the `joineRML` package is the `mjoint()` function. Its main
 
 * `formSurv`: a formula specifying the proportional hazards regression model for the time-to-event outcome in the same structure as for `survival::coxph`.
 
-* `data`: a list (of same length as `formLongFixed`) of data.frames; one for each longitudinal outcome. It is assumed that the event time data is in the first data.frame (i.e. `data[[1]]`), unless the argument `survData` (which defaults to `NULL`) is specified.
+* `data`: a list (of same length as `formLongFixed`) of data.frames; one for each longitudinal outcome. It is assumed that the event time data is in the first data.frame (i.e. `data[[1]]`), unless the argument `survData` (which defaults to `NULL`) is specified. If $K>1$ and the data are balanced within patients (i.e. multiple markers measured at common measurement times), then one can specify `data` as a data frame rather than as a list.
 
-* `timeVar`: the column name indicating the time variable in the linear mixed effects model.
+* `timeVar`: the column name indicating the time variable in the linear mixed effects model. If $K>1$ and the data frames have different column names for time, then `timeVar` can alternatively be specified as a vector of strings of length $K$.
 
 We can fit a bivariate joint model to the log-transformed valve gradient and LVMI indices in the `hvd` subset using
 
