@@ -550,7 +550,7 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
 
     theta.new <- stepEM(theta = theta, l = l, t = t, z = z,
                         nMC = nMC, verbose = verbose,
-                        approxInfo = con$approxInfo)
+                        approxInfo = con$approxInfo, ll = FALSE)
     all.iters[[it]] <- theta.new
     if (verbose) {
       print(theta.new[-which(names(theta.new) == "haz")])
@@ -619,11 +619,14 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
 
     # Once converged: calculate SEs and likelihood
     if (conv) {
+      theta <- theta.new
       if (ll) {
         message("EM algorithm has converged!\n")
         # Likelihood at MLE
         message("Calculating final model log-likelihood...\n")
-        log.lik <- jLike(theta = theta, l = l, t = t, z = z, nMC = nMC)
+        log.lik <- stepEM(theta = theta, l = l, t = t, z = z,
+                          nMC = nMC, verbose = FALSE,
+                          approxInfo = FALSE, ll = TRUE)
       }
       # Approximate SEs
       if (se.approx) {

@@ -4,7 +4,7 @@
 \alias{stepEM}
 \title{Internal function for performing a single iteration of the MCEM algorithm}
 \usage{
-stepEM(theta, l, t, z, nMC, verbose, approxInfo)
+stepEM(theta, l, t, z, nMC, verbose, approxInfo, ll)
 }
 \description{
 Internal function for performing a single iteration of the MCEM algorithm
