@@ -26,7 +26,7 @@ model (not including the latent association structure). See
 \item{data}{a list of \code{data.frame} objects for each longitudinal outcome
 in which to interpret the variables named in the \code{formLongFixed} and
 \code{formLongRandom}. The list structure enables one to include multiple
-longitduinal outcomes with different measurement protocols. If the multiple
+longitudinal outcomes with different measurement protocols. If the multiple
 longitudinal outcomes are measured at the same time points for each
 patient, then a \code{data.frame} object can be given instead of a list. It
 is assumed that each data frame is in long format.}
@@ -95,6 +95,11 @@ calculated after the model has converged. Default is \code{TRUE}.}
   \item{\code{tol2}}{numeric: tolerance value for convergence in the
   parameters; see \strong{Details}. Default is \code{5e-03}.}
 
+  \item{\code{rav}}{numeric: threshold when using \code{convCrit='sas'} that
+  applies absolute change (when <\code{rav}) or relative change (when
+  \eqn{\geq}\code{rav}) criterion; see \strong{Details}. Default is
+  \code{0.01}.}
+
   }}
 
 \item{...}{options passed to the \code{control} argument.}
@@ -128,17 +133,17 @@ Function \code{mjoint} fits joint models for time-to-event and
   \code{formLongRandom}) is a linear combination of subject-specific
   zero-mean Gaussian random effects with outcome-specific variance
   components. We denote these as \eqn{W_{i1}(t, b_{i1})}, \eqn{W_{i2}(t,
-  b_{i2})}, \eqn{\dots}, \eqn{W_{iK}(t, b_{iK})}, for the K-outcomes.
+  b_{i2})}, \eqn{\dots}, \eqn{W_{iK}(t, b_{iK})}, for the \emph{K}-outcomes.
   Usually, \eqn{W(t, b)} will be specified as either \eqn{b_0} (a
   random-intercepts model) or \eqn{b_0 + b_1t} (a random-intercepts and
   random-slopes model); however, more general structures are allowed The
   time-to-event model is modelled as per the usual Cox model formulation,
   with an additional (possibly) time-varying term given by
 
-  \deqn{gamma_{y1} W_{i1}(t, b_{i1}) + gamma_{y2} W_{i2}(t, b_{i2}) + \dots +
-  gamma_{yK} W_{iK}(t, b_{iK}),}
+  \deqn{\gamma_{y1} W_{i1}(t, b_{i1}) + \gamma_{y2} W_{i2}(t, b_{i2}) + \dots
+  + \gamma_{yK} W_{iK}(t, b_{iK}),}
 
-  where \eqn{gamma_y} is a parameter vector of proportional latent
+  where \eqn{\gamma_y} is a parameter vector of proportional latent
   association parameters of length \emph{K} for estimation.
 
   The optimization routine is based on a Monte Carlo Expectation Maximization
@@ -148,17 +153,39 @@ Function \code{mjoint} fits joint models for time-to-event and
 
   The routine internally scales and centers data to avoid overflow in the
   argument to the exponential function. These actions do not change the
-  result, but lead to more numerical stability. Convergence is based on
-  either the maximum absolute or relative parameter change criterion. Due to
-  the Monte Caro error, the algorithm could spuriously declare convergence.
-  Therefore, we require convergence to be satisfied for 3 consecutive
-  iterations. The algorithm starts with a low number of Monte Carlo samples
-  in the early phase, as it would be computationally inefficient to use a
-  large sample whilst far away from the true maximizer. After the algorithm
-  moves out of the adaptive phase, it uses an automated criterion based on
-  the coefficient of variation of the last 3 iterations to decide whether to
-  increase the Monte Carlo sample size. See the technical vignette and
-  Ripatti et al. (2002) for further details.
+  result, but lead to more numerical stability. Several convergence criteria
+  are available: \describe{
+
+  \item{\code{abs}}{the maximum absolute parameter change is <\code{tol0}.
+  The baseline hazard parameters are not included in this convergence
+  statistic.}
+
+  \item{\code{rel}}{the maximum (absolute) relative parameter change is
+  <\code{tol2}. A small value (\code{tol1}) is added to the denominator of
+  the relative change statistic to avoid numerical problems when the
+  parameters are close to zero.}
+
+  \item{\code{either}}{\emph{either} the \code{abs} or \code{rel} criteria
+  are satisfied.}
+
+  \item{\code{sas}}{if \eqn{|\theta_l| < }\code{rav}, then the \code{abs}
+  criteria is applied for the \emph{l}-th parameter; otherwise, \code{rel} is
+  applied. This is the approach used in the SAS EM algorithm program:
+  \url{https://support.sas.com/documentation/cdl/en/statug/63962/HTML/default/viewer.htm#statug_mi_sect007.htm}.}
+
+
+  }
+
+  Due to the Monte Caro error, the algorithm could spuriously declare
+  convergence. Therefore, we require convergence to be satisfied for 3
+  consecutive iterations. The algorithm starts with a low number of Monte
+  Carlo samples in the early phase, as it would be computationally
+  inefficient to use a large sample whilst far away from the true maximizer.
+  After the algorithm moves out of the adaptive phase, it uses an automated
+  criterion based on the coefficient of variation of the relative parameter
+  change of the last 3 iterations to decide whether to increase the Monte
+  Carlo sample size. See the technical vignette and Ripatti et al. (2002) for
+  further details.
 }
 \examples{
 \dontrun{

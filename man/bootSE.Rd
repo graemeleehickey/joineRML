@@ -66,6 +66,11 @@ algorithm. Default is \code{FALSE}.}
   \item{\code{tol2}}{numeric: tolerance value for convergence in the
   parameters; see \strong{Details}. Default is \code{5e-03}.}
 
+  \item{\code{rav}}{numeric: threshold when using \code{convCrit='sas'} that
+  applies absolute change (when <\code{rav}) or relative change (when
+  \eqn{\geq}\code{rav}) criterion; see \strong{Details}. Default is
+  \code{0.01}.}
+
   }}
 
 \item{progress}{logical: should a progress bar be shown on the console to
