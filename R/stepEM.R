@@ -270,6 +270,8 @@ stepEM <- function(theta, l, t, z, nMC, verbose, approxInfo, ll, se.approx) {
   # Post model fit processing: log-likehood + posterior REs
   #*********************************************************
 
+  jLik <- list()
+
   if (ll) {
 
     ## Observed log-likelihood

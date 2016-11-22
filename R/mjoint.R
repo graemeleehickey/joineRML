@@ -88,7 +88,8 @@
 #'   \item{\code{rav}}{numeric: threshold when using \code{convCrit='sas'} that
 #'   applies absolute change (when <\code{rav}) or relative change (when
 #'   \eqn{\geq}\code{rav}) criterion; see \strong{Details}. Default is
-#'   \code{0.01}.}
+#'   \code{0.1}, which is an order of magnitude higher than the SAS
+#'   implementation.}
 #'
 #'   }
 #' @param ... options passed to the \code{control} argument.
@@ -146,7 +147,6 @@
 #'   criteria is applied for the \emph{l}-th parameter; otherwise, \code{rel} is
 #'   applied. This is the approach used in the SAS EM algorithm program:
 #'   \url{https://support.sas.com/documentation/cdl/en/statug/63962/HTML/default/viewer.htm#statug_mi_sect007.htm}.}
-#'
 #'
 #'   }
 #'
@@ -302,7 +302,7 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
   con <- list(nMC = 100, nMCscale = 3, nMCmax = 20000, earlyPhase = 30,
               mcmaxIter = 200, convCrit = "rel",
               approxInfo = FALSE,
-              tol0 = 5e-03, tol1 = 1e-03, tol2 = 5e-03, rav = 0.01)
+              tol0 = 5e-03, tol1 = 1e-03, tol2 = 5e-03, rav = 0.1)
   nc <- names(con)
   control <- c(control, list(...))
   con[(conArgs <- names(control))] <- control

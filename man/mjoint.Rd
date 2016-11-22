@@ -98,7 +98,8 @@ calculated after the model has converged. Default is \code{TRUE}.}
   \item{\code{rav}}{numeric: threshold when using \code{convCrit='sas'} that
   applies absolute change (when <\code{rav}) or relative change (when
   \eqn{\geq}\code{rav}) criterion; see \strong{Details}. Default is
-  \code{0.01}.}
+  \code{0.1}, which is an order of magnitude higher than the SAS
+  implementation.}
 
   }}
 
@@ -172,7 +173,6 @@ Function \code{mjoint} fits joint models for time-to-event and
   criteria is applied for the \emph{l}-th parameter; otherwise, \code{rel} is
   applied. This is the approach used in the SAS EM algorithm program:
   \url{https://support.sas.com/documentation/cdl/en/statug/63962/HTML/default/viewer.htm#statug_mi_sect007.htm}.}
-
 
   }
 

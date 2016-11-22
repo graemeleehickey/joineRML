@@ -21,13 +21,19 @@ convMonitor <- function(theta, theta.new, con, verbose) {
   cond3 <- (cond1 || cond2)
 
   # SAS criteria
+  mag <- (abs(unlist(theta[-which(names(theta) == "haz")])) > con$rav)
   sasdelta <- function() {
     d1 <- unlist(absdelta.pars) < con$tol0 # abs
     d2 <- unlist(reldelta.pars) < con$tol2 # rel
-    mag <- (abs(unlist(theta[-which(names(theta) == "haz")])) > con$rav)
-    all(d1[mag]) & all(d2[!mag])
+    all(d1[!mag]) & all(d2[mag])
   }
   cond4 <- sasdelta()
+
+  # Relative parameter change (excl. near-zero terms): for reporting only
+  reldelta.pars2 <- sapply(c("beta", "sigma2", "gamma"), function(i) {
+    abs(theta[[i]] - theta.new[[i]]) / (abs(theta[[i]]) + con$tol1)
+  })
+  max.reldelta.pars2 <- max(unlist(reldelta.pars)[mag])
 
   # Choose convergence criterion to use
   if (con$convCrit == "abs") {
@@ -47,7 +53,11 @@ convMonitor <- function(theta, theta.new, con, verbose) {
               names(which.max(abs(unlist(absdelta.pars)))), "\n"))
     cat(paste("Maximum relative parameter change =",
               round(max.reldelta.pars, 6), "for",
-              names(which.max(abs(unlist(reldelta.pars)))), "\n\n"))
+              names(which.max(abs(unlist(reldelta.pars)))), "\n"))
+    cat(paste("       --> excl. parameters <", con$rav, "=",
+              round(max.reldelta.pars2, 6), "for",
+              names(which.max(abs(unlist(reldelta.pars)[mag]))), "\n"))
+    cat(paste("Converged:", conv, "\n\n"))
   }
 
   return(list(conv = conv, max.reldelta.pars = max.reldelta.pars))
