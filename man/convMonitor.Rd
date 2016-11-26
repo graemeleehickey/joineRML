@@ -4,7 +4,7 @@
 \alias{convMonitor}
 \title{Evaluate the convergence of the MCEM algorithm}
 \usage{
-convMonitor(theta, theta.new, con, verbose)
+convMonitor(theta, theta.new, log.lik, log.lik.new, con, verbose)
 }
 \description{
 Evaluate the convergence of the MCEM algorithm

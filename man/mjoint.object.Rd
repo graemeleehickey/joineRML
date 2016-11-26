@@ -85,9 +85,13 @@ A list with the following components. \describe{
   separate linear mixed effects models; one per each longitudinal outcome
   type. See \code{\link[nlme]{lme}} for details.}
 
-  \item{\code{log.lik0}}{the log-likelihood from separate sub-model fits.}
+  \item{\code{log.lik0}}{the combined log-likelihood from separate sub-model
+  fits.}
 
   \item{\code{log.lik}}{the log-likelihood from the joint model fit.}
+
+  \item{\code{ll.hx}}{a vector of the log-likelihood values for each MCEM
+  algorithm interation.}
 
   \item{\code{control}}{a list of control parameters used in the estimation
   of the joint model. See \code{\link{mjoint}} for details.}

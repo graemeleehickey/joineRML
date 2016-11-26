@@ -45,7 +45,7 @@
 #'
 #'   \item{\code{serChol}}{serum cholesterol in mg/dl.}
 #'
-#'   \item{\code{albumin}}{albumin in gm/dl.}
+#'   \item{\code{albumin}}{albumin in mg/dl.}
 #'
 #'   \item{\code{alkaline}}{alkaline phosphatase in U/liter.}
 #'

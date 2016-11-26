@@ -5,8 +5,8 @@
 \title{Fit a joint model to time-to-event data and multivariate longitudinal data}
 \usage{
 mjoint(formLongFixed, formLongRandom, formSurv, data, survData = NULL,
-  timeVar, inits = NULL, verbose = FALSE, se.approx = TRUE, ll = TRUE,
-  control = list(), ...)
+  timeVar, inits = NULL, verbose = FALSE, se.approx = TRUE,
+  postRE = TRUE, control = list(), ...)
 }
 \arguments{
 \item{formLongFixed}{a list of formulae for the fixed effects component of
@@ -51,8 +51,9 @@ algorithm. Default is \code{FALSE}.}
 \item{se.approx}{logical: if \code{TRUE}, approximate standard errors are
 estimated after the model has converged. Default is \code{TRUE}.}
 
-\item{ll}{logical: if \code{TRUE}, the joint model log-likelihood is
-calculated after the model has converged. Default is \code{TRUE}.}
+\item{postRE}{logical: if \code{TRUE}, the posterior means and variances of
+the random effects are calculated after the model has converged. Default is
+\code{TRUE}.}
 
 \item{control}{a list of control values with components: \describe{
 
@@ -152,6 +153,8 @@ Function \code{mjoint} fits joint models for time-to-event and
   proposed by Henderson et al. (2000), we use antithetic simulation for
   variance reduction in the Monte Carlo integration.
 
+  @section Convergence criteria:
+
   The routine internally scales and centers data to avoid overflow in the
   argument to the exponential function. These actions do not change the
   result, but lead to more numerical stability. Several convergence criteria
@@ -169,7 +172,7 @@ Function \code{mjoint} fits joint models for time-to-event and
   \item{\code{either}}{\emph{either} the \code{abs} or \code{rel} criteria
   are satisfied.}
 
-  \item{\code{sas}}{if \eqn{|\theta_l| < }\code{rav}, then the \code{abs}
+  \item{\code{sas}}{if \eqn{|\theta_p| < }\code{rav}, then the \code{abs}
   criteria is applied for the \emph{l}-th parameter; otherwise, \code{rel} is
   applied. This is the approach used in the SAS EM algorithm program:
   \url{https://support.sas.com/documentation/cdl/en/statug/63962/HTML/default/viewer.htm#statug_mi_sect007.htm}.}
@@ -221,6 +224,36 @@ fit2 <- mjoint(
     timeVar = "time",
     verbose = TRUE)
 summary(fit2)
+}
+
+\dontrun{
+# Fit a univariate joint model and compare to the joineR package
+
+data(pbc2)
+pbc2$log.b <- log(pbc2$serBilir)
+
+# joineRML package
+fit.joineRML <- mjoint(
+    formLongFixed = list("log.bil" = log.b ~ year,
+    formLongRandom = list("log.bil" = ~ 1 | id),
+    formSurv = Surv(years, status2) ~ age,
+    data = pbc2,
+    timeVar = "year",
+    control = list(convCrit = "sas", rav = 0.01),
+    verbose = TRUE)
+summary(fit.joineRML)
+
+# joineR package
+pbc.surv <- UniqueVariables(pbc2, var.col = c("years","status2"), id.col = "id")
+pbc.long <- pbc2[, c("id", "year", "log.b")]
+pbc.cov <- UniqueVariables(pbc2, c("age", "drug"), id.col = "id")
+pbc.jd <- jointdata(longitudinal = pbc.long, baseline = pbc.cov,
+                    survival = pbc.surv, id.col = "id", time.col = "year")
+fit.joineR <- joint(data = pbc.jd,
+    long.formula = log.b ~ 1 + year,
+    surv.formula = Surv(years, status2) ~ age,
+    model = "intslope")
+summary(fit.joineR)
 }
 }
 \author{

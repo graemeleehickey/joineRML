@@ -42,8 +42,9 @@
 #'   algorithm. Default is \code{FALSE}.
 #' @param se.approx logical: if \code{TRUE}, approximate standard errors are
 #'   estimated after the model has converged. Default is \code{TRUE}.
-#' @param ll logical: if \code{TRUE}, the joint model log-likelihood is
-#'   calculated after the model has converged. Default is \code{TRUE}.
+#' @param postRE logical: if \code{TRUE}, the posterior means and variances of
+#'   the random effects are calculated after the model has converged. Default is
+#'   \code{TRUE}.
 #' @param control a list of control values with components: \describe{
 #'
 #'   \item{\code{nMC}}{integer: the initial number of Monte Carlo samples to be
@@ -126,6 +127,8 @@
 #'   proposed by Henderson et al. (2000), we use antithetic simulation for
 #'   variance reduction in the Monte Carlo integration.
 #'
+#'   @section Convergence criteria:
+#'
 #'   The routine internally scales and centers data to avoid overflow in the
 #'   argument to the exponential function. These actions do not change the
 #'   result, but lead to more numerical stability. Several convergence criteria
@@ -143,7 +146,7 @@
 #'   \item{\code{either}}{\emph{either} the \code{abs} or \code{rel} criteria
 #'   are satisfied.}
 #'
-#'   \item{\code{sas}}{if \eqn{|\theta_l| < }\code{rav}, then the \code{abs}
+#'   \item{\code{sas}}{if \eqn{|\theta_p| < }\code{rav}, then the \code{abs}
 #'   criteria is applied for the \emph{l}-th parameter; otherwise, \code{rel} is
 #'   applied. This is the approach used in the SAS EM algorithm program:
 #'   \url{https://support.sas.com/documentation/cdl/en/statug/63962/HTML/default/viewer.htm#statug_mi_sect007.htm}.}
@@ -236,9 +239,39 @@
 #'     verbose = TRUE)
 #' summary(fit2)
 #' }
+#'
+#' \dontrun{
+#' # Fit a univariate joint model and compare to the joineR package
+#'
+#' data(pbc2)
+#' pbc2$log.b <- log(pbc2$serBilir)
+#'
+#' # joineRML package
+#' fit.joineRML <- mjoint(
+#'     formLongFixed = list("log.bil" = log.b ~ year,
+#'     formLongRandom = list("log.bil" = ~ 1 | id),
+#'     formSurv = Surv(years, status2) ~ age,
+#'     data = pbc2,
+#'     timeVar = "year",
+#'     control = list(convCrit = "sas", rav = 0.01),
+#'     verbose = TRUE)
+#' summary(fit.joineRML)
+#'
+#' # joineR package
+#' pbc.surv <- UniqueVariables(pbc2, var.col = c("years","status2"), id.col = "id")
+#' pbc.long <- pbc2[, c("id", "year", "log.b")]
+#' pbc.cov <- UniqueVariables(pbc2, c("age", "drug"), id.col = "id")
+#' pbc.jd <- jointdata(longitudinal = pbc.long, baseline = pbc.cov,
+#'                     survival = pbc.surv, id.col = "id", time.col = "year")
+#' fit.joineR <- joint(data = pbc.jd,
+#'     long.formula = log.b ~ 1 + year,
+#'     surv.formula = Surv(years, status2) ~ age,
+#'     model = "intslope")
+#' summary(fit.joineR)
+#' }
 mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NULL,
                    timeVar, inits = NULL, verbose = FALSE,
-                   se.approx = TRUE, ll = TRUE, control = list(), ...) {
+                   se.approx = TRUE, postRE = TRUE, control = list(), ...) {
 
   #*****************************************************
   # Preamble
@@ -330,6 +363,7 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
     lfit[[k]] <- nlme::lme(fixed = formLongFixed[[k]], random = formLongRandom[[k]],
                            data = data[[k]], method = "ML",
                            control = nlme::lmeControl(opt = "optim"))
+    lfit[[k]]$call$fixed <- eval(lfit[[k]]$call$fixed)
 
     # Longitudinal outcomes
     yik[[k]] <- by(data[[k]][, all.vars(formLongFixed[[k]])[1]], data[[k]][, id],
@@ -454,6 +488,7 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
   # Separate models log-likelihood
   # NB: adjusts for number of events as sfit loglik is a partial estimate
   log.lik0 <- sum(sapply(lfit, logLik)) + sfit$loglik[ifelse(q > 0, 2, 1)] - sfit$nevent
+  log.lik <- log.lik0
 
   #*****************************************************
   # Z(t_j) for unique failure times t_j
@@ -557,9 +592,12 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
   # Run EM algorithm
   #*****************************************************
 
+  ebarray <- array(dim = c(n, sum(r), con$mcmaxIter))
+
   all.iters <- list()
   conv.track <- rep(FALSE, con$mcmaxIter)
   Delta.vec <- rep(NA, con$mcmaxIter)
+  ll.hx <- rep(NA, con$mcmaxIter)
   cv.old <- 0
   time.start <- Sys.time()
 
@@ -575,28 +613,38 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
 
     nmc.iters <- c(nmc.iters, nMC)
 
-    theta.new <- stepEM(theta = theta, l = l, t = t, z = z,
-                        nMC = nMC, verbose = verbose, approxInfo = con$approxInfo,
-                        ll = FALSE, se.approx = FALSE)
+    stepUpdate <- stepEM(theta = theta, l = l, t = t, z = z,
+                         nMC = nMC, verbose = verbose, approxInfo = con$approxInfo,
+                         postRE = FALSE, se.approx = FALSE)
+    theta.new <- stepUpdate$theta.new
+    log.lik.new <- stepUpdate$ll
+    ll.hx[it] <- log.lik.new
+    ebarray[, , it] <- stepUpdate$eb
+
     all.iters[[it]] <- theta.new
     if (verbose) {
       print(theta.new[-which(names(theta.new) == "haz")])
+      #print(theta.new)
     }
 
+    # Stepwise convergence
     conv.status <- convMonitor(theta = theta, theta.new = theta.new,
+                               log.lik = log.lik, log.lik.new = log.lik.new,
                                con = con, verbose = verbose)
     conv.track[it] <- conv.status$conv
     Delta.vec[it] <- conv.status$max.reldelta.pars
+    log.lik <- log.lik.new
 
     if (it >= con$earlyPhase) {
-      # require convergence condition to be satisfied 3 iterations in a row
-      # + cannot converge during early stage
+      # require convergence condition to be satisfied 3 iterations
+      # in a row + cannot converge during early stage
       conv <- all(conv.track[(it-2):it])
     } else {
       conv <- FALSE
     }
 
-    if (it >= con$earlyPhase) {
+    # Ripatti decision-rule for nMC increase using CV statistics
+    if (it >= con$earlyPhase && !conv) {
       cv <- sd(Delta.vec[(it-2):it]) / mean(Delta.vec[(it-2):it])
       if (verbose) {
         cat(paste("CV statistic (old) =", round(cv.old, 6), "\n"))
@@ -605,27 +653,27 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
       if (cv > cv.old) {
         nMC.old <- nMC
         nMC <- min(nMC + floor(nMC / con$nMCscale), con$nMCmax)
-        if (verbose & (nMC > nMC.old)) {
+        if (verbose && (nMC > nMC.old)) {
           cat(paste("Changing M to", nMC, "\n\n"))
         }
       }
       cv.old <- cv
     }
 
-    # Once converged: calculate SEs and likelihood
+    # Once converged: calculate SEs and posterior REs (means + variances)
     if (conv) {
       theta <- theta.new
-      if (ll || se.approx) {
+      if (postRE || se.approx) {
         message("EM algorithm has converged!\n")
-        if (ll) {
-          message("Calculating final model log-likelihood...\n")
+        if (postRE) {
+          message("Estimating posterior random effects...\n")
         }
         if (se.approx) {
-          message("Calculating approximate standard errors...\n")
+          message("Estimating approximate standard errors...\n")
         }
         postFitCalcs <- stepEM(theta = theta, l = l, t = t, z = z,
                                nMC = nMC, verbose = FALSE, approxInfo = FALSE,
-                               ll = ll, se.approx = se.approx)
+                               postRE = postRE, se.approx = se.approx)
       }
       break
     } else {
@@ -671,13 +719,15 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
   out$sfit <- sfit
   out$lfit <- lfit
   out$log.lik0 <- log.lik0
+  out$log.lik <- log.lik
+  out$ll.hx <- ll.hx
   out$control <- con
   out$finalnMC <- nMC # not same as control nMC (used for early phase)
   if (conv && se.approx) {
     out$vcov <- postFitCalcs$ses
     out$SE.approx <- sqrt(diag(solve(out$vcov)))
   }
-  if (conv && ll) {
+  if (conv && postRE) {
     out$log.lik <- postFitCalcs$ll
     out$Eb <- postFitCalcs$Eb # Posterior RE means
     out$Vb <- postFitCalcs$Vb # Posterior RE variances

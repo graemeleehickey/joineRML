@@ -7,7 +7,7 @@
 #' algorithm iteration, and instead reports the called for post-fit statistics.
 #'
 #' @keywords internal
-stepEM <- function(theta, l, t, z, nMC, verbose, approxInfo, ll, se.approx) {
+stepEM <- function(theta, l, t, z, nMC, verbose, approxInfo, postRE, se.approx) {
 
   # Input parameter estimates
   D <- theta$D
@@ -196,7 +196,7 @@ stepEM <- function(theta, l, t, z, nMC, verbose, approxInfo, ll, se.approx) {
   XtSX.sum <- Reduce("+", XtSX)
 
   rr <- mapply(function(xt, y, z, b) {
-    xt %*% (y - z %*% b)
+    xt %*% (y - (z %*% b))
   },
   xt = Xit, y = yi, z = Zi, b = Eb)
   rr.sum <- rowSums(rr)
@@ -251,7 +251,7 @@ stepEM <- function(theta, l, t, z, nMC, verbose, approxInfo, ll, se.approx) {
 
   t3 <- Sys.time()
 
-  if (verbose && !ll) {
+  if (verbose && !postRE) {
     tdiff1 <- t1 - t0
     cat(paste("Step 1: Time to setup Monte Carlo expectations", round(tdiff1, 2),
               attr(tdiff1, "units"), "\n"))
@@ -270,29 +270,28 @@ stepEM <- function(theta, l, t, z, nMC, verbose, approxInfo, ll, se.approx) {
   # Post model fit processing: log-likehood + posterior REs
   #*********************************************************
 
-  jLik <- list()
+  ## Observed log-likelihood (for iteration t-1)
 
-  if (ll) {
+  fy <- mapply(function(y, x, z, zt, s, nik) {
+    # marginal (observed data) likelihood for long. data
+    r <- y - (x %*% beta)
+    v <- s + z %*% D %*% zt
+    vinv <- solve(v)
+    -0.5 * (sum(nik) * log(2*pi) +
+              as.numeric(determinant(v, logarithm = TRUE)$modulus) +
+              colSums(t(r) %*% vinv %*% r))
 
-    ## Observed log-likelihood
+  },
+  y = yi, x = Xi, z = Zi, zt = Zit, s = Sigmai, nik = nik)
 
-    # f(y): longitudinal data marginal (observed data) likelihood
-    fy <- mapply(function(y, x, z, zt, s, nik) {
-      r <- y - (x %*% beta)
-      v <- s + z %*% D %*% zt
-      vinv <- solve(v)
-      -0.5 * (sum(nik) * log(2*pi) +
-                as.numeric(determinant(v, logarithm = TRUE)$modulus) +
-                colSums(t(r) %*% vinv %*% r))
+  ll <- sum(fy + log(unlist(den)))
+  out <- list("theta.new" = theta.new, "ll" = ll)
 
-    },
-    y = yi, x = Xi, z = Zi, zt = Zit, s = Sigmai, nik = nik)
+  #-----------------------------------------------------
 
-    ll <- sum(fy + log(unlist(den)))
+  ## Posterior means + variances of random effects
 
-    #-----------------------------------------------------
-
-    ## Posterior means of random effects
+  if (postRE) {
 
     # Var(b)
     Vb <- mapply(function(b, f, d, mu) {
@@ -303,10 +302,12 @@ stepEM <- function(theta, l, t, z, nMC, verbose, approxInfo, ll, se.approx) {
     b = bi.y, f = fti, d = den, mu = Eb,
     SIMPLIFY = "array")
 
+    # E[b]
     Eb.flat <- t(simplify2array(Eb))
     colnames(Eb.flat) <- colnames(D)
 
-    jLik <- list(ll = ll, Eb = Eb.flat, Vb = Vb)
+    out$Eb = Eb.flat
+    out$Vb = Vb
 
   }
 
@@ -326,14 +327,10 @@ stepEM <- function(theta, l, t, z, nMC, verbose, approxInfo, ll, se.approx) {
     m$den <- den
     m$haz.hat <- haz.hat
 
-    jLik$ses <- approxSE(theta, l, t, z, m)
+    out$ses <- approxSE(theta, l, t, z, m)
 
   }
 
-  if (ll || se.approx) {
-    return(jLik)
-  } else {
-    return(theta.new)
-  }
+  return(out)
 
 }

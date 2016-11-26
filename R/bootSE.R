@@ -113,7 +113,7 @@ bootSE <- function(object, nboot = 100, ci = 0.95, use.mle = TRUE,
                          inits = theta.hat,
                          verbose = verbose,
                          se.approx = FALSE,
-                         ll = FALSE,
+                         postRE = FALSE,
                          control = control,
                          ...)
     )
