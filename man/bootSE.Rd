@@ -41,10 +41,11 @@ algorithm. Default is \code{FALSE}.}
   \item{\code{earlyPhase}}{integer: the number of iterations for early phase
   of the optimization algorithm. It is computationally inefficient to use a
   large number of Monte Carlo samples early on until one is approximately
-  near the maximum likelihood estimate. Default is \code{earlyPhase=30}.}
+  near the maximum likelihood estimate. Default is
+  \code{earlyPhase=}\emph{200K}.}
 
   \item{\code{mcmaxIter}}{integer: the maximum number of MCEM algorithm
-  iterations allowed. Default is \code{mcmaxIter=200}.}
+  iterations allowed. Default is \code{mcmaxIter=200}\emph{(K+1)}.}
 
   \item{\code{convCrit}}{character string: the convergence criterion to be
   used. See \strong{Details}.}

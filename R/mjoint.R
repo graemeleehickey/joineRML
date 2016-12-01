@@ -61,10 +61,11 @@
 #'   \item{\code{earlyPhase}}{integer: the number of iterations for early phase
 #'   of the optimization algorithm. It is computationally inefficient to use a
 #'   large number of Monte Carlo samples early on until one is approximately
-#'   near the maximum likelihood estimate. Default is \code{earlyPhase=30}.}
+#'   near the maximum likelihood estimate. Default is
+#'   \code{earlyPhase=}\emph{200K}.}
 #'
 #'   \item{\code{mcmaxIter}}{integer: the maximum number of MCEM algorithm
-#'   iterations allowed. Default is \code{mcmaxIter=200}.}
+#'   iterations allowed. Default is \code{mcmaxIter=200}\emph{(K+1)}.}
 #'
 #'   \item{\code{convCrit}}{character string: the convergence criterion to be
 #'   used. See \strong{Details}.}
@@ -332,9 +333,8 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
   # Control parameters
   #*****************************************************
 
-  con <- list(nMC = 100, nMCscale = 3, nMCmax = 20000, earlyPhase = 30,
-              mcmaxIter = 200, convCrit = "rel",
-              approxInfo = FALSE,
+  con <- list(nMC = 100, nMCscale = 3, nMCmax = 20000, earlyPhase = 200*K,
+              mcmaxIter = 200*(K+1), convCrit = "rel", approxInfo = FALSE,
               tol0 = 5e-03, tol1 = 1e-03, tol2 = 5e-03, rav = 0.1)
   nc <- names(con)
   control <- c(control, list(...))
@@ -592,8 +592,6 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
   # Run EM algorithm
   #*****************************************************
 
-  ebarray <- array(dim = c(n, sum(r), con$mcmaxIter))
-
   all.iters <- list()
   conv.track <- rep(FALSE, con$mcmaxIter)
   Delta.vec <- rep(NA, con$mcmaxIter)
@@ -619,7 +617,6 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
     theta.new <- stepUpdate$theta.new
     log.lik.new <- stepUpdate$ll
     ll.hx[it] <- log.lik.new
-    ebarray[, , it] <- stepUpdate$eb
 
     all.iters[[it]] <- theta.new
     if (verbose) {

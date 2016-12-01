@@ -18,7 +18,7 @@
 %\usepackage{lineno}
 \usepackage{enumitem}
 \usepackage{hyperref}
-\usepackage[backend=biber,doi=false,isbn=false,url=false,giveninits=true,sortcites,maxbibnames=6,minbibnames=3,maxcitenames=2, sorting=none]{biblatex}
+\usepackage[backend=biber, doi=false, isbn=false, url=false, giveninits=true, sortcites, maxbibnames=6, minbibnames=3, maxcitenames=2, sorting=none]{biblatex}
 
 %\bibliographystyle{plainnat}
 
@@ -74,7 +74,7 @@ where $z_{ik}(t)$ is an $r_k$-vector ($r_k \leq p_k$) of (possibly) time-varying
 The time-to-event sub-model, also referred to as the \emph{intensity process model} in \cite{Henderson2000}, is given by the hazard function
 %
 \begin{equation}\label{eqn:survival}
-	\lambda_i\left(t \given \gamma_v, \mathcal{W}_i(t, b_i)\right) = \lambda_0(t) \exp \left\{v_i^\top(t) \gamma_v + W_{2i}(t)\right\},
+	\lambda_i(t) = \lambda_0(t) \exp \left\{v_i^\top(t) \gamma_v + W_{2i}(t)\right\},
 \end{equation}
 %
 where $\lambda_0(\cdot)$ is an unspecified baseline hazard function, and $b_i = (b_{i1}^\top, \dots, b_{iK}^\top)$, $v_i(t)$ is a $q$-vector of (possibly) time-varying covariates with corresponding fixed effect terms $\gamma_v$. Conditional on $W_i(t)$ and the observed covariate data, the separate data generating processes are \emph{conditionally independent}. To establish a latent association, we specify $W_{2i}(t)$ as a linear combination of $\left\{W_{1i}^{(1)}(t), \dots, W_{1i}^{(K)}(t)\right\}$
@@ -205,11 +205,11 @@ where $f(T_i, \delta_i \given b_i; \hat{\theta})$ is given by \eqref{eqn:surv_lo
 	b_i \given y_i, \theta \sim N\left(A_i\left\{Z_i^\top\Sigma_i^{-1}(y_i-X_i\beta)\right\}, A_i\right),
 \end{equation}
 % 
-where $A_i = \left(Z_i^\top\Sigma_i^{-1}Z_i + D^{-1}\right)^{-1}$. The derivation is given in \textcite{Wulfsohn1997} and \textcite{Lin2002}. Gaussian quadrature, notably Gauss-Hermite quadrature, is a standard approach for evaluating the integrals in this estimation approach. However, for multivariate longitudinal data, the additional random effects required is commensurate with an exponential growth in the number of quadrature points at which the integrand must be evaluated. Therefore, we use Monte Carlo sampling methods to evaluate the integrals, which was also used by \textcite{Lin2002}. For $D$ Monte Carlo sample draws, $\{b_i^{(1)}, b_i^{(2)}, \dots, b_i^{(D)}\}$, \eqref{eqn:expectation} is approximated by  the ratio of the sample means for $h(b_i) f(T_i, \delta_i \given b_i; \hat{\theta})$ and $f(T_i, \delta_i \given b_i; \hat{\theta})$ evaluated at these values. Namely,
+where $A_i = \left(Z_i^\top\Sigma_i^{-1}Z_i + D^{-1}\right)^{-1}$. The derivation is given in \textcite{Wulfsohn1997} and \textcite{Lin2002}. Gaussian quadrature, notably Gauss-Hermite quadrature, is a standard approach for evaluating the integrals in this estimation approach. However, for multivariate longitudinal data, the additional random effects required is commensurate with an exponential growth in the number of quadrature points at which the integrand must be evaluated. Therefore, we use Monte Carlo sampling methods to evaluate the integrals, which was also used by \textcite{Lin2002}. For $N$ Monte Carlo sample draws, $\{b_i^{(1)}, b_i^{(2)}, \dots, b_i^{(M)}\}$, \eqref{eqn:expectation} is approximated by  the ratio of the sample means for $h(b_i) f(T_i, \delta_i \given b_i; \hat{\theta})$ and $f(T_i, \delta_i \given b_i; \hat{\theta})$ evaluated at these values. Namely,
 %
 \begin{equation}\label{eqn:expectation_approx}
 	\mathbb{E}\left[h(b_i) \given T_i, \delta_i, y_i; \hat{\theta}\right] \approx
-	\frac{\frac{1}{D} \sum_{d=1}^D h\left(b_i^{(d)}\right) f\left(T_i, \delta_i \given b_i^{(d)}; \hat{\theta}\right)}{\frac{1}{D} \sum_{m=1}^D f\left(T_i, \delta_i \given b_i^{(d)}; \hat{\theta}\right)}.
+	\frac{\frac{1}{N} \sum_{d=1}^N h\left(b_i^{(d)}\right) f\left(T_i, \delta_i \given b_i^{(d)}; \hat{\theta}\right)}{\frac{1}{N} \sum_{d=1}^N f\left(T_i, \delta_i \given b_i^{(d)}; \hat{\theta}\right)}.
 \end{equation}
 %
 As proposed by \textcite{Henderson2000}, we will use antithetic simulation for variance reduction in the Monte Carlo integration. Instead of directly sampling from \eqref{eqn:bdist}, we sample $\Omega \sim N(0, I_r)$ and obtain the \emph{pairs}
@@ -218,28 +218,28 @@ As proposed by \textcite{Henderson2000}, we will use antithetic simulation for v
 	A_i\left\{Z_i^\top\Sigma_i^{-1}(y_i-X_i\beta)\right\} \pm C_i \Omega,
 \end{equation*}
 %
-where $C_i$ is the Cholesky decomposition of $A_i$ such that $C_i C_i^\top = A_i$. Therefore we only need to draw $D/2$ samples using this approach, and by virtue of the negative correlation between the pairs, it leads to a smaller variance in the sample means taken in \eqref{eqn:expectation_approx} than would be obtained from $2D$ independent simulations. The choice of $D$ is described below.
+where $C_i$ is the Cholesky decomposition of $A_i$ such that $C_i C_i^\top = A_i$. Therefore we only need to draw $N/2$ samples using this approach, and by virtue of the negative correlation between the pairs, it leads to a smaller variance in the sample means taken in \eqref{eqn:expectation_approx} than would be obtained from $N$ independent simulations. The choice of $N$ is described below.
 
 \subsubsection{Convergence and stopping rules}
 
 Two standard stopping rules for the deterministic EM algorithm used to declare convergence are the relative and absolute differences, defined as
 %
 \begin{eqnarray}
-	\Delta_1^{(m+1)} &=& \max\left\{\frac{|\hat{\theta}^{(m+1)} - \hat{\theta}^{(m)}|}{|\hat{\theta}^{(m)}| + \epsilon_1}\right\} < \epsilon_2, \mbox{  and} \label{eqn:rel_conv} \\
-	\Delta_2^{(m+1)} &=& \max\left\{|\hat{\theta}^{(m+1)} - \hat{\theta}^{(m)}|\right\} < \epsilon_3 \label{eqn:abs_conv}
+	\Delta_1^{(m+1)} &=& \max\left\{\frac{|\hat{\theta}^{(m+1)} - \hat{\theta}^{(m)}|}{|\hat{\theta}^{(m)}| + \epsilon_1}\right\} < \epsilon_0, \mbox{  and} \label{eqn:rel_conv} \\
+	\Delta_2^{(m+1)} &=& \max\left\{|\hat{\theta}^{(m+1)} - \hat{\theta}^{(m)}|\right\} < \epsilon_2 \label{eqn:abs_conv}
 \end{eqnarray}
 %
-respectively, for some appropriate choice of $\epsilon_1$, $\epsilon_2$, and $\epsilon_3$. The \texttt{JM} package implements the relative difference stopping rule (in combination with another rule based on relative change in the likelihood), whereas the \texttt{joineR} package implements the absolute difference stopping rule.
+respectively, for some appropriate choice of $\epsilon_0$, $\epsilon_1$, and $\epsilon_2$. The \texttt{JM} package implements the relative difference stopping rule (in combination with another rule based on relative change in the likelihood), whereas the \texttt{joineR} package implements the absolute difference stopping rule.
 
-The choice of $D$ and the monitoring of convergence are conflated when applying a Monte Carlo EM algorithm (MCEM), and a dynamic approach is required. As noted by \textcite{Wei1990}, it is computationally inefficient to use a large $D$ in the early phase of the MCEM algorithm when the parameter estimates are likely to be far from the maximizer. On the flip side, as the parameter estimates approach the maximizer, the above stopping rules will fail as the changes in parameter estimates will be swamped by Monte Carlo error. Therefore, it has been recommended that one increase $D$ as the estimate moves towards the maximizer. Although this might be done subjectively \cite{Law2002} or by pre-specified rules \cite{McCulloch1997}, an automated approach is preferable for software implementation. \textcite{Booth1999} proposed an update rule based on a confidence ellipsoid for the maximizer at the $(m+1)$-th iteration, calculated using an approximate sandwich estimator for the maximizer, which accounts for the Monte Carlo error at each iteration. This approach requires additional variance estimation at each iteration, therefore we opt for a simpler approach described by \textcite{Ripatti2002}. We calculate a coefficient of variation at the $(m+1)$-th iteration as
+The choice of $N$ and the monitoring of convergence are conflated when applying a Monte Carlo EM algorithm (MCEM), and a dynamic approach is required. As noted by \textcite{Wei1990}, it is computationally inefficient to use a large $N$ in the early phase of the MCEM algorithm when the parameter estimates are likely to be far from the maximizer. On the flip side, as the parameter estimates approach the maximizer, the above stopping rules will fail as the changes in parameter estimates will be swamped by Monte Carlo error. Therefore, it has been recommended that one increase $N$ as the estimate moves towards the maximizer. Although this might be done subjectively \cite{Law2002} or by pre-specified rules \cite{McCulloch1997}, an automated approach is preferable for software implementation. \textcite{Booth1999} proposed an update rule based on a confidence ellipsoid for the maximizer at the $(m+1)$-th iteration, calculated using an approximate sandwich estimator for the maximizer, which accounts for the Monte Carlo error at each iteration. This approach requires additional variance estimation at each iteration, therefore we opt for a simpler approach described by \textcite{Ripatti2002}. We calculate a coefficient of variation at the $(m+1)$-th iteration as
 %
 \begin{equation*}
 	\text{cv}(\Delta^{(m+1)}) = \frac{\text{sd}(\Delta^{(m-1)}, \Delta^{(m)}, \Delta^{(m+1)})}{\text{mean}(\Delta^{(m-1)}, \Delta^{(m)}, \Delta^{(m+1)})},
 \end{equation*}
 %
-where $\Delta^{(m+1)}$ can refer to either \eqref{eqn:rel_conv} or \eqref{eqn:abs_conv}, and $\text{sd}(\cdot)$ and $\text{mean}(\cdot)$ are the sample standard deviation and mean functions, respectively. If $\text{cv}(\Delta^{(m+1)}) > \text{cv}(\Delta^{(m)})$, then $D := D + \lfloor D/\delta \rfloor$, for some small positive integer $\delta$. We run the MCEM algorithm with a small $D$ (by default for 30 iterations) before implementing this update rule in order to get into the approximately correct parameter region. In our software, $\delta$ can be chosen by the user, with $\delta = 3$ as the default option with $D = 100$.
+where $\Delta^{(m+1)}$ can refer to either \eqref{eqn:rel_conv} or \eqref{eqn:abs_conv}, and $\text{sd}(\cdot)$ and $\text{mean}(\cdot)$ are the sample standard deviation and mean functions, respectively. If $\text{cv}(\Delta^{(m+1)}) > \text{cv}(\Delta^{(m)})$, then $N := N + \lfloor N/\delta \rfloor$, for some small positive integer $\delta$. We run the MCEM algorithm with a small $N$ (by default for $200K$ iterations) before implementing this update rule in order to get into the approximately correct parameter region. In our software, $\delta$ can be chosen by the user, with $\delta = 3$ as the default option with $N = 100$.
 
-By default, $\epsilon_1$ is fixed at $0.001$, and $\epsilon_2$ and $\epsilon_3$ are both fixed at $0.005$. As the monotonicity property is lost due to the Monte Carlo integrations in MCEM, convergence might be prematurely declared due to stochasticity if the $\epsilon$ values are too large. To reduce the chance of this occurring, we require that the stopping rule is satisfied for 3 consecutive iterations \cite{Booth1999, Ripatti2002}.
+By default, $\epsilon_1$ is fixed at $0.001$, and $\epsilon_0$ and $\epsilon_2$ are both fixed at $0.005$. As the monotonicity property is lost due to the Monte Carlo integrations in MCEM, convergence might be prematurely declared due to stochasticity if the $\epsilon$ values are too large. To reduce the chance of this occurring, we require that the stopping rule is satisfied for 3 consecutive iterations \cite{Booth1999, Ripatti2002}.
 
 \subsubsection{Likelihood evaluation at maximum}
 
@@ -268,7 +268,7 @@ We consider two standard error (SE) estimators:
 			These are estimated by sampling $n$ subjects with replacement and re-labelling the subjects with indices $i^\prime = 1, \dots, n$. We then re-fit the model to the bootstrap-sampled dataset. It is important to note that we sample patients, not individual data points. This is repeated $B$-times. For each iteration, we extract the model parameter estimates for $(\beta^\top, \text{vech}(D), \sigma_1^2, \dots, \sigma_K^2, \gamma_v^\top, \gamma_y^\top)$. Note that as the the event times might be tied, the dimension of the baseline of $\lambda_0(t)$ will vary for each iteration; therefore, we do not consider standard error estimates of the baseline hazard function. When $B$ is sufficiently large, the SEs can be estimated from the estimated coefficients. Alternatively, $100(1-\alpha)$\%-confidence intervals can be estimated from the the $100\alpha/2$-th and $100(1-\alpha/2)$-th percentiles.
 \end{enumerate}
 %
-The preferred SE estimates are those using the bootstrap method, owing to the fact that $\hat{\lambda}_0(t)$ will generally be a high-dimensional vector, which might lead to numerical difficulties in the inversion of the observed information matrix \cite{Rizopoulos2012}, and also because the profile likelihood estimates based on the usual observed information matrix approach are known to be underestimated \cite{Hsieh2006}. The reason for this is that the profile estimates are implicit, since the posterior expectations, given by \eqref{eqn:expectation}, depend on the parameters being estimated, including $\lambda_0(t)$ \cite[page 67]{Rizopoulos2012}. On the flip side, the bootstrap estimates are computationally expensive. Nonetheless, at the model development stage, it is often of interest to gauge the strength of association of model covariates. For this reason, we propose use of the approximate SE estimator. Although these approximate SEs were calculated by \textcite{Lin2002} for inference, we recommend that for the final model, the bootstrap SEs are estimated.
+The preferred SE estimates are those using the bootstrap method, owing to the fact that $\hat{\lambda}_0(t)$ will generally be a high-dimensional vector, which might lead to numerical difficulties in the inversion of the observed information matrix \cite{Rizopoulos2012}, and also because the profile likelihood estimates based on the usual observed information matrix approach are known to be underestimated \cite{Hsieh2006}. The reason for this is that the profile estimates are implicit, since the posterior expectations, given by \eqref{eqn:expectation}, depend on the parameters being estimated, including $\lambda_0(t)$ \cite[page 67]{Rizopoulos2012}. On the flip side, the bootstrap estimates are computationally expensive. Nonetheless, at the model development stage, it is often of interest to gauge the strength of association of model covariates. For this reason, we propose use of the approximate SE estimator. Although these approximate SEs were calculated by \textcite{Lin2002} for inference, we currently recommend that for the final model, the bootstrap SEs are estimated.
 
 Owing to the estimation approach described in Appendix~\ref{app:score_eqns}, we calculate approximate SEs for $\theta_{-\lambda_0} = (\beta^\top, \text{vech}(D), \sigma_1^2, \dots, \sigma_K^2, \gamma^\top)$ using the profile score vectors
 %
