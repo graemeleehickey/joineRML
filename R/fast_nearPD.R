@@ -1,7 +1,7 @@
 #' Compute the nearest positive definite matrix to an approximate one
 #'
 #' @keywords internal
-nearPD <- function (M, eig.tol = 1e-06, conv.tol = 1e-07, posd.tol = 1e-08,
+fast_nearPD <- function (M, eig.tol = 1e-06, conv.tol = 1e-07, posd.tol = 1e-08,
                     maxits = 100) {
   # Code is from JM package (v. 1.4-5) by Dimitris Rizopoulos
   # Copied here due to function being non-exported by JM package, and also because

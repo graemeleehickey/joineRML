@@ -70,7 +70,7 @@ stepEM <- function(theta, l, t, z, nMC, verbose, gammaOpt, postRE, se.approx) {
   # Ai <- lapply(Ai, FUN = function(a) {
   #   if (any(eigen(a, symmetric = TRUE)$values < 0)) {
   #     print("Non-PSD matrix detected!")
-  #     a <- nearPD(a)
+  #     a <- fast_nearPD(a)
   #   } else {
   #     a
   #   }
