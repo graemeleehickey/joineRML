@@ -23,6 +23,8 @@ List gammaUpdate(Rcpp::List b_, Rcpp::List z_, Rcpp::List w_,
   // loop over subjects
   for (int i=0; i<w_.size(); i++) {
 
+    Rcpp::checkUserInterrupt();
+
     // extract matrices from lists for subject i
     arma::mat b = Rcpp::as<arma::mat>(b_[i]);
     arma::mat z = Rcpp::as<arma::mat>(z_[i]);
