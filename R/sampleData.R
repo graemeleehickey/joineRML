@@ -45,7 +45,6 @@ sampleData <- function(object, size = NULL) {
   data <- object$data
   survData <- object$survData
   id <- object$id
-  timeVar <- object$timeVar
   id.labs <- unique(survData[ , id])
   surv.time.lab <- all.vars(object$formSurv)[1]
   n <- length(id.labs)
