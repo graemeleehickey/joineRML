@@ -50,13 +50,14 @@ algorithm. Default is \code{FALSE}.}
   \item{\code{convCrit}}{character string: the convergence criterion to be
   used. See \strong{Details}.}
 
-  \item{\code{approxInfo}}{logical: should the information matrix in the
-  Newton-Raphson step for the \eqn{\gamma} parameters be calculated using an
-  approximation based on the empirical information matrix? If it is used,
-  then the step-length is adjusted by a nominal scaling parameter of 0.5 in
-  order to increase the probability that the \emph{Q}-function in the MCEM
-  algorithm is increased at each iteration (McLachlan and Krishnan, 2008).
-  Default is \code{FALSE}, which corresponds to an exact calculation.}
+  \item{\code{gammaOpt}}{character string: by default (\code{gammaOpt='NR'}),
+  \eqn{\gamma} is updated using a one-step Newton-Raphson iteration, with the
+  Hessian matrix calculated exactly. If \code{gammaOpt='GN'}, a Gauss-Newton
+  algorithm-type iteration is implemented, where the Hessian matrix is
+  approximated based on calculations similar to those used for calculating
+  the empirical information matrix? If it is used, then the step-length is
+  adjusted by a nominal scaling parameter of 0.5 in order to reduce the
+  chance of over-shooting the maximizer.}
 
   \item{\code{tol0}}{numeric: tolerance value for convergence in the
   parameters; see \strong{Details}. Default is \code{5e-03}.}

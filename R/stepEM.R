@@ -7,7 +7,7 @@
 #' algorithm iteration, and instead reports the called for post-fit statistics.
 #'
 #' @keywords internal
-stepEM <- function(theta, l, t, z, nMC, verbose, approxInfo, postRE, se.approx) {
+stepEM <- function(theta, l, t, z, nMC, verbose, gammaOpt, postRE, se.approx) {
 
   # Input parameter estimates
   D <- theta$D
@@ -167,7 +167,7 @@ stepEM <- function(theta, l, t, z, nMC, verbose, approxInfo, postRE, se.approx) 
   haz.hat <- hazHat(expvstargam, fti, den, nev)
   haz.hat <- as.vector(haz.hat)
 
-  if (approxInfo) {
+  if (gammaOpt == "GN") {
     gDelta <- gammaUpdate_approx(bi.y, Zit.fail, expvstargam, fti, den, haz.hat,
                                  V, survdat2.list, K, q, nev.uniq)$gDelta
   } else {
