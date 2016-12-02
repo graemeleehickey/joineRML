@@ -25,7 +25,7 @@ arma::mat mvrnormArma(int n, arma::vec mu,
 List bSim(int n, List Mean_, List Sigma_) {
   List b(Mean_.size());
   for(int i=0; i<Mean_.size(); i++) {
-    arma::mat m = Rcpp::as<arma::mat>(Mean_[i]);
+    arma::vec m = Rcpp::as<arma::vec>(Mean_[i]);
     arma::mat s = Rcpp::as<arma::mat>(Sigma_[i]);
     b[i] = mvrnormArma(n, m, s);
   }

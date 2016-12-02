@@ -78,7 +78,7 @@ stepEM <- function(theta, l, t, z, nMC, verbose, gammaOpt, postRE, se.approx) {
 
   # MVN mean vector for [y | b]
   Mi <- mapply(function(a, z, s, y, X) {
-    a %*% (z %*% s %*% (y - X %*% beta))
+    as.vector(a %*% (z %*% s %*% (y - X %*% beta)))
   },
   a = Ai, z = Zit, s = Sigmai.inv, y = yi, X = Xi,
   SIMPLIFY = FALSE)
