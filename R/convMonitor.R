@@ -30,10 +30,10 @@ convMonitor <- function(theta, theta.new, log.lik, log.lik.new, con, verbose) {
   cond4 <- sasdelta()
 
   # Absolute parameter change (excl. large terms): for reporting only
-  max.absdelta.pars2 <- ifelse(all(mag), NA, max(unlist(absdelta.pars)[!mag]))
+  max.absdelta.pars2 <- ifelse(any(!mag), max(unlist(absdelta.pars)[!mag]), NA)
 
   # Relative parameter change (excl. near-zero terms): for reporting only
-  max.reldelta.pars2 <- ifelse(!all(mag), NA, max(unlist(reldelta.pars)[mag]))
+  max.reldelta.pars2 <- ifelse(any(mag), max(unlist(reldelta.pars)[mag]), NA)
 
   # Log-likelihood: for reporting only
   rel.ll <- (log.lik.new - log.lik) / (log.lik + con$tol1)
@@ -55,7 +55,7 @@ convMonitor <- function(theta, theta.new, log.lik, log.lik.new, con, verbose) {
               round(max.absdelta.pars, 6), "for",
               names(which.max(abs(unlist(absdelta.pars)))), "\n"))
     if (any(!mag)) {
-      cat(paste("     ---> for parameters < ", con$rav, "=",
+      cat(paste("      ---> for parameters  <", con$rav, "=",
                 round(max.absdelta.pars2, 6), "for",
                 names(which.max(abs(unlist(absdelta.pars)[!mag]))), "\n"))
     }
@@ -65,7 +65,7 @@ convMonitor <- function(theta, theta.new, log.lik, log.lik.new, con, verbose) {
     if (any(mag)) {
       cat(paste("      ---> for parameters >=", con$rav, "=",
                 round(max.reldelta.pars2, 6), "for",
-                names(which.max(abs(unlist(reldelta.pars)[mag]))), "\n"))
+                names(which.max(unlist(reldelta.pars)[mag])), "\n"))
     }
     cat(paste("Relative change in log-likelihood =", round(rel.ll, 6), "\n"))
     cat(paste("Converged:", conv, "\n\n"))
