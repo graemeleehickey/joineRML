@@ -37,8 +37,12 @@ If \code{D=NULL} (default), an identity matrix is assumed.}
 \item{model}{follows the model definition in the \code{\link[joineR]{joint}}
 function. See \strong{Details} for choices.}
 
-\item{theta0, theta1}{scale (\eqn{>0}) and shape parameters for a Gompertz
-distribution used to simulate the time-to-event outcome.}
+\item{theta0}{the log-scale parameter for a Gompertz distribution used to
+simulate the time-to-event outcome. The scale is calculated as
+\eqn{\exp(\theta_0)} to ensure it is positive.}
+
+\item{theta1}{the shape parameter for a Gompertz distribution used to
+simulate the time-to-event outcome.}
 
 \item{censoring}{logical: if \code{TRUE}, includes an independent censoring
 time.}
@@ -60,19 +64,21 @@ This function simulates multivariate longitudinal and time-to-event data from
 a joint model.
 }
 \details{
-The function \code{simData} simulates data from a joint model,
-  similar to that performed in Henderson et al. (2000). It works by first
-  simulating multivariate longitudinal data for all possible follow-up times
-  using random draws for the multivariate Gaussian random effects and
-  residual error terms. Data can be simulated assuming either
-  random-intercepts only in each of the longitudinal sub-models, or
-  random-intercepts and random-slopes. Currently, all models must have the
-  same structure. The failure times are simulated from a Gompertz
-  proportional hazards tie-to-event model conditional on either known
-  baseline effects (\code{model='int'}), or a predictable time-varying
-  process (\code{model='intslope'}). In the case of the former, the
-  methodology of Bender et al. (2005) is used to simulate the time, whilst in
-  the case of latter, the approach of Austin (2012) is used.
+The function \code{simData} simulates data from a joint model, 
+  similar to that performed in Henderson et al. (2000). It works by first 
+  simulating multivariate longitudinal data for all possible follow-up times 
+  using random draws for the multivariate Gaussian random effects and 
+  residual error terms. Data can be simulated assuming either 
+  random-intercepts only in each of the longitudinal sub-models, or 
+  random-intercepts and random-slopes. Currently, all models must have the 
+  same structure. The failure times are simulated from proportional hazards
+  time-to-event models; either an exponential distribution (in the case of
+  random-intercepts models) or Gompertz distribution (random-intercept and
+  random-slopes models) conditional on either known baseline effects
+  (\code{model='int'}), or a predictable time-varying process
+  (\code{model='intslope'}). In the case of the former, the methodology of
+  Bender et al. (2005) is used to simulate the time, whilst in the case of
+  latter, the approach of Austin (2012) is used.
 }
 \examples{
 beta <- rbind(c(0.5, 2, 1, 1),

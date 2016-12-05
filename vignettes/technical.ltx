@@ -239,7 +239,7 @@ The choice of $N$ and the monitoring of convergence are conflated when applying 
 %
 where $\Delta^{(m+1)}$ can refer to either \eqref{eqn:rel_conv} or \eqref{eqn:abs_conv}, and $\text{sd}(\cdot)$ and $\text{mean}(\cdot)$ are the sample standard deviation and mean functions, respectively. If $\text{cv}(\Delta^{(m+1)}) > \text{cv}(\Delta^{(m)})$, then $N := N + \lfloor N/\delta \rfloor$, for some small positive integer $\delta$. We run the MCEM algorithm with a small $N$ (by default for $200K$ iterations) before implementing this update rule in order to get into the approximately correct parameter region. In our software, $\delta$ can be chosen by the user, with $\delta = 3$ as the default option with $N = 100$.
 
-By default, $\epsilon_1$ is fixed at $0.001$, and $\epsilon_0$ and $\epsilon_2$ are both fixed at $0.005$. As the monotonicity property is lost due to the Monte Carlo integrations in MCEM, convergence might be prematurely declared due to stochasticity if the $\epsilon$ values are too large. To reduce the chance of this occurring, we require that the stopping rule is satisfied for 3 consecutive iterations \cite{Booth1999, Ripatti2002}.
+By default, $\epsilon_1$ is fixed at $0.001$, and $\epsilon_0$ and $\epsilon_2$ are both fixed at $0.005$. As the monotonicity property is lost due to the Monte Carlo integrations in MCEM, convergence might be prematurely declared due to stochasticity if the $\epsilon$ values are too large. To reduce the chance of this occurring, we require that the stopping rule is satisfied for 3 consecutive iterations \cite{Booth1999, Ripatti2002}. However, in any case, trace plots should be inspected to confirm convergence is appropriate.
 
 \subsubsection{Likelihood evaluation at maximum}
 
@@ -291,7 +291,7 @@ To assess properties of the model estimation algorithm, for example bias and cov
 %
 Conditional on model parameters, simulation of complete longitudinal data for subjects is trivial by sampling from multivariate normal distributions. In practice, it is preferable to simulate data for fixed time points $0, 1, \dots, T_{\max}$.
 
-The event times are simulated from a Gompertz distribution. In the case of (1), this is equivalent to simulation of event times conditional on known baseline covariates. In the case of (2), this is equivalent to simulation of event times conditional on a linear time-varying covariate. The approaches to simulating event times under each of these situations is reported in \textcite{Bender2005} and \textcite{Austin2012}, respectively. To illustrate (2), we first note that we can re-write \eqref{eqn:survival} as
+The event times are simulated from an exponential distribution in the case of the random-intercepts model, or Gompertz distribution in the case of a random-intercepts and random-slopes model. In the case of (1), this is equivalent to simulation of event times conditional on known baseline covariates. In the case of (2), this is equivalent to simulation of event times conditional on a linear time-varying covariate. The approaches to simulating event times under each of these situations is reported in \textcite{Bender2005} and \textcite{Austin2012}, respectively. To illustrate (2), we first note that we can re-write \eqref{eqn:survival} as
 %
 \begin{eqnarray*}
 	&& \lambda_0(t) \exp \left\{\left(v_i^\top(t) \gamma_v + \sum_{k=1}^K \gamma_{yk} b_{ik,0}\right) + \left(\sum_{k=1}^K \gamma_{yk} b_{ik,1}\right)t\right\}\\
