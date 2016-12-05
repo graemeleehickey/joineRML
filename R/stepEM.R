@@ -188,12 +188,12 @@ stepEM <- function(theta, l, t, z, nMC, verbose, gammaOpt, postRE, se.approx) {
   #-----------------------------------------------------
 
   # beta
-  XtSX <- mapply(function(xt, x) {
+  XtX <- mapply(function(xt, x) {
     xt %*% x
   },
   xt = Xit, x = Xi,
   SIMPLIFY = FALSE)
-  XtSX.sum <- Reduce("+", XtSX)
+  XtX.sum <- Reduce("+", XtX)
 
   rr <- mapply(function(xt, y, z, b) {
     xt %*% (y - (z %*% b))
@@ -201,7 +201,7 @@ stepEM <- function(theta, l, t, z, nMC, verbose, gammaOpt, postRE, se.approx) {
   xt = Xit, y = yi, z = Zi, b = Eb)
   rr.sum <- rowSums(rr)
 
-  beta.new <- solve(XtSX.sum, rr.sum)
+  beta.new <- solve(XtX.sum, rr.sum)
   names(beta.new) <- names(beta)
 
   #-----------------------------------------------------
