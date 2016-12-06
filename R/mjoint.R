@@ -689,9 +689,10 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
   rownames(hx.beta) <- paste0("long_", rownames(hx.beta))
   hx.gamma <- sapply(all.iters, function(x) x$gamma)
   rownames(hx.gamma) <- paste0("surv_", rownames(hx.gamma))
-  hx.D <- sapply(all.iters, function(x) {
-    x$D[lower.tri(x$D, diag = TRUE)]
-  })
+  hx.D <- sapply(all.iters, function(x) x$D[lower.tri(x$D, diag = TRUE)])
+  if (sum(r) == 1) {
+    hx.D <- matrix(hx.D, nrow = 1)
+  }
   ltri <- lower.tri(D, diag = TRUE)
   rownames(hx.D) <- paste0("D_", row = row(D)[ltri], ",", col = col(D)[ltri])
   hx.haz <- sapply(all.iters, function(x) x$haz)

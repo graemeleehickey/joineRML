@@ -99,10 +99,14 @@ stepEM <- function(theta, l, t, z, nMC, verbose, gammaOpt, postRE, se.approx) {
   }
 
   # Expanded gamma_y (repeated for each random effect term)
-  if (q > 0) {
-    gamma.scale <- diag(rep(gamma[-(1:q)], r))
+  if (sum(r) > 1) {
+    if (q > 0) {
+      gamma.scale <- diag(rep(gamma[-(1:q)], r))
+    } else {
+      gamma.scale <- diag(rep(gamma, r))
+    }
   } else {
-    gamma.scale <- diag(rep(gamma, r))
+    gamma.scale <- gamma[length(gamma)] # just a single gamma_y
   }
 
   # exp{W(tj, b)}
@@ -303,7 +307,12 @@ stepEM <- function(theta, l, t, z, nMC, verbose, gammaOpt, postRE, se.approx) {
     SIMPLIFY = "array")
 
     # E[b]
-    Eb.flat <- t(simplify2array(Eb))
+    Eb.flat <- simplify2array(Eb)
+    if (sum(r) > 1) {
+      Eb.flat <- t(Eb.flat)
+    } else {
+      Eb.flat <- as.matrix(Eb.flat, ncol = 1)
+    }
     colnames(Eb.flat) <- colnames(D)
 
     out$Eb = Eb.flat

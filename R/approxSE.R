@@ -72,6 +72,9 @@ approxSE <- function(theta, l, t, z, m) {
     0.5 * (2*D - diag(D)) - 0.5 * (2 * b2 - diag(b2))
   })
   sDinv <- sapply(sDinv, function(d) d[lower.tri(d, diag = TRUE)])
+  if (sum(r) == 1) {
+    sDinv <- matrix(sDinv, nrow = 1)
+  }
 
   ltri <- lower.tri(D, diag = TRUE)
   rownames(sDinv) <- paste0("Dinv_", row = row(D)[ltri], ",", col = col(D)[ltri])
