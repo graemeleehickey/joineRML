@@ -585,6 +585,9 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
         if (param %in% c("beta", "gamma")) {
           names(theta[[param]]) <- names(get(param))
         }
+        if (param == "D") {
+          rownames(D) <- colnames(D) <- D.names
+        }
       }
     }
   }
