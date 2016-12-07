@@ -11,38 +11,38 @@ expWArma <- function(imat_, zt_, b_, gam) {
 #' Calculation of E[exp{W(tj, b)}]
 #'
 #' @keywords internal
-EexpWArma <- function(w_, f_, d_) {
-    .Call('joineRML_EexpWArma', PACKAGE = 'joineRML', w_, f_, d_)
+EexpWArma <- function(w_, pb_) {
+    .Call('joineRML_EexpWArma', PACKAGE = 'joineRML', w_, pb_)
 }
 
 #' Newton-Raphson updates of gamma (E-step and M-step) using an empirical
 #' infomration matrix approximation
 #'
 #' @keywords internal
-gammaUpdate_approx <- function(b_, z_, w_, f_, d_, haz, v_, h_, K, q, nev) {
-    .Call('joineRML_gammaUpdate_approx', PACKAGE = 'joineRML', b_, z_, w_, f_, d_, haz, v_, h_, K, q, nev)
+gammaUpdate_approx <- function(b_, z_, w_, pb_, haz, v_, h_, K, q, nev) {
+    .Call('joineRML_gammaUpdate_approx', PACKAGE = 'joineRML', b_, z_, w_, pb_, haz, v_, h_, K, q, nev)
 }
 
 #' Newton-Raphson updates of gamma (E-step and M-step) using an exact observed
 #' information calculation
 #'
 #' @keywords internal
-gammaUpdate <- function(b_, z_, w_, f_, d_, haz, v_, h_, K, q, nev) {
-    .Call('joineRML_gammaUpdate', PACKAGE = 'joineRML', b_, z_, w_, f_, d_, haz, v_, h_, K, q, nev)
+gammaUpdate <- function(b_, z_, w_, pb_, haz, v_, h_, K, q, nev) {
+    .Call('joineRML_gammaUpdate', PACKAGE = 'joineRML', b_, z_, w_, pb_, haz, v_, h_, K, q, nev)
 }
 
 #' lambda0(t) for profile score function of beta
 #'
 #' @keywords internal
-hazHat <- function(w_, f_, d_, nev) {
-    .Call('joineRML_hazHat', PACKAGE = 'joineRML', w_, f_, d_, nev)
+hazHat <- function(w_, pb_, nev) {
+    .Call('joineRML_hazHat', PACKAGE = 'joineRML', w_, pb_, nev)
 }
 
 #' Updates of lambda0 (E-step and M-step)
 #'
 #' @keywords internal
-lambdaUpdate <- function(b_, imat_, zt_, f_, v_, d_, gam, gam_vec, q, nev, h_) {
-    .Call('joineRML_lambdaUpdate', PACKAGE = 'joineRML', b_, imat_, zt_, f_, v_, d_, gam, gam_vec, q, nev, h_)
+lambdaUpdate <- function(b_, imat_, zt_, pb_, v_, gam, gam_vec, q, nev, h_) {
+    .Call('joineRML_lambdaUpdate', PACKAGE = 'joineRML', b_, imat_, zt_, pb_, v_, gam, gam_vec, q, nev, h_)
 }
 
 #' Antithetic simulation of MVN random variables

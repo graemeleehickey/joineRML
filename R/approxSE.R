@@ -46,8 +46,7 @@ approxSE <- function(theta, l, t, z, m) {
   EbbT <- m$EbbT
   bi.y <- m$bi.y
   expvstargam <- m$expvstargam
-  fti <- m$fti
-  den <- m$den
+  pb.yt <- m$pb.yt
   haz.hat <- m$haz.hat
 
   #*****************************************************
@@ -83,7 +82,7 @@ approxSE <- function(theta, l, t, z, m) {
 
   # gamma
 
-  sgamma <- gammaUpdate(bi.y, Zit.fail, expvstargam, fti, den, haz.hat,
+  sgamma <- gammaUpdate(bi.y, Zit.fail, expvstargam, pb.yt, haz.hat,
                         V, survdat2.list, K, q, nev.uniq)$scorei
 
   rownames(sgamma) <- names(gamma)

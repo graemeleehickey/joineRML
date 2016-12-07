@@ -5,7 +5,7 @@
 \title{Newton-Raphson updates of gamma (E-step and M-step) using an empirical
 infomration matrix approximation}
 \usage{
-gammaUpdate_approx(b_, z_, w_, f_, d_, haz, v_, h_, K, q, nev)
+gammaUpdate_approx(b_, z_, w_, pb_, haz, v_, h_, K, q, nev)
 }
 \description{
 Newton-Raphson updates of gamma (E-step and M-step) using an empirical

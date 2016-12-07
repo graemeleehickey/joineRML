@@ -24,14 +24,12 @@ List expWArma(Rcpp::List imat_, Rcpp::List zt_,
 //'
 //' @keywords internal
 // [[Rcpp::export]]
-List EexpWArma(Rcpp::List w_, Rcpp::List f_,
-               Rcpp::List d_) {
+List EexpWArma(Rcpp::List w_, Rcpp::List pb_) {
   List out(w_.size());
   for (int i=0; i<w_.size(); i++) {
     arma::mat w = Rcpp::as<arma::mat>(w_[i]);
-    arma::vec f = Rcpp::as<arma::vec>(f_[i]);
-    double d    = Rcpp::as<double>(d_[i]);
-    out[i] = mean(w.each_col() % f, 0) / d;
+    arma::vec pb = Rcpp::as<arma::vec>(pb_[i]);
+    out[i] = mean(w.each_col() % pb, 0);
   }
   return(out);
 }

@@ -4,7 +4,7 @@
 \alias{EexpWArma}
 \title{Calculation of E[exp{W(tj, b)}]}
 \usage{
-EexpWArma(w_, f_, d_)
+EexpWArma(w_, pb_)
 }
 \description{
 Calculation of E[exp{W(tj, b)}]

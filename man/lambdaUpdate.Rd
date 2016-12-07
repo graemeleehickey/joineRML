@@ -4,7 +4,7 @@
 \alias{lambdaUpdate}
 \title{Updates of lambda0 (E-step and M-step)}
 \usage{
-lambdaUpdate(b_, imat_, zt_, f_, v_, d_, gam, gam_vec, q, nev, h_)
+lambdaUpdate(b_, imat_, zt_, pb_, v_, gam, gam_vec, q, nev, h_)
 }
 \description{
 Updates of lambda0 (E-step and M-step)

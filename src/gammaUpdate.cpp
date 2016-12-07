@@ -9,8 +9,8 @@ using namespace Rcpp;
 //' @keywords internal
 // [[Rcpp::export]]
 List gammaUpdate(Rcpp::List b_, Rcpp::List z_, Rcpp::List w_,
-                      Rcpp::List f_, Rcpp::List d_, arma::vec haz,
-                      Rcpp::List v_, Rcpp::List h_, int K, int q, int nev) {
+                 Rcpp::List pb_, arma::vec haz,
+                 Rcpp::List v_, Rcpp::List h_, int K, int q, int nev) {
 
   // declare score, E[delta x v*], and information matrix
   arma::mat Si = arma::zeros<arma::mat>(q+K, w_.size());
@@ -29,10 +29,9 @@ List gammaUpdate(Rcpp::List b_, Rcpp::List z_, Rcpp::List w_,
     arma::mat b = Rcpp::as<arma::mat>(b_[i]);
     arma::mat z = Rcpp::as<arma::mat>(z_[i]);
     arma::mat w = Rcpp::as<arma::mat>(w_[i]);
-    arma::vec f = Rcpp::as<arma::vec>(f_[i]);
+    arma::vec pb = Rcpp::as<arma::vec>(pb_[i]);
     arma::vec v = Rcpp::as<arma::vec>(v_[i]);
     Rcpp::DataFrame h = Rcpp::as<Rcpp::DataFrame>(h_[i]);
-    double d = Rcpp::as<double>(d_[i]);
 
     // subjects who are censored before the first failure time
     // do not contribute towards \gamma estimation
@@ -45,14 +44,14 @@ List gammaUpdate(Rcpp::List b_, Rcpp::List z_, Rcpp::List w_,
     arma::mat Ii_int(q+K, q+K); // information matrix (uninitialized) for subject i
     arma::mat bzt = b * z; // b x t(z)
     arma::mat bztev = bzt % repmat(w, 1, K); // b x t(Z) . exp(v*gamma)
-    arma::mat Eexpvj = (mean(w.each_col() % f, 0) / d) % trans(haz.subvec(0, nj-1));
+    arma::mat Eexpvj = (mean(w.each_col() % pb, 0)) % trans(haz.subvec(0, nj-1));
     arma::mat Eexpv = sum(Eexpvj, 1); // lambda0 x E[exp(v*gamma)]
     arma::mat hexpand = trans(repmat(haz.subvec(0, nj-1), K, 1)); // K reps of lambda0(tj)
-    arma::mat outj = (mean(bztev.each_col() % f, 0) / d) % hexpand;
+    arma::mat outj = (mean(bztev.each_col() % pb, 0)) % hexpand;
     arma::mat bzt2ev = bzt % bztev; // [b x t(z)]^2 . exp(v*gamma)
-    arma::mat Ii_int_Kdiag = (mean(bzt2ev.each_col() % f, 0) / d) % hexpand;
+    arma::mat Ii_int_Kdiag = (mean(bzt2ev.each_col() % pb, 0)) % hexpand;
 
-    arma::mat Eb = mean(b.each_col() % f, 0) / d;
+    arma::mat Eb = mean(b.each_col() % pb, 0);
 
     // loop of K longitudinal outcomes
     for(int k=0; k<K; k++) {
@@ -68,7 +67,7 @@ List gammaUpdate(Rcpp::List b_, Rcpp::List z_, Rcpp::List w_,
       // cross-prod (off-diagonal) elements for K Zb's only
       for(int k2=k+1; k2<K; k2++) {
         arma::mat bztcross = bztev.cols(nj*k, nj*(k+1)-1) % bzt.cols(nj*k2, nj*(k2+1)-1);
-        Ii_int(q+k, k2+q) = arma::as_scalar(sum((mean(bztcross.each_col() % f, 0) / d) % trans(haz.subvec(0, nj-1)), 1));
+        Ii_int(q+k, k2+q) = arma::as_scalar(sum((mean(bztcross.each_col() % pb, 0)) % trans(haz.subvec(0, nj-1)), 1));
         Ii_int(k2+q, q+k) = Ii_int(q+k, k2+q);
       }
 
@@ -117,8 +116,7 @@ List gammaUpdate(Rcpp::List b_, Rcpp::List z_, Rcpp::List w_,
 //'
 //' @keywords internal
 // [[Rcpp::export]]
-arma::mat hazHat(Rcpp::List w_, Rcpp::List f_, Rcpp::List d_,
-                 arma::vec nev) {
+arma::mat hazHat(Rcpp::List w_, Rcpp::List pb_, arma::vec nev) {
 
   arma::vec haz = arma::zeros<arma::vec>(nev.n_elem);
 
@@ -127,10 +125,9 @@ arma::mat hazHat(Rcpp::List w_, Rcpp::List f_, Rcpp::List d_,
 
     // extract matrices from lists for subject i
     arma::mat w = Rcpp::as<arma::mat>(w_[i]);
-    arma::vec f = Rcpp::as<arma::vec>(f_[i]);
-    double d = Rcpp::as<double>(d_[i]);
+    arma::vec pb = Rcpp::as<arma::vec>(pb_[i]);
 
-    haz.subvec(0, w.n_cols-1) += arma::trans(mean(w.each_col() % f, 0) / d);
+    haz.subvec(0, w.n_cols-1) += arma::trans(mean(w.each_col() % pb, 0));
 
   }
 

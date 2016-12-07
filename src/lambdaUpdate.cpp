@@ -8,9 +8,9 @@ using namespace Rcpp;
 //' @keywords internal
 // [[Rcpp::export]]
 arma::mat lambdaUpdate(Rcpp::List b_, Rcpp::List imat_, Rcpp::List zt_,
-                      Rcpp::List f_, Rcpp::List v_, Rcpp::List d_,
-                      arma::mat gam, arma::vec gam_vec, int q, arma::vec nev,
-                      Rcpp::List h_) {
+                       Rcpp::List pb_, Rcpp::List v_,
+                       arma::mat gam, arma::vec gam_vec, int q, arma::vec nev,
+                       Rcpp::List h_) {
 
   arma::vec haz = arma::zeros<arma::vec>(nev.n_elem);
 
@@ -21,9 +21,8 @@ arma::mat lambdaUpdate(Rcpp::List b_, Rcpp::List imat_, Rcpp::List zt_,
     arma::mat b  = Rcpp::as<arma::mat>(b_[i]);
     arma::mat I  = Rcpp::as<arma::mat>(imat_[i]);
     arma::mat zt = Rcpp::as<arma::mat>(zt_[i]);
-    arma::vec f  = Rcpp::as<arma::vec>(f_[i]);
+    arma::vec pb  = Rcpp::as<arma::vec>(pb_[i]);
     arma::vec v  = Rcpp::as<arma::vec>(v_[i]);
-    double d = Rcpp::as<double>(d_[i]);
     Rcpp::DataFrame h = Rcpp::as<Rcpp::DataFrame>(h_[i]);
 
     // subjects who are censored before the first failure time
@@ -32,7 +31,7 @@ arma::mat lambdaUpdate(Rcpp::List b_, Rcpp::List imat_, Rcpp::List zt_,
     if (tj_ind == 0) continue;
 
     arma::mat expW_new = exp((b * gam) * trans(I * zt));
-    arma::mat EexpVstar = mean(expW_new.each_col() % f, 0) / d;
+    arma::mat EexpVstar = mean(expW_new.each_col() % pb, 0);
     if (q > 0) {
       EexpVstar *= arma::as_scalar(exp(v.t() * gam_vec.subvec(0, q-1)));
     }

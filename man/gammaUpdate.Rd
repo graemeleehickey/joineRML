@@ -5,7 +5,7 @@
 \title{Newton-Raphson updates of gamma (E-step and M-step) using an exact observed
 information calculation}
 \usage{
-gammaUpdate(b_, z_, w_, f_, d_, haz, v_, h_, K, q, nev)
+gammaUpdate(b_, z_, w_, pb_, haz, v_, h_, K, q, nev)
 }
 \description{
 Newton-Raphson updates of gamma (E-step and M-step) using an exact observed

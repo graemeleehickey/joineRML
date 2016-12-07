@@ -136,6 +136,13 @@ stepEM <- function(theta, l, t, z, nMC, verbose, gammaOpt, postRE, se.approx) {
   # Expectation denominator
   den <- lapply(fti, mean)
 
+  # f(T, delta | b) / den
+  pb.yt <- mapply(function(f, d) {
+    f / d
+  },
+  f = fti, d = den,
+  SIMPLIFY = FALSE)
+
   t1 <- Sys.time()
 
   #*****************************************************
@@ -143,21 +150,21 @@ stepEM <- function(theta, l, t, z, nMC, verbose, gammaOpt, postRE, se.approx) {
   #*****************************************************
 
   # E[b]
-  Eb <- mapply(function(b, f, d) {
-    colMeans(b * f) / d
+  Eb <- mapply(function(b, pb) {
+    colMeans(b * pb)
   },
-  b = bi.y, f = fti, d = den,
+  b = bi.y, pb = pb.yt,
   SIMPLIFY = FALSE)
 
   # E[bb^T]
-  EbbT <- mapply(function(b, f, d) {
-    crossprod(b, (b * f)) / (nrow(b) * d)
+  EbbT <- mapply(function(b, pb) {
+    crossprod(b, (b * pb)) / nrow(b)
   },
-  b = bi.y, f = fti, d = den,
+  b = bi.y, pb = pb.yt,
   SIMPLIFY = FALSE)
 
   # E[exp{W(tj, b)}]
-  EexpW <- EexpWArma(expW, fti, den)
+  EexpW <- EexpWArma(expW, pb.yt)
   names(EexpW) <- names(Ai)
 
   # exp{v %*% gamma_v + W(tj)}
@@ -168,14 +175,14 @@ stepEM <- function(theta, l, t, z, nMC, verbose, gammaOpt, postRE, se.approx) {
   SIMPLIFY = FALSE)
 
   # lambda0(t) for profile score function of beta
-  haz.hat <- hazHat(expvstargam, fti, den, nev)
+  haz.hat <- hazHat(expvstargam, pb.yt, nev)
   haz.hat <- as.vector(haz.hat)
 
   if (gammaOpt == "GN") {
-    gDelta <- gammaUpdate_approx(bi.y, Zit.fail, expvstargam, fti, den, haz.hat,
+    gDelta <- gammaUpdate_approx(bi.y, Zit.fail, expvstargam, pb.yt, haz.hat,
                                  V, survdat2.list, K, q, nev.uniq)$gDelta
   } else {
-    gDelta <- gammaUpdate(bi.y, Zit.fail, expvstargam, fti, den, haz.hat,
+    gDelta <- gammaUpdate(bi.y, Zit.fail, expvstargam, pb.yt, haz.hat,
                           V, survdat2.list, K, q, nev.uniq)$gDelta
   }
 
@@ -246,7 +253,7 @@ stepEM <- function(theta, l, t, z, nMC, verbose, gammaOpt, postRE, se.approx) {
     gamma.new.scale <- diag(rep(gamma.new, r))
   }
 
-  haz.new <- lambdaUpdate(bi.y, IW.fail, Zi.fail, fti, V, den,
+  haz.new <- lambdaUpdate(bi.y, IW.fail, Zi.fail, pb.yt, V,
                           gamma.new.scale, gamma.new, q, nev, survdat2.list)
   haz.new <- as.vector(haz.new)
 
@@ -298,12 +305,12 @@ stepEM <- function(theta, l, t, z, nMC, verbose, gammaOpt, postRE, se.approx) {
   if (postRE) {
 
     # Var(b)
-    Vb <- mapply(function(b, f, d, mu) {
-      v <- crossprod(b, (b * f)) / (nrow(b) * d) - tcrossprod(mu)
+    Vb <- mapply(function(b, pb, mu) {
+      v <- (crossprod(b, (b * pb)) / nrow(b)) - tcrossprod(mu)
       rownames(v) <- colnames(v) <- colnames(D)
       v
     },
-    b = bi.y, f = fti, d = den, mu = Eb,
+    b = bi.y, pb = pb.yt, mu = Eb,
     SIMPLIFY = "array")
 
     # E[b]
@@ -332,8 +339,7 @@ stepEM <- function(theta, l, t, z, nMC, verbose, gammaOpt, postRE, se.approx) {
     m$EbbT <- EbbT
     m$bi.y <- bi.y
     m$expvstargam <- expvstargam
-    m$fti <- fti
-    m$den <- den
+    m$pb.yt <- pb.yt
     m$haz.hat <- haz.hat
 
     out$ses <- approxSE(theta, l, t, z, m)

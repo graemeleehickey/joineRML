@@ -4,7 +4,7 @@
 \alias{hazHat}
 \title{lambda0(t) for profile score function of beta}
 \usage{
-hazHat(w_, f_, d_, nev)
+hazHat(w_, pb_, nev)
 }
 \description{
 lambda0(t) for profile score function of beta

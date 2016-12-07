@@ -9,7 +9,7 @@ using namespace Rcpp;
 //' @keywords internal
 // [[Rcpp::export]]
 List gammaUpdate_approx(Rcpp::List b_, Rcpp::List z_, Rcpp::List w_,
-                        Rcpp::List f_, Rcpp::List d_, arma::vec haz,
+                        Rcpp::List pb_, arma::vec haz,
                         Rcpp::List v_, Rcpp::List h_, int K, int q, int nev) {
 
   // declare score and E[delta x v*]
@@ -27,10 +27,9 @@ List gammaUpdate_approx(Rcpp::List b_, Rcpp::List z_, Rcpp::List w_,
     arma::mat b = Rcpp::as<arma::mat>(b_[i]);
     arma::mat z = Rcpp::as<arma::mat>(z_[i]);
     arma::mat w = Rcpp::as<arma::mat>(w_[i]);
-    arma::vec f = Rcpp::as<arma::vec>(f_[i]);
+    arma::vec pb = Rcpp::as<arma::vec>(pb_[i]);
     arma::vec v = Rcpp::as<arma::vec>(v_[i]);
     Rcpp::DataFrame h = Rcpp::as<Rcpp::DataFrame>(h_[i]);
-    double d = Rcpp::as<double>(d_[i]);
 
     // subjects who are censored before the first failure time
     // do not contribute towards \gamma estimation
@@ -42,12 +41,12 @@ List gammaUpdate_approx(Rcpp::List b_, Rcpp::List z_, Rcpp::List w_,
 
     arma::mat bzt = b * z; // b x t(z)
     arma::mat bztev = bzt % repmat(w, 1, K); // b x t(Z) . exp(v*gamma)
-    arma::mat Eexpvj = (mean(w.each_col() % f, 0) / d) % trans(haz.subvec(0, nj-1));
+    arma::mat Eexpvj = (mean(w.each_col() % pb, 0)) % trans(haz.subvec(0, nj-1));
     arma::mat Eexpv = sum(Eexpvj, 1); // lambda0 x E[exp(v*gamma)]
     arma::mat hexpand = trans(repmat(haz.subvec(0, nj-1), K, 1)); // K reps of lambda0(tj)
-    arma::mat outj = (mean(bztev.each_col() % f, 0) / d) % hexpand;
+    arma::mat outj = (mean(bztev.each_col() % pb, 0)) % hexpand;
 
-    arma::mat Eb = mean(b.each_col() % f, 0) / d;
+    arma::mat Eb = mean(b.each_col() % pb, 0);
 
     // loop of K longitudinal outcomes
     for(int k=0; k<K; k++) {
