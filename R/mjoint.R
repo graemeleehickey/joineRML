@@ -280,6 +280,7 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
   #*****************************************************
 
   Call <- match.call()
+  balanced <- FALSE # assume unless proven o/w
 
   # package dependencies
   pkgs <- c("nlme", "Matrix", "survival")
@@ -292,6 +293,7 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
 
   # formulas do not need to be given as lists if K=1
   if (!is.list(formLongFixed)) {
+    balanced <- TRUE
     formLongFixed <- list(formLongFixed)
     formLongRandom <- list(formLongRandom)
     K <- 1
@@ -302,12 +304,15 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
   # data does not need to a list if K=1
   # if K>1 and not a list, assume data balanced
   if (class(data) != "list") {
+    balanced <- TRUE
     data <- list(data)
     if (K > 1) {
       for (k in 2:K) {
         data[[k]] <- data[[1]]
       }
     }
+  } else {
+    balanced <- (length(unique(data)) == 1)
   }
   if (length(data) != K) {
     stop(paste("The number of datasets expected is K =", K))
@@ -449,12 +454,6 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
   tj <- sfit.start$time[sfit.start$n.event > 0]
   nev <- sfit.start$n.event[sfit.start$n.event > 0]
   nev.uniq <- length(tj)
-  if (q > 0) {
-    haz.start <- survival::coxph.detail(sfit)$hazard
-  } else {
-    haz.start <- with(sfit.start, n.event / n.risk)
-    haz.start <- haz.start[sfit.start$n.event > 0]
-  }
 
   survdat2 <- data.frame(survdat[, id], sfit$x, sfit$y[, 1], sfit$y[, 2])
   if (q > 0) {
@@ -546,34 +545,25 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
   # Initial values
   #*****************************************************
 
-  D <- Matrix::bdiag(lapply(lfit, function(u) matrix(nlme::getVarCov(u),
-                                                     dim(nlme::getVarCov(u)))))
-  D <- as.matrix(D)
-  D.names <- c()
-  for (k in 1:K) {
-    D.names.k <- paste0(rownames(nlme::getVarCov(lfit[[k]])), "_", k)
-    D.names <- c(D.names, D.names.k)
-  }
-  rownames(D) <- colnames(D) <- D.names
+  inits.long <- initsLong(lfit = lfit, K = K, p = p)
+  if (balanced) {
+    inits.surv <- initsSurv_balanced(
+      data = data, lfit = lfit, survdat2 = survdat2, formSurv = formSurv,
+      id = id, timeVar = timeVar, K = K, q = q)
 
-  beta <- do.call("c", lapply(lfit, fixef))
-  names(beta) <- paste0(names(beta), "_", rep(1:K, p))
-
-  sigma2 <- unlist(lapply(lfit, function(u) u$sigma))^2
-
-  haz <- haz.start
-
-  if (q > 0) {
-    gamma.v <- coef(sfit)
   } else {
-    gamma.v <- NULL
+    message("Data are unbalanced... using sub-optimal initial parameters for gamma")
+    inits.surv <- initsSurv_unbalanced(sfit = sfit, K = K, q = q)
   }
-  gamma.y <- rep(0, K)
-  names(gamma.y) <- paste0(rep("gamma", K), "_", 1:K)
-  gamma <- c(gamma.v, gamma.y)
+
+  D <- inits.long$D
+  beta <- inits.long$beta
+  sigma2 <- inits.long$sigma2
+  gamma <- inits.surv$gamma
+  haz <- inits.surv$haz
 
   theta <- list("D" = D, "beta" = beta, "sigma2" = sigma2,
-                "haz" = haz, "gamma" = gamma)
+                "gamma" = gamma, "haz" = haz)
 
   # Override these with user-specified initial values
   if (!is.null(inits)) {
@@ -586,7 +576,7 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
           names(theta[[param]]) <- names(get(param))
         }
         if (param == "D") {
-          rownames(D) <- colnames(D) <- D.names
+          rownames(D) <- colnames(D) <- rownames(get(param))
         }
       }
     }
@@ -696,8 +686,9 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
   if (sum(r) == 1) {
     hx.D <- matrix(hx.D, nrow = 1)
   }
-  ltri <- lower.tri(D, diag = TRUE)
-  rownames(hx.D) <- paste0("D_", row = row(D)[ltri], ",", col = col(D)[ltri])
+  ltri <- lower.tri(theta$D, diag = TRUE)
+  rownames(hx.D) <- paste0("D_", row = row(theta$D)[ltri], ",",
+                           col = col(theta$D)[ltri])
   hx.haz <- sapply(all.iters, function(x) x$haz)
   rownames(hx.haz) <- paste0("haz_", 1:nrow(hx.haz))
   hx.sigma2 <- sapply(all.iters, function(x) x$sigma2)
