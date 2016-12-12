@@ -119,19 +119,14 @@ stepEM <- function(theta, l, t, z, nMC, verbose, gammaOpt, postRE, se.approx) {
   },                                          # failure time do not contribute anything
   x = IZ, y = gamma.b, h = survdat2.list)
 
-  # Cummulative hazard function
-  Hi <- mapply(function(w, v) {
-    as.vector(w %*% haz[1:ncol(w)]) * exp(v)
+  # log{f(T, delta | b)}
+  logfti <- mapply(function(w, v, h) {
+    H <- as.vector(w %*% haz[1:ncol(w)]) * exp(v) # cummulative hazard
+    (h$delta) * (log(haz[ncol(w)]) + v + log(w[, ncol(w)])) - H
   },
-  w = expW, v = Vtgamma,
+  w = expW, v = Vtgamma, h = survdat2.list,
   SIMPLIFY = FALSE)
-
-  # f(T, delta | b)
-  fti <- mapply(function(h, H, v, w) {
-    (haz[ncol(w)] * exp(v) * w[, ncol(w)])^(h$delta) * exp(-H)
-  },
-  h = survdat2.list, H = Hi, w = expW, v = Vtgamma,
-  SIMPLIFY = FALSE)
+  fti <- lapply(logfti, exp) # f(T, delta | b)
 
   # Expectation denominator
   den <- lapply(fti, mean)
