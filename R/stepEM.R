@@ -161,10 +161,6 @@ stepEM <- function(theta, l, t, z, nMC, verbose, gammaOpt, postRE, se.approx) {
   b = bi.y, pb = pb.yt,
   SIMPLIFY = FALSE)
 
-  # E[exp{W(tj, b)}]
-  EexpW <- EexpWArma(expW, pb.yt)
-  names(EexpW) <- names(Ai)
-
   # exp{v %*% gamma_v + W(tj)}
   expvstargam <- mapply(function(w, v) {
     w * exp(v)
