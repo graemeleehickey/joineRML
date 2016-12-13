@@ -4,8 +4,8 @@
 #' Calculation of exp{W(tj, b)}
 #'
 #' @keywords internal
-expWArma <- function(imat_, zt_, b_, gam) {
-    .Call('joineRML_expWArma', PACKAGE = 'joineRML', imat_, zt_, b_, gam)
+expWArma <- function(iz_, b_, gam, h_) {
+    .Call('joineRML_expWArma', PACKAGE = 'joineRML', iz_, b_, gam, h_)
 }
 
 #' Calculation of E[exp{W(tj, b)}]

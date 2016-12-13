@@ -7,16 +7,16 @@
 using namespace Rcpp;
 
 // expWArma
-List expWArma(Rcpp::List imat_, Rcpp::List zt_, Rcpp::List b_, arma::mat gam);
-RcppExport SEXP joineRML_expWArma(SEXP imat_SEXP, SEXP zt_SEXP, SEXP b_SEXP, SEXP gamSEXP) {
+List expWArma(Rcpp::List iz_, Rcpp::List b_, arma::mat gam, Rcpp::List h_);
+RcppExport SEXP joineRML_expWArma(SEXP iz_SEXP, SEXP b_SEXP, SEXP gamSEXP, SEXP h_SEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::List >::type imat_(imat_SEXP);
-    Rcpp::traits::input_parameter< Rcpp::List >::type zt_(zt_SEXP);
+    Rcpp::traits::input_parameter< Rcpp::List >::type iz_(iz_SEXP);
     Rcpp::traits::input_parameter< Rcpp::List >::type b_(b_SEXP);
     Rcpp::traits::input_parameter< arma::mat >::type gam(gamSEXP);
-    rcpp_result_gen = Rcpp::wrap(expWArma(imat_, zt_, b_, gam));
+    Rcpp::traits::input_parameter< Rcpp::List >::type h_(h_SEXP);
+    rcpp_result_gen = Rcpp::wrap(expWArma(iz_, b_, gam, h_));
     return rcpp_result_gen;
 END_RCPP
 }

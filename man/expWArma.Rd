@@ -4,7 +4,7 @@
 \alias{expWArma}
 \title{Calculation of exp{W(tj, b)}}
 \usage{
-expWArma(imat_, zt_, b_, gam)
+expWArma(iz_, b_, gam, h_)
 }
 \description{
 Calculation of exp{W(tj, b)}

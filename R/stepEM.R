@@ -56,7 +56,10 @@ stepEM <- function(theta, l, t, z, nMC, verbose, gammaOpt, postRE, se.approx) {
   Sigmai <- lapply(nik, function(i) {
     diag(x = rep(sigma2, i), ncol = sum(i))
   })
-  Sigmai.inv <- lapply(Sigmai, solve)
+  #Sigmai.inv <- lapply(Sigmai, solve)
+  Sigmai.inv <-   Sigmai <- lapply(nik, function(i) {
+    diag(x = rep(1 / sigma2, i), ncol = sum(i))
+  })
 
   # MVN covariance matrix for [b | y]
   Dinv <- solve(D)
@@ -110,14 +113,14 @@ stepEM <- function(theta, l, t, z, nMC, verbose, gammaOpt, postRE, se.approx) {
   }
 
   # exp{W(tj, b)}
-  IZ <- mapply(function(x, y) t(x %*% y),
-               x = IW.fail, y = Zi.fail,
-               SIMPLIFY = FALSE)
-  gamma.b <- lapply(bi.y, function(x) x %*% gamma.scale)
-  expW <- mapply(function(x, y, h) {
-    exp(y %*% x) * ifelse(h$tj.ind > 0, 1, 0) # subjects who are censored before first
-  },                                          # failure time do not contribute anything
-  x = IZ, y = gamma.b, h = survdat2.list)
+  IZ <- mapply(function(x, y) {
+    t(x %*% y)
+  },
+  x = IW.fail, y = Zi.fail,
+  SIMPLIFY = FALSE)
+  # subjects who are censored before first failure time do not contribute anything
+  # -> this information is captured through expW
+  expW <- expWArma(IZ, bi.y, gamma.scale, survdat2.list)
 
   # log{f(T, delta | b)}
   logfti <- mapply(function(w, v, h) {
