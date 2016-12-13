@@ -56,7 +56,8 @@ stepEM <- function(theta, l, t, z, nMC, verbose, gammaOpt, postRE, se.approx) {
   Sigmai <- lapply(nik, function(i) {
     diag(x = rep(sigma2, i), ncol = sum(i))
   })
-  #Sigmai.inv <- lapply(Sigmai, solve)
+
+  # Inverse-Sigma_i (error precision matrix; diagonal matrix)
   Sigmai.inv <-   Sigmai <- lapply(nik, function(i) {
     diag(x = rep(1 / sigma2, i), ncol = sum(i))
   })
@@ -125,7 +126,11 @@ stepEM <- function(theta, l, t, z, nMC, verbose, gammaOpt, postRE, se.approx) {
   # log{f(T, delta | b)}
   logfti <- mapply(function(w, v, h) {
     H <- as.vector(w %*% haz[1:ncol(w)]) * exp(v) # cummulative hazard
-    (h$delta) * (log(haz[ncol(w)]) + v + log(w[, ncol(w)])) - H
+    if (h$delta == 1) {
+      (log(haz[ncol(w)]) + v + log(w[, ncol(w)])) - H
+    } else {
+      -H
+    }
   },
   w = expW, v = Vtgamma, h = survdat2.list,
   SIMPLIFY = FALSE)
