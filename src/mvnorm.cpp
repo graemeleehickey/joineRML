@@ -14,7 +14,8 @@ arma::mat mvrnormArma(int n, arma::vec mu,
   arma::vec pmvec = arma::ones<arma::vec>(2*n);
   pmvec.tail(n) *= -1;
   arma::mat Z = repmat(arma::randn(n, ncols), 2, 1);
-  return(arma::repmat(mu, 1, 2*n).t() + (Z.each_col() % pmvec) * arma::chol(sigma));
+  return(arma::repmat(mu, 1, 2*n).t() +
+         (Z.each_col() % pmvec) * arma::trimatu(arma::chol(sigma)));
 }
 
 
