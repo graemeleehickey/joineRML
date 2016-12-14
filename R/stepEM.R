@@ -126,9 +126,9 @@ stepEM <- function(theta, l, t, z, nMC, verbose, gammaOpt, postRE, se.approx) {
   # log{f(T, delta | b)}
   logfti <- mapply(function(w, v, h) {
     H <- as.vector(w %*% haz[1:ncol(w)]) * exp(v) # cummulative hazard
-    if (h$delta == 1) {
+    if (h$delta == 1) { # event
       (log(haz[ncol(w)]) + v + log(w[, ncol(w)])) - H
-    } else {
+    } else { # non-event
       -H
     }
   },
