@@ -546,13 +546,15 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
   #*****************************************************
 
   inits.long <- initsLong(lfit = lfit, K = K, p = p)
-  if (balanced) {
+  if (balanced | !("gamma" %in% names(inits))) {
     inits.surv <- initsSurv_balanced(
       data = data, lfit = lfit, survdat2 = survdat2, formSurv = formSurv,
       id = id, timeVar = timeVar, K = K, q = q)
 
   } else {
-    message("Data are unbalanced... using sub-optimal initial parameters for gamma")
+    if (!("gamma" %in% names(inits))) {
+      message("Data are unbalanced... using sub-optimal initial parameters for gamma")
+    }
     inits.surv <- initsSurv_unbalanced(sfit = sfit, K = K, q = q)
   }
 
