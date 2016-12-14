@@ -1,10 +1,3 @@
-%\VignetteIndexEntry{Technical details of joineRML}
-%\VignetteAuthor{Graeme L. Hickey}
-%\VignetteKeyword{multivariate}
-%\VignetteKeyword{joineRML}
-%\VignetteKeyword{survival}
-%\VignetteEngine{R.rsp::tex}
-
 \documentclass{article}
 
 \usepackage[top=2cm, bottom=2.5cm, left=2.5cm, right=2.5cm]{geometry}
@@ -45,11 +38,17 @@
 \onehalfspacing
 \maketitle
 
+\section*{Vignette summary}
+A new R package is presented, \texttt{joineRML}, which extends the ubiquitous joint model of a single longitudinal measurement outcome and and an event time to the multivariate case of multiple longitudinal outcome types. In this vignette, we outline the \emph{technical} details of the underlying model, estimation algorithm, and ancillary calculations. A separate vignette is available that specifically focuses on application in R.
+
+\tableofcontents
+\newpage
+
 \section{Model and notation}
 
-For each subject $i=1,\dots,n$, $y_i = (y_{i1}^\top, \dots, y_{iK}^\top)$ is the $K$-variate continuous outcome vector, where each $y_{ik}$ denotes an $n_{ik} \times 1$ vector of observed longitudinal measurements for the $k$-th outcome type: $y_{ik} = (y_{i1k}, \dots, y_{in_{ik}k})^\top$. Each outcome is measured at observed (possibly pre-specified) times $t_{ijk}$ for $j=1,\dots,n_{ik}$, which can differ between subjects and outcomes. Additionally, for each subject there is an event time $T_i^*$, which is subject to right censoring. Therefore, we observe $T_i = \min(T_i^*, C_i)$, where $C_i$ corresponds to a potential censoring time, and the failure indicator $\delta_i$, which is equal to 1 if the failure is observed $(T_i^* < C_i)$ and 0 otherwise. We assume that both censoring and measurement times are non-informative.
+For each subject $i=1,\dots,n$, $y_i = (y_{i1}^\top, \dots, y_{iK}^\top)$ is the $K$-variate continuous outcome vector, where each $y_{ik}$ denotes an $(n_{ik} \times 1)$-vector of observed longitudinal measurements for the $k$-th outcome type: $y_{ik} = (y_{i1k}, \dots, y_{in_{ik}k})^\top$. Each outcome is measured at observed (possibly pre-specified) times $t_{ijk}$ for $j=1,\dots,n_{ik}$, which can differ between subjects and outcomes. Additionally, for each subject there is an event time $T_i^*$, which is subject to right censoring. Therefore, we observe $T_i = \min(T_i^*, C_i)$, where $C_i$ corresponds to a potential censoring time, and the failure indicator $\delta_i$, which is equal to 1 if the failure is observed $(T_i^* \leq C_i)$ and 0 otherwise. We assume that both censoring and measurement times are non-informative.
 
-The model we describe is an extension of the model proposed by \textcite{Henderson2000} to the case of multivariate longitudinal data, which has also been described by \textcite{Lin2002}. The model posits an unobserved or latent zero-mean $(K+1)$-variate Gaussian process that is realised independently for each subject, $W_i(t) = \left\{W_{1i}^{(1)}(t), \dots, W_{1i}^{(K)}(t), W_{2i}(t)\right\}$. This latent process subsequently links the separate sub-models. 
+The model we describe is an extension of the model proposed by \textcite{Henderson2000} to the case of multivariate longitudinal data. The model posits an unobserved or latent zero-mean $(K+1)$-variate Gaussian process that is realised independently for each subject, $W_i(t) = \left\{W_{1i}^{(1)}(t), \dots, W_{1i}^{(K)}(t), W_{2i}(t)\right\}$. This latent process subsequently links the separate sub-models. 
 
 The multivariate longitudinal data sub-model, also referred to as the \emph{measurement model} in \cite{Henderson2000}, is given by
 %
@@ -69,7 +68,7 @@ where $x_{ik}(t)$ is a $p_k$-vector of (possibly) time-varying covariates with c
 	W_{1i}^{(k)}(t) = z_{ik}^\top(t) b_{ik},
 \end{equation}
 %
-where $z_{ik}(t)$ is an $r_k$-vector ($r_k \leq p_k$) of (possibly) time-varying covariates with corresponding subject-and-outcome random effect terms $b_{ik}$, which follow a zero-mean multivariate normal distribution with $r_k \times r_k$ variance-covariance matrix $D_{kk}$. To account for dependence between the different longitudinal outcome types, we let $\text{cov}(b_{ik},b_{il}) = D_{kl}$ for $k \neq l$. Furthermore, we assume $\varepsilon_{ik}(t)$ and $b_{ik}$ are uncorrelated, and that the censoring times are independent of the random effects; both are standard modelling assumptions. These distributional assumptions together with the model given by \eqref{eqn:long_model}--\eqref{eqn:W1k} is equivalent to the multivariate extension of the \textcite{Laird1982} mixed linear effects model. \textcite{Henderson2000} note that more flexible specifications of $W_{1i}^{(k)}(t)$ can be used, including, for example, stationary Gaussian processes. We do not consider these cases here.
+where $z_{ik}(t)$ is an $r_k$-vector ($r_k \leq p_k$) of (possibly) time-varying covariates with corresponding subject-and-outcome random effect terms $b_{ik}$, which follow a zero-mean multivariate normal distribution with $(r_k \times r_k)$-variance-covariance matrix $D_{kk}$. To account for dependence between the different longitudinal outcome types, we let $\text{Cov}(b_{ik},b_{il}) = D_{kl}$ for $k \neq l$. Furthermore, we assume $\varepsilon_{ik}(t)$ and $b_{ik}$ are uncorrelated, and that the censoring times are independent of the random effects; both are standard modelling assumptions. These distributional assumptions together with the model given by \eqref{eqn:long_model}--\eqref{eqn:W1k} is equivalent to the multivariate extension of the \textcite{Laird1982} mixed linear effects model. \textcite{Henderson2000} note that more flexible specifications of $W_{1i}^{(k)}(t)$ can be used, including, for example, stationary Gaussian processes. We do not consider these cases here.
 
 The time-to-event sub-model, also referred to as the \emph{intensity process model} in \cite{Henderson2000}, is given by the hazard function
 %
@@ -77,13 +76,13 @@ The time-to-event sub-model, also referred to as the \emph{intensity process mod
 	\lambda_i(t) = \lambda_0(t) \exp \left\{v_i^\top(t) \gamma_v + W_{2i}(t)\right\},
 \end{equation}
 %
-where $\lambda_0(\cdot)$ is an unspecified baseline hazard function, and $b_i = (b_{i1}^\top, \dots, b_{iK}^\top)$, $v_i(t)$ is a $q$-vector of (possibly) time-varying covariates with corresponding fixed effect terms $\gamma_v$. Conditional on $W_i(t)$ and the observed covariate data, the separate data generating processes are \emph{conditionally independent}. To establish a latent association, we specify $W_{2i}(t)$ as a linear combination of $\left\{W_{1i}^{(1)}(t), \dots, W_{1i}^{(K)}(t)\right\}$
+where $\lambda_0(\cdot)$ is an unspecified baseline hazard function, and $v_i(t)$ is a $q$-vector of (possibly) time-varying covariates with corresponding fixed effect terms $\gamma_v$. Conditional on $W_i(t)$ and the observed covariate data, the separate data generating processes are \emph{conditionally independent}. To establish a latent association, we specify $W_{2i}(t)$ as a linear combination of $\left\{W_{1i}^{(1)}(t), \dots, W_{1i}^{(K)}(t)\right\}$
 %
 \begin{equation*}
 	W_{2i}(t) = \sum_{k=1}^K \gamma_{yk} W_{1i}^{(k)}(t),
 \end{equation*}
 %
-where $\gamma_y = (\gamma_{y1}, \dots, \gamma_{yK})$ are the joint model association parameters. To emphasise the dependence of $W_{2i}(t)$ on the random effects, we will explicitly write is as $W_{2i}(t, b_i)$ from here onwards. As noted above for $W_{1i}^{(k)}(t)$, $W_{2i}(t)$ can also be flexibly extended, for example to include subject-specific frailty effects \cite{Henderson2000}.
+where $\gamma_y = (\gamma_{y1}, \dots, \gamma_{yK})$ are the joint model association parameters. To emphasise the dependence of $W_{2i}(t)$ on the random effects, we will explicitly write it as $W_{2i}(t, b_i)$ from here onwards. As noted above for $W_{1i}^{(k)}(t)$, $W_{2i}(t)$ can also be flexibly extended, for example to include subject-specific frailty effects \cite{Henderson2000}.
 
 \section{Estimation}
 
@@ -104,13 +103,13 @@ For each subject, collect covariate data from different outcome types and measur
 	\end{array}\right),
 \end{equation*}
 %
-where $X_{ik} = \left(X_{i1k}^\top, \dots, X_{in_{ik}k}^\top\right)$ is an $n_{ik} \times p_k$ design matrix, with the $j$-th row corresponding to the $p_k$ vector of covariates measured at time $t_{ijk}$. The notation similarly follows for $Z_{ik}$. Also, collect variance-covariance terms for the random effects and error terms together, denoted as
+where $X_{ik} = \left(X_{i1k}^\top, \dots, X_{in_{ik}k}^\top\right)$ is an $(n_{ik} \times p_k)$-design matrix, with the $j$-th row corresponding to the $p_k$-vector of covariates measured at time $t_{ijk}$. The notation similarly follows for $Z_{ik}$. Also, collect variance-covariance terms for the random effects and error terms together, denoted as
 %
 \begin{equation*}
 	D = \left(\begin{array}{ccc} % D-matrix
 	D_{11} & \cdots & D_{1K} \\
 	\vdots & \ddots & \vdots \\
-	D_{K1} & \cdots & D_{KK} \\
+	D_{1K}^\top & \cdots & D_{KK} \\
 	\end{array}\right), \hspace{10mm}
 	\Sigma_i = \left(\begin{array}{ccc} % Sigma-matrix
 	\sigma_1^2 I_{n_{i1}} & \cdots & 0 \\
@@ -119,7 +118,7 @@ where $X_{ik} = \left(X_{i1k}^\top, \dots, X_{in_{ik}k}^\top\right)$ is an $n_{i
 	\end{array}\right),
 \end{equation*}
 %
-where $I_n$ denotes an $n \times n$ identity matrix. We further define $\beta = (\beta_1^\top, \dots, \beta_K^\top)$. We can rewrite the longitudinal data sub-model as
+where $I_n$ denotes an $n \times n$ identity matrix. We further define $\beta = (\beta_1^\top, \dots, \beta_K^\top)$ and $b_i = (b_{i1}^\top, \dots, b_{iK}^\top)$. We can then rewrite the longitudinal data sub-model as
 %
 \begin{eqnarray*}
 	y_i \given b_i, \beta, \Sigma_i &\sim& N(X_i \beta + Z_i b_i, \Sigma_i), \\
@@ -144,21 +143,21 @@ where $r = \sum_{k=1}^K r_k$ is the total dimensionality of the random effects v
 
 \subsection{EM algorithm}
 
-We determine maximum likelihood estimates of the parameters $\theta$ using the expectation-maximisation algorithm \cite{Dempster1977}, by treating the random effects $b_i$ as missing data. This algorithm has been described by \textcite{Wulfsohn1997}, \textcite{Henderson2000}, and \textcite{Ratcliffe2004} in the context of univariate data joint modelling, and by \textcite{Lin2002} for multivariate data joint modelling. Starting from an initial estimate of the parameters, the procedure involves iterating between the following two steps until convergence is achieved.
+We determine maximum likelihood estimates of the parameters $\theta$ using the expectation-maximisation (EM) algorithm \cite{Dempster1977}, by treating the random effects $b_i$ as missing data. This algorithm has been described by \textcite{Wulfsohn1997} and \textcite{Ratcliffe2004} in the context of univariate data joint modelling, and by \textcite{Lin2002} for multivariate data joint modelling. Starting from an initial estimate of the parameters, the procedure involves iterating between the following two steps until convergence is achieved.
 %
 \begin{enumerate}
 	\item \emph{E-step}. At the $m$-th iteration, we compute the expected log-likelihood of the \emph{complete} data conditional on the \emph{observed} data and the current estimate of the parameters.
 	%
 	\begin{eqnarray*}
-	Q(\theta \given \hat{\theta}^{(m)}) &=& \sum_{i=1}^n \mathbb{E}\Big\{\log f(y_i, T_i, \delta_i, b_i \given \theta)\Big\},\\
-	&=& \sum_{i=1}^n \int_{-\infty}^{\infty} \Big\{\log f(y_i, T_i, \delta_i, b_i \given \theta)\Big\}f(b_i \given T_i, \delta_i, y_i;\hat{\theta}^{(m)}) db_i
+		Q(\theta \given \hat{\theta}^{(m)}) &=& \sum_{i=1}^n \mathbb{E}\Big\{\log f(y_i, T_i, \delta_i, b_i \given \theta)\Big\},\\
+		&=& \sum_{i=1}^n \int_{-\infty}^{\infty} \Big\{\log f(y_i, T_i, \delta_i, b_i \given \theta)\Big\}f(b_i \given T_i, \delta_i, y_i;\hat{\theta}^{(m)}) db_i
 	\end{eqnarray*}
 	%
 	Here, the complete-data likelihood contribution for subject $i$ is given by the integrand of \eqref{eqn:obs_lik}.
 	\item \emph{M-step}. We maximise $Q(\theta \given \hat{\theta}^{(m)})$ with respect to $\theta$. namely, 
 	%
 	\begin{equation*}
-	\hat{\theta}^{(m+1)} = \argmax{\theta} Q(\theta \given \hat{\theta}^{(m)})
+		\hat{\theta}^{(m+1)} = \argmax{\theta} Q(\theta \given \hat{\theta}^{(m)})
 	\end{equation*}
 \end{enumerate}
 %
@@ -166,7 +165,7 @@ The updates require expectations about the random effects be calculated of the f
 
 \subsubsection{M-step details}
 
-The M-step estimators naturally follow from the seminal works of \textcite{Wulfsohn1997}, \textcite{Henderson2000}, and \textcite{Lin2002}. The baseline hazard function $\lambda_0(t)$ is estimated in closed-form using the Breslow estimator:
+The M-step estimators naturally follow from \textcite{Wulfsohn1997} and \textcite{Lin2002}. The baseline hazard function $\lambda_0(t)$ is estimated in closed-form using the Breslow estimator:
 %
 \begin{equation}\label{eqn:hazard_update}
 	\hat{\lambda}_0(t) = \frac{\sum_{i=1}^n \delta_i I(T_i = t)}{\sum_{i=1}^n \mathbb{E}\left[\exp\left\{v_i^\top \gamma_v + W_{2i}(t, b_i)\right\}\right]I(T_i \geq t)},
@@ -188,7 +187,7 @@ The simplification in the estimate for $\hat{\beta}$ derives from $X_i$ and $\Si
 	\hat{\gamma}^{(m+1)} = \hat{\gamma}^{(m)} + I\left(\hat{\gamma}^{(m)}\right)^{-1}S\left(\hat{\gamma}^{(m)}\right),
 \end{equation*}
 %
-where $\hat{\gamma}^{(m)}$ denotes the value of $\gamma = (\gamma_v^\top, \gamma_y^\top)$ are the current iteration, $S\left(\hat{\gamma}^{(m)}\right)$ is a score function, and $I\left(\hat{\gamma}^{(m)}\right)$ is the observed information matrix, which is equal to the derivative of the negative score function. Further details of this update are given in Appendix~\ref{app:score_eqns}.
+where $\hat{\gamma}^{(m)}$ denotes the value of $\gamma = (\gamma_v^\top, \gamma_y^\top)$ at the current iteration, $S\left(\hat{\gamma}^{(m)}\right)$ is the corresponding score function, and $I\left(\hat{\gamma}^{(m)}\right)$ is the observed information matrix, which is equal to the derivative of the negative score function. Further details of this update are given in Appendix~\ref{app:score_eqns}.
 
 \subsubsection{E-step details}
 
@@ -205,7 +204,7 @@ where $f(T_i, \delta_i \given b_i; \hat{\theta})$ is given by \eqref{eqn:surv_lo
 	b_i \given y_i, \theta \sim N\left(A_i\left\{Z_i^\top\Sigma_i^{-1}(y_i-X_i\beta)\right\}, A_i\right),
 \end{equation}
 % 
-where $A_i = \left(Z_i^\top\Sigma_i^{-1}Z_i + D^{-1}\right)^{-1}$. The derivation\footnote{The formulae given in \textcite{Wulfsohn1997} and \textcite{Lin2002} are equivalent, which can be seen by applying the Woodbury matrix identity.} is given in \textcite{Wulfsohn1997} and \textcite{Lin2002}. Gaussian quadrature, notably Gauss-Hermite quadrature, is a standard approach for evaluating the integrals in this estimation approach. However, for multivariate longitudinal data, the additional random effects required is commensurate with an exponential growth in the number of quadrature points at which the integrand must be evaluated. Therefore, we use Monte Carlo sampling methods to evaluate the integrals, which was also used by \textcite{Lin2002}. For $N$ Monte Carlo sample draws, $\{b_i^{(1)}, b_i^{(2)}, \dots, b_i^{(M)}\}$, \eqref{eqn:expectation} is approximated by  the ratio of the sample means for $h(b_i) f(T_i, \delta_i \given b_i; \hat{\theta})$ and $f(T_i, \delta_i \given b_i; \hat{\theta})$ evaluated at these values. Namely,
+where $A_i = \left(Z_i^\top\Sigma_i^{-1}Z_i + D^{-1}\right)^{-1}$. The derivation\footnote{The formulae given in \textcite{Wulfsohn1997} and \textcite{Lin2002} are equivalent, which can be seen by applying the Woodbury matrix identity.} is given in \textcite{Wulfsohn1997} and \textcite{Lin2002}. Gaussian quadrature, notably Gauss-Hermite quadrature, is a standard approach for evaluating the integrals in this estimation approach. However, for multivariate longitudinal data, the additional random effects required is commensurate with an exponential growth in the number of quadrature points at which the integrand must be evaluated. Therefore, we use Monte Carlo sampling methods to evaluate the integrals, which was also used by \textcite{Lin2002}. For $N$ Monte Carlo sample draws, $\{b_i^{(1)}, b_i^{(2)}, \dots, b_i^{(N)}\}$, \eqref{eqn:expectation} is approximated by  the ratio of the sample means for $h(b_i) f(T_i, \delta_i \given b_i; \hat{\theta})$ and $f(T_i, \delta_i \given b_i; \hat{\theta})$ evaluated at these values. Namely,
 %
 \begin{equation}\label{eqn:expectation_approx}
 	\mathbb{E}\left[h(b_i) \given T_i, \delta_i, y_i; \hat{\theta}\right] \approx
@@ -225,37 +224,38 @@ where $C_i$ is the Cholesky decomposition of $A_i$ such that $C_i C_i^\top = A_i
 Two standard stopping rules for the deterministic EM algorithm used to declare convergence are the relative and absolute differences, defined as
 %
 \begin{eqnarray}
-	\Delta_1^{(m+1)} &=& \max\left\{\frac{|\hat{\theta}^{(m+1)} - \hat{\theta}^{(m)}|}{|\hat{\theta}^{(m)}| + \epsilon_1}\right\} < \epsilon_0, \mbox{  and} \label{eqn:rel_conv} \\
-	\Delta_2^{(m+1)} &=& \max\left\{|\hat{\theta}^{(m+1)} - \hat{\theta}^{(m)}|\right\} < \epsilon_2 \label{eqn:abs_conv}
+	\Delta_\text{rel}^{(m+1)} &=& \max\left\{\frac{|\hat{\theta}^{(m+1)} - \hat{\theta}^{(m)}|}{|\hat{\theta}^{(m)}| + \epsilon_1}\right\} < \epsilon_0, \mbox{  and} \label{eqn:rel_conv} \\
+	\Delta_\text{abs}^{(m+1)} &=& \max\left\{|\hat{\theta}^{(m+1)} - \hat{\theta}^{(m)}|\right\} < \epsilon_2 \label{eqn:abs_conv}
 \end{eqnarray}
 %
-respectively, for some appropriate choice of $\epsilon_0$, $\epsilon_1$, and $\epsilon_2$. The \texttt{JM} package implements the relative difference stopping rule (in combination with another rule based on relative change in the likelihood), whereas the \texttt{joineR} package implements the absolute difference stopping rule.
+respectively, for some appropriate choice of $\epsilon_0$, $\epsilon_1$, and $\epsilon_2$. For reference, the \texttt{JM} package implements the relative difference stopping rule (in combination with another rule based on relative change in the likelihood), whereas the \texttt{joineR} package implements the absolute difference stopping rule.
 
-The choice of $N$ and the monitoring of convergence are conflated when applying a Monte Carlo EM algorithm (MCEM), and a dynamic approach is required. As noted by \textcite{Wei1990}, it is computationally inefficient to use a large $N$ in the early phase of the MCEM algorithm when the parameter estimates are likely to be far from the maximizer. On the flip side, as the parameter estimates approach the maximizer, the above stopping rules will fail as the changes in parameter estimates will be swamped by Monte Carlo error. Therefore, it has been recommended that one increase $N$ as the estimate moves towards the maximizer. Although this might be done subjectively \cite{Law2002} or by pre-specified rules \cite{McCulloch1997}, an automated approach is preferable for software implementation. \textcite{Booth1999} proposed an update rule based on a confidence ellipsoid for the maximizer at the $(m+1)$-th iteration, calculated using an approximate sandwich estimator for the maximizer, which accounts for the Monte Carlo error at each iteration. This approach requires additional variance estimation at each iteration, therefore we opt for a simpler approach described by \textcite{Ripatti2002}. We calculate a coefficient of variation at the $(m+1)$-th iteration as
+The choice of $N$ and the monitoring of convergence are conflated when applying a Monte Carlo EM algorithm (MCEM), and a dynamic approach is required. As noted by \textcite{Wei1990}, it is computationally inefficient to use a large $N$ in the early phase of the MCEM algorithm when the parameter estimates are likely to be far from the maximizer. On the flip side, as the parameter estimates approach the maximizer, the above stopping rules will fail as the changes in parameter estimates will be swamped by Monte Carlo error. Therefore, it has been recommended that one increase $N$ as the estimate moves towards the maximizer. Although this might be done subjectively \cite{Law2002} or by pre-specified rules \cite{McCulloch1997}, an automated approach is preferable. \textcite{Booth1999} proposed an update rule based on a confidence ellipsoid for the maximizer at the $(m+1)$-th iteration, calculated using an approximate sandwich estimator for the maximizer, which accounts for the Monte Carlo error at each iteration. This approach requires additional variance estimation at each iteration, therefore we opt for a simpler approach described by \textcite{Ripatti2002}. We calculate a coefficient of variation at the $(m+1)$-th iteration as
 %
 \begin{equation*}
-	\text{cv}(\Delta^{(m+1)}) = \frac{\text{sd}(\Delta^{(m-1)}, \Delta^{(m)}, \Delta^{(m+1)})}{\text{mean}(\Delta^{(m-1)}, \Delta^{(m)}, \Delta^{(m+1)})},
+	\text{cv}(\Delta_\text{rel}^{(m+1)}) = \frac{\text{sd}(\Delta_\text{rel}^{(m-1)}, \Delta_\text{rel}^{(m)}, \Delta_\text{rel}^{(m+1)})}{\text{mean}(\Delta_\text{rel}^{(m-1)}, \Delta_\text{rel}^{(m)}, \Delta_\text{rel}^{(m+1)})},
 \end{equation*}
 %
-where $\Delta^{(m+1)}$ can refer to either \eqref{eqn:rel_conv} or \eqref{eqn:abs_conv}, and $\text{sd}(\cdot)$ and $\text{mean}(\cdot)$ are the sample standard deviation and mean functions, respectively. If $\text{cv}(\Delta^{(m+1)}) > \text{cv}(\Delta^{(m)})$, then $N := N + \lfloor N/\delta \rfloor$, for some small positive integer $\delta$. We run the MCEM algorithm with a small $N$ (by default for $200K$ iterations) before implementing this update rule in order to get into the approximately correct parameter region. In our software, $\delta$ can be chosen by the user, with $\delta = 3$ as the default option with $N = 100$.
+where $\Delta_\text{rel}^{(m+1)}$ is given by \eqref{eqn:rel_conv}, and $\text{sd}(\cdot)$ and $\text{mean}(\cdot)$ are the sample standard deviation and mean functions, respectively. If $\text{cv}(\Delta_\text{rel}^{(m+1)}) > \text{cv}(\Delta_\text{rel}^{(m)})$, then $N := N + \lfloor N/\delta \rfloor$, for some small positive integer $\delta$. Typically, we run the MCEM algorithm with a small $N$ (e.g. a default of $200K$ iterations) before implementing this update rule in order to get into the approximately correct parameter region. Appropriate values for other parameters will be application specific, however we have found $\delta = 3$, $N = 100$, $\epsilon_1 = 0.001$, and $\epsilon_0 = \epsilon_2 = 0.005$ to deliver reasonably accurate estimates.
 
-By default, $\epsilon_1$ is fixed at $0.001$, and $\epsilon_0$ and $\epsilon_2$ are both fixed at $0.005$. As the monotonicity property is lost due to the Monte Carlo integrations in MCEM, convergence might be prematurely declared due to stochasticity if the $\epsilon$ values are too large. To reduce the chance of this occurring, we require that the stopping rule is satisfied for 3 consecutive iterations \cite{Booth1999, Ripatti2002}. However, in any case, trace plots should be inspected to confirm convergence is appropriate.
+As the monotonicity property is lost due to the Monte Carlo integrations in MCEM, convergence might be prematurely declared due to stochasticity if the $\epsilon$ values are too large. To reduce the chance of this occurring, we require that the stopping rule is satisfied for 3 consecutive iterations \cite{Booth1999, Ripatti2002}. However, in any case, trace plots should be inspected to confirm convergence is appropriate.
 
-\subsubsection{Likelihood evaluation at maximum}
+\subsubsection{Likelihood evaluation}
 
-Once converged, the observed data likelihood is calculated following the observation by \textcite{Henderson2000} that it can be rewritten as
+The observed data likelihood is calculated following the observation by \textcite{Henderson2000} that it can be rewritten as
 %
 \begin{equation*}
-\prod_{i=1}^n f(y_i \given \hat{\theta}) \left(\int_{-\infty}^{\infty}  f(T_i, \delta_i \given b_i, \hat{\theta}) f(b_i \given y_i, \hat{\theta}) db_i \right),
+	\prod_{i=1}^n f(y_i \given \hat{\theta}) \left(\int_{-\infty}^{\infty}  f(T_i, \delta_i \given b_i, \hat{\theta}) f(b_i \given y_i, \hat{\theta}) db_i \right),
 \end{equation*}
 %
-where marginal distribution $f(y_i \given \theta)$ is a multivariate normal density with mean $X_i \beta$ and variance-covariance matrix $\Sigma_i + Z_i D Z_i^\top$, $f(b_i \given y_i, \theta)$ is given by \eqref{eqn:bdist}, and $\hat{\theta}$ is the maximum likelihood estimate determined from the EM algorithm.
+where marginal distribution $f(y_i \given \theta)$ is a multivariate normal density with mean $X_i \beta$ and variance-covariance matrix $\Sigma_i + Z_i D Z_i^\top$, $f(b_i \given y_i, \theta)$ is given by \eqref{eqn:bdist}, and $\hat{\theta}$ is the maximum likelihood estimate determined from the EM algorithm. Once calculated, the Akaike information criterion (AIC) and Bayesian information criterion (BIC) are straightforwardly calculated, which are useful for model selection.
 
 \subsection{Standard error estimation}
 
 We consider two standard error (SE) estimators:
 %
 \begin{enumerate}
+			%
 	\item \textbf{Approximate SEs.}
 	        These are estimated by $I_e^{-1/2}(\hat{\theta})$, where $I_e(\theta)$ is the observed empirical information matrix \cite{McLachlan2008}, given by
 	        %
@@ -263,20 +263,22 @@ We consider two standard error (SE) estimators:
 		        I_e(\theta) = \sum_{i=1}^n s_i(\theta) s_i^\top(\theta) - \frac{1}{n} S(\theta) S^\top(\theta),
 	        \end{equation}
 	        %
-	        and $s_i(\theta)$ is the conditional expectation of the complete-data score function for subject $i$, and $S(\theta)$ is the score defined by $S(\theta) = \sum_{i=1}^n s_i(\theta)$. At the maximizer, $S(\hat{\theta}) = 0$, meaning that the right hand-side of \eqref{eqn:empirical_info} is zero. Due to the Monte Carlo error in the MCEM algorithm, this will not be exactly zero, and therefore we include it in the calculations.
+	        $s_i(\theta)$ is the conditional expectation of the complete-data score function for subject $i$, and $S(\theta)$ is the score defined by $S(\theta) = \sum_{i=1}^n s_i(\theta)$. At the maximizer, $S(\hat{\theta}) = 0$, meaning that the right hand-side of \eqref{eqn:empirical_info} is zero. Due to the Monte Carlo error in the MCEM algorithm, this will not be exactly zero, and therefore we include it in the calculations.
+	        
+	        Owing to the estimation approach described in Appendix~\ref{app:score_eqns}, we calculate approximate SEs for $\theta_{-\lambda_0} = (\beta^\top, \text{vech}(D), \sigma_1^2, \dots, \sigma_K^2, \gamma^\top)$ using the profile score vectors
+	        %
+	        \begin{equation*}
+		        s_i\left(\theta_{-\lambda_0}, \hat{\lambda}_0(t \given \theta_{-\lambda_0})\right),
+	        \end{equation*}
+	        %
+	        where $\lambda_0(t)$ is substituted by $\hat{\lambda}_0(t)$, which is a function of $\gamma$ (and implicitly, the other parameters via the conditional expectation in the E-step, \eqref{eqn:expectation}) given by \eqref{eqn:hazard_update}. Therefore, we do not calculate approximate SEs for the baseline hazard function; however, this is generally not of inferential interest, hence the application of the Cox model formulation in the first place.
+	        %
 	\item \textbf{Bootstrap estimated SEs.}
-			These are estimated by sampling $n$ subjects with replacement and re-labelling the subjects with indices $i^\prime = 1, \dots, n$. We then re-fit the model to the bootstrap-sampled dataset. It is important to note that we sample patients, not individual data points. This is repeated $B$-times. For each iteration, we extract the model parameter estimates for $(\beta^\top, \text{vech}(D), \sigma_1^2, \dots, \sigma_K^2, \gamma_v^\top, \gamma_y^\top)$. Note that as the the event times might be tied, the dimension of the baseline of $\lambda_0(t)$ will vary for each iteration; therefore, we do not consider standard error estimates of the baseline hazard function. When $B$ is sufficiently large, the SEs can be estimated from the estimated coefficients. Alternatively, $100(1-\alpha)$\%-confidence intervals can be estimated from the the $100\alpha/2$-th and $100(1-\alpha/2)$-th percentiles.
+			These are estimated by sampling $n$ subjects with replacement and re-labelling the subjects with indices $i^\prime = 1, \dots, n$. We then re-fit the model to the bootstrap-sampled dataset. It is important to note that we re-sample patients, not individual data points. This is repeated $B$-times. For each iteration, we extract the model parameter estimates for $(\beta^\top, \text{vech}(D), \sigma_1^2, \dots, \sigma_K^2, \gamma_v^\top, \gamma_y^\top)$. Note that as the the event times might be tied, the dimension of the baseline of $\lambda_0(t)$ will vary for each iteration; therefore, we do not consider standard error estimates of the baseline hazard function. When $B$ is sufficiently large, the SEs can be estimated from the estimated coefficients. Alternatively, $100(1-\alpha)$\%-confidence intervals can be estimated from the the $100\alpha/2$-th and $100(1-\alpha/2)$-th percentiles.
+			%
 \end{enumerate}
 %
-The preferred SE estimates are those using the bootstrap method, owing to the fact that $\hat{\lambda}_0(t)$ will generally be a high-dimensional vector, which might lead to numerical difficulties in the inversion of the observed information matrix \cite{Rizopoulos2012}, and also because the profile likelihood estimates based on the usual observed information matrix approach are known to be underestimated \cite{Hsieh2006}. The reason for this is that the profile estimates are implicit, since the posterior expectations, given by \eqref{eqn:expectation}, depend on the parameters being estimated, including $\lambda_0(t)$ \cite[page 67]{Rizopoulos2012}. On the flip side, the bootstrap estimates are computationally expensive. Nonetheless, at the model development stage, it is often of interest to gauge the strength of association of model covariates. For this reason, we propose use of the approximate SE estimator. Although these approximate SEs were calculated by \textcite{Lin2002} for inference, we currently recommend that for the final model, the bootstrap SEs are estimated.
-
-Owing to the estimation approach described in Appendix~\ref{app:score_eqns}, we calculate approximate SEs for $\theta_{-\lambda_0} = (\beta^\top, \text{vech}(D), \sigma_1^2, \dots, \sigma_K^2, \gamma^\top)$ using the profile score vectors
-%
-\begin{equation*}
-	s_i\left(\theta_{-\lambda_0}, \hat{\lambda}_0(t \given \theta_{-\lambda_0})\right),
-\end{equation*}
-%
-where $\lambda_0(t)$ is substituted by $\hat{\lambda}_0(t)$, which is a function of $\gamma$ (and implicitly, the other parameters via the conditional expectation in the E-step, \eqref{eqn:expectation}) given by \eqref{eqn:hazard_update}. Therefore, we do not calculate approximate SEs for the baseline hazard function; however, this is generally not of inferential interest, hence the application of the Cox model formulation in the first place.
+From a theoretical perspective, the preferred SE estimates are those using the bootstrap method, owing to the fact that $\hat{\lambda}_0(t)$ will generally be a high-dimensional vector, which might lead to numerical difficulties in the inversion of the observed information matrix \cite{Rizopoulos2012}, and also because the profile likelihood estimates based on the usual observed information matrix approach are known to be underestimated \cite{Hsieh2006}. The reason for this is that the profile estimates are implicit, since the posterior expectations, given by \eqref{eqn:expectation}, depend on the parameters being estimated, including $\lambda_0(t)$ \cite[page 67]{Rizopoulos2012}. On the flip side, the bootstrap estimates are computationally expensive. Nonetheless, at the model development stage, it is often of interest to gauge the strength of association of model covariates. For this reason, we propose use of the approximate SE estimator, which were also calculated by \textcite{Lin2002}. If computationally feasible, however, we recommend that bootstrap SEs are also estimated and contrasted to the approximate ones. We also note that recently it has been suggested that bootstrap estimators \emph{overestimate} the SEs; e.g. \textcite[p.~740]{Xu2014} and \textcite[p.~1041]{Hsieh2006}.
 
 As noted earlier, SE estimates other than those deriving from bootstrap estimation are expected to be underestimated. On the other hand, the additional Monte Carlo error will likely lead to larger standard error estimates, whether using either the approximate and bootstrap approach. The consequences of these competing factors operating to both inflate and deflate the standard error estimators is not fully understood, and therefore they must be interpreted with a degree of caution.
 
@@ -295,7 +297,7 @@ The event times are simulated from an exponential distribution in the case of th
 %
 \begin{eqnarray*}
 	&& \lambda_0(t) \exp \left\{\left(v_i^\top(t) \gamma_v + \sum_{k=1}^K \gamma_{yk} b_{ik,0}\right) + \left(\sum_{k=1}^K \gamma_{yk} b_{ik,1}\right)t\right\}\\
-	&\equiv& \lambda_0(t) \exp \left\{s_i + w_i t\right\}
+	&\equiv& \lambda_0(t) \exp \left\{s_i + w_i t\right\}.
 \end{eqnarray*}
 %
 Hence, using the formula (6) from \textcite{Austin2012}, we can simulate an event time as
@@ -306,7 +308,7 @@ Hence, using the formula (6) from \textcite{Austin2012}, we can simulate an even
 %
 where $u_i \sim U(0, 1)$, and $\theta_0 > 0$ and $-\infty < \theta_1 < \infty$ are the scale and shape parameters of the Gompertz distribution. See \textcite{Austin2012} for a derivation of this formula. For all simulations, we also consider one continuous covariate and one binary covariate, which can be included in both sub-models.
 
-In practice, we will also observe independent right-censoring. For this, we simulate a censoring time $C_i$ from an exponential distribution with scale $\lambda > 0$, and return the observed data of follow-up time $\min(T_i, C_i)$ and event indicator $I(T_i \geq C_i)$. Additionally, as studies are generally terminated after a fixed follow-up period, we will have a truncation time.
+In practice, we will also observe independent right-censoring. For this, we simulate a censoring time $C_i$ from an exponential distribution with scale $\lambda > 0$, and return the observed data of follow-up time $\min(T_i, C_i)$ and event indicator $I(T_i \leq C_i)$. Additionally, as studies are generally terminated after a fixed follow-up period, we will have a truncation time.
 
 \printbibliography
 
@@ -359,7 +361,7 @@ The score equations for $\gamma_v$ and $\gamma_y$ don't have closed-form solutio
 	&=& \sum_{i=1}^n \left[\delta_i \mathbb{E}\left[\tilde{v}_i(T_i)\right] - \sum_{j=1}^J\lambda_0(t_j)\mathbb{E}\left[\tilde{v}_i(t_j)\exp\{\tilde{v}_i(t_j)^\top \gamma\}\right]I(T_i \geq t_j)\right],
 \end{eqnarray*}
 %
-where $\tilde{v}_i(t) = \left(v_i^\top, z_{i1}^\top(t) b_{i1}, \dots, z_{iK}^\top(t) b_{iK}\right)$ is a $(q+K)$-vector, and the integration over the survival process has been replaced with a finite summation over the process evaluated at the unique failure times, since the non-parametric estimator of baseline hazard function is zero except at observed failure times \cite{Henderson2000}. As $\lambda_0(t_j)$ is a function of $\gamma$. this is not a closed-form solution. Substituting $\lambda_0(t)$ by $\hat{\lambda}_0(t)$ from \eqref{eqn:hazard_update}, which is a function of $\gamma$ and the observed data itself, gives a score that is independent of $\lambda_0(t)$. Discussion of this in the context of univariate joint modelling is given by \textcite{Hsieh2006}. A useful result is that the maximum profile likelihood estimator is the same as the maximum partial likelihood estimator \cite{Lin2000}.
+where $\tilde{v}_i(t) = \left(v_i^\top, z_{i1}^\top(t) b_{i1}, \dots, z_{iK}^\top(t) b_{iK}\right)$ is a $(q+K)$-vector, and the integration over the survival process has been replaced with a finite summation over the process evaluated at the unique failure times, since the non-parametric estimator of baseline hazard function is zero except at observed failure times \cite{Henderson2000}. As $\lambda_0(t_j)$ is a function of $\gamma$, this is not a closed-form solution. Substituting $\lambda_0(t)$ by $\hat{\lambda}_0(t)$ from \eqref{eqn:hazard_update}, which is a function of $\gamma$ and the observed data itself, gives a score that is independent of $\lambda_0(t)$. Discussion of this in the context of univariate joint modelling is given by \textcite{Hsieh2006}. A useful result is that the maximum profile likelihood estimator is the same as the maximum partial likelihood estimator \cite{Lin2000}.
 
 The observed information matrix for $\gamma$ is calculated by taking the partial derivative of the score above (with $\lambda_0(t)$ substituted by $\hat{\lambda}_0(t_j)$ defined by \eqref{eqn:hazard_update}), and is given by
 %
@@ -373,7 +375,7 @@ where
 	\Gamma(t_j) = \left\{\sum_{i=1}^n \mathbb{E}\left[\tilde{v}_i(t_j) \exp\{\tilde{v}_i^\top(t_j) \gamma\}\right] I(T_i \geq t_j)\right\} \left\{\sum_{i=1}^n \mathbb{E}\left[\tilde{v}_i(t_j) \exp\{\tilde{v}_i(t_j) \gamma\}\right] I(T_i \geq t_j)\right\}^\top,
 \end{equation*}
 %
-and $\hat{\lambda}_0(t)$ is given by \eqref{eqn:hazard_update}, which is also a function of $\gamma$. In practice, calculation of $I(\gamma)$ is a computational bottleneck. Therefore, in some situations we may want to approximate it. One approach would be to use the empirical information matrix, as defined by \eqref{eqn:empirical_info}. 
+and $\hat{\lambda}_0(t)$ is given by \eqref{eqn:hazard_update}, which is also a function of $\gamma$. In practice, calculation of $I(\gamma)$ is a computational bottleneck. Therefore, in some situations we may want to approximate it. One approximation we consider is a Gauss-Newton-like approximation, which is similar to the empirical information matrix, as defined by \eqref{eqn:empirical_info}.
 %
 Hence, the one-step block update at the $(m+1)$-th EM algorithm iteration is
 %
