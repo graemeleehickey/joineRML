@@ -20,7 +20,7 @@ library(joineRML)
 
 # Introduction
 
-The joineRML package implements methods for analyzing data from *multiple* longitudinal studies in which the responses from each subject consists of time-sequences of repeated measurements and a possibly censored time-to-event outcome. The modelling framework for the repeated measurements is the multivariate linear mixed effects model. The model for the time-to-event outcome is a Cox proportional hazards model with log-Gaussian frailty. Stochastic dependence is captured by allowing the Gaussian random effects of the linear model to be correlated with the frailty term of the Cox proportional hazards model. For full details of the model, please consult the technical vignette by running
+The `joineRML` package implements methods for analyzing data from *multiple* longitudinal studies in which the responses from each subject consists of time-sequences of repeated measurements and a possibly censored time-to-event outcome. The modelling framework for the repeated measurements is the multivariate linear mixed effects model. The model for the time-to-event outcome is a Cox proportional hazards model with log-Gaussian frailty. Stochastic dependence is captured by allowing the Gaussian random effects of the linear model to be correlated with the frailty term of the Cox proportional hazards model. For full details of the model, please consult the technical vignette by running
 
 ```{r vignette, eval=FALSE}
 vignette("technical", package = "joineRML")
@@ -30,7 +30,13 @@ vignette("technical", package = "joineRML")
 
 ## Data
 
-The simplest way to explain the concepts of the package is through an example. `joineRML` comes with the data set `heart.valve`. This data set is in so-called *long* or *unbalanced* format:
+The simplest way to explain the concepts of the package is through an example. `joineRML` comes with the data set `heart.valve`. Details of this data can be found in the help file by running the command
+
+```{r heart.valve_help, eval=FALSE}
+help("heart.valve", package = "joineRML")
+```
+
+This data is in so-called *long* or *unbalanced* format:
 
 ```{r heart.valve_data}
 library("joineRML")
@@ -82,7 +88,7 @@ fit <- mjoint(
   timeVar = "time")
 ```
 
-Details on the model estimation algorithm are provided in the technical details vignette. There are a number of other useful arguments in the `mjoint` function; for example, `inits` for specifying (partial) initial values, `control` for controlling the optimization algorithm, `verbose` for monitoring the convergence output in real-time. A full list of all arguments with explanation are given in the help documentation, accessed by running `help("mjoint")`.
+Details on the model estimation algorithm are provided in the technical details vignette. We note here that this is not necessarily the most appropriate model for the data, and is included only for the purposes of demonstration. There are a number of other useful arguments in the `mjoint` function; for example, `inits` for specifying (partial) initial values, `control` for controlling the optimization algorithm, and `verbose` for monitoring the convergence output in real-time. A full list of all arguments with explanation are given in the help documentation, accessed by running `help("mjoint")`.
 
 ## Post-fit analysis
 
@@ -110,18 +116,18 @@ plot(fit, params = "beta")
 
 ## Bootstrap standard errors
 
-Once an `mjoint` model has converged, and assuming the `se.approx` argument is `TRUE` (default), then approximated standard errors are calculated based on the empirical information matrix of the profile likelihood at the maximizer. Theoretically, these standard errors will be underestimated (see the technical vignette). In principle, residual Monte Carlo error will oppose this through an increase in uncertainty. Nonetheless, we recommend that the final model standard errors are calculated by the bootstrap method.
+Once an `mjoint` model has converged, and assuming the `se.approx` argument is `TRUE` (default), then approximated standard errors are calculated based on the empirical information matrix of the profile likelihood at the maximizer. Theoretically, these standard errors will be underestimated (see the technical vignette). In principle, residual Monte Carlo error will oppose this through an increase in uncertainty.
 
 ```{r hvd_model_boot, cache=TRUE}
 fit.se <- bootSE(fit, nboot = 25, use.mle = TRUE, control = list(
     nMCmax = 10000, earlyPhase = 20, mcmaxIter = 50, 
-    convCrit = "either", tol0 = 1e-02, tol2 = 1e-02),
+    convCrit = "abs", tol0 = 1e-02, tol2 = 1e-02),
   progress = FALSE)
 ```
 
 Bootstrapping is a computationally intensive method, possibly taking many hours to fit. For this reason, the `bootSE` function makes use of the `use.mle` argument, which automatically initializes each model fit to the maximizer of the fitted model, `fit`. Also, one might relax the control parameter constraints on the optimization algorithm for each bootstrap model; however, this will be at the expense of inflated standard errors due to Monte Carlo error.
 
-Note that in the interests of compiling this vignette in a minimum amount of time, we have limited `bootSE` to only 25 iterations. In general, users will want at least 100-200 iterations. Also, we have increased the convergence tolerance limits to $10^{-2}$. In general, stricter criteria will be required for reliable standard error estimates; the default is $5 \times 10^{-3}$.
+Note that in the interests of compiling this vignette in a minimum amount of time, we have limited `bootSE` to only 25 iterations. In general, users will want at least 50-100 iterations. Also, we have increased the convergence tolerance limits to $10^{-2}$ and used an absolute change criterion. In general, stricter criteria will be required for reliable standard error estimates; the default is $5 \times 10^{-3}$.
 
 We can call the `bootSE` object to interrogate it
 
@@ -145,9 +151,9 @@ There are a growing number of software options for fitting joint models of a sin
 
 * `joineR` only allows for specification of convergence based on an absolute difference criterion.
 
-* `joineR` does not calculate approximate standard errors.
+* `joineR` does not calculate approximate standard errors, and instead requires a bootstrap approach be used after the model fit.
 
-* `joineR` requires a data pre-processing step in order to generate a `joint.data` object, whereas `joineRML` can work straight from the data frame.
+* The current version of `joineR` requires a data pre-processing step in order to generate a `joint.data` object, whereas `joineRML` can work straight from the data frame.
 
 To fit a univariate model in `joineR` we run the following code for the `hvd` data
 
@@ -187,8 +193,8 @@ fit.joinerml <- mjoint(formLongFixed = log.lvmi ~ time + age,
 summary(fit.joinerml)
 
 fit.joinerml.boot <- bootSE(fit.joinerml, nboot = 25, use.mle = TRUE, control = 
-                              list(earlyPhase = 25, convCrit = "either", 
-                                   tol0 = 1e-02, tol2 = 1e-02, mcmaxIter = 60),
+                            list(earlyPhase = 25, convCrit = "sas",
+                                 tol0 = 1e-02, tol2 = 1e-02, mcmaxIter = 60),
                             progress = FALSE)
 
 fit.joinerml.boot

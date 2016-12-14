@@ -11,3 +11,7 @@ gdata
 joineR
 devtools
 dplyr
+ggplot2
+gridExtra
+reshape2
+R.rsp
