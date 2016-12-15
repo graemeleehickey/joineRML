@@ -61,27 +61,33 @@ summary.mjoint <- function(object, bootSE = NULL, ...) {
 
   beta <- object$coefficients$beta
   beta.inds <- (num.d + 1):(num.d + num.b)
-  if (is.null(bootSE)) {
+  if (is.null(bootSE) & !is.null(object$SE.approx)) {
     beta.se <- object$SE.approx[beta.inds]
-  } else {
+  } else if (!is.null(bootSE)) {
     beta.se <- bootSE$beta.se
+  } else {
+    beta.se <- rep(NA, length(beta))
   }
-  coefs.beta <- cbind("Value" = beta,
-                      "Std.Err" = beta.se,
-                      "z-value" = beta / beta.se,
-                      "p-value" = 2 * pnorm(abs(beta / beta.se), lower.tail = FALSE))
+  coefs.beta <- cbind(
+    "Value" = beta,
+    "Std.Err" = beta.se,
+    "z-value" = beta / beta.se,
+    "p-value" = 2 * pnorm(abs(beta / beta.se), lower.tail = FALSE))
 
   gamma <- object$coefficients$gamma
   gamma.inds <- (num.d + num.b + num.s + 1):(num.d + num.b + num.s + num.g)
-  if (is.null(bootSE)) {
+  if (is.null(bootSE) & !is.null(object$SE.approx)) {
     gamma.se <- object$SE.approx[gamma.inds]
-  } else {
+  } else if (!is.null(bootSE)) {
     gamma.se <- bootSE$gamma.se
+  } else {
+    gamma.se <- rep(NA, length(gamma))
   }
-  coefs.gamma <- cbind("Value" = gamma,
-                       "Std.Err" = gamma.se,
-                       "z-value" = gamma / gamma.se,
-                       "p-value" = 2 * pnorm(abs(gamma / gamma.se), lower.tail = FALSE))
+  coefs.gamma <- cbind(
+    "Value" = gamma,
+    "Std.Err" = gamma.se,
+    "z-value" = gamma / gamma.se,
+    "p-value" = 2 * pnorm(abs(gamma / gamma.se), lower.tail = FALSE))
 
   out <- list("coefs.long" = coefs.beta,
               "coefs.surv" = coefs.gamma,
@@ -103,7 +109,8 @@ summary.mjoint <- function(object, bootSE = NULL, ...) {
   out$call <- object$call
   out$comp.time <- object$comp.time
   out$conv <- object$conv
-  out$se.type <- ifelse(is.null(bootSE), "approx", "boot")
+  out$se.type <- ifelse(is.null(bootSE) & !is.null(object$SE.approx), "approx",
+                        ifelse(!is.null(bootSE), "boot", "none"))
   if (!is.null(bootSE)) {
     out$boot.time <- bootSE$boot.time
     out$nboot <- bootSE$nboot
