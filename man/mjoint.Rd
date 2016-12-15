@@ -154,8 +154,9 @@ Function \code{mjoint} fits joint models for time-to-event and
   algorithm (MCEM) algorithm, as described by Wei and Tanner (1990). As
   proposed by Henderson et al. (2000), we use antithetic simulation for
   variance reduction in the Monte Carlo integration.
+}
+\section{Convergence criteria}{
 
-  @section Convergence criteria:
 
   The routine internally scales and centers data to avoid overflow in the
   argument to the exponential function. These actions do not change the
