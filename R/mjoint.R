@@ -41,7 +41,7 @@
 #'   convergence statistics are value are printed at each iteration of the MCEM
 #'   algorithm. Default is \code{FALSE}.
 #' @param se.approx logical: if \code{TRUE}, approximate standard errors are
-#'   estimated after the model has converged. Default is \code{TRUE}.
+#'   estimated after the model has converged. Default is \code{TRUE}. See details.
 #' @param postRE logical: if \code{TRUE}, the posterior means and variances of
 #'   the random effects are calculated after the model has converged. Default is
 #'   \code{TRUE}.
@@ -165,6 +165,27 @@
 #'   change of the last 3 iterations to decide whether to increase the Monte
 #'   Carlo sample size. See the technical vignette and Ripatti et al. (2002) for
 #'   further details.
+#'
+#' @section Standard error estimation:
+#'
+#'   Approximate standard errors (SEs) can be calculated (if
+#'   \code{se.approx=TRUE}). These are based on the empirical observed
+#'   information function (McLachlan & Krishnan, 2008). Through simulation
+#'   studies, we have found that this approximation does not work particularly
+#'   well for \emph{n}<100 (where \emph{n} is the number of subjects). In these
+#'   cases, one would need to appeal to the bootstrap SE estimation approach.
+#'   However, in practice, the reliability of the approximate SEs will depend of
+#'   a mulitude of factors, including but not limited to, the average number of
+#'   repeated measurements per subject, the total number of events, and the
+#'   convergence of the MCEM algorithm.
+#'
+#'   Bootstrap SEs are also available, however they are not calculated using the
+#'   \code{mjoint} function due to the intense computational time. Instead, a
+#'   separate function is available: \code{bootSE}, which takes the fitted joint
+#'   model as its main argument. Given a fitted joint model (of class
+#'   \code{mjoint}) and a bootstrap fit object (of class \code{bootSE}), the SEs
+#'   reported in the model can be updated by running \code{summary(fit_obj,
+#'   boot_obj)}. For details, consult the \code{\link{bootSE}} documentation.
 #'
 #' @author Graeme L. Hickey (\email{graeme.hickey@@liverpool.ac.uk})
 #' @keywords multivariate survival methods
