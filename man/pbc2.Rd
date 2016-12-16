@@ -79,7 +79,7 @@ Therneau T, Grambsch P. \emph{Modeling Survival Data: Extending the Cox
 Model}. 2000; New York: Springer-Verlag.
 }
 \seealso{
-\code{\link{heart.valve}}.
+\code{\link{heart.valve}}, \code{\link{renal}}.
 }
 \keyword{data}
 

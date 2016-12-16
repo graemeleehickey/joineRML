@@ -62,7 +62,7 @@
 #'
 #'   }
 #' @keywords data
-#' @seealso \code{\link{heart.valve}}.
+#' @seealso \code{\link{heart.valve}}, \code{\link{renal}}.
 #' @source \code{\link[JM]{pbc2}} and \code{\link[survival]{pbc}}.
 #' @references
 #'

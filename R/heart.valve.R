@@ -13,13 +13,13 @@
 #'   baseline covariates, and survival data. The column names are identified as
 #'   follows: \describe{
 #'
-#'   \item{\code{num}}{number for patient identification.}
+#'   \item{\code{num: }}{number for patient identification.}
 #'
-#'   \item{\code{sex}}{gender of patient (\code{0=}Male and \code{1=}Female).}
+#'   \item{\code{sex: }}{gender of patient (\code{0=}Male and \code{1=}Female).}
 #'
-#'   \item{\code{age}}{age of patient at day of surgery (years).}
+#'   \item{\code{age: }}{age of patient at day of surgery (years).}
 #'
-#'   \item{\code{time}}{observed time point, with surgery date as the time origin
+#'   \item{\code{time: }}{observed time point, with surgery date as the time origin
 #'   (years).}
 #'
 #'   \item{\code{fuyrs}}{maximum follow up time, with surgery date as the time origin
@@ -74,7 +74,7 @@
 #'
 #'   }
 #' @keywords data
-#' @seealso \code{\link{pbc2}}.
+#' @seealso \code{\link{pbc2}}, \code{\link{renal}}.
 #' @source Mr Eric Lim (\url{http://www.drericlim.com}) and \code{\link[joineR]{heart.valve}}
 #' @references
 #'
