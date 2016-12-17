@@ -86,7 +86,8 @@ for multiple longitudinal outcomes and a time-to-event. \emph{Stat. Med.}
 2011; \strong{30(12)}: 1366–1380.
 }
 \seealso{
-\code{\link{pbc2}}, \code{\link{heart.valve}}.
+\code{\link{pbc2}}, \code{\link{heart.valve}},
+  \code{\link{epileptic.qol}}.
 }
 \keyword{data}
 

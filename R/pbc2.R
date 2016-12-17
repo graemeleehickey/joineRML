@@ -62,7 +62,8 @@
 #'
 #'   }
 #' @keywords data
-#' @seealso \code{\link{heart.valve}}, \code{\link{renal}}.
+#' @seealso \code{\link{heart.valve}}, \code{\link{renal}},
+#'   \code{\link{epileptic.qol}}.
 #' @source \code{\link[JM]{pbc2}} and \code{\link[survival]{pbc}}.
 #' @references
 #'

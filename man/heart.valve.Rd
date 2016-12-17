@@ -16,20 +16,21 @@
 
   \item{\code{age: }}{age of patient at day of surgery (years).}
 
-  \item{\code{time: }}{observed time point, with surgery date as the time origin
-  (years).}
+  \item{\code{time: }}{observed time point, with surgery date as the time
+  origin (years).}
 
-  \item{\code{fuyrs}}{maximum follow up time, with surgery date as the time origin
-  (years).}
+  \item{\code{fuyrs}}{maximum follow up time, with surgery date as the time
+  origin (years).}
 
-  \item{\code{status}}{censoring indicator (\code{1=}died and \code{0=}lost at
-  follow up).}
+  \item{\code{status}}{censoring indicator (\code{1=}died and \code{0=}lost
+  at follow up).}
 
   \item{\code{grad}}{valve gradient at follow-up visit.}
 
   \item{\code{log.grad}}{natural log transformation of \code{grad}.}
 
-  \item{\code{lvmi}}{left ventricular mass index (standardised) at follow-up visit.}
+  \item{\code{lvmi}}{left ventricular mass index (standardised) at follow-up
+  visit.}
 
   \item{\code{log.lvmi}}{natural log transformation of \code{lvmi}.}
 
@@ -57,11 +58,11 @@
   \item{\code{lv}}{preoperative left ventricular ejection fraction (LVEF)
   (\code{1=}good, \code{2=}moderate, and \code{3=}poor).}
 
-  \item{\code{emergenc}}{operative urgency (\code{0=}elective, \code{1=}urgent, and
-  \code{3=}emergency).}
+  \item{\code{emergenc}}{operative urgency (\code{0=}elective,
+  \code{1=}urgent, and \code{3=}emergency).}
 
-  \item{\code{hc}}{preoperative high cholesterol (\code{0=}absent, \code{1=}present
-  treated, and \code{2=}present untreated).}
+  \item{\code{hc}}{preoperative high cholesterol (\code{0=}absent,
+  \code{1=}present treated, and \code{2=}present untreated).}
 
   \item{\code{sten.reg.mix}}{aortic valve haemodynamics (\code{1=}stenosis,
   \code{2=}regurgitation, \code{3=}mixed).}
@@ -71,7 +72,8 @@
 
   }}
 \source{
-Mr Eric Lim (\url{http://www.drericlim.com}) and \code{\link[joineR]{heart.valve}}
+Mr Eric Lim (\url{http://www.drericlim.com}) and
+  \code{\link[joineR]{heart.valve}}
 }
 \usage{
 data(heart.valve)
@@ -84,13 +86,14 @@ surgery occurred. There are several baseline covariates available, and also
 survival data.
 }
 \references{
-Lim E, Ali A, Theodorou P, Sousa I, Ashrafian H, Chamageorgakis
-  T, Duncan M, Diggle P, Pepper J. A longitudinal study of the profile and
-  predictors of left ventricular mass regression after stentless aortic valve
-  replacement. \emph{Ann Thorac Surg.} 2008; \strong{85(6)}: 2026-2029.
+Lim E, Ali A, Theodorou P, Sousa I, Ashrafian H, Chamageorgakis T, Duncan M,
+Diggle P, Pepper J. A longitudinal study of the profile and predictors of
+left ventricular mass regression after stentless aortic valve replacement.
+\emph{Ann Thorac Surg.} 2008; \strong{85(6)}: 2026-2029.
 }
 \seealso{
-\code{\link{pbc2}}, \code{\link{renal}}.
+\code{\link{pbc2}}, \code{\link{renal}},
+  \code{\link{epileptic.qol}}.
 }
 \keyword{data}
 
