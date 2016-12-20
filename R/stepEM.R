@@ -58,7 +58,7 @@ stepEM <- function(theta, l, t, z, nMC, verbose, gammaOpt, postRE, se.approx) {
   })
 
   # Inverse-Sigma_i (error precision matrix; diagonal matrix)
-  Sigmai.inv <-   Sigmai <- lapply(nik, function(i) {
+  Sigmai.inv <- lapply(nik, function(i) {
     diag(x = rep(1 / sigma2, i), ncol = sum(i))
   })
 
