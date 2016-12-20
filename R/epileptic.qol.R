@@ -50,8 +50,7 @@
 #'   }
 #' @keywords data
 #' @seealso \code{\link{pbc2}}, \code{\link{heart.valve}}, \code{\link{renal}}.
-#' @source Dr Ruwanthi Kolamunnage-Dona (kdrr@liverpool.ac.uk) and Prof. Ann
-#'   Jacoby (ajacoby@liverpool.ac.uk).
+#' @source SANAD Trial - University of Liverpool. See Jacoby et al. (2015).
 #' @references
 #'
 #' Jacoby A, Sudell M, Tudur Smith C, et al. Quality‐of‐life outcomes of

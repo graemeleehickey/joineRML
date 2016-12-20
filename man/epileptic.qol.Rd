@@ -45,8 +45,7 @@
 
   }}
 \source{
-Dr Ruwanthi Kolamunnage-Dona (kdrr@liverpool.ac.uk) and Prof. Ann
-  Jacoby (ajacoby@liverpool.ac.uk).
+SANAD Trial - University of Liverpool. See Jacoby et al. (2015).
 }
 \usage{
 data(epileptic.qol)
