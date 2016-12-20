@@ -3,7 +3,7 @@
 \docType{data}
 \name{heart.valve}
 \alias{heart.valve}
-\title{Heart valve surgery data}
+\title{Aortic valve replacement surgery data}
 \format{This is a data frame in the unbalanced format, that is, with one row
   per observation. The data consists in columns for patient identification,
   time of measurements, longitudinal multiple longitudinal measurements,
@@ -80,10 +80,10 @@ data(heart.valve)
 }
 \description{
 This is longitudinal data on an observational study on detecting effects of
-different heart valves, differing on type of tissue. The data consists of
-longitudinal measurements on three different heart function outcomes, after
-surgery occurred. There are several baseline covariates available, and also
-survival data.
+different heart valves, differing on type of tissue, implanted in the aortic
+position. The data consists of longitudinal measurements on three different
+heart function outcomes, after surgery occurred. There are several baseline
+covariates available, and also survival data.
 }
 \references{
 Lim E, Ali A, Theodorou P, Sousa I, Ashrafian H, Chamageorgakis T, Duncan M,

@@ -41,7 +41,6 @@
 
   }
 
-
   \strong{The longitudinal datasets only} contain 2 further columns:
   \describe{
 

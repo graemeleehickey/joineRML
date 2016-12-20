@@ -3,7 +3,7 @@
 \docType{data}
 \name{epileptic.qol}
 \alias{epileptic.qol}
-\title{Epilepsy quality of life data}
+\title{Quality of life data following epilepsy drug treatment}
 \format{A data frame with 1853 observations on the following 9 variables:
   \describe{
 
@@ -52,16 +52,12 @@ Dr Ruwanthi Kolamunnage-Dona (kdrr@liverpool.ac.uk) and Prof. Ann
 data(epileptic.qol)
 }
 \description{
-This data is from the the Standard and New Antiepileptic Drugs (SANAD) trial,
-a pragmatic, randomized, unblinded, multicenter, parallel- group clinical
-trial comparing clinical and cost effectiveness of initiating treatment with
-carbamazepine versus lamotrigine, gabapentin, oxcarbazepine and topiramate,
-and valproate versus lamotrigine and topiramate. Quality of life (QoL) data
-were collected by mail at baseline, 3 months, and at 1 and 2 years using
+The SANAD (Standard and New Antiepileptic Drugs) study (Marson et al., 2007)
+is a randomised control trial of standard and new antiepileptic drugs,
+comparing effects on longer term clinical outcomes. Quality of life (QoL)
+data were collected by mail at baseline, 3 months, and at 1 and 2 years using
 validated measures. This data is a subset of the trial for 544 patients
-randomised to one of 2 drugs: carbamazepine and lamotrigine. The SANAD study
-(ISRCTN38354748) was commissioned by the Health Technology Assessment (HTA)
-Programme of UK NHS Research and Development.
+randomised to one of 2 drugs: carbamazepine and lamotrigine.
 }
 \references{
 Jacoby A, Sudell M, Tudur Smith C, et al. Quality‐of‐life outcomes of
