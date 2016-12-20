@@ -705,7 +705,7 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
   rownames(hx.beta) <- paste0("long_", rownames(hx.beta))
   hx.gamma <- sapply(all.iters, function(x) x$gamma)
   if ((q + K) == 1) {
-    hx.gamma <- matrix(hx.gamma, nr = 1)
+    hx.gamma <- matrix(hx.gamma, nrow = 1)
   }
   rownames(hx.gamma) <- paste0("surv_", rownames(hx.gamma))
   hx.D <- sapply(all.iters, function(x) x$D[lower.tri(x$D, diag = TRUE)])
