@@ -228,7 +228,7 @@ where $C_i$ is the Cholesky decomposition of $A_i$ such that $C_i C_i^\top = A_i
 
 \subsubsection{Initial values}
 
-The EM algorithm requires that initial parameters are specified, namely $\hat{\theta}^{(0)$. By choosing values close to the maximizer, the number of iterations required to reach convergence will be reduced. 
+The EM algorithm requires that initial parameters are specified, namely $\hat{\theta}^{(0)}$. By choosing values close to the maximizer, the number of iterations required to reach convergence will be reduced. 
 	
 For the time-to-event sub-model, a quasi-two-stage model is fitted when the measurement times are balanced., i.e. when $t_{ijk} = t_{ij}$ $\forall k$ That is, we fit \emph{separate} LMMs for each longitudinal outcome as per \eqref{eqn:long_model}, ignoring the correlation between different outcomes. This is straightforward to implement using standard software. From the fitted models, the best linear unbiased predictions of the separate model random effects are used to estimate each $W_{1i}^{(k)}(t)$ function. These estimates are then included as time-varying covariates in a Cox regression model, alongside any other fixed effect covariates, which can be straightforwardly fitted using standard software. In the situation that the data are not balanced, i.e. when $t_{ijk} \neq t_{ij}$ $\forall k$, then we fit a standard Cox proportional hazards regression model for the baseline covariates, and set $\gamma_{yk} = 0$ $\forall k$.
 
