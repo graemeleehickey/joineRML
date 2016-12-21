@@ -42,10 +42,10 @@ algorithm. Default is \code{FALSE}.}
   of the optimization algorithm. It is computationally inefficient to use a
   large number of Monte Carlo samples early on until one is approximately
   near the maximum likelihood estimate. Default is
-  \code{earlyPhase=}\emph{200K}.}
+  \code{earlyPhase=}\emph{50K}.}
 
   \item{\code{mcmaxIter}}{integer: the maximum number of MCEM algorithm
-  iterations allowed. Default is \code{mcmaxIter=200}\emph{(K+1)}.}
+  iterations allowed. Default is \code{mcmaxIter=}\emph{(50K+200)}.}
 
   \item{\code{convCrit}}{character string: the convergence criterion to be
   used. See \strong{Details}.}
@@ -67,6 +67,13 @@ algorithm. Default is \code{FALSE}.}
 
   \item{\code{tol2}}{numeric: tolerance value for convergence in the
   parameters; see \strong{Details}. Default is \code{5e-03}.}
+
+  \item{\code{tol.em}}{numeric: tolerance value for convergence in the in the
+  multivariate linear mixed model (MV-LMM). When \eqn{K>1}, the optimal
+  initial parameters are those from the MV-LMM, which is estimated using a
+  separate EM algorithm. Since both the E- and M-steps are available in
+  closed-form, this algorithm convergences relatively rapidly with a high
+  precision. Default is \code{1e-05}.}
 
   \item{\code{rav}}{numeric: threshold when using \code{convCrit='sas'} that
   applies absolute change (when <\code{rav}) or relative change (when

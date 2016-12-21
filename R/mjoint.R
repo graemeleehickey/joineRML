@@ -62,10 +62,10 @@
 #'   of the optimization algorithm. It is computationally inefficient to use a
 #'   large number of Monte Carlo samples early on until one is approximately
 #'   near the maximum likelihood estimate. Default is
-#'   \code{earlyPhase=}\emph{200K}.}
+#'   \code{earlyPhase=}\emph{50K}.}
 #'
 #'   \item{\code{mcmaxIter}}{integer: the maximum number of MCEM algorithm
-#'   iterations allowed. Default is \code{mcmaxIter=200}\emph{(K+1)}.}
+#'   iterations allowed. Default is \code{mcmaxIter=}\emph{(50K+200)}.}
 #'
 #'   \item{\code{convCrit}}{character string: the convergence criterion to be
 #'   used. See \strong{Details}.}
@@ -87,6 +87,13 @@
 #'
 #'   \item{\code{tol2}}{numeric: tolerance value for convergence in the
 #'   parameters; see \strong{Details}. Default is \code{5e-03}.}
+#'
+#'   \item{\code{tol.em}}{numeric: tolerance value for convergence in the in the
+#'   multivariate linear mixed model (MV-LMM). When \eqn{K>1}, the optimal
+#'   initial parameters are those from the MV-LMM, which is estimated using a
+#'   separate EM algorithm. Since both the E- and M-steps are available in
+#'   closed-form, this algorithm convergences relatively rapidly with a high
+#'   precision. Default is \code{1e-05}.}
 #'
 #'   \item{\code{rav}}{numeric: threshold when using \code{convCrit='sas'} that
 #'   applies absolute change (when <\code{rav}) or relative change (when
@@ -271,7 +278,7 @@
 #'
 #' # joineRML package
 #' fit.joineRML <- mjoint(
-#'     formLongFixed = list("log.bil" = log.b ~ year,
+#'     formLongFixed = list("log.bil" = log.b ~ year),
 #'     formLongRandom = list("log.bil" = ~ 1 | id),
 #'     formSurv = Surv(years, status2) ~ age,
 #'     data = pbc2,
@@ -360,15 +367,15 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
   # Control parameters
   #*****************************************************
 
-  con <- list(nMC = 100, nMCscale = 3, nMCmax = 20000, earlyPhase = 200*K,
-              mcmaxIter = 200*(K+1), convCrit = "rel", gammaOpt = "NR",
-              tol0 = 5e-03, tol1 = 1e-03, tol2 = 5e-03, rav = 0.1)
+  con <- list(nMC = 100, nMCscale = 3, nMCmax = 20000, earlyPhase = 50*K,
+              mcmaxIter = 50*K + 200, convCrit = "rel", gammaOpt = "NR",
+              tol0 = 5e-03, tol1 = 1e-03, tol2 = 5e-03, tol.em = 1e-05, rav = 0.1)
   nc <- names(con)
   control <- c(control, list(...))
   con[(conArgs <- names(control))] <- control
 
-  if (length(unmatched <- nc[!conArgs %in% nc]) > 0) {
-    warning("Unknown arguments passed to 'control'", paste(unmatched, collapse = ", "))
+  if (length(unmatched <- conArgs[!(conArgs %in% nc)]) > 0) {
+    warning("Unknown arguments passed to 'control': ", paste(unmatched, collapse = ", "))
   }
 
   #*****************************************************
@@ -566,18 +573,22 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
   # Initial values
   #*****************************************************
 
-  inits.long <- initsLong(lfit = lfit, K = K, p = p)
-  if (balanced | !("gamma" %in% names(inits))) {
-    inits.surv <- initsSurv_balanced(
-      data = data, lfit = lfit, survdat2 = survdat2, formSurv = formSurv,
-      id = id, timeVar = timeVar, K = K, q = q)
-
-  } else {
-    if (!("gamma" %in% names(inits))) {
-      message("Data are unbalanced... using sub-optimal initial parameters for gamma")
+  if (!is.null(inits)) {
+    if (!is.list(inits)) {
+      stop("inits must be a list.\n")
     }
-    inits.surv <- initsSurv_unbalanced(sfit = sfit, K = K, q = q)
+    theta.names <- c("D", "beta", "sigma2", "gamma", "haz")
+    if (length(unmatched <- names(inits)[!(names(inits) %in% theta.names)]) > 0) {
+      warning("Unknown initial parameters passed to 'inits': ", paste(unmatched, collapse = ", "))
+    }
   }
+
+  inits.long <- initsLong(lfit = lfit, inits = inits, l = l, z = z, K = K, p = p,
+                          tol.em = con$tol.em, verbose = verbose)
+
+  inits.surv <- initsSurv(data = data, lfit = lfit, sfit = sfit, survdat2 = survdat2,
+                          formSurv = formSurv, id = id, timeVar = timeVar,
+                          K = K, q = q, balanced = balanced, inits = inits)
 
   D <- inits.long$D
   beta <- inits.long$beta
@@ -587,23 +598,6 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
 
   theta <- list("D" = D, "beta" = beta, "sigma2" = sigma2,
                 "gamma" = gamma, "haz" = haz)
-
-  # Override these with user-specified initial values
-  if (!is.null(inits)) {
-    if (!is.list(inits)) stop("inits must be a list.\n")
-    init.names <- names(inits)
-    for (param in init.names) {
-      if (!is.null(inits[[param]]) && !any(is.na(inits[[param]]))) {
-        theta[[param]] <- inits[[param]]
-        if (param %in% c("beta", "gamma")) {
-          names(theta[[param]]) <- names(get(param))
-        }
-        if (param == "D") {
-          rownames(D) <- colnames(D) <- rownames(get(param))
-        }
-      }
-    }
-  }
 
   #*****************************************************
   # Run EM algorithm

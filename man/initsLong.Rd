@@ -5,7 +5,7 @@
 \title{Internal function for generating initial parameters for the longitudinal
 sub-model}
 \usage{
-initsLong(lfit, K, p)
+initsLong(lfit, inits, l, z, K, p, tol.em, verbose)
 }
 \description{
 Internal function for generating initial parameters for the longitudinal

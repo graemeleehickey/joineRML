@@ -48,6 +48,7 @@ initsSurv_balanced <- function(data, lfit, survdat2, formSurv, id, timeVar, K, q
 
 }
 
+
 #' Internal function for generating initial parameters for the survival
 #' sub-model when the data are *unbalanced*, i.e. longitudinal outcomes can be
 #' measured at different times and frequencies within a patient
@@ -75,5 +76,40 @@ initsSurv_unbalanced <- function(sfit, K, q) {
   gamma <- c(gamma.v, gamma.y)
 
   return(list("gamma" = gamma, "haz" = haz))
+
+}
+
+
+#' Internal function for generating initial parameters for the survival
+#' sub-model when the data are *unbalanced*, i.e. longitudinal outcomes can be
+#' measured at different times and frequencies within a patient
+#'
+#' @keywords internal
+initsSurv <- function(data, lfit, sfit, survdat2, formSurv, id, timeVar, K, q,
+                      balanced, inits) {
+
+  if (balanced & !("gamma" %in% names(inits))) {
+    inits.surv <- initsSurv_balanced(
+      data = data, lfit = lfit, survdat2 = survdat2, formSurv = formSurv,
+      id = id, timeVar = timeVar, K = K, q = q)
+
+  } else {
+    if (!("gamma" %in% names(inits))) {
+      message("Data are unbalanced... using sub-optimal initial parameters for gamma")
+    }
+    inits.surv <- initsSurv_unbalanced(sfit = sfit, K = K, q = q)
+  }
+
+  # over-ride with user-specified inits
+  if ("gamma" %in% names(inits)) {
+    gamma <- inits$gamma
+    names(gamma) <- names(inits.surv[["gamma"]])
+    inits.surv[["gamma"]] <- gamma
+  }
+  if ("haz" %in% names(inits)) {
+    inits.surv[["haz"]] <- inits$haz
+  }
+
+  return(inits.surv)
 
 }

@@ -226,6 +226,14 @@ As proposed by \textcite{Henderson2000}, we will use antithetic simulation for v
 %
 where $C_i$ is the Cholesky decomposition of $A_i$ such that $C_i C_i^\top = A_i$. Therefore we only need to draw $N/2$ samples using this approach, and by virtue of the negative correlation between the pairs, it leads to a smaller variance in the sample means taken in \eqref{eqn:expectation_approx} than would be obtained from $N$ independent simulations. The choice of $N$ is described below.
 
+\subsubsection{Initial values}
+
+The EM algorithm requires that initial parameters are specified, namely $\hat{\theta}^{(0)$. By choosing values close to the maximizer, the number of iterations required to reach convergence will be reduced. 
+	
+For the time-to-event sub-model, a quasi-two-stage model is fitted when the measurement times are balanced., i.e. when $t_{ijk} = t_{ij}$ $\forall k$ That is, we fit \emph{separate} LMMs for each longitudinal outcome as per \eqref{eqn:long_model}, ignoring the correlation between different outcomes. This is straightforward to implement using standard software. From the fitted models, the best linear unbiased predictions of the separate model random effects are used to estimate each $W_{1i}^{(k)}(t)$ function. These estimates are then included as time-varying covariates in a Cox regression model, alongside any other fixed effect covariates, which can be straightforwardly fitted using standard software. In the situation that the data are not balanced, i.e. when $t_{ijk} \neq t_{ij}$ $\forall k$, then we fit a standard Cox proportional hazards regression model for the baseline covariates, and set $\gamma_{yk} = 0$ $\forall k$.
+
+For the longitudinal data sub-model, when $K > 1$ we first find the maximum likelihood estimate of $\{\beta, \text{vech}(D), \sigma_1^2, \dots, \sigma_K^2\}$ by running an EM algorithm for the multivariate linear mixed model. The E- and M-step updates are available in closed form, and the initial parameters for this EM algorithm are available from the separate LMM fits. As these are estimated using an EM rather than MCEM algorithm, we can specify a stricter convergence criterion on the estimates.
+
 \subsubsection{Convergence and stopping rules}
 
 Two standard stopping rules for the deterministic EM algorithm used to declare convergence are the relative and absolute differences, defined as
@@ -243,7 +251,7 @@ The choice of $N$ and the monitoring of convergence are conflated when applying 
 	\text{cv}(\Delta_\text{rel}^{(m+1)}) = \frac{\text{sd}(\Delta_\text{rel}^{(m-1)}, \Delta_\text{rel}^{(m)}, \Delta_\text{rel}^{(m+1)})}{\text{mean}(\Delta_\text{rel}^{(m-1)}, \Delta_\text{rel}^{(m)}, \Delta_\text{rel}^{(m+1)})},
 \end{equation*}
 %
-where $\Delta_\text{rel}^{(m+1)}$ is given by \eqref{eqn:rel_conv}, and $\text{sd}(\cdot)$ and $\text{mean}(\cdot)$ are the sample standard deviation and mean functions, respectively. If $\text{cv}(\Delta_\text{rel}^{(m+1)}) > \text{cv}(\Delta_\text{rel}^{(m)})$, then $N := N + \lfloor N/\delta \rfloor$, for some small positive integer $\delta$. Typically, we run the MCEM algorithm with a small $N$ (e.g. a default of $200K$ iterations) before implementing this update rule in order to get into the approximately correct parameter region. Appropriate values for other parameters will be application specific, however we have found $\delta = 3$, $N = 100$, $\epsilon_1 = 0.001$, and $\epsilon_0 = \epsilon_2 = 0.005$ to deliver reasonably accurate estimates.
+where $\Delta_\text{rel}^{(m+1)}$ is given by \eqref{eqn:rel_conv}, and $\text{sd}(\cdot)$ and $\text{mean}(\cdot)$ are the sample standard deviation and mean functions, respectively. If $\text{cv}(\Delta_\text{rel}^{(m+1)}) > \text{cv}(\Delta_\text{rel}^{(m)})$, then $N := N + \lfloor N/\delta \rfloor$, for some small positive integer $\delta$. Typically, we run the MCEM algorithm with a small $N$ (e.g. a default of $50K$ iterations) before implementing this update rule in order to get into the approximately correct parameter region. Appropriate values for other parameters will be application specific, however we have found $\delta = 3$, $N = 100$, $\epsilon_1 = 0.001$, and $\epsilon_0 = \epsilon_2 = 0.005$ to deliver reasonably accurate estimates.
 
 As the monotonicity property is lost due to the Monte Carlo integrations in MCEM, convergence might be prematurely declared due to stochasticity if the $\epsilon$ values are too large. To reduce the chance of this occurring, we require that the stopping rule is satisfied for 3 consecutive iterations \cite{Booth1999, Ripatti2002}. However, in any case, trace plots should be inspected to confirm convergence is appropriate.
 
