@@ -1,7 +1,8 @@
 ## Test environments
 * local OS X install, R 3.3.1
 * ubuntu 12.04 (on travis-ci), R 3.3.1
-* local Windows 7 Enterprise SP1 install, R 3.3.1
+* local Windows 7 Enterprise SP1 install, R 3.3.1 (via github_install)
+* win-builder (devel and release)
 
 ## R CMD check results
 
@@ -12,3 +13,7 @@
 ## Reverse dependencies
 
 This is a new release, so there are no reverse dependencies.
+
+## Other notes
+
+The vignette code can take about 15-20 minutes to run due to the Monte Carlo simulation example.
