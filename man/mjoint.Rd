@@ -41,8 +41,8 @@ string vector can be given instead.}
 
 \item{inits}{a list of initial values for some or all of the parameters
 estimated in the model. Default is \code{NULL}, with initial values
-estimated using separate linear mixed and Cox proportional hazard
-regression models.}
+estimated using separate multivariate linear mixed effects and Cox
+proportional hazard regression models.}
 
 \item{verbose}{logical: if \code{TRUE}, the parameter estimates and other
 convergence statistics are value are printed at each iteration of the MCEM
@@ -98,7 +98,7 @@ the random effects are calculated after the model has converged. Default is
   \item{\code{tol2}}{numeric: tolerance value for convergence in the
   parameters; see \strong{Details}. Default is \code{5e-03}.}
 
-  \item{\code{tol.em}}{numeric: tolerance value for convergence in the in the
+  \item{\code{tol.em}}{numeric: tolerance value for convergence in the
   multivariate linear mixed model (MV-LMM). When \eqn{K>1}, the optimal
   initial parameters are those from the MV-LMM, which is estimated using a
   separate EM algorithm. Since both the E- and M-steps are available in

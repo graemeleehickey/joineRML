@@ -2,7 +2,7 @@ Package: joineRML
 Type: Package
 Title: Joint Modelling of Multivariate Longitudinal Data and Time-to-Event
     Outcomes
-Version: 0.0.0.9026
+Version: 0.1.0
 Authors@R: c(
     person("Graeme L", "Hickey", email = "graeme.hickey@liverpool.ac.uk", 
         role = c("cre", "aut")),
@@ -13,9 +13,7 @@ Authors@R: c(
     person("Ruwanthi", "Kolamunnage-Dona", email = "kdrr@liverpool.ac.uk", 
         role = "aut"),
     person("Paula", "Williamson", email = "p.r.williamson@liverpool.ac.uk",
-        role = "ctb"),
-    person("Peter J", "Diggle", email = "p.diggle@lancaster.ac.uk",
-        role = "dtc")
+        role = "ctb")
     )
 Maintainer: Graeme L. Hickey <graeme.hickey@liverpool.ac.uk>
 Date: 2016-10-15

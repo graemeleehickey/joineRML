@@ -35,8 +35,8 @@
 #'   string vector can be given instead.
 #' @param inits a list of initial values for some or all of the parameters
 #'   estimated in the model. Default is \code{NULL}, with initial values
-#'   estimated using separate linear mixed and Cox proportional hazard
-#'   regression models.
+#'   estimated using separate multivariate linear mixed effects and Cox
+#'   proportional hazard regression models.
 #' @param verbose logical: if \code{TRUE}, the parameter estimates and other
 #'   convergence statistics are value are printed at each iteration of the MCEM
 #'   algorithm. Default is \code{FALSE}.
@@ -88,7 +88,7 @@
 #'   \item{\code{tol2}}{numeric: tolerance value for convergence in the
 #'   parameters; see \strong{Details}. Default is \code{5e-03}.}
 #'
-#'   \item{\code{tol.em}}{numeric: tolerance value for convergence in the in the
+#'   \item{\code{tol.em}}{numeric: tolerance value for convergence in the
 #'   multivariate linear mixed model (MV-LMM). When \eqn{K>1}, the optimal
 #'   initial parameters are those from the MV-LMM, which is estimated using a
 #'   separate EM algorithm. Since both the E- and M-steps are available in
@@ -368,7 +368,7 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
   #*****************************************************
 
   con <- list(nMC = 100, nMCscale = 3, nMCmax = 20000, earlyPhase = 50*K,
-              mcmaxIter = 50*K + 200, convCrit = "rel", gammaOpt = "NR",
+              mcmaxIter = 50*K + 200, convCrit = "sas", gammaOpt = "NR",
               tol0 = 5e-03, tol1 = 1e-03, tol2 = 5e-03, tol.em = 1e-05, rav = 0.1)
   nc <- names(con)
   control <- c(control, list(...))

@@ -68,7 +68,7 @@ algorithm. Default is \code{FALSE}.}
   \item{\code{tol2}}{numeric: tolerance value for convergence in the
   parameters; see \strong{Details}. Default is \code{5e-03}.}
 
-  \item{\code{tol.em}}{numeric: tolerance value for convergence in the in the
+  \item{\code{tol.em}}{numeric: tolerance value for convergence in the
   multivariate linear mixed model (MV-LMM). When \eqn{K>1}, the optimal
   initial parameters are those from the MV-LMM, which is estimated using a
   separate EM algorithm. Since both the E- and M-steps are available in

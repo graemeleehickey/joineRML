@@ -180,7 +180,7 @@ system.time(fit.joiner.boot <- jointSE(fit.joiner, n.boot = 100))
 fit.joiner.boot
 ```
 
-To fit a univariate model in `joineR` we run the following code for the `hvd` data
+To fit a univariate model in `joineRML` we run the following code for the `hvd` data
 
 ```{r joineRML, cache=TRUE}
 set.seed(123)

@@ -8,13 +8,13 @@
   ...)
 }
 \arguments{
-\item{x}{an object inheriting from class \code{mjoint} for a joint model
-of time-to-event and multivariate longitudinal data.}
+\item{x}{an object inheriting from class \code{mjoint} for a joint model of
+time-to-event and multivariate longitudinal data.}
 
-\item{process}{character string: if \code{process='Longitudinal'} the fixed
-effects coefficients from the (multivariate) longitudinal sub-model are
-returned. Else, if \code{process='Event'}, the coefficients from the
-time-to-event sub-model are returned.}
+\item{process}{character string: if \code{process='Longitudinal'} a fixed
+effects formula from the (multivariate) longitudinal sub-model is returned
+for the \code{k}-th outcome. Else, if \code{process='Event'}, the
+time-to-event model formula is returned.}
 
 \item{k}{inetger: a number between 1 and K (the total number of longitudinal
 outcomes) that specifies the longitudinal outcome of interest.}
