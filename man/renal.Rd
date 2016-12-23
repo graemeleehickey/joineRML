@@ -81,8 +81,8 @@ records 3 repeated measures (2 continuous and 1 binary), and an event time.
 }
 \references{
 Rizopoulos D, Ghosh, P. A Bayesian semiparametric multivariate joint model
-for multiple longitudinal outcomes and a time-to-event. \emph{Stat. Med.}
-2011; \strong{30(12)}: 1366–1380.
+for multiple longitudinal outcomes and a time-to-event. \emph{Stat Med.}
+2011; \strong{30(12)}: 1366-80.
 }
 \seealso{
 \code{\link{pbc2}}, \code{\link{heart.valve}},

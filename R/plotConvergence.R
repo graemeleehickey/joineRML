@@ -16,7 +16,7 @@
 #' @references
 #'
 #' Wei GC, Tanner MA. A Monte Carlo implementation of the EM algorithm and the
-#' poor man’s data augmentation algorithms. \emph{J Am Stat Assoc.} 1990;
+#' poor man's data augmentation algorithms. \emph{J Am Stat Assoc.} 1990;
 #' \strong{85(411)}: 699-704.
 #'
 #' @author Graeme L. Hickey (\email{graeme.hickey@@liverpool.ac.uk})

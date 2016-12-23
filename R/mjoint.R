@@ -221,8 +221,8 @@
 #' multivariate frailty models using an automated Monte Carlo EM algorithm.
 #' \emph{Lifetime Data Anal.} 2002; \strong{8}: 349-360.
 #'
-#' Wei GC, Tanner MA. A Monte Carlo implementation of the EM algorithm and the
-#' poor man’s data augmentation algorithms. \emph{J Am Stat Assoc.} 1990;
+#' #' Wei GC, Tanner MA. A Monte Carlo implementation of the EM algorithm and the
+#' poor man's data augmentation algorithms. \emph{J Am Stat Assoc.} 1990;
 #' \strong{85(411)}: 699-704.
 #'
 #' Wulfsohn MS, Tsiatis AA. A joint model for survival and longitudinal data
