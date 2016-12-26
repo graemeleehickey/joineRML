@@ -36,6 +36,29 @@ This function computes confidence intervals for one or more parameters in a
 fitted \code{mjoint} object.
 }
 \examples{
+# Fit a classical univariate joint model with a single longitudinal outcome
+# and a single time-to-event outcome
+
+data(heart.valve)
+hvd <- heart.valve[!is.na(heart.valve$log.grad) & !is.na(heart.valve$log.lvmi), ]
+
+gamma <- c(0.1059417, 1.0843359)
+sigma2 <- 0.03725999
+beta <- c(4.9988669999, -0.0093527634, 0.0004317697)
+D <- matrix(c(0.128219108, -0.006665505, -0.006665505, 0.002468688),
+            nrow = 2, byrow = TRUE)
+
+set.seed(1)
+fit1 <- mjoint(formLongFixed = log.lvmi ~ time + age,
+    formLongRandom = ~ time | num,
+    formSurv = Surv(fuyrs, status) ~ age,
+    data = hvd,
+    timeVar = "time",
+    inits = list(gamma = gamma, sigma2 = sigma2, beta = beta, D = D),
+    control = list(nMCscale = 2, earlyPhase = 5)) # controls for illustration only
+
+confint(fit1, parm = "Longitudinal")
+
 \dontrun{
 # Fit a joint model with bivariate longitudinal outcomes
 

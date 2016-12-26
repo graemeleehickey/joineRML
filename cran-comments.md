@@ -1,3 +1,10 @@
+## Resubmission
+This is a resubmission. In this version I have:
+
+* Removed the space from the DOI in the DESCRIPTION.
+
+* Reduced run times for all examples in Rd files. All take approx. 2 seconds on my machine (MacBook Air Intel Core i5, 8GB RAM) and cause no NOTES on the win-builder (devel).
+
 ## Test environments
 * local OS X install, R 3.3.1
 * ubuntu 12.04 (on travis-ci), R 3.3.1

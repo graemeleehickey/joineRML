@@ -26,6 +26,23 @@
 #' @export
 #'
 #' @examples
+#' # Fit a classical univariate joint model with a single longitudinal outcome
+#' # and a single time-to-event outcome
+#'
+#' data(heart.valve)
+#' hvd <- heart.valve[!is.na(heart.valve$log.grad) & !is.na(heart.valve$log.lvmi), ]
+#'
+#' set.seed(1)
+#' fit1 <- mjoint(formLongFixed = log.lvmi ~ time + age,
+#'     formLongRandom = ~ time | num,
+#'     formSurv = Surv(fuyrs, status) ~ age,
+#'     data = hvd,
+#'     timeVar = "time",
+#'     control = list(nMCscale = 2, earlyPhase = 5)) # controls for illustration only
+#'
+#' fixef(fit1, process = "Longitudinal")
+#' fixef(fit1, process = "Event")
+#'
 #' \dontrun{
 #' # Fit a joint model with bivariate longitudinal outcomes
 #'
