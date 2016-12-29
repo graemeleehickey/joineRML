@@ -19,6 +19,8 @@ export(plotConvergence)
 export(sampleData)
 export(simData)
 exportPattern("^[[:alpha:]]+")
+if (getRversion() >= '3.3.0') importFrom(stats,sigma) else
+  importFrom(lme4,sigma)
 import(nlme)
 import(stats)
 importFrom(Rcpp,evalCpp)

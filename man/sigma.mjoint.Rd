@@ -2,12 +2,32 @@
 % Please edit documentation in R/sigma.mjoint.R
 \name{sigma.mjoint}
 \alias{sigma.mjoint}
-\title{Print \code{mjoint} object}
+\title{Extract residual standard deviation(s) from an \code{mjoint} object}
 \usage{
 \method{sigma}{mjoint}(object, ...)
 }
-\description{
-Print \code{mjoint} object
+\arguments{
+\item{object}{an object inheriting from class \code{mjoint} for a joint model
+of time-to-event and multivariate longitudinal data.}
+
+\item{...}{additional arguments; currently none are used.}
 }
-\keyword{internal}
+\value{
+a number (standard deviation) if \eqn{K=1} (univariate model), or a
+  vector if \eqn{K>1} (multivariate model).
+}
+\description{
+Extract residual standard deviation(s) from an \code{mjoint} object.
+}
+\author{
+Graeme L. Hickey (\email{graeme.hickey@liverpool.ac.uk})
+}
+\references{
+Pinheiro JC, Bates DM. \emph{Mixed-Effects Models in S and S-PLUS.} New York:
+Springer Verlag; 2000.
+}
+\seealso{
+\code{\link[lme4]{sigma}} in the \strong{lme4} package.
+}
+\keyword{methods}
 

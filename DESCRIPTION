@@ -2,7 +2,7 @@ Package: joineRML
 Type: Package
 Title: Joint Modelling of Multivariate Longitudinal Data and Time-to-Event
     Outcomes
-Version: 0.1.0.9000
+Version: 0.1.1
 Authors@R: c(
     person("Graeme L.", "Hickey", email = "graeme.hickey@liverpool.ac.uk", 
         role = c("cre", "aut")),
@@ -31,9 +31,10 @@ URL: https://github.com/graemeleehickey/joineRML/
 BugReports: https://github.com/graemeleehickey/joineRML/issues
 LazyData: true
 Depends:
-    R (>= 3.1)
+    R (>= 3.1.1)
 Imports:
     graphics,
+    lme4 (>= 1.1-8),
     MASS,
     Matrix,
     nlme,
@@ -46,6 +47,7 @@ LinkingTo:
     RcppArmadillo
 RoxygenNote: 5.0.1
 Suggests:
+    JM,
     joineR,
     knitr,
     rmarkdown,
