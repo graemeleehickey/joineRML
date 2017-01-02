@@ -10,15 +10,13 @@
 #' @keywords methods
 #' @seealso \code{\link[nlme]{getVarCov}} for the generic method description.
 #'
-#' @import nlme
-#' @importFrom nlme getVarCov
-#'
 #' @references
 #'
 #' Pinheiro JC, Bates DM. \emph{Mixed-Effects Models in S and S-PLUS.} New York:
 #' Springer Verlag; 2000.
 #'
 #' @return A variance-covariance matrix.
+#' @importFrom nlme getVarCov
 #' @export
 #'
 #' @examples

@@ -23,6 +23,7 @@
 #'
 #' @return A named vector of length equal to the number of sub-model
 #'   coefficients estimated.
+#' @importFrom nlme fixef
 #' @export
 #'
 #' @examples

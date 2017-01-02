@@ -22,6 +22,7 @@
 #' @return A numeric matrix with rows denoting the individuals and columns the
 #'   random effects (e.g., intercepts, slopes, etc.). If \code{postVar=TRUE},
 #'   the numeric matrix has an extra attribute ``postVar".
+#' @importFrom lme4 ranef
 #' @export
 #'
 #' @examples
