@@ -10,14 +10,14 @@
   baseline covariates, and survival data. The column names are identified as
   follows: \describe{
 
-  \item{\code{num: }}{number for patient identification.}
+  \item{\code{num}}{number for patient identification.}
 
-  \item{\code{sex: }}{gender of patient (\code{0 = }Male and \code{1 =
+  \item{\code{sex}}{gender of patient (\code{0 = }Male and \code{1 =
   }Female).}
 
-  \item{\code{age: }}{age of patient at day of surgery (years).}
+  \item{\code{age}}{age of patient at day of surgery (years).}
 
-  \item{\code{time: }}{observed time point, with surgery date as the time
+  \item{\code{time}}{observed time point, with surgery date as the time
   origin (years).}
 
   \item{\code{fuyrs}}{maximum follow up time, with surgery date as the time
@@ -96,5 +96,5 @@ left ventricular mass regression after stentless aortic valve replacement.
 \code{\link{pbc2}}, \code{\link{renal}},
   \code{\link{epileptic.qol}}.
 }
-\keyword{data}
+\keyword{datasets}
 

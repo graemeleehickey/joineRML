@@ -82,5 +82,5 @@ Model}. 2000; New York: Springer-Verlag.
 \code{\link{heart.valve}}, \code{\link{renal}},
   \code{\link{epileptic.qol}}.
 }
-\keyword{data}
+\keyword{datasets}
 

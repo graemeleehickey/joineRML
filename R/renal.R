@@ -69,7 +69,7 @@
 #'   }}
 #'
 #'   }
-#' @keywords data
+#' @keywords datasets
 #' @seealso \code{\link{pbc2}}, \code{\link{heart.valve}},
 #'   \code{\link{epileptic.qol}}.
 #' @source Dr Dimitris Rizopoulos (d.rizopoulos@erasmusmc.nl).

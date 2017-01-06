@@ -48,7 +48,7 @@
 #'   \code{status2 = 0}.}
 #'
 #'   }
-#' @keywords data
+#' @keywords datasets
 #' @seealso \code{\link{pbc2}}, \code{\link{heart.valve}}, \code{\link{renal}}.
 #' @source SANAD Trial: University of Liverpool. See Jacoby et al. (2015).
 #' @references

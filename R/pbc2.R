@@ -61,7 +61,7 @@
 #'   patient was dead, and 0 if the patient was alive or transplanted.}
 #'
 #'   }
-#' @keywords data
+#' @keywords datasets
 #' @seealso \code{\link{heart.valve}}, \code{\link{renal}},
 #'   \code{\link{epileptic.qol}}.
 #' @source \code{\link[JM]{pbc2}} and \code{\link[survival]{pbc}}.

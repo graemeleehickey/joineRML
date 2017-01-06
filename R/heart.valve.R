@@ -13,14 +13,14 @@
 #'   baseline covariates, and survival data. The column names are identified as
 #'   follows: \describe{
 #'
-#'   \item{\code{num: }}{number for patient identification.}
+#'   \item{\code{num}}{number for patient identification.}
 #'
-#'   \item{\code{sex: }}{gender of patient (\code{0 = }Male and \code{1 =
+#'   \item{\code{sex}}{gender of patient (\code{0 = }Male and \code{1 =
 #'   }Female).}
 #'
-#'   \item{\code{age: }}{age of patient at day of surgery (years).}
+#'   \item{\code{age}}{age of patient at day of surgery (years).}
 #'
-#'   \item{\code{time: }}{observed time point, with surgery date as the time
+#'   \item{\code{time}}{observed time point, with surgery date as the time
 #'   origin (years).}
 #'
 #'   \item{\code{fuyrs}}{maximum follow up time, with surgery date as the time
@@ -75,7 +75,7 @@
 #'   and \code{0 = }stentless porcine tissue).}
 #'
 #'   }
-#' @keywords data
+#' @keywords datasets
 #' @seealso \code{\link{pbc2}}, \code{\link{renal}},
 #'   \code{\link{epileptic.qol}}.
 #' @source Mr Eric Lim (\url{http://www.drericlim.com}) and

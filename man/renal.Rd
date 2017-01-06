@@ -88,5 +88,5 @@ for multiple longitudinal outcomes and a time-to-event. \emph{Stat Med.}
 \code{\link{pbc2}}, \code{\link{heart.valve}},
   \code{\link{epileptic.qol}}.
 }
-\keyword{data}
+\keyword{datasets}
 
