@@ -1,8 +1,8 @@
+#' Internal function for generating initial parameters for the longitudinal
+#' sub-model
+#'
 #' @keywords internal
 initsLong <- function(lfit, inits, l, z, K, p, tol.em, verbose) {
-
-  # Internal function for generating initial parameters for the longitudinal
-  # sub-model
 
   D <- Matrix::bdiag(lapply(lfit, function(u) matrix(nlme::getVarCov(u),
                                                      dim(nlme::getVarCov(u)))))

@@ -1,11 +1,15 @@
+#' Fast calculation of a near postive-definite matrix
+#'
+#' Code is from JM package (v. 1.4-5) by Dimitris Rizopoulos
+#' Copied here due to function being non-exported by JM package, and also because
+#' the Matrix package version is an order of magnitude slower.
+#' This code is originally based on function nearcor() submitted to R-help by
+#' Jens Oehlschlagel on 2007-07-13, and function posdefify() from package 'sfsmisc'
+#'
 #' @keywords internal
 fast_nearPD <- function (M, eig.tol = 1e-06, conv.tol = 1e-07, posd.tol = 1e-08,
                     maxits = 100) {
-  # Code is from JM package (v. 1.4-5) by Dimitris Rizopoulos
-  # Copied here due to function being non-exported by JM package, and also because
-  # the Matrix package version is an order of magnitude slower.
-  # This code is originally based on function nearcor() submitted to R-help by
-  # Jens Oehlschlagel on 2007-07-13, and function posdefify() from package 'sfsmisc'
+
   if (!(is.numeric(M) && is.matrix(M))) {
     stop("Input matrix M must be square and symmetric.\n")
   }

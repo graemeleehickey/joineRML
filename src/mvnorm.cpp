@@ -3,12 +3,12 @@
 
 using namespace Rcpp;
 
+//' Antithetic simulation of MVN random variables
+//'
 //' @keywords internal
 // [[Rcpp::export]]
 arma::mat mvrnormArma(int n, arma::vec mu,
                       arma::mat sigma) {
-
-  // Antithetic simulation of MVN random variables
 
   int ncols = sigma.n_cols;
   // +/- 1 vector (n each) for antithetic calculation
@@ -20,12 +20,11 @@ arma::mat mvrnormArma(int n, arma::vec mu,
 
 }
 
-
+//' Get a list of MVN samples for each subject
+//'
 //' @keywords internal
 // [[Rcpp::export]]
 List bSim(int n, List Mean_, List Sigma_) {
-
-  // Get a list of MVN samples for each subject
 
   List b(Mean_.size());
   for(int i=0; i<Mean_.size(); i++) {

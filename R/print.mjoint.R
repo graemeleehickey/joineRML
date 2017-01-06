@@ -1,3 +1,5 @@
+#' Print function for mjoint object
+#'
 #' @keywords internal
 #' @export
 print.mjoint <- function(x, digits = max(4, getOption("digits") - 4), ...) {

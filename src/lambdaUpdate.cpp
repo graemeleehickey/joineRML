@@ -3,14 +3,14 @@
 
 using namespace Rcpp;
 
+//' Updates of lambda0 (E-step and M-step)
+//'
 //' @keywords internal
 // [[Rcpp::export]]
 arma::mat lambdaUpdate(Rcpp::List b_, Rcpp::List imat_, Rcpp::List zt_,
                        Rcpp::List pb_, Rcpp::List v_,
                        arma::mat gam, arma::vec gam_vec, int q, arma::vec nev,
                        Rcpp::List h_) {
-
-  // Updates of lambda0 (E-step and M-step)
 
   arma::vec haz = arma::zeros<arma::vec>(nev.n_elem);
 
@@ -38,6 +38,7 @@ arma::mat lambdaUpdate(Rcpp::List b_, Rcpp::List imat_, Rcpp::List zt_,
     haz.subvec(0, EexpVstar.n_cols-1) += EexpVstar.t();
 
   }
+
   return(nev / haz);
 
 }
