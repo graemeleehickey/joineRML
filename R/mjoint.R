@@ -310,15 +310,6 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
   Call <- match.call()
   balanced <- FALSE # assume unless proven o/w
 
-  # package dependencies
-  pkgs <- c("nlme", "Matrix", "survival")
-  for (i in pkgs) {
-    test <- require(i, character.only = TRUE)
-    if (!test) {
-      stop(paste("mjoint requires the package", i))
-    }
-  }
-
   # formulas do not need to be given as lists if K=1
   if (!is.list(formLongFixed)) {
     balanced <- TRUE
