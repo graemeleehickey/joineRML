@@ -1,5 +1,3 @@
-#' Compute the nearest positive definite matrix to an approximate one
-#'
 #' @keywords internal
 fast_nearPD <- function (M, eig.tol = 1e-06, conv.tol = 1e-07, posd.tol = 1e-08,
                     maxits = 100) {
