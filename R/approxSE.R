@@ -1,7 +1,7 @@
-#' Approximate standard errors using the empirical information matrix
-#'
 #' @keywords internal
 approxSE <- function(theta, l, t, z, m) {
+
+  # Approximate standard errors using the empirical information matrix
 
   # MLE parameter estimates from EM algorithm
   D <- theta$D

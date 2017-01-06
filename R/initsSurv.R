@@ -1,9 +1,9 @@
-#' Internal function for generating initial parameters for the survival
-#' sub-model when the data are *balanced*, i.e. each longitudinal outcome is
-#' measured at the same time within a patient
-#'
 #' @keywords internal
 initsSurv_balanced <- function(data, lfit, survdat2, formSurv, id, timeVar, K, q) {
+
+  # Internal function for generating initial parameters for the survival
+  # sub-model when the data are *balanced*, i.e. each longitudinal outcome is
+  # measured at the same time within a patient
 
   W <- matrix(nrow = nrow(data[[1]]), ncol = K)
   for (k in 1:K) {

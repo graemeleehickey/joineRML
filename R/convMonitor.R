@@ -1,7 +1,7 @@
-#' Evaluate the convergence of the MCEM algorithm
-#'
 #' @keywords internal
 convMonitor <- function(theta, theta.new, log.lik, log.lik.new, con, verbose) {
+
+  # Evaluate the convergence of the MCEM algorithm
 
   # Absolute parameter change
   absdelta.pars <- sapply(c("D", "beta", "sigma2", "gamma"), function(i) {

@@ -1,5 +1,3 @@
-#' Print tidy summary of \code{mjoint} object
-#'
 #' @keywords internal
 #' @export
 print.summary.mjoint <- function(x, digits = max(4, getOption("digits") - 4), ...) {

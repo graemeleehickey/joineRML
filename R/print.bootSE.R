@@ -1,5 +1,3 @@
-#' Print tidy summary of object inheriting from class \code{bootSE}
-#'
 #' @keywords internal
 #' @export
 print.bootSE <- function(x, digits = max(4, getOption("digits") - 4), ...) {

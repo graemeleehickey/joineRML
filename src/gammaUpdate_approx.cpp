@@ -3,14 +3,14 @@
 
 using namespace Rcpp;
 
-//' Newton-Raphson updates of gamma (E-step and M-step) using an empirical
-//' infomration matrix approximation
-//'
 //' @keywords internal
 // [[Rcpp::export]]
 List gammaUpdate_approx(Rcpp::List b_, Rcpp::List z_, Rcpp::List w_,
                         Rcpp::List pb_, arma::vec haz,
                         Rcpp::List v_, Rcpp::List h_, int K, int q, int nev) {
+
+  // Newton-Raphson updates of gamma (E-step and M-step) using an empirical
+  // infomration matrix approximation
 
   // declare score and E[delta x v*]
   arma::mat Si = arma::zeros<arma::mat>(q+K, w_.size());
@@ -78,4 +78,5 @@ List gammaUpdate_approx(Rcpp::List b_, Rcpp::List z_, Rcpp::List w_,
     _["gDelta"]  = 0.5 * solve(I, S),
     _["scorei"] = Si
   );
+
 }
