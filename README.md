@@ -134,7 +134,7 @@ Note that LaTeX will need the following packages: `graphicx`, `amsmath`, `amssym
 References
 ==========
 
-1.  Cox DR. Regression models and life-tables. *J R Stat Soc Ser B Stat Methodol.* 1972; 34(2): 187-220.
+1.  Cox DR. Regression models and life-tables. *J R Stat Soc Ser B Stat Methodol.* 1972; **34(2)**: 187-220.
 
 2.  Henderson R, Diggle PJ, Dobson A. Joint modelling of longitudinal measurements and event time data. *Biostatistics.* 2000; **1(4)**: 465-480.
 

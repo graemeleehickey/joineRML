@@ -73,8 +73,7 @@
 
   }}
 \source{
-Mr Eric Lim (\url{http://www.drericlim.com}) and
-  \code{\link[joineR]{heart.valve}}
+Mr Eric Lim (\url{http://www.drericlim.com})
 }
 \usage{
 data(heart.valve)
