@@ -5,11 +5,11 @@
 \title{Extract variance-covariance matrix of random effects from an \code{mjoint}
 object}
 \usage{
-\method{getVarCov}{mjoint}(object, ...)
+\method{getVarCov}{mjoint}(obj, ...)
 }
 \arguments{
-\item{object}{an object inheriting from class \code{mjoint} for a joint model
-of time-to-event and multivariate longitudinal data.}
+\item{obj}{an object inheriting from class \code{mjoint} for a joint model of
+time-to-event and multivariate longitudinal data.}
 
 \item{...}{additional arguments; currently none are used.}
 }

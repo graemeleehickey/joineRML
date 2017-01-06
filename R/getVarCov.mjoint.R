@@ -4,6 +4,8 @@
 #' Extract variance-covariance matrix of random effects from an \code{mjoint}
 #' object.
 #'
+#' @param obj an object inheriting from class \code{mjoint} for a joint model of
+#'   time-to-event and multivariate longitudinal data.
 #' @inheritParams confint.mjoint
 #'
 #' @author Graeme L. Hickey (\email{graeme.hickey@@liverpool.ac.uk})
@@ -39,14 +41,14 @@
 #'
 #' getVarCov(fit2)
 #' }
-getVarCov.mjoint <- function(object, ...) {
+getVarCov.mjoint <- function(obj, ...) {
 
-  if (!inherits(object, "mjoint")) {
+  if (!inherits(obj, "mjoint")) {
     stop("Use only with 'mjoint' model objects.\n")
   }
 
-  out <- object$coefficients$D
-  attr(out, "group.levels") <- object$id
+  out <- obj$coefficients$D
+  attr(out, "group.levels") <- obj$id
 
   class(out) <- c("random.effects", "VarCov")
   out

@@ -229,7 +229,7 @@
 #' Wulfsohn MS, Tsiatis AA. A joint model for survival and longitudinal data
 #' measured with error. \emph{Biometrics.} 1997; \strong{53(1)}: 330-339.
 #'
-#' @import stats
+#' @import stats survival
 #'
 #' @return An object of class \code{mjoint}. See \code{\link{mjoint.object}} for
 #'   details.

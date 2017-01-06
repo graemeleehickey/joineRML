@@ -32,13 +32,13 @@ BugReports: https://github.com/graemeleehickey/joineRML/issues
 LazyData: true
 Depends:
     R (>= 3.1.1),
+    nlme,
     survival
 Imports:
     graphics,
     lme4 (>= 1.1-8),
     MASS,
     Matrix,
-    nlme,
     Rcpp (>= 0.12.7),
     stats,
     utils
