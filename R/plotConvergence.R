@@ -6,12 +6,12 @@
 #'
 #' @inheritParams confint.mjoint
 #' @param params a string indicating what parameters are to be shown. Options
-#'   are \code{params='gamma'} for the time-to-event sub-model covariate
-#'   coefficients, including the latent association parameters;
-#'   \code{params='beta'} for the longitudinal sub-model fixed effects
-#'   coefficients; \code{params='sigma2'} for the residual error variances from
-#'   the longitudinal sub-model; \code{params='D'} for the lower triangular
-#'   matrix of the variance-covariance matrix of random effects.
+#'   are \code{params = 'gamma'} for the time-to-event sub-model covariate
+#'   coefficients, including the latent association parameters; \code{params =
+#'   'beta'} for the longitudinal sub-model fixed effects coefficients;
+#'   \code{params = 'sigma2'} for the residual error variances from the
+#'   longitudinal sub-model; \code{params = 'D'} for the lower triangular matrix
+#'   of the variance-covariance matrix of random effects.
 #'
 #' @references
 #'

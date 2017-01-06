@@ -16,8 +16,8 @@
   carbamazepine and lamotrigine, respectively.}
 
   \item{\code{status}}{the reason for treatment failure. Coded as
-  \code{0=}censored; \code{1=}unacceptable advserse effects;
-  \code{2=}inadequate seizure control.}
+  \code{0 = }censored; \code{1 = }unacceptable advserse effects;
+  \code{2 = }inadequate seizure control.}
 
   \item{\code{time}}{the time the quality of life measures were recorded
   (days). The first measurement for each subject is the baseline measurement,
@@ -40,8 +40,8 @@
   Quality of Life) assessment. Higher scores are indicative of worse QoL.}
 
   \item{\code{status2}}{a binary indicator of composite treatment failure
-  (for any reason), coded \code{status2=1}, or right-censoring
-  \code{status2=0}.}
+  (for any reason), coded \code{status2 = 1}, or right-censoring
+  \code{status2 = 0}.}
 
   }}
 \source{

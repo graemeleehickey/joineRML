@@ -42,8 +42,8 @@
 #'   \item{\code{fuyears}}{maximum follow up time, with transplant date as the
 #'   time origin (years).}
 #'
-#'   \item{\code{failure}}{censoring indicator (\code{1=}graft failure and
-#'   \code{0=}censored).}
+#'   \item{\code{failure}}{censoring indicator (\code{1 = }graft failure and
+#'   \code{0 = }censored).}
 #'
 #'   }
 #'

@@ -7,16 +7,16 @@
 #'
 #' @param object an object inheriting from class \code{mjoint} for a joint model
 #'   of time-to-event and multivariate longitudinal data.
-#' @param nboot the number of bootstrap samples. Default is \code{nboot=100}.
+#' @param nboot the number of bootstrap samples. Default is \code{nboot = 100}.
 #' @param ci the confidence interval to be estimated using the
-#'   percentile-method. Default is \code{ci=0.95} for a 95\% confidence
+#'   percentile-method. Default is \code{ci = 0.95} for a 95\% confidence
 #'   interval.
 #' @param use.mle logical: should the algorithm use the maximiser from the
 #'   converged model in \code{object} as initial values for coefficients in each
-#'   bootstrap iteration. Default is \code{use.mle=TRUE}.
+#'   bootstrap iteration. Default is \code{use.mle = TRUE}.
 #' @param progress logical: should a progress bar be shown on the console to
 #'   indicate the percentage of bootstrap iterations completed? Default is
-#'   \code{progress=TRUE}.
+#'   \code{progress = TRUE}.
 #' @inheritParams mjoint
 #'
 #' @details Standard errors and confidence intervals are obtained by repeated

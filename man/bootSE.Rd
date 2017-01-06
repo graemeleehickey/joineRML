@@ -11,15 +11,15 @@ bootSE(object, nboot = 100, ci = 0.95, use.mle = TRUE, verbose = FALSE,
 \item{object}{an object inheriting from class \code{mjoint} for a joint model
 of time-to-event and multivariate longitudinal data.}
 
-\item{nboot}{the number of bootstrap samples. Default is \code{nboot=100}.}
+\item{nboot}{the number of bootstrap samples. Default is \code{nboot = 100}.}
 
 \item{ci}{the confidence interval to be estimated using the
-percentile-method. Default is \code{ci=0.95} for a 95\% confidence
+percentile-method. Default is \code{ci = 0.95} for a 95\% confidence
 interval.}
 
 \item{use.mle}{logical: should the algorithm use the maximiser from the
 converged model in \code{object} as initial values for coefficients in each
-bootstrap iteration. Default is \code{use.mle=TRUE}.}
+bootstrap iteration. Default is \code{use.mle = TRUE}.}
 
 \item{verbose}{logical: if \code{TRUE}, the parameter estimates and other
 convergence statistics are value are printed at each iteration of the MCEM
@@ -28,36 +28,36 @@ algorithm. Default is \code{FALSE}.}
 \item{control}{a list of control values with components: \describe{
 
   \item{\code{nMC}}{integer: the initial number of Monte Carlo samples to be
-  used for integration in the early phase of the MCEM. Default is
-  \code{nMC=100}.}
+  used for integration in the early phase of the MCEM. Default is \code{nMC =
+  100}.}
 
   \item{\code{nMCscale}}{integer: the scale factor for the increase in Monte
   Carlo size when Monte Carlo has not reduced from the previous iteration.
-  Default is \code{nMCscale=3}.}
+  Default is \code{nMCscale = 3}.}
 
   \item{\code{nMCmax}}{integer: the maximum number of Monte Carlo samples
-  that the algorithm is allowed to reach. Default is \code{nMCmax=20000}.}
+  that the algorithm is allowed to reach. Default is \code{nMCmax = 20000}.}
 
   \item{\code{earlyPhase}}{integer: the number of iterations for early phase
   of the optimization algorithm. It is computationally inefficient to use a
   large number of Monte Carlo samples early on until one is approximately
-  near the maximum likelihood estimate. Default is
-  \code{earlyPhase=}\emph{50K}.}
+  near the maximum likelihood estimate. Default is \code{earlyPhase =
+  }\emph{50K}.}
 
   \item{\code{mcmaxIter}}{integer: the maximum number of MCEM algorithm
-  iterations allowed. Default is \code{mcmaxIter=}\emph{(50K+200)}.}
+  iterations allowed. Default is \code{mcmaxIter = }\emph{(50K+200)}.}
 
   \item{\code{convCrit}}{character string: the convergence criterion to be
   used. See \strong{Details}.}
 
-  \item{\code{gammaOpt}}{character string: by default (\code{gammaOpt='NR'}),
-  \eqn{\gamma} is updated using a one-step Newton-Raphson iteration, with the
-  Hessian matrix calculated exactly. If \code{gammaOpt='GN'}, a Gauss-Newton
-  algorithm-type iteration is implemented, where the Hessian matrix is
-  approximated based on calculations similar to those used for calculating
-  the empirical information matrix? If it is used, then the step-length is
-  adjusted by a nominal scaling parameter of 0.5 in order to reduce the
-  chance of over-shooting the maximizer.}
+  \item{\code{gammaOpt}}{character string: by default (\code{gammaOpt =
+  'NR'}), \eqn{\gamma} is updated using a one-step Newton-Raphson iteration,
+  with the Hessian matrix calculated exactly. If \code{gammaOpt = 'GN'}, a
+  Gauss-Newton algorithm-type iteration is implemented, where the Hessian
+  matrix is approximated based on calculations similar to those used for
+  calculating the empirical information matrix? If it is used, then the
+  step-length is adjusted by a nominal scaling parameter of 0.5 in order to
+  reduce the chance of over-shooting the maximizer.}
 
   \item{\code{tol0}}{numeric: tolerance value for convergence in the
   parameters; see \strong{Details}. Default is \code{5e-03}.}
@@ -75,8 +75,8 @@ algorithm. Default is \code{FALSE}.}
   closed-form, this algorithm convergences relatively rapidly with a high
   precision. Default is \code{1e-05}.}
 
-  \item{\code{rav}}{numeric: threshold when using \code{convCrit='sas'} that
-  applies absolute change (when <\code{rav}) or relative change (when
+  \item{\code{rav}}{numeric: threshold when using \code{convCrit = 'sas'}
+  that applies absolute change (when <\code{rav}) or relative change (when
   \eqn{\geq}\code{rav}) criterion; see \strong{Details}. Default is
   \code{0.1}, which is an order of magnitude higher than the SAS
   implementation.}
@@ -85,7 +85,7 @@ algorithm. Default is \code{FALSE}.}
 
 \item{progress}{logical: should a progress bar be shown on the console to
 indicate the percentage of bootstrap iterations completed? Default is
-\code{progress=TRUE}.}
+\code{progress = TRUE}.}
 
 \item{...}{options passed to the \code{control} argument.}
 }

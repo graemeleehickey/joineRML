@@ -100,12 +100,12 @@
 #'   \item{\code{finalnMC}}{the final number of Monte Carlo samples required
 #'   prior to convergence.}
 #'
-#'   \item{\code{vcov}}{if \code{se.approx=TRUE} in the call to \code{mjoint},
+#'   \item{\code{vcov}}{if \code{se.approx = TRUE} in the call to \code{mjoint},
 #'   the variance-covariance matrix of model parameters, as approximated by the
 #'   empirical information matrix, is reported. See \code{\link{mjoint}} for
 #'   details.}
 #'
-#'   \item{\code{SE.approx}}{if \code{se.approx=TRUE} in the call to
+#'   \item{\code{SE.approx}}{if \code{se.approx = TRUE} in the call to
 #'   \code{mjoint}, the square-root of the diagonal of \code{vcov} is returned,
 #'   which are estimates of the standard errors for the parameters.}
 #'

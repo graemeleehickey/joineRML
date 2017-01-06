@@ -15,24 +15,24 @@ simData(n = 100, ntms = 5, beta = rbind(c(1, 1, 1, 1), c(1, 1, 1, 1)),
 \item{ntms}{the maximum number of (discrete) time points to simulate repeated
 longitudinal measurements at.}
 
-\item{beta}{a matrix of \code{dim=c(K,4)} specifying the coefficients of the
-fixed effects. The order in each row is intercept, time, a continuous
+\item{beta}{a matrix of \code{dim = c(K,4)} specifying the coefficients of
+the fixed effects. The order in each row is intercept, time, a continuous
 covariate, and a binary covariate.}
 
-\item{gamma.x}{a vector of \code{length=2} specifying the coefficients for
+\item{gamma.x}{a vector of \code{length = 2} specifying the coefficients for
 the time-to-event baseline covariates, in the order of a continuous
 covariate and a binary covariate.}
 
-\item{gamma.y}{a vector of \code{length=K} specifying the latent association
-parameters for each longitudinal outcome.}
+\item{gamma.y}{a vector of \code{length = K} specifying the latent
+association parameters for each longitudinal outcome.}
 
-\item{sigma2}{a vector of \code{length=K} specifying the residual standard
+\item{sigma2}{a vector of \code{length = K} specifying the residual standard
 errors.}
 
 \item{D}{a positive-definite matrix specifying the variance-covariance
-matrix. If \code{model='int'}, the matrix has dimension \code{dim=c(K,K)},
-else if \code{model='int'}, the matrix has dimension \code{dim=c(2K,2K)}.
-If \code{D=NULL} (default), an identity matrix is assumed.}
+matrix. If \code{model = 'int'}, the matrix has dimension \code{dim =
+c(K,K)}, else if \code{model = 'int'}, the matrix has dimension \code{dim =
+c(2K,2K)}. If \code{D = NULL} (default), an identity matrix is assumed.}
 
 \item{model}{follows the model definition in the \code{\link[joineR]{joint}}
 function. See \strong{Details} for choices.}
@@ -48,12 +48,12 @@ simulate the time-to-event outcome.}
 time.}
 
 \item{censlam}{a scale (\eqn{>0}) parameter for an exponential distribution
-used to simulate random censoring times for when \code{censoring=TRUE}.}
+used to simulate random censoring times for when \code{censoring = TRUE}.}
 
 \item{truncation}{logical: if \code{TRUE}, adds a truncation time for a
 maximum event time.}
 
-\item{trunctime}{a truncation time for use when \code{truncation=TRUE}.}
+\item{trunctime}{a truncation time for use when \code{truncation = TRUE}.}
 }
 \value{
 A list of 2 data.frames: one recording the requisite longitudinal
@@ -64,21 +64,21 @@ This function simulates multivariate longitudinal and time-to-event data from
 a joint model.
 }
 \details{
-The function \code{simData} simulates data from a joint model, 
-  similar to that performed in Henderson et al. (2000). It works by first 
-  simulating multivariate longitudinal data for all possible follow-up times 
-  using random draws for the multivariate Gaussian random effects and 
-  residual error terms. Data can be simulated assuming either 
-  random-intercepts only in each of the longitudinal sub-models, or 
-  random-intercepts and random-slopes. Currently, all models must have the 
+The function \code{simData} simulates data from a joint model,
+  similar to that performed in Henderson et al. (2000). It works by first
+  simulating multivariate longitudinal data for all possible follow-up times
+  using random draws for the multivariate Gaussian random effects and
+  residual error terms. Data can be simulated assuming either
+  random-intercepts only in each of the longitudinal sub-models, or
+  random-intercepts and random-slopes. Currently, all models must have the
   same structure. The failure times are simulated from proportional hazards
   time-to-event models; either an exponential distribution (in the case of
   random-intercepts models) or Gompertz distribution (random-intercept and
   random-slopes models) conditional on either known baseline effects
-  (\code{model='int'}), or a predictable time-varying process
-  (\code{model='intslope'}). In the case of the former, the methodology of
-  Bender et al. (2005) is used to simulate the time, whilst in the case of
-  latter, the approach of Austin (2012) is used.
+  (\code{model = 'int'}), or a predictable time-varying process (\code{model
+  = 'intslope'}). In the case of the former, the methodology of Bender et al.
+  (2005) is used to simulate the time, whilst in the case of latter, the
+  approach of Austin (2012) is used.
 }
 \examples{
 beta <- rbind(c(0.5, 2, 1, 1),
