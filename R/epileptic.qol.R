@@ -53,9 +53,9 @@
 #' @source SANAD Trial: University of Liverpool. See Jacoby et al. (2015).
 #' @references
 #'
-#' Jacoby A, Sudell M, Tudur Smith C, et al. Quality???of???life outcomes of
+#' Jacoby A, Sudell M, Tudur Smith C, et al. Quality-of-life outcomes of
 #' initiating treatment with standard and newer antiepileptic drugs in adults
-#' with new???onset epilepsy: Findings from the SANAD trial. \emph{Epilepsia}.
+#' with new-onset epilepsy: Findings from the SANAD trial. \emph{Epilepsia}.
 #' 2015; \strong{56(3)}: 460-472.
 #'
 #' Marson AG, Appleton R, Baker GA, et al. A randomised controlled trial
@@ -65,9 +65,9 @@
 #' Marson AG, Al-Kharusi AM, Alwaidh M, et al. The SANAD study of effectiveness
 #' of carbamazepine, gabapentin, lamotrigine, oxcarbazepine, or topiramate for
 #' treatment of partial epilepsy: an unblinded randomised controlled trial.
-#' \emph{Lancet}. 2007; \strong{365}: 2007???2013.
+#' \emph{Lancet}. 2007; \strong{365}: 2007-2013.
 #'
 #' Abetz L, Jacoby A, Baker GA, et al. Patient-based assessments of quality of
 #' life in newly diagnosed epilepsy patients: validation of the NEWQOL.
-#' \emph{Epilepsia}. 2000; \strong{41:} 1119???1128.
+#' \emph{Epilepsia}. 2000; \strong{41:} 1119-1128.
 "epileptic.qol"
