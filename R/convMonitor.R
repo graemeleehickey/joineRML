@@ -1,5 +1,3 @@
-#' Evaluate the convergence of the MCEM algorithm
-#'
 #' @keywords internal
 convMonitor <- function(theta, theta.new, log.lik, log.lik.new, con, verbose) {
 

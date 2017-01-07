@@ -1,5 +1,3 @@
-#' Approximate standard errors using the empirical information matrix
-#'
 #' @keywords internal
 approxSE <- function(theta, l, t, z, m) {
 

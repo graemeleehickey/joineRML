@@ -1,6 +1,3 @@
-#' Internal function for generating initial parameters for the longitudinal
-#' sub-model
-#'
 #' @keywords internal
 initsLong <- function(lfit, inits, l, z, K, p, tol.em, verbose) {
 

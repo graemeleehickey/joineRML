@@ -1,6 +1,3 @@
-#' Internal function for performing a single iteration of the EM algorithm for a
-#' multivariate linear mixed model with possibly unabalnced data
-#'
 #' @keywords internal
 mvlme <- function(thetaLong, l, z, tol.em, verbose) {
 

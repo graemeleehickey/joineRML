@@ -1,5 +1,3 @@
-#' Print function for bootSE object
-#'
 #' @keywords internal
 #' @export
 print.bootSE <- function(x, digits = max(4, getOption("digits") - 4), ...) {

@@ -3,14 +3,14 @@
 
 using namespace Rcpp;
 
-//' Newton-Raphson updates of gamma (E-step and M-step) using an exact observed
-//' information calculation
-//'
 //' @keywords internal
 // [[Rcpp::export]]
 List gammaUpdate(Rcpp::List b_, Rcpp::List z_, Rcpp::List w_,
                  Rcpp::List pb_, arma::vec haz,
                  Rcpp::List v_, Rcpp::List h_, int K, int q, int nev) {
+
+  // Newton-Raphson updates of gamma (E-step and M-step) using an exact observed
+  // information calculation
 
   // declare score, E[delta x v*], and information matrix
   arma::mat Si = arma::zeros<arma::mat>(q+K, w_.size());
@@ -112,11 +112,11 @@ List gammaUpdate(Rcpp::List b_, Rcpp::List z_, Rcpp::List w_,
 }
 
 
-//' lambda0(t) for profile score function of beta
-//'
 //' @keywords internal
 // [[Rcpp::export]]
 arma::mat hazHat(Rcpp::List w_, Rcpp::List pb_, arma::vec nev) {
+
+  // lambda0(t) for profile score function of beta
 
   arma::vec haz = arma::zeros<arma::vec>(nev.n_elem);
 
