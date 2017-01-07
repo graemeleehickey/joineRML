@@ -15,48 +15,48 @@ simData(n = 100, ntms = 5, beta = rbind(c(1, 1, 1, 1), c(1, 1, 1, 1)),
 \item{ntms}{the maximum number of (discrete) time points to simulate repeated
 longitudinal measurements at.}
 
-\item{beta}{a matrix of \code{dim = c(K,4)} specifying the coefficients of
-the fixed effects. The order in each row is intercept, time, a continuous
+\item{beta}{a matrix of \code{dim = c(K,4)} specifying the coefficients of 
+the fixed effects. The order in each row is intercept, time, a continuous 
 covariate, and a binary covariate.}
 
-\item{gamma.x}{a vector of \code{length = 2} specifying the coefficients for
-the time-to-event baseline covariates, in the order of a continuous
+\item{gamma.x}{a vector of \code{length = 2} specifying the coefficients for 
+the time-to-event baseline covariates, in the order of a continuous 
 covariate and a binary covariate.}
 
-\item{gamma.y}{a vector of \code{length = K} specifying the latent
+\item{gamma.y}{a vector of \code{length = K} specifying the latent 
 association parameters for each longitudinal outcome.}
 
-\item{sigma2}{a vector of \code{length = K} specifying the residual standard
+\item{sigma2}{a vector of \code{length = K} specifying the residual standard 
 errors.}
 
-\item{D}{a positive-definite matrix specifying the variance-covariance
-matrix. If \code{model = 'int'}, the matrix has dimension \code{dim =
-c(K,K)}, else if \code{model = 'int'}, the matrix has dimension \code{dim =
-c(2K,2K)}. If \code{D = NULL} (default), an identity matrix is assumed.}
+\item{D}{a positive-definite matrix specifying the variance-covariance 
+matrix. If \code{model = 'int'}, the matrix has dimension \code{dim = c(K, 
+K)}, else if \code{model = 'intslope'}, the matrix has dimension \code{dim 
+= c(2K, 2K)}. If \code{D = NULL} (default), an identity matrix is assumed.}
 
-\item{model}{follows the model definition in the \code{\link[joineR]{joint}}
+\item{model}{follows the model definition in the \code{\link[joineR]{joint}} 
 function. See \strong{Details} for choices.}
 
-\item{theta0}{the log-scale parameter for a Gompertz distribution used to
-simulate the time-to-event outcome. The scale is calculated as
+\item{theta0}{the log-scale parameter for a Gompertz distribution used to 
+simulate the time-to-event outcome. The scale is calculated as 
 \eqn{\exp(\theta_0)} to ensure it is positive.}
 
-\item{theta1}{the shape parameter for a Gompertz distribution used to
+\item{theta1}{the shape parameter for a Gompertz distribution used to 
 simulate the time-to-event outcome.}
 
-\item{censoring}{logical: if \code{TRUE}, includes an independent censoring
+\item{censoring}{logical: if \code{TRUE}, includes an independent censoring 
 time.}
 
-\item{censlam}{a scale (\eqn{>0}) parameter for an exponential distribution
+\item{censlam}{a scale (\eqn{>0}) parameter for an exponential distribution 
 used to simulate random censoring times for when \code{censoring = TRUE}.}
 
-\item{truncation}{logical: if \code{TRUE}, adds a truncation time for a
+\item{truncation}{logical: if \code{TRUE}, adds a truncation time for a 
 maximum event time.}
 
 \item{trunctime}{a truncation time for use when \code{truncation = TRUE}.}
 }
 \value{
-A list of 2 data.frames: one recording the requisite longitudinal
+A list of 2 data.frames: one recording the requisite longitudinal 
   outcomes data, and one recording the time-to-event data.
 }
 \description{
@@ -64,20 +64,20 @@ This function simulates multivariate longitudinal and time-to-event data from
 a joint model.
 }
 \details{
-The function \code{simData} simulates data from a joint model,
-  similar to that performed in Henderson et al. (2000). It works by first
-  simulating multivariate longitudinal data for all possible follow-up times
-  using random draws for the multivariate Gaussian random effects and
-  residual error terms. Data can be simulated assuming either
-  random-intercepts only in each of the longitudinal sub-models, or
-  random-intercepts and random-slopes. Currently, all models must have the
-  same structure. The failure times are simulated from proportional hazards
-  time-to-event models; either an exponential distribution (in the case of
-  random-intercepts models) or Gompertz distribution (random-intercept and
-  random-slopes models) conditional on either known baseline effects
-  (\code{model = 'int'}), or a predictable time-varying process (\code{model
+The function \code{simData} simulates data from a joint model, 
+  similar to that performed in Henderson et al. (2000). It works by first 
+  simulating multivariate longitudinal data for all possible follow-up times 
+  using random draws for the multivariate Gaussian random effects and 
+  residual error terms. Data can be simulated assuming either 
+  random-intercepts only in each of the longitudinal sub-models, or 
+  random-intercepts and random-slopes. Currently, all models must have the 
+  same structure. The failure times are simulated from proportional hazards 
+  time-to-event models; either an exponential distribution (in the case of 
+  random-intercepts models) or Gompertz distribution (random-intercept and 
+  random-slopes models) conditional on either known baseline effects 
+  (\code{model = 'int'}), or a predictable time-varying process (\code{model 
   = 'intslope'}). In the case of the former, the methodology of Bender et al.
-  (2005) is used to simulate the time, whilst in the case of latter, the
+  (2005) is used to simulate the time, whilst in the case of latter, the 
   approach of Austin (2012) is used.
 }
 \examples{
@@ -92,18 +92,19 @@ sim <- simData(n = 250, beta = beta, D = D, sigma2 = c(0.25, 0.25),
                censlam = exp(-0.2), gamma.y = c(-.2, 1), ntms = 8)
 }
 \author{
-Pete Philipson (\email{pete.philipson@northumbria.ac.uk})
+Pete Philipson (\email{pete.philipson@northumbria.ac.uk}) and Graeme 
+  Hickey(\email{graeme.hickey@liverpool.ac.uk})
 }
 \references{
-Austin PC. Generating survival times to simulate Cox proportional hazards
-models with time-varying covariates. \emph{Stat Med.} 2012; \strong{31(29)}:
+Austin PC. Generating survival times to simulate Cox proportional hazards 
+models with time-varying covariates. \emph{Stat Med.} 2012; \strong{31(29)}: 
 3946-3958.
 
-Bender R, Augustin T, Blettner M. Generating survival times to simulate Cox
+Bender R, Augustin T, Blettner M. Generating survival times to simulate Cox 
 proportional hazards models. \emph{Stat Med.} 2005; \strong{24}: 1713-1723.
 
-Henderson R, Diggle PJ, Dobson A. Joint modelling of longitudinal
-measurements and event time data. \emph{Biostatistics.} 2000; \strong{1(4)}:
+Henderson R, Diggle PJ, Dobson A. Joint modelling of longitudinal 
+measurements and event time data. \emph{Biostatistics.} 2000; \strong{1(4)}: 
 465-480.
 }
 \keyword{datagen}
