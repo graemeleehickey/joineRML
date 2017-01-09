@@ -101,8 +101,8 @@ stepEM <- function(theta, l, t, z, nMC, verbose, gammaOpt, postRE, se.approx) {
     } else {
       gamma.scale <- diag(rep(gamma, r))
     }
-  } else {
-    gamma.scale <- gamma[length(gamma)] # just a single gamma_y
+  } else { # just a single gamma_y
+    gamma.scale <- matrix(gamma[length(gamma)], nrow = 1, ncol = 1)
   }
 
   # exp{W(tj, b)}
