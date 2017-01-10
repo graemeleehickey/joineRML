@@ -32,9 +32,14 @@ initsLong <- function(lfit, inits, l, z, K, p, tol.em, verbose) {
     out[["beta"]] <- beta
   }
   if ("D" %in% names(inits)) {
-    D <- inits$D
-    rownames(D) <- colnames(D) <- rownames(out[["D"]])
-    out[["D"]] <- D
+    is.posdef <- all(eigen(inits$D)$values > 0)
+    if (is.posdef) {
+      D <- inits$D
+      rownames(D) <- colnames(D) <- rownames(out[["D"]])
+      out[["D"]] <- D
+    } else {
+      warning("Initial parameter matrix D is non positive definite: falling back to automated value")
+    }
   }
   if ("sigma2" %in% names(inits)) {
     sigma2 <- inits$sigma2

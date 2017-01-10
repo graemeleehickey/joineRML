@@ -51,7 +51,8 @@ Suggests:
     joineR,
     knitr,
     rmarkdown,
-    R.rsp
-VignetteBuilder: 
+    R.rsp,
+    testthat
+VignetteBuilder:
     knitr,
     R.rsp
