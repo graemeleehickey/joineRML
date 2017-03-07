@@ -29,7 +29,7 @@
 plotConvergence <- function(object, params = "gamma") {
 
   if (class(object) != "mjoint") {
-    stop("Convergence plots require an 'mjoint' model\n")
+    stop("Use only with 'mjoint' model objects.\n")
   }
 
   his <- object$history

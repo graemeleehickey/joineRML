@@ -37,7 +37,7 @@ test_that("multivariate model works", {
     inits = list("gamma" = c(0.11, 1.51, 0.80)),
     timeVar = "time",
     control = list(convCrit = "sas", rav = 0.01),
-    verbose = FALSE)
+    verbose = TRUE)
   fit.summ <- summary(fit)
   # tests
   expect_is(fit, "mjoint")

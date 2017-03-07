@@ -221,3 +221,12 @@ test_that("unbalanced data throws warning for survival inits", {
   # test
   expect_message(f(), "Data are unbalanced... using sub-optimal initial parameters for gamma")
 })
+
+
+test_that("argument not an mjoint object", {
+  expect_error(vcov.mjoint(1), "Use only with 'mjoint' model objects.")
+  expect_error(summary.mjoint(1), "Use only with 'mjoint' model objects.")
+  expect_error(ranef.mjoint(1), "Use only with 'mjoint' model objects.")
+  expect_error(plotConvergence(1), "Use only with 'mjoint' model objects.")
+  expect_error(plot.mjoint(1), "Use only with 'mjoint' model objects.")
+})
