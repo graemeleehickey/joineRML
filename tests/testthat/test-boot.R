@@ -6,6 +6,7 @@ test_that("bootstrap MV models", {
   # load data + fit model
   data(heart.valve)
   hvd <- heart.valve[!is.na(heart.valve$log.grad) & !is.na(heart.valve$log.lvmi), ]
+  set.seed(123)
   fit <- mjoint(
     formLongFixed = list("grad" = log.grad ~ time + sex + hs,
                          "lvmi" = log.lvmi ~ time + sex),
@@ -15,8 +16,8 @@ test_that("bootstrap MV models", {
     data = list(hvd, hvd),
     inits = list("gamma" = c(0.11, 1.51, 0.80)),
     timeVar = "time",
-    control = list(convCrit = "abs", tol0 = 0.05,
-                   earlyPhase = 5, mcmaxIter = 100),
+    control = list(convCrit = "abs", tol0 = 0.1,
+                   earlyPhase = 5, mcmaxIter = 20),
     verbose = FALSE)
   fit.boot <- bootSE(fit, nboot = 2)
   # tests
