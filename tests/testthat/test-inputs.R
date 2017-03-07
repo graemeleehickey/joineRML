@@ -229,4 +229,6 @@ test_that("argument not an mjoint object", {
   expect_error(ranef.mjoint(1), "Use only with 'mjoint' model objects.")
   expect_error(plotConvergence(1), "Use only with 'mjoint' model objects.")
   expect_error(plot.mjoint(1), "Use only with 'mjoint' model objects.")
+  expect_error(confint.mjoint(1), "Use only with 'mjoint' model objects.")
+  expect_error(bootSE(1), "Use only with 'mjoint' model objects.")
 })

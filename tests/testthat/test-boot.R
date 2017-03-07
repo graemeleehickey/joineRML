@@ -26,4 +26,8 @@ test_that("bootstrap MV models", {
   expect_output(print(fit.boot))
   expect_is(summary(fit, bootSE = fit.boot), "summary.mjoint")
   expect_output(str(summary(fit, bootSE = fit.boot)), "List of 22")
+  expect_equal(summary(fit, bootSE = fit.boot)$se.type, "boot")
+  expect_equal(dim(confint(fit, bootSE = fit.boot)), c(10, 2))
+  expect_equal(dim(confint(fit, parm = "Longitudinal", bootSE = fit.boot)), c(7, 2))
+  expect_equal(dim(confint(fit, parm = "Event", bootSE = fit.boot)), c(3, 2))
 })
