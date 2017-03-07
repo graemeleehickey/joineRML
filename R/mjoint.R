@@ -703,8 +703,13 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
   hx.haz <- sapply(all.iters, function(x) x$haz)
   rownames(hx.haz) <- paste0("haz_", 1:nrow(hx.haz))
   hx.sigma2 <- sapply(all.iters, function(x) x$sigma2)
+  if (K == 1) {
+    hx.sigma2 <- matrix(hx.sigma2, nrow = 1)
+  }
   if (K > 1) {
     rownames(hx.sigma2) <- paste0("sigma2_", 1:K)
+  } else {
+    rownames(hx.sigma2) <- "sigma2"
   }
 
   # Output
