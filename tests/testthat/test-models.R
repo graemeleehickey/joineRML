@@ -37,7 +37,8 @@ test_that("multivariate model works", {
     timeVar = "time",
     control = list(convCrit = "sas", rav = 0.01),
     verbose = FALSE)
-  # tests
+  fit.summ <- summary(fit)
+  # tests (model)
   expect_is(fit, "mjoint")
   expect_true(fit$conv)
   expect_equal(length(fixef(fit)), 7)
@@ -45,12 +46,23 @@ test_that("multivariate model works", {
   expect_output(str(coef(fit)), "List of 5")
   expect_equal(coef(fit)$gamma, c(0.1088112, 1.5183319, 0.7971334),
                tolerance = 0.05, check.attributes = FALSE)
+  expect_output(print(fit))
+  # tests (other S3 functions)
   expect_output(str(sigma(fit)), "Named num")
   expect_output(str(confint(fit)), "num")
   expect_equal(dim(confint(fit)), c(10, 2))
   expect_is(getVarCov(fit), c("random.effects", "VarCov"))
   expect_output(str(AIC(fit)), "num")
   expect_output(str(logLik(fit)), "Class 'logLik'")
+  expect_is(fit.summ, "summary.mjoint")
+  expect_output(str(fit.summ), "List of 20")
+  expect_output(print(fit.summ))
+  expect_is(vcov(fit), "matrix")
+  expect_equal(dim(vcov(fit)), c(18, 18))
+  expect_is(formula(fit, process = "Longitudinal"), "formula")
+  expect_is(formula(fit, process = "Event"), "formula")
+  expect_equal(formula(fit, process = "Longitudinal"),
+               formula(log.grad ~ time + sex + hs))
 })
 
 test_that("different convergence criteria work", {
