@@ -1,6 +1,7 @@
 library(joineRML)
 context("Models fit")
 
+
 test_that("univariate random-intercept model works", {
   # load data + fit model
   data(pbc2)
@@ -38,16 +39,17 @@ test_that("multivariate model works", {
     control = list(convCrit = "sas", rav = 0.01),
     verbose = FALSE)
   fit.summ <- summary(fit)
-  # tests (model)
+  # tests
   expect_is(fit, "mjoint")
   expect_true(fit$conv)
   expect_equal(length(fixef(fit)), 7)
+  expect_equal(length(fixef(fit, process = "Event")), 3)
   expect_equal(nrow(ranef(fit)), fit$dims$n)
+  expect_equal(dim(attr(ranef(fit, postVar = TRUE), "postVar")), c(3, 3, fit$dims$n))
   expect_output(str(coef(fit)), "List of 5")
   expect_equal(coef(fit)$gamma, c(0.1088112, 1.5183319, 0.7971334),
                tolerance = 0.05, check.attributes = FALSE)
   expect_output(print(fit))
-  # tests (other S3 functions)
   expect_output(str(sigma(fit)), "Named num")
   expect_output(str(confint(fit)), "num")
   expect_equal(dim(confint(fit)), c(10, 2))
@@ -66,6 +68,7 @@ test_that("multivariate model works", {
   expect_equal(formula(fit, process = "Longitudinal"),
                formula(log.grad ~ time + sex + hs))
 })
+
 
 test_that("different convergence criteria work", {
   # load data + fit model
@@ -102,6 +105,7 @@ test_that("different convergence criteria work", {
   expect_is(fit4, "mjoint")
   expect_equal(fit4$control$convCrit, "either")
 })
+
 
 test_that("models fit to unbalanced data", {
   # load data + fit model

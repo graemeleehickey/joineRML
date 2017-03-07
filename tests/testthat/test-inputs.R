@@ -1,6 +1,7 @@
 library(joineRML)
 context("Inputs")
 
+
 test_that("too many datasets throws error", {
   # load data + fit model
   data(pbc2)
@@ -18,6 +19,7 @@ test_that("too many datasets throws error", {
   # test
   expect_error(f(), "The number of datasets expected is K = 1")
 })
+
 
 test_that("too few datasets throws error", {
   # load data + fit model
@@ -40,6 +42,7 @@ test_that("too few datasets throws error", {
   expect_error(f(), "The number of datasets expected is K = 2")
 })
 
+
 test_that("init length mismatch throws error", {
   # load data + fit model
   data(heart.valve)
@@ -61,6 +64,7 @@ test_that("init length mismatch throws error", {
   expect_error(f())
 })
 
+
 test_that("timeVar length mismatch throws error", {
   # load data + fit model
   data(heart.valve)
@@ -81,6 +85,7 @@ test_that("timeVar length mismatch throws error", {
   expect_error(f(), "The length of timeVar must equal 2")
 })
 
+
 test_that("misspelled timeVar mismatch throws error", {
   # load data + fit model
   data(heart.valve)
@@ -100,6 +105,7 @@ test_that("misspelled timeVar mismatch throws error", {
   # test
   expect_error(f(), "undefined columns selected")
 })
+
 
 test_that("unmatched control prarameter throws warning", {
   # load data + fit model
@@ -122,6 +128,7 @@ test_that("unmatched control prarameter throws warning", {
   expect_warning(f(), "Unknown arguments passed to 'control': fake_param")
 })
 
+
 test_that("unmatched inits throws warning", {
   # load data + fit model
   data(heart.valve)
@@ -143,6 +150,7 @@ test_that("unmatched inits throws warning", {
   # test
   expect_warning(f(), "Unknown initial parameters passed to 'inits': fake_param")
 })
+
 
 test_that("measurement time after event time throws error", {
   # load data + fit model
@@ -167,6 +175,7 @@ test_that("measurement time after event time throws error", {
   expect_error(f(), "Longitudinal measurements should not be recorded after the event time")
 })
 
+
 test_that("measurement time after event time throws error", {
   # load data + fit model
   data(heart.valve)
@@ -189,6 +198,7 @@ test_that("measurement time after event time throws error", {
   # test
   expect_warning(f(), "Initial parameter matrix D is non positive definite: falling back to automated value")
 })
+
 
 test_that("unbalanced data throws warning for survival inits", {
   # load data + fit model
