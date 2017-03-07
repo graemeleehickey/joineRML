@@ -59,6 +59,8 @@ test_that("multivariate model works", {
   expect_output(print(fit.summ))
   expect_is(vcov(fit), "matrix")
   expect_equal(dim(vcov(fit)), c(18, 18))
+  expect_is(vcov(fit, correlation = TRUE), "matrix")
+  expect_equal(dim(vcov(fit, correlation = TRUE)), c(18, 18))
   expect_is(formula(fit, process = "Longitudinal"), "formula")
   expect_is(formula(fit, process = "Event"), "formula")
   expect_equal(formula(fit, process = "Longitudinal"),

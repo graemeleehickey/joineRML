@@ -81,7 +81,7 @@ vcov.mjoint <- function(object, correlation = FALSE, ...) {
   if (!correlation) {
     object$vcov
   } else {
-    stats::cov2cor(vcov)
+    stats::cov2cor(object$vcov)
   }
 
 }
