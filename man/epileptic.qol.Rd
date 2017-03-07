@@ -81,4 +81,3 @@ life in newly diagnosed epilepsy patients: validation of the NEWQOL.
 \code{\link{pbc2}}, \code{\link{heart.valve}}, \code{\link{renal}}.
 }
 \keyword{datasets}
-

@@ -224,6 +224,7 @@ Function \code{mjoint} fits joint models for time-to-event and
   reported in the model can be updated by running \code{summary(fit_obj,
   boot_obj)}. For details, consult the \code{\link{bootSE}} documentation.
 }
+
 \examples{
 # Fit a classical univariate joint model with a single longitudinal outcome
 # and a single time-to-event outcome
@@ -289,9 +290,6 @@ fit.joineR <- joint(data = pbc.jd,
 summary(fit.joineR)
 }
 }
-\author{
-Graeme L. Hickey (\email{graeme.hickey@liverpool.ac.uk})
-}
 \references{
 Henderson R, Diggle PJ, Dobson A. Joint modelling of longitudinal
 measurements and event time data. \emph{Biostatistics.} 2000; \strong{1(4)}:
@@ -324,7 +322,9 @@ measured with error. \emph{Biometrics.} 1997; \strong{53(1)}: 330-339.
   \code{\link{plot.mjoint}}, \code{\link{summary.mjoint}},
   \code{\link{getVarCov.mjoint}}, \code{\link{simData}}.
 }
+\author{
+Graeme L. Hickey (\email{graeme.hickey@liverpool.ac.uk})
+}
 \keyword{methods}
 \keyword{multivariate}
 \keyword{survival}
-

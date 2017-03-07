@@ -56,13 +56,12 @@ fit2 <- mjoint(
 plot(fit2, type = "convergence", params = "gamma")
 }
 }
-\author{
-Graeme L. Hickey (\email{graeme.hickey@liverpool.ac.uk})
-}
 \seealso{
 \code{\link[graphics]{plot.default}}, \code{\link[graphics]{par}},
   \code{\link[graphics]{abline}}.
 }
+\author{
+Graeme L. Hickey (\email{graeme.hickey@liverpool.ac.uk})
+}
 \keyword{dplot}
 \keyword{methods}
-

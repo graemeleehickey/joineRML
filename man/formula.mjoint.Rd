@@ -28,9 +28,6 @@ An object of class "formula" which contains a symbolic model formula
 \description{
 Extract model formulae from an \code{mjoint} object.
 }
-\author{
-Graeme L. Hickey (\email{graeme.hickey@liverpool.ac.uk})
-}
 \references{
 Pinheiro JC, Bates DM. \emph{Mixed-Effects Models in S and S-PLUS.} New York:
 Springer Verlag; 2000.
@@ -42,5 +39,7 @@ measured with error. \emph{Biometrics.} 1997; \strong{53(1)}: 330-339.
 \code{\link[stats]{formula}} for the generic method description, and
   \code{\link{ranef.mjoint}}.
 }
+\author{
+Graeme L. Hickey (\email{graeme.hickey@liverpool.ac.uk})
+}
 \keyword{methods}
-

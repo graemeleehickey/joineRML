@@ -138,9 +138,6 @@ fit2.boot <- bootSE(fit1, 50, use.mle = TRUE, control = list(
     tol0 = 6e-03, tol2 = 6e-03, mcmaxIter = 60))
 }
 }
-\author{
-Graeme L. Hickey (\email{graeme.hickey@liverpool.ac.uk})
-}
 \references{
 Efron B, Tibshirani R. \emph{An Introduction to the Bootstrap.} 2000; Boca
 Raton, FL: Chapman & Hall/CRC.
@@ -148,7 +145,9 @@ Raton, FL: Chapman & Hall/CRC.
 \seealso{
 \code{\link{mjoint}} for approximate standard errors.
 }
+\author{
+Graeme L. Hickey (\email{graeme.hickey@liverpool.ac.uk})
+}
 \keyword{methods}
 \keyword{multivariate}
 \keyword{survival}
-

@@ -23,9 +23,6 @@ of the variance-covariance matrix of random effects.}
 Plot convergence time series for parameter vectors from an \code{mjoint}
 object.
 }
-\author{
-Graeme L. Hickey (\email{graeme.hickey@liverpool.ac.uk})
-}
 \references{
 Wei GC, Tanner MA. A Monte Carlo implementation of the EM algorithm and the
 poor man's data augmentation algorithms. \emph{J Am Stat Assoc.} 1990;
@@ -35,6 +32,8 @@ poor man's data augmentation algorithms. \emph{J Am Stat Assoc.} 1990;
 \code{\link{plot.mjoint}}, \code{\link[graphics]{plot.default}},
   \code{\link[graphics]{par}}, \code{\link[graphics]{abline}}.
 }
+\author{
+Graeme L. Hickey (\email{graeme.hickey@liverpool.ac.uk})
+}
 \keyword{dplot}
 \keyword{methods}
-

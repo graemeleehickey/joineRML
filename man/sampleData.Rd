@@ -47,14 +47,13 @@ fit2 <- mjoint(
 sampleData(fit2, size = 10)
 }
 }
-\author{
-Graeme L. Hickey (\email{graeme.hickey@liverpool.ac.uk})
-}
 \seealso{
 \code{\link{mjoint}}.
+}
+\author{
+Graeme L. Hickey (\email{graeme.hickey@liverpool.ac.uk})
 }
 \keyword{datagen}
 \keyword{methods}
 \keyword{multivariate}
 \keyword{survival}
-

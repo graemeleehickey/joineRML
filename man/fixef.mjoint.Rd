@@ -63,9 +63,6 @@ fixef(fit2, process = "Longitudinal")
 fixef(fit2, process = "Event")
 }
 }
-\author{
-Graeme L. Hickey (\email{graeme.hickey@liverpool.ac.uk})
-}
 \references{
 Pinheiro JC, Bates DM. \emph{Mixed-Effects Models in S and S-PLUS.} New York:
 Springer Verlag; 2000.
@@ -77,5 +74,7 @@ measured with error. \emph{Biometrics.} 1997; \strong{53(1)}: 330-339.
 \code{\link[nlme]{fixef}} for the generic method description, and
   \code{\link{ranef.mjoint}}.
 }
+\author{
+Graeme L. Hickey (\email{graeme.hickey@liverpool.ac.uk})
+}
 \keyword{methods}
-

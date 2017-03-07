@@ -91,10 +91,6 @@ D[1, 3] <- D[3, 1] <- 0.01
 sim <- simData(n = 250, beta = beta, D = D, sigma2 = c(0.25, 0.25),
                censlam = exp(-0.2), gamma.y = c(-.2, 1), ntms = 8)
 }
-\author{
-Pete Philipson (\email{pete.philipson@northumbria.ac.uk}) and Graeme 
-  Hickey(\email{graeme.hickey@liverpool.ac.uk})
-}
 \references{
 Austin PC. Generating survival times to simulate Cox proportional hazards 
 models with time-varying covariates. \emph{Stat Med.} 2012; \strong{31(29)}: 
@@ -107,7 +103,10 @@ Henderson R, Diggle PJ, Dobson A. Joint modelling of longitudinal
 measurements and event time data. \emph{Biostatistics.} 2000; \strong{1(4)}: 
 465-480.
 }
+\author{
+Pete Philipson (\email{pete.philipson@northumbria.ac.uk}) and Graeme 
+  Hickey(\email{graeme.hickey@liverpool.ac.uk})
+}
 \keyword{datagen}
 \keyword{multivariate}
 \keyword{survival}
-

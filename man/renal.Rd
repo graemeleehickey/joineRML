@@ -89,4 +89,3 @@ for multiple longitudinal outcomes and a time-to-event. \emph{Stat Med.}
   \code{\link{epileptic.qol}}.
 }
 \keyword{datasets}
-

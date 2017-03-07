@@ -46,9 +46,6 @@ fit2 <- mjoint(
 summary(fit2)
 }
 }
-\author{
-Graeme L. Hickey (\email{graeme.hickey@liverpool.ac.uk})
-}
 \references{
 Wulfsohn MS, Tsiatis AA. A joint model for survival and longitudinal data
 measured with error. \emph{Biometrics.} 1997; \strong{53(1)}: 330-339.
@@ -65,5 +62,7 @@ Med.} 2002; \strong{21}: 2369-2382.
 \code{\link{mjoint}}, \code{\link{mjoint.object}}, and
   \code{\link[base]{summary}} for the generic method description.
 }
+\author{
+Graeme L. Hickey (\email{graeme.hickey@liverpool.ac.uk})
+}
 \keyword{methods}
-

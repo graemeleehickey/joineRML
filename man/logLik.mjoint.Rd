@@ -40,9 +40,6 @@ fit2 <- mjoint(
 logLik(fit2)
 }
 }
-\author{
-Graeme L. Hickey (\email{graeme.hickey@liverpool.ac.uk})
-}
 \references{
 Henderson R, Diggle PJ, Dobson A. Joint modelling of longitudinal
 measurements and event time data. \emph{Biostatistics.} 2000; \strong{1(4)}:
@@ -51,5 +48,7 @@ measurements and event time data. \emph{Biostatistics.} 2000; \strong{1(4)}:
 \seealso{
 \code{\link[stats]{logLik}} for the generic method description.
 }
+\author{
+Graeme L. Hickey (\email{graeme.hickey@liverpool.ac.uk})
+}
 \keyword{methods}
-

@@ -19,9 +19,6 @@ a number (standard deviation) if \eqn{K=1} (univariate model), or a
 \description{
 Extract residual standard deviation(s) from an \code{mjoint} object.
 }
-\author{
-Graeme L. Hickey (\email{graeme.hickey@liverpool.ac.uk})
-}
 \references{
 Pinheiro JC, Bates DM. \emph{Mixed-Effects Models in S and S-PLUS.} New York:
 Springer Verlag; 2000.
@@ -29,5 +26,7 @@ Springer Verlag; 2000.
 \seealso{
 \code{\link[lme4]{sigma}} in the \strong{lme4} package.
 }
+\author{
+Graeme L. Hickey (\email{graeme.hickey@liverpool.ac.uk})
+}
 \keyword{methods}
-

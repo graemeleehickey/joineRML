@@ -83,4 +83,3 @@ Model}. 2000; New York: Springer-Verlag.
   \code{\link{epileptic.qol}}.
 }
 \keyword{datasets}
-

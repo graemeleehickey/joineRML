@@ -41,9 +41,6 @@ fit2 <- mjoint(
 getVarCov(fit2)
 }
 }
-\author{
-Graeme L. Hickey (\email{graeme.hickey@liverpool.ac.uk})
-}
 \references{
 Pinheiro JC, Bates DM. \emph{Mixed-Effects Models in S and S-PLUS.} New York:
 Springer Verlag; 2000.
@@ -51,5 +48,7 @@ Springer Verlag; 2000.
 \seealso{
 \code{\link[nlme]{getVarCov}} for the generic method description.
 }
+\author{
+Graeme L. Hickey (\email{graeme.hickey@liverpool.ac.uk})
+}
 \keyword{methods}
-

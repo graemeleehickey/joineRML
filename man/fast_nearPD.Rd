@@ -15,4 +15,3 @@ This code is originally based on function nearcor() submitted to R-help by
 Jens Oehlschlagel on 2007-07-13, and function posdefify() from package 'sfsmisc'
 }
 \keyword{internal}
-

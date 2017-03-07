@@ -78,9 +78,6 @@ fit2 <- mjoint(
 confint(fit2)
 }
 }
-\author{
-Graeme L. Hickey (\email{graeme.hickey@liverpool.ac.uk})
-}
 \references{
 McLachlan GJ, Krishnan T. \emph{The EM Algorithm and Extensions.} Second
 Edition. Wiley-Interscience; 2008.
@@ -100,5 +97,7 @@ measured with error. \emph{Biometrics.} 1997; \strong{53(1)}: 330-339.
 \code{\link{mjoint}}, \code{\link{bootSE}}, and
   \code{\link[stats]{confint}} for the generic method description.
 }
+\author{
+Graeme L. Hickey (\email{graeme.hickey@liverpool.ac.uk})
+}
 \keyword{methods}
-

@@ -15,4 +15,3 @@ sub-model when the data are *unbalanced*, i.e. longitudinal outcomes can be
 measured at different times and frequencies within a patient
 }
 \keyword{internal}
-

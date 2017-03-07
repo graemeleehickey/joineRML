@@ -96,4 +96,3 @@ left ventricular mass regression after stentless aortic valve replacement.
   \code{\link{epileptic.qol}}.
 }
 \keyword{datasets}
-

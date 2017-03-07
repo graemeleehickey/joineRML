@@ -73,9 +73,6 @@ fit2 <- mjoint(
 vcov(fit2)
 }
 }
-\author{
-Graeme L. Hickey (\email{graeme.hickey@liverpool.ac.uk})
-}
 \references{
 Lin H, McCulloch CE, Mayne ST. Maximum likelihood estimation in the joint
 analysis of time-to-event and multiple longitudinal variables. \emph{Stat
@@ -89,5 +86,7 @@ Edition. Wiley-Interscience; 2008.
   \code{\link[stats]{cov2cor}} for details of efficient scaling of a
   covariance matrix into the corresponding correlation matrix.
 }
+\author{
+Graeme L. Hickey (\email{graeme.hickey@liverpool.ac.uk})
+}
 \keyword{methods}
-
