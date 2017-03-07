@@ -5,7 +5,7 @@
 \title{Standard errors via bootstrap for an \code{mjoint} object}
 \usage{
 bootSE(object, nboot = 100, ci = 0.95, use.mle = TRUE, verbose = FALSE,
-  control = list(), progress = TRUE, ...)
+  control, progress = TRUE, ...)
 }
 \arguments{
 \item{object}{an object inheriting from class \code{mjoint} for a joint model
