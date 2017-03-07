@@ -48,7 +48,9 @@ plotConvergence <- function(object, params = "gamma") {
   #     r * (r + 1) / 2 (upper D matrix)
   inds <- c(0, cumsum(c(p, q + K, K, r * (r + 1) / 2)))
 
-  if (n.iters == 1) stop("No convergence history found.\n")
+  if (n.iters == 1) {
+    stop("No convergence history found.\n")
+  }
 
   old.par <- par(no.readonly = TRUE)
   nc <- 1
@@ -57,11 +59,14 @@ plotConvergence <- function(object, params = "gamma") {
 
   # betas
   if (params == "beta") {
-    if (p > 3) {nc = ceiling(p / 3)}
+    if (p > 3) {
+      nc <- ceiling(p / 3)
+    }
     par(mfrow = c(nrow = min(p, 3), ncol = nc))
     for (i in 1:p) {
-      plot(his[(inds[1] + 1):(inds[2]), ][i, ], type = "l",
-           xlab = "Iteration", ylab = rownames(his[(inds[1] + 1):(inds[2]), ])[i])
+      plot(his[(inds[1] + 1):(inds[2]), , drop = FALSE][i, ], type = "l",
+           xlab = "Iteration",
+           ylab = rownames(his[(inds[1] + 1):(inds[2]), , drop = FALSE])[i])
     }
   }
 
@@ -70,11 +75,14 @@ plotConvergence <- function(object, params = "gamma") {
   # gammas
   if (params == "gamma") {
     n.par <- q + K # must always be >= 1
-    if (n.par > 3) {nc = ceiling(n.par / 3)}
+    if (n.par > 3) {
+      nc <- ceiling(n.par / 3)
+    }
     par(mfrow = c(nrow = min(n.par, 3), ncol = nc))
     for (i in 1:n.par) {
-    plot(his[(inds[2] + 1):(inds[3]), ][i, ], type = "l",
-         xlab = "Iteration", ylab = rownames(his[(inds[2] + 1):(inds[3]), ])[i])
+      plot(his[(inds[2] + 1):(inds[3]), , drop = FALSE][i, ], type = "l",
+           xlab = "Iteration",
+           ylab = rownames(his[(inds[2] + 1):(inds[3]), , drop = FALSE])[i])
     }
   }
 
@@ -82,11 +90,14 @@ plotConvergence <- function(object, params = "gamma") {
 
   # sigma2
   if (params == "sigma2") {
-    if (K > 3) {nc = ceiling(K / 3)}
+    if (K > 3) {
+      nc <- ceiling(K / 3)
+    }
     par(mfrow = c(nrow = min(K, 3), ncol = nc))
     for (i in 1:K) {
-      plot(his[(inds[3] + 1):(inds[4]), ][i, ], type = "l",
-           xlab = "Iteration", ylab = rownames(his[(inds[3] + 1):(inds[4]), ])[i])
+      plot(his[(inds[3] + 1):(inds[4]), , drop = FALSE][i, ], type = "l",
+           xlab = "Iteration",
+           ylab = rownames(his[(inds[3] + 1):(inds[4]), , drop = FALSE])[i])
     }
   }
 
@@ -95,11 +106,14 @@ plotConvergence <- function(object, params = "gamma") {
   # D
   if (params == "D") {
     n.par <- r * (r+1) / 2 # upper triangle only
-    if (n.par > 3) {nc = ceiling(n.par / 3)}
+    if (n.par > 3) {
+      nc <- ceiling(n.par / 3)
+    }
     par(mfrow = c(nrow = min(n.par, 3), ncol = nc))
     for (i in 1:n.par) {
-      plot(his[(inds[4] + 1):(inds[5]), ][i, ], type = "l",
-           xlab = "Iteration", ylab = rownames(his[(inds[4] + 1):(inds[5]), ])[i])
+      plot(his[(inds[4] + 1):(inds[5]), , drop = FALSE][i, ], type = "l",
+           xlab = "Iteration",
+           ylab = rownames(his[(inds[4] + 1):(inds[5]), , drop = FALSE])[i])
     }
   }
 
