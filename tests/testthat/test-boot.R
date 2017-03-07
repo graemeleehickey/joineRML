@@ -16,7 +16,7 @@ test_that("bootstrap MV models", {
     data = list(hvd, hvd),
     inits = list("gamma" = c(0.11, 1.51, 0.80)),
     timeVar = "time",
-    control = list(convCrit = "abs", tol0 = 0.1,
+    control = list(convCrit = "abs", tol0 = 0.1, tol.em = 1e-02,
                    earlyPhase = 5, mcmaxIter = 20),
     verbose = FALSE)
   fit.boot <- bootSE(fit, nboot = 2)
