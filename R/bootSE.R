@@ -69,7 +69,7 @@
 #'     tol0 = 6e-03, tol2 = 6e-03, mcmaxIter = 60))
 #' }
 bootSE <- function(object, nboot = 100, ci = 0.95, use.mle = TRUE,
-                   verbose = FALSE, control = list(), progress = TRUE,
+                   verbose = FALSE, control, progress = TRUE,
                    ...) {
 
   if (!inherits(object, "mjoint")) {
@@ -84,6 +84,14 @@ bootSE <- function(object, nboot = 100, ci = 0.95, use.mle = TRUE,
   formSurv <- object$formSurv
   timeVar <- object$timeVar
   K <- object$dims$K
+
+  if (missing(control)) {
+    control <- object$control
+  } else {
+    if (!is.list(control)) {
+      stop("control should be a list; see help documentation for 'mjoint'")
+    }
+  }
 
   # Use fitted model MLE as initial values?
   if (use.mle) {
