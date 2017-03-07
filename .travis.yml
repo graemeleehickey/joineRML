@@ -8,7 +8,6 @@ r:
 cran: http://cran.rstudio.com
 repos:
   CRAN: http://cran.rstudio.com
-  ropensci: http://packages.ropensci.com
 r_packages:
   - covr
 sudo: false
