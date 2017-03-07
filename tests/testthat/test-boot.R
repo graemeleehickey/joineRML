@@ -18,7 +18,7 @@ test_that("bootstrap MV models", {
     control = list(convCrit = "abs", tol0 = 0.05,
                    earlyPhase = 5, mcmaxIter = 100),
     verbose = FALSE)
-  fit.boot <- bootSE(fit, nboot = 3)
+  fit.boot <- bootSE(fit, nboot = 2)
   # tests
   expect_is(fit.boot, "bootSE")
   expect_output(str(fit.boot), "List of 11")
