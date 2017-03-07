@@ -11,3 +11,6 @@ repos:
   ropensci: http://packages.ropensci.com
 sudo: false
 cache: packages
+
+after_success:
+  - Rscript -e 'covr::codecov()'
