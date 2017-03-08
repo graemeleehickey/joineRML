@@ -7,11 +7,6 @@ expWArma <- function(iz_, b_, gam, h_) {
 }
 
 #' @keywords internal
-EexpWArma <- function(w_, pb_) {
-    .Call('joineRML_EexpWArma', PACKAGE = 'joineRML', w_, pb_)
-}
-
-#' @keywords internal
 gammaUpdate_approx <- function(b_, z_, w_, pb_, haz, v_, h_, K, q, nev) {
     .Call('joineRML_gammaUpdate_approx', PACKAGE = 'joineRML', b_, z_, w_, pb_, haz, v_, h_, K, q, nev)
 }

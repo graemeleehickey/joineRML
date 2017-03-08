@@ -31,22 +31,3 @@ List expWArma(Rcpp::List iz_, Rcpp::List b_, arma::mat gam, Rcpp::List h_) {
   return(expw);
 
 }
-
-
-//' @keywords internal
-// [[Rcpp::export]]
-List EexpWArma(Rcpp::List w_, Rcpp::List pb_) {
-
-  // Calculation of E[exp{W(tj, b)}]
-
-  List out(w_.size());
-  for (int i=0; i<w_.size(); i++) {
-
-    arma::mat w = Rcpp::as<arma::mat>(w_[i]);
-    arma::vec pb = Rcpp::as<arma::vec>(pb_[i]);
-    out[i] = mean(w.each_col() % pb, 0);
-
-  }
-  return(out);
-
-}

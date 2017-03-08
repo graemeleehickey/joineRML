@@ -20,18 +20,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// EexpWArma
-List EexpWArma(Rcpp::List w_, Rcpp::List pb_);
-RcppExport SEXP joineRML_EexpWArma(SEXP w_SEXP, SEXP pb_SEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::List >::type w_(w_SEXP);
-    Rcpp::traits::input_parameter< Rcpp::List >::type pb_(pb_SEXP);
-    rcpp_result_gen = Rcpp::wrap(EexpWArma(w_, pb_));
-    return rcpp_result_gen;
-END_RCPP
-}
 // gammaUpdate_approx
 List gammaUpdate_approx(Rcpp::List b_, Rcpp::List z_, Rcpp::List w_, Rcpp::List pb_, arma::vec haz, Rcpp::List v_, Rcpp::List h_, int K, int q, int nev);
 RcppExport SEXP joineRML_gammaUpdate_approx(SEXP b_SEXP, SEXP z_SEXP, SEXP w_SEXP, SEXP pb_SEXP, SEXP hazSEXP, SEXP v_SEXP, SEXP h_SEXP, SEXP KSEXP, SEXP qSEXP, SEXP nevSEXP) {
