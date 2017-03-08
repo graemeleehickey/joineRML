@@ -18,11 +18,11 @@ arma::mat lambdaUpdate(Rcpp::List b_, Rcpp::List imat_, Rcpp::List zt_,
   for (int i=0; i<b_.size(); i++) {
 
     // extract matrices from lists for subject i
-    arma::mat b  = Rcpp::as<arma::mat>(b_[i]);
-    arma::mat I  = Rcpp::as<arma::mat>(imat_[i]);
+    arma::mat b = Rcpp::as<arma::mat>(b_[i]);
+    arma::mat I = Rcpp::as<arma::mat>(imat_[i]);
     arma::mat zt = Rcpp::as<arma::mat>(zt_[i]);
-    arma::vec pb  = Rcpp::as<arma::vec>(pb_[i]);
-    arma::vec v  = Rcpp::as<arma::vec>(v_[i]);
+    arma::vec pb = Rcpp::as<arma::vec>(pb_[i]);
+    arma::vec v = Rcpp::as<arma::vec>(v_[i]);
     Rcpp::DataFrame h = Rcpp::as<Rcpp::DataFrame>(h_[i]);
 
     // subjects who are censored before the first failure time
