@@ -164,7 +164,6 @@ test_that("measurement time after event time throws error", {
       formLongRandom = list("grad" = ~ 1 | num,
                             "lvmi" = ~ time | num),
       formSurv = Surv(fuyrs, status) ~ age,
-      inits = list("fake_param" = 5),
       data = hvd,
       timeVar = "time",
       control = list(convCrit = "sas", rav = 0.01, earlyPhase = 5,
@@ -231,4 +230,33 @@ test_that("argument not an mjoint object", {
   expect_error(plot.mjoint(1), "Use only with 'mjoint' model objects.")
   expect_error(confint.mjoint(1), "Use only with 'mjoint' model objects.")
   expect_error(bootSE(1), "Use only with 'mjoint' model objects.")
+  expect_error(fixef.mjoint(1), "Use only with 'mjoint' model objects.")
+  expect_error(formula.mjoint(1), "Use only with 'mjoint' model objects.")
+  expect_error(getVarCov.mjoint(1), "Use only with 'mjoint' model objects.")
+  expect_error(sigma.mjoint(1), "Use only with 'mjoint' model objects.")
+  expect_error(logLik.mjoint(1), "Use only with 'mjoint' model objects.")
+  expect_error(print.mjoint(1), "Use only with 'mjoint' model objects.")
+})
+
+
+test_that("formula with unspecified longitudinal measure throws error", {
+  # load data + fit model
+  data(heart.valve)
+  hvd <- heart.valve[!is.na(heart.valve$log.grad) & !is.na(heart.valve$log.lvmi), ]
+  fit <- mjoint(
+    formLongFixed = list("grad" = log.grad ~ time + sex + hs,
+                         "lvmi" = log.lvmi ~ time + sex),
+    formLongRandom = list("grad" = ~ 1 | num,
+                          "lvmi" = ~ time | num),
+    formSurv = Surv(fuyrs, status) ~ age,
+    data = hvd,
+    timeVar = "time",
+    control = list(convCrit = "abs", rav = 0.05, earlyPhase = 5,
+                   mcmaxIter = 10),
+    verbose = FALSE)
+  # tests
+  expect_error(formula(fit, process = "Longitudinal", k = NA),
+               "Must specify a longitudinal outcome.")
+  expect_error(formula(fit, process = "Longitudinal", k = 3),
+               "Incompatible with dimensions of the joint model.")
 })

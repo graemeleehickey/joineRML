@@ -20,6 +20,7 @@ test_that("univariate random-intercept model works", {
   expect_equal(length(fixef(fit)), 2)
   expect_equal(nrow(ranef(fit)), fit$dims$n)
   expect_output(str(coef(fit)), "List of 5")
+  expect_output(print(fit))
 })
 
 test_that("multivariate model works", {

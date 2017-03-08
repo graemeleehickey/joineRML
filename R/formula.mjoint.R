@@ -31,7 +31,7 @@
 formula.mjoint <- function(x, process = c("Longitudinal", "Event"), k = 1, ...) {
 
   if (!inherits(x, "mjoint")) {
-    stop("Use only with 'mjoint' objects.\n")
+    stop("Use only with 'mjoint' model objects.\n")
   }
 
   K <- x$dims$K
