@@ -228,10 +228,14 @@ stepEM <- function(theta, l, t, z, nMC, verbose, gammaOpt, postRE, se.approx) {
 
   # Expanded gamma_y (repeated for each random effect term)
   # - using the latest EM iteration estimate
-  if (q > 0) {
-    gamma.new.scale <- diag(rep(gamma.new[-(1:q)], r))
-  } else {
-    gamma.new.scale <- diag(rep(gamma.new, r))
+  if (sum(r) > 1) {
+    if (q > 0) {
+      gamma.new.scale <- diag(rep(gamma.new[-(1:q)], r))
+    } else {
+      gamma.new.scale <- diag(rep(gamma.new, r))
+    }
+  } else { # just a single gamma_y
+    gamma.new.scale <- matrix(gamma.new[length(gamma.new)], nrow = 1, ncol = 1)
   }
 
   haz.new <- lambdaUpdate(bi.y, IW.fail, Zi.fail, pb.yt, V,
