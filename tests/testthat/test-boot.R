@@ -25,6 +25,7 @@ test_that("bootstrap MV models", {
   expect_output(str(fit.boot), "List of 11")
   expect_output(print(fit.boot))
   expect_is(summary(fit, bootSE = fit.boot), "summary.mjoint")
+  expect_output(print(summary(fit.boot, bootSE = fit.boot)))
   expect_output(str(summary(fit, bootSE = fit.boot)), "List of 22")
   expect_equal(summary(fit, bootSE = fit.boot)$se.type, "boot")
   expect_equal(dim(confint(fit, bootSE = fit.boot)), c(10, 2))
@@ -54,9 +55,8 @@ test_that("non-convergence", {
 })
 
 
-test_that("univariate + non-MLE inits", {
+test_that("univariate intercept only + non-MLE inits", {
   skip_on_cran()
-  skip_on_travis()
   skip_on_appveyor()
   # load data + fit model
   data(pbc2)
@@ -70,8 +70,12 @@ test_that("univariate + non-MLE inits", {
     control = list(convCrit = "abs", tol0 = 0.05),
     verbose = FALSE)
   set.seed(12345)
-  fit.boot <- bootSE(fit, nboot = 2, progress = FALSE,
+  fit.boot <- bootSE(fit, nboot = 2,
+                     progress = FALSE,
+                     use.mle = FALSE,
                      control = list(convCrit = "abs", tol0 = 0.05, gammaOpt = "GN"))
   # tests
   expect_is(fit.boot, "bootSE")
+  expect_error(bootSE(fit, control = 1))
 })
+

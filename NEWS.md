@@ -12,6 +12,8 @@
 
 * Patched a small bug in plotting convergence traces.
 
+* Patched a small bug with bootstrapping univariate joint models without passing the MLEs as the initial values to the `mjoint()` call.
+
 ## Housekeeping
 
 * Package now `Depends` on `survival` and `nlme` rather than `Imports` to allow `require()` statements to be removed from code.
@@ -24,7 +26,9 @@
 
 * LICENSE upgraded to GPL-3 to be compatible with `joineR` v1.1.0.
 
-* Removed `fast_nearPD()` from package code as was unused.
+* Removed internal function `fast_nearPD()` from package code as was unused.
+
+* Removed internal function `EexpArma()` from package code as was unused.
 
 * Added unit tests.
 

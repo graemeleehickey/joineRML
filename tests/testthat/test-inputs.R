@@ -239,6 +239,11 @@ test_that("argument not an mjoint object", {
 })
 
 
+test_that("argument not a summary.mjoint object", {
+  expect_error(print.summary.mjoint(1), "Use only with 'summary.mjoint' objects.")
+})
+
+
 test_that("formula with unspecified longitudinal measure throws error", {
   # load data + fit model
   data(heart.valve)
@@ -259,4 +264,19 @@ test_that("formula with unspecified longitudinal measure throws error", {
                "Must specify a longitudinal outcome.")
   expect_error(formula(fit, process = "Longitudinal", k = 3),
                "Incompatible with dimensions of the joint model.")
+})
+
+
+test_that("simulation errors", {
+  # tests
+  expect_error(simData(10, model = "fake"), "Unknown model: fake")
+  expect_error(simData(10, sigma2 = 1, gamma.y = 1, D = 1,
+                       beta = matrix(rep(1, 4), nrow = 1)),
+               "Error: this function on simulates multivariate data")
+  expect_error(simData(10, D = matrix(rep(1, 16), 4, 4)),
+               "Covariance matrix must be positive semi-definite")
+  D <- diag(4)
+  D[1, 2] <- 0.1
+  expect_error(simData(10, D = D),
+               "Covariance matrix is not symmetric")
 })

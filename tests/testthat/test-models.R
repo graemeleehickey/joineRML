@@ -2,13 +2,13 @@ library(joineRML)
 context("Models fit")
 
 
-test_that("univariate random-intercept model works", {
+test_that("univariate random-intercept model works + no formula labels", {
   # load data + fit model
   data(pbc2)
   pbc2$log.b <- log(pbc2$serBilir)
   fit <- mjoint(
-    formLongFixed = list("log.bil" = log.b ~ year),
-    formLongRandom = list("log.bil" = ~ 1 | id),
+    formLongFixed = list(log.b ~ year),
+    formLongRandom = list(~ 1 | id),
     formSurv = Surv(years, status2) ~ age,
     data = pbc2,
     timeVar = "year",
@@ -21,6 +21,7 @@ test_that("univariate random-intercept model works", {
   expect_equal(nrow(ranef(fit)), fit$dims$n)
   expect_output(str(coef(fit)), "List of 5")
   expect_output(print(fit))
+  expect_output(print(summary(fit)))
 })
 
 test_that("multivariate model works", {
