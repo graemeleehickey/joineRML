@@ -137,7 +137,7 @@ bootSE <- function(object, nboot = 100, ci = 0.95, use.mle = TRUE,
 
   # Checks
   if (mean(conv.status) <= 0.1) {
-    stop("Cannot estimate SEs: less than 10% of bootstrap models converged.")
+    stop("Cannot estimate SEs: fewer than 10% of bootstrap models converged.")
   }
   out <- out[conv.status]
 
