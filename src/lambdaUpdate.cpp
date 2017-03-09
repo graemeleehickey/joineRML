@@ -5,10 +5,11 @@ using namespace Rcpp;
 
 //' @keywords internal
 // [[Rcpp::export]]
-arma::mat lambdaUpdate(Rcpp::List b_, Rcpp::List imat_, Rcpp::List zt_,
-                       Rcpp::List pb_, Rcpp::List v_,
-                       arma::mat gam, arma::vec gam_vec, int q, arma::vec nev,
-                       Rcpp::List h_) {
+arma::mat lambdaUpdate(const Rcpp::List& b_, const Rcpp::List& imat_,
+                       const Rcpp::List& zt_, const Rcpp::List& pb_,
+                       const Rcpp::List& v_, const arma::mat& gam,
+                       const arma::vec& gam_vec, const int& q, const arma::vec& nev,
+                       const Rcpp::List& h_) {
 
   // Updates of lambda0 (E-step and M-step)
 

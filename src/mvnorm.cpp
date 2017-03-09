@@ -5,7 +5,7 @@ using namespace Rcpp;
 
 //' @keywords internal
 // [[Rcpp::export]]
-arma::mat mvrnormArma(int n, arma::vec mu, arma::mat sigma) {
+arma::mat mvrnormArma(const int& n, const arma::vec& mu, const arma::mat& sigma) {
 
   // Antithetic simulation of MVN random variables
 
@@ -14,6 +14,7 @@ arma::mat mvrnormArma(int n, arma::vec mu, arma::mat sigma) {
   arma::vec pmvec = arma::ones<arma::vec>(2*n);
   pmvec.tail(n) *= -1;
   arma::mat Z = repmat(arma::randn(n, ncols), 2, 1);
+
   return(arma::repmat(mu, 1, 2*n).t() +
          (Z.each_col() % pmvec) * arma::trimatu(arma::chol(sigma)));
 
@@ -22,7 +23,7 @@ arma::mat mvrnormArma(int n, arma::vec mu, arma::mat sigma) {
 
 //' @keywords internal
 // [[Rcpp::export]]
-List bSim(int n, List Mean_, List Sigma_) {
+List bSim(const int& n, const Rcpp::List& Mean_, const Rcpp::List& Sigma_) {
 
   // Get a list of MVN samples for each subject
 
@@ -32,6 +33,7 @@ List bSim(int n, List Mean_, List Sigma_) {
     arma::mat s = Rcpp::as<arma::mat>(Sigma_[i]);
     b[i] = mvrnormArma(n, m, s);
   }
+
   return(b);
 
 }

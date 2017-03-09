@@ -5,7 +5,8 @@ using namespace Rcpp;
 
 //' @keywords internal
 // [[Rcpp::export]]
-List expWArma(Rcpp::List iz_, Rcpp::List b_, arma::mat gam, Rcpp::List h_) {
+List expWArma(const Rcpp::List& iz_, const Rcpp::List& b_, const arma::mat& gam,
+              const Rcpp::List& h_) {
 
   // Calculation of exp{W(tj, b)}
 
