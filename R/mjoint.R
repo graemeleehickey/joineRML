@@ -488,7 +488,9 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
       unlist(u[, 2:(q+1)])
     })
   } else {
-    V <- by(survdat2, survdat2$id, function(u) 0)
+    V <- by(survdat2, survdat2$id, function(u) {
+      0
+    })
   }
 
   # Collect together as inputs for EM algorithm
