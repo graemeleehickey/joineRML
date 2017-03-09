@@ -3,10 +3,12 @@ context("Bootstrap")
 
 test_that("bootstrap MV models", {
   skip_on_cran()
+  skip_on_travis()
+  skip_on_appveyor()
   # load data + fit model
   data(heart.valve)
   hvd <- heart.valve[!is.na(heart.valve$log.grad) & !is.na(heart.valve$log.lvmi), ]
-  set.seed(123)
+  set.seed(12345)
   fit <- mjoint(
     formLongFixed = list("grad" = log.grad ~ time + sex + hs,
                          "lvmi" = log.lvmi ~ time + sex),
@@ -17,7 +19,7 @@ test_that("bootstrap MV models", {
     inits = list("gamma" = c(0.11, 1.51, 0.80)),
     timeVar = "time",
     control = list(convCrit = "abs", tol0 = 0.1, tol.em = 1e-02,
-                   earlyPhase = 5, mcmaxIter = 20),
+                   earlyPhase = 40, mcmaxIter = 200),
     verbose = FALSE)
   fit.boot <- bootSE(fit, nboot = 2, verbose = TRUE)
   # tests
