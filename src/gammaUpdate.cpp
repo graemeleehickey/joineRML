@@ -54,7 +54,7 @@ List gammaUpdate(Rcpp::List b_, Rcpp::List z_, Rcpp::List w_,
     arma::mat Eb = mean(b.each_col() % pb, 0);
 
     // loop of K longitudinal outcomes
-    for(int k=0; k<K; k++) {
+    for (int k=0; k<K; k++) {
       // E[delta x v*(T_i)]
       Evstari(q+k, i) = delta * arma::dot(z.col(nj*(k+1)-1), Eb);
 
@@ -65,7 +65,7 @@ List gammaUpdate(Rcpp::List b_, Rcpp::List z_, Rcpp::List w_,
       Ii_int(q+k, q+k) = arma::as_scalar(sum(Ii_int_Kdiag.cols(nj*k, nj*(k+1)-1), 1));
 
       // cross-prod (off-diagonal) elements for K Zb's only
-      for(int k2=k+1; k2<K; k2++) {
+      for (int k2=k+1; k2<K; k2++) {
         arma::mat bztcross = bztev.cols(nj*k, nj*(k+1)-1) % bzt.cols(nj*k2, nj*(k2+1)-1);
         Ii_int(q+k, k2+q) = arma::as_scalar(sum((mean(bztcross.each_col() % pb, 0)) % trans(haz.subvec(0, nj-1)), 1));
         Ii_int(k2+q, q+k) = Ii_int(q+k, k2+q);
@@ -73,7 +73,7 @@ List gammaUpdate(Rcpp::List b_, Rcpp::List z_, Rcpp::List w_,
 
       // cross-prod elements for q V_i's and K Zb's
       if (q > 0) {
-        for(int j=0; j<q; j++) {
+        for (int j=0; j<q; j++) {
            Ii_int(j, q+k) = Si(q+k, i) * v(j);
            Ii_int(q+k, j) = Ii_int(j, q+k);
         }
@@ -101,13 +101,13 @@ List gammaUpdate(Rcpp::List b_, Rcpp::List z_, Rcpp::List w_,
   } // end loop over subjects i
 
   // lambda0 x Gamma_j sum term (minus from information matrix)
-  for(int t=0; t<nev; t++) {
+  for (int t=0; t<nev; t++) {
     Gamma += Gammaj.col(t) * trans(Gammaj.col(t));
   }
 
   return List::create(
-    _["gDelta"]  = solve(I - Gamma, S),
-    _["scorei"] = Evstari - Si
+    Named("gDelta")  = solve(I - Gamma, S),
+    Named("scorei")  = Evstari - Si
   );
 }
 

@@ -49,7 +49,7 @@ List gammaUpdate_approx(Rcpp::List b_, Rcpp::List z_, Rcpp::List w_,
     arma::mat Eb = mean(b.each_col() % pb, 0);
 
     // loop of K longitudinal outcomes
-    for(int k=0; k<K; k++) {
+    for (int k=0; k<K; k++) {
       // E[delta x v*(T_i)]
       Evstari(q+k, i) = delta * arma::dot(z.col(nj*(k+1)-1), Eb);
       // score elements for K Zb's
@@ -75,8 +75,8 @@ List gammaUpdate_approx(Rcpp::List b_, Rcpp::List z_, Rcpp::List w_,
   I = I - arma::kron(S, S.t()) / w_.size();
 
   return List::create(
-    _["gDelta"]  = 0.5 * solve(I, S),
-    _["scorei"] = Si
+    Named("gDelta")  = 0.5 * solve(I, S),
+    Named("scorei")  = Si
   );
 
 }
