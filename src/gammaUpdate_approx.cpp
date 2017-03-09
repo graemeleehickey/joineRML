@@ -67,13 +67,13 @@ List gammaUpdate_approx(const Rcpp::List& b_, const Rcpp::List& z_, const Rcpp::
     }
 
     S += Si.col(i);
-    I += arma::kron(Si.col(i), Si.col(i).t()); // see below
+    I += Si.col(i) * Si.col(i).t(); // see below
 
   } // end loop over subjects i
 
 
   // an approximate I-matrix using observed empirical information
-  I = I - arma::kron(S, S.t()) / w_.size();
+  I = I - (S * S.t()) / w_.size();
 
   return List::create(
     Named("gDelta")  = 0.5 * solve(I, S),
