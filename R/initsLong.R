@@ -36,8 +36,6 @@ initsLong <- function(lfit, inits, l, z, K, p, r, tol.em, verbose) {
   }
   if ("D" %in% names(inits)) {
     if (nrow(inits$D) != sum(r)) {
-      print(inits$D)
-      print(sum(r))
       stop("Dimension of D inits does not match model.")
     }
     is.posdef <- all(eigen(inits$D)$values > 0)
