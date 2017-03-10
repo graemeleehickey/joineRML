@@ -19,7 +19,7 @@ test_that("bootstrap MV models", {
     control = list(convCrit = "abs", tol0 = 0.1, tol.em = 1e-02,
                    earlyPhase = 40, mcmaxIter = 200),
     verbose = FALSE)
-  fit.boot <- bootSE(fit, nboot = 2, verbose = TRUE)
+  fit.boot <- bootSE(fit, nboot = 1, verbose = TRUE)
   # tests
   expect_is(fit.boot, "bootSE")
   expect_output(str(fit.boot), "List of 11")
@@ -50,7 +50,7 @@ test_that("non-convergence", {
     verbose = FALSE)
   set.seed(1)
   # tests
-  expect_error(bootSE(fit, nboot = 2, progress = FALSE),
+  expect_error(bootSE(fit, nboot = 1, progress = FALSE),
                "Cannot estimate SEs: fewer than 10% of bootstrap models converged.")
 })
 
@@ -70,12 +70,12 @@ test_that("univariate intercept only + non-MLE inits", {
     control = list(convCrit = "abs", tol0 = 0.05),
     verbose = FALSE)
   set.seed(12345)
-  fit.boot <- bootSE(fit, nboot = 2,
+  fit.boot <- bootSE(fit, nboot = 1,
                      progress = FALSE,
                      use.mle = FALSE,
                      control = list(convCrit = "abs", tol0 = 0.05, gammaOpt = "GN"))
   # tests
   expect_is(fit.boot, "bootSE")
-  expect_warning(bootSE(fit, control = list("fake" = TRUE), nboot = 2),
+  expect_warning(bootSE(fit, control = list("fake" = TRUE), nboot = 1),
                  "Unknown arguments passed to 'control': fake")
 })

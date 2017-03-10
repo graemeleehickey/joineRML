@@ -43,28 +43,6 @@ test_that("too few datasets throws error", {
 })
 
 
-test_that("init length mismatch throws error", {
-  # load data + fit model
-  data(heart.valve)
-  hvd <- heart.valve[!is.na(heart.valve$log.grad) & !is.na(heart.valve$log.lvmi), ]
-  f <- function() {
-    mjoint(
-      formLongFixed = list("grad" = log.grad ~ time + sex + hs,
-                           "lvmi" = log.lvmi ~ time + sex),
-      formLongRandom = list("grad" = ~ 1 | num,
-                            "lvmi" = ~ time | num),
-      formSurv = Surv(fuyrs, status) ~ age,
-      data = hvd,
-      inits = list("gamma" = c(0.11, 1.51)),
-      timeVar = "time",
-      control = list(convCrit = "sas", rav = 0.01),
-      verbose = FALSE)
-  }
-  # test
-  expect_error(f())
-})
-
-
 test_that("timeVar length mismatch throws error", {
   # load data + fit model
   data(heart.valve)
@@ -120,8 +98,8 @@ test_that("unmatched control prarameter throws warning", {
       formSurv = Surv(fuyrs, status) ~ age,
       data = hvd,
       timeVar = "time",
-      control = list(convCrit = "sas", rav = 0.01, earlyPhase = 5,
-                     mcmaxIter = 10, fake_param = 5),
+      control = list(convCrit = "abs", tol0 = 0.1, earlyPhase = 3,
+                     mcmaxIter = 4, fake_param = 5),
       verbose = FALSE)
   }
   # test
@@ -143,8 +121,8 @@ test_that("unmatched inits throws warning", {
       inits = list("fake_param" = 5),
       data = hvd,
       timeVar = "time",
-      control = list(convCrit = "sas", rav = 0.01, earlyPhase = 5,
-                     mcmaxIter = 10),
+      control = list(convCrit = "abs", tol0 = 0.1, earlyPhase = 3,
+                     mcmaxIter = 4, fake_param = 5),
       verbose = FALSE)
   }
   # test
@@ -190,8 +168,8 @@ test_that("measurement time after event time throws error", {
       inits = list("D" = D),
       data = hvd,
       timeVar = "time",
-      control = list(convCrit = "sas", rav = 0.01, earlyPhase = 5,
-                     mcmaxIter = 10),
+      control = list(convCrit = "sas", rav = 0.01, earlyPhase = 4,
+                     mcmaxIter = 5),
       verbose = FALSE)
   }
   # test
@@ -257,7 +235,7 @@ test_that("formula with unspecified longitudinal measure throws error", {
     data = hvd,
     timeVar = "time",
     control = list(convCrit = "abs", rav = 0.05, earlyPhase = 5,
-                   mcmaxIter = 10),
+                   mcmaxIter = 7),
     verbose = FALSE)
   # tests
   expect_error(formula(fit, process = "Longitudinal", k = NA),

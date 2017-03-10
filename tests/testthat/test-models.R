@@ -12,7 +12,7 @@ test_that("univariate random-intercept model works + no formula labels", {
     formSurv = Surv(years, status2) ~ age,
     data = pbc2,
     timeVar = "year",
-    control = list(convCrit = "sas", rav = 0.01),
+    control = list(convCrit = "abs", tol0 = 0.05),
     verbose = FALSE)
   # tests
   expect_is(fit, "mjoint")
@@ -39,7 +39,7 @@ test_that("multivariate model works", {
     data = list(hvd, hvd),
     inits = list("gamma" = c(0.11, 1.51, 0.80)),
     timeVar = "time",
-    control = list(convCrit = "sas", rav = 0.01),
+    control = list(convCrit = "sas", rav = 0.05, earlyPhase = 20),
     verbose = TRUE)
   fit.summ <- summary(fit)
   # tests
@@ -86,14 +86,14 @@ test_that("different convergence criteria work", {
     data = list(hvd, hvd),
     inits = list("gamma" = c(0.11, 1.51, 0.80)),
     timeVar = "time",
-    control = list(convCrit = "sas", earlyPhase = 5, mcmaxIter = 10),
+    control = list(convCrit = "sas", earlyPhase = 4, mcmaxIter = 6),
     verbose = FALSE)
-  fit2 <- update(fit1, control = list(convCrit = "rel", earlyPhase = 5,
-                                      mcmaxIter = 10))
-  fit3 <- update(fit1, control = list(convCrit = "abs", earlyPhase = 5,
-                                      mcmaxIter = 10))
-  fit4 <- update(fit1, control = list(convCrit = "either", earlyPhase = 5,
-                                      mcmaxIter = 10))
+  fit2 <- update(fit1, control = list(convCrit = "rel", earlyPhase = 4,
+                                      mcmaxIter = 6))
+  fit3 <- update(fit1, control = list(convCrit = "abs", earlyPhase = 4,
+                                      mcmaxIter = 6))
+  fit4 <- update(fit1, control = list(convCrit = "either", earlyPhase = 4,
+                                      mcmaxIter = 6))
   # tests
   # SAS
   expect_is(fit1, "mjoint")
@@ -125,7 +125,7 @@ test_that("models fit to unbalanced data", {
     formSurv = Surv(fuyrs, status) ~ age,
     data = list(hvd1, hvd2),
     timeVar = "time",
-    control = list(convCrit = "sas", earlyPhase = 5, mcmaxIter = 10),
+    control = list(convCrit = "abs", earlyPhase = 4, mcmaxIter = 6, tol0 = 0.1),
     verbose = FALSE)
   expect_false(nrow(hvd1) == nrow(hvd2))
   expect_is(fit, "mjoint")
@@ -148,7 +148,7 @@ test_that("Gauss-Newton updates", {
     inits = list("gamma" = c(0.11, 1.51, 0.80)),
     timeVar = "time",
     control = list(convCrit = "abs", tol0 = 0.1, tol.em = 1e-02,
-                   earlyPhase = 5, mcmaxIter = 20, gammaOpt = "GN"),
+                   earlyPhase = 5, mcmaxIter = 7, gammaOpt = "GN"),
     verbose = FALSE)
   # tests
   expect_is(fit, "mjoint")
