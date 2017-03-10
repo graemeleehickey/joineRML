@@ -7,7 +7,8 @@ using namespace Rcpp;
 // [[Rcpp::export]]
 List gammaUpdate(const Rcpp::List& b_, const Rcpp::List& z_, const Rcpp::List& w_,
                  const Rcpp::List& pb_, const arma::vec& haz, const Rcpp::List& v_,
-                 const Rcpp::List& h_, const int& K, const int& q, const int& nev) {
+                 const Rcpp::List& h_, const int& K, const int& q, const int& nev,
+                 const arma::vec& jcount) {
 
   // Newton-Raphson updates of gamma (E-step and M-step) using an exact observed
   // information calculation
@@ -38,10 +39,10 @@ List gammaUpdate(const Rcpp::List& b_, const Rcpp::List& z_, const Rcpp::List& w
     int tj_ind = h["tj.ind"];
     if (tj_ind == 0) continue;
 
-    int nj = w.n_cols;  // number of failures upto time T_i
+    int nj = w.n_cols;  // number of failure times upto time T_i
     int delta = h["delta"]; // delta_i
 
-    arma::mat Ii_int(q+K, q+K); // information matrix (uninitialized) for subject i
+    arma::mat Ii_int = arma::zeros<arma::mat>(q+K, q+K); // information matrix (uninitialized) for subject i
     arma::mat bzt = b * z; // b x t(z)
     arma::mat bztev = bzt % repmat(w, 1, K); // b x t(Z) . exp(v*gamma)
     arma::mat Eexpvj = (mean(w.each_col() % pb, 0)) % trans(haz.subvec(0, nj-1));
@@ -92,7 +93,7 @@ List gammaUpdate(const Rcpp::List& b_, const Rcpp::List& z_, const Rcpp::List& w
       // cross-prod elements
       Ii_int.submat(0, 0, q-1, q-1) = (v * trans(v)) * arma::as_scalar(Eexpv);
       // Gamma_j elements
-      Gammaj.submat(0, 0, q-1, nj-1) = kron(v, Eexpvj);
+      Gammaj.submat(0, 0, q-1, nj-1) += v * Eexpvj;
     }
 
     S += (Evstari.col(i) - Si.col(i)); // NB: actual score is sum(Evstari - Si)
@@ -102,7 +103,8 @@ List gammaUpdate(const Rcpp::List& b_, const Rcpp::List& z_, const Rcpp::List& w
 
   // lambda0 x Gamma_j sum term (minus from information matrix)
   for (int t=0; t<nev; t++) {
-    Gamma += Gammaj.col(t) * trans(Gammaj.col(t));
+    //Rcpp::Rcout << jcount(t) << std::endl;
+    Gamma += Gammaj.col(t) * trans(Gammaj.col(t)) / jcount(t);
   }
 
   return List::create(

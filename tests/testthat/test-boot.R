@@ -3,8 +3,6 @@ context("Bootstrap")
 
 test_that("bootstrap MV models", {
   skip_on_cran()
-  skip_on_travis()
-  skip_on_appveyor()
   # load data + fit model
   data(heart.valve)
   hvd <- heart.valve[!is.na(heart.valve$log.grad) & !is.na(heart.valve$log.lvmi), ]
@@ -43,11 +41,11 @@ test_that("non-convergence", {
   pbc2$log.b <- log(pbc2$serBilir)
   fit <- mjoint(
     formLongFixed = list("log.bil" = log.b ~ year),
-    formLongRandom = list("log.bil" = ~ 1 | id),
+    formLongRandom = list("log.bil" = ~ year | id),
     formSurv = Surv(years, status2) ~ age,
     data = pbc2,
     timeVar = "year",
-    control = list(convCrit = "abs", tol0 = 0.05,
+    control = list(convCrit = "abs", tol0 = 1e-3,
                    earlyPhase = 5, mcmaxIter = 10),
     verbose = FALSE)
   set.seed(1)

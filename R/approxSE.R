@@ -80,7 +80,7 @@ approxSE <- function(theta, l, t, z, m) {
 
   # gamma
 
-  sgamma <- gammaUpdate(bi.y, Zit.fail, expvstargam, pb.yt, haz.hat,
+  sgamma <- gammaUpdate_approx(bi.y, Zit.fail, expvstargam, pb.yt, haz.hat,
                         V, survdat2.list, K, q, nev.uniq)$scorei
 
   rownames(sgamma) <- names(gamma)

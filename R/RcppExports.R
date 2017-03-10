@@ -12,8 +12,8 @@ gammaUpdate_approx <- function(b_, z_, w_, pb_, haz, v_, h_, K, q, nev) {
 }
 
 #' @keywords internal
-gammaUpdate <- function(b_, z_, w_, pb_, haz, v_, h_, K, q, nev) {
-    .Call('joineRML_gammaUpdate', PACKAGE = 'joineRML', b_, z_, w_, pb_, haz, v_, h_, K, q, nev)
+gammaUpdate <- function(b_, z_, w_, pb_, haz, v_, h_, K, q, nev, jcount) {
+    .Call('joineRML_gammaUpdate', PACKAGE = 'joineRML', b_, z_, w_, pb_, haz, v_, h_, K, q, nev, jcount)
 }
 
 #' @keywords internal

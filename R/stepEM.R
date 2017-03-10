@@ -164,7 +164,7 @@ stepEM <- function(theta, l, t, z, nMC, verbose, gammaOpt, postRE, se.approx) {
                                  V, survdat2.list, K, q, nev.uniq)$gDelta
   } else {
     gDelta <- gammaUpdate(bi.y, Zit.fail, expvstargam, pb.yt, haz.hat,
-                          V, survdat2.list, K, q, nev.uniq)$gDelta
+                          V, survdat2.list, K, q, nev.uniq, nev)$gDelta
   }
 
   t2 <- Sys.time()
