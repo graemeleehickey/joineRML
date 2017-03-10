@@ -576,7 +576,7 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
     }
   }
 
-  inits.long <- initsLong(lfit = lfit, inits = inits, l = l, z = z, K = K, p = p,
+  inits.long <- initsLong(lfit = lfit, inits = inits, l = l, z = z, K = K, p = p, r = r,
                           tol.em = con$tol.em, verbose = verbose)
 
   inits.surv <- initsSurv(data = data, lfit = lfit, sfit = sfit, survdat2 = survdat2,

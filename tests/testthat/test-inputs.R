@@ -280,3 +280,43 @@ test_that("simulation errors", {
   expect_error(simData(10, D = D),
                "Covariance matrix is not symmetric")
 })
+
+
+test_that("mismatched dimensions of inits", {
+  # load data
+  data(pbc2)
+  pbc2$log.b <- log(pbc2$serBilir)
+  # tests
+  expect_error(mjoint(
+    formLongFixed = list("log.bil" = log.b ~ year),
+    formLongRandom = list("log.bil" = ~ year | id),
+    formSurv = Surv(years, status2) ~ age,
+    data = pbc2,
+    timeVar = "year",
+    inits = list("sigma2" = c(1, 2))),
+    "Dimension of sigma2 inits does not match model.")
+  expect_error(mjoint(
+    formLongFixed = list("log.bil" = log.b ~ year),
+    formLongRandom = list("log.bil" = ~ year | id),
+    formSurv = Surv(years, status2) ~ age,
+    data = pbc2,
+    timeVar = "year",
+    inits = list("gamma" = c(1, 2, 3))),
+    "Dimension of gamma inits does not match model.")
+  expect_error(mjoint(
+    formLongFixed = list("log.bil" = log.b ~ year),
+    formLongRandom = list("log.bil" = ~ year | id),
+    formSurv = Surv(years, status2) ~ age,
+    data = pbc2,
+    timeVar = "year",
+    inits = list("D" = diag(1, ncol = 1))),
+    "Dimension of D inits does not match model.")
+  expect_error(mjoint(
+    formLongFixed = list("log.bil" = log.b ~ year),
+    formLongRandom = list("log.bil" = ~ year | id),
+    formSurv = Surv(years, status2) ~ age,
+    data = pbc2,
+    timeVar = "year",
+    inits = list("beta" = 1)),
+    "Dimension of beta inits does not match model.")
+})

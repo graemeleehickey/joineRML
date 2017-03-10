@@ -2,9 +2,11 @@
 
 ## New features
 
-* `bootSE()` now uses control parameters from fitted model.
+* `bootSE()` now uses control parameters from fitted model and allows for individual parameter overwrite.
 
 * Added a check that any initial covariance matrix given is positive-definite.
+
+* Added a check that dimensions of any `inits` given match the calculated dimensions from the model formulae.
 
 ## Bug patches
 

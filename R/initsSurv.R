@@ -99,6 +99,9 @@ initsSurv <- function(data, lfit, sfit, survdat2, formSurv, id, timeVar, K, q,
   # over-ride with user-specified inits
   if ("gamma" %in% names(inits)) {
     gamma <- inits$gamma
+    if (length(gamma) != (q + K)) {
+      stop("Dimension of gamma inits does not match model.")
+    }
     names(gamma) <- names(inits.surv[["gamma"]])
     inits.surv[["gamma"]] <- gamma
   }
