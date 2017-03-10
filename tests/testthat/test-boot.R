@@ -79,4 +79,3 @@ test_that("univariate intercept only + non-MLE inits", {
   expect_warning(bootSE(fit, control = list("fake" = TRUE), nboot = 2),
                  "Unknown arguments passed to 'control': fake")
 })
-

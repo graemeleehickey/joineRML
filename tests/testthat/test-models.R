@@ -29,6 +29,7 @@ test_that("multivariate model works", {
   # load data + fit model
   data(heart.valve)
   hvd <- heart.valve[!is.na(heart.valve$log.grad) & !is.na(heart.valve$log.lvmi), ]
+  set.seed(1)
   fit <- mjoint(
     formLongFixed = list("grad" = log.grad ~ time + sex + hs,
                          "lvmi" = log.lvmi ~ time + sex),
@@ -136,7 +137,7 @@ test_that("Gauss-Newton updates", {
   # load data + fit model
   data(heart.valve)
   hvd <- heart.valve[!is.na(heart.valve$log.grad) & !is.na(heart.valve$log.lvmi), ]
-  set.seed(123)
+  set.seed(1)
   fit <- mjoint(
     formLongFixed = list("grad" = log.grad ~ time + sex + hs,
                          "lvmi" = log.lvmi ~ time + sex),
