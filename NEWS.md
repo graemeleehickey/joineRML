@@ -24,7 +24,7 @@
 
 * Fixed Imports following CRAN Checks of v0.1.1.
 
-* Minor documentation edits.
+* Minor documentation edits and corrections.
 
 * Minor code tidy-up.
 

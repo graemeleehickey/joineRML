@@ -122,7 +122,7 @@ This function is computationally intensive. A dynamic progress bar is
 data(heart.valve)
 hvd <- heart.valve[!is.na(heart.valve$log.grad) & !is.na(heart.valve$log.lvmi), ]
 
-fit2 <- mjoint(
+fit <- mjoint(
     formLongFixed = list("grad" = log.grad ~ time + sex + hs,
                          "lvmi" = log.lvmi ~ time + sex),
     formLongRandom = list("grad" = ~ 1 | num,
@@ -133,7 +133,7 @@ fit2 <- mjoint(
     timeVar = "time",
     verbose = TRUE)
 
-fit2.boot <- bootSE(fit1, 50, use.mle = TRUE, control = list(
+fit.boot <- bootSE(fit, 50, use.mle = TRUE, control = list(
     earlyPhase = 25, convCrit = "either",
     tol0 = 6e-03, tol2 = 6e-03, mcmaxIter = 60))
 }
