@@ -381,7 +381,7 @@ where $\tilde{v}_i(t) = \left(v_i^\top, z_{i1}^\top(t) b_{i1}, \dots, z_{iK}^\to
 The observed information matrix for $\gamma$ is calculated by taking the partial derivative of the score above (with $\lambda_0(t)$ substituted by $\hat{\lambda}_0(t_j)$ defined by \eqref{eqn:hazard_update}), and is given by
 %
 \begin{equation*}
-	I(\gamma) \equiv -\frac{\partial}{\partial\gamma} S(\gamma) = \sum_{i=1}^n \sum_{j=1}^J \left\{\hat{\lambda}_0(t_j) I(T_i \geq t_j) \mathbb{E}\left[\tilde{v}_i(t_j)\tilde{v}_i^\top(t_j) \exp\{\tilde{v}_i^\top(t_j) \gamma\}\right]\right\} - \sum_{j=1}^J \hat{\lambda}_0(t_j)^2 \Gamma(t_j).
+	I(\gamma) \equiv -\frac{\partial}{\partial\gamma} S(\gamma) = \sum_{i=1}^n \sum_{j=1}^J \left\{\hat{\lambda}_0(t_j) I(T_i \geq t_j) \mathbb{E}\left[\tilde{v}_i(t_j)\tilde{v}_i^\top(t_j) \exp\{\tilde{v}_i^\top(t_j) \gamma\}\right]\right\} - \sum_{j=1}^J \frac{\hat{\lambda}_0(t_j)^2 \Gamma(t_j)}{\sum_{i=1}^n \delta_i I(T_i = t_j)}.
 \end{equation*}
 %
 where
