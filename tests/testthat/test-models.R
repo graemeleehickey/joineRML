@@ -152,5 +152,9 @@ test_that("Gauss-Newton updates", {
     verbose = FALSE)
   # tests
   expect_is(fit, "mjoint")
+  expect_is(update(fit,
+                   formSurv = Surv(fuyrs, status) ~ 1,
+                   inits = list("gamma" = c(1.4, 0.8))),
+            "mjoint")
 })
 
