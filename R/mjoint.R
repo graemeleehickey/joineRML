@@ -354,6 +354,17 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
     data[[k]][, id] <- as.factor(data[[k]][, id])
   }
 
+  # check the same patients measured at least once for each marker
+  if (K > 1) {
+    uniq.ids <- list(sort(unique(data[[1]][, id])))
+    for (k in 2:K) {
+      uniq.ids[[k]] <- sort(unique(data[[k]][, id]))
+      if (!identical(uniq.ids[[k - 1]], uniq.ids[[k]])) {
+        stop("Every subject must have at least one measurement per each outcome")
+      }
+    }
+  }
+
   #*****************************************************
   # Control parameters
   #*****************************************************

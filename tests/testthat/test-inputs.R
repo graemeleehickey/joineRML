@@ -298,3 +298,23 @@ test_that("mismatched dimensions of inits", {
     inits = list("beta" = 1)),
     "Dimension of beta inits does not match model.")
 })
+
+test_that("same patients measured on all markers", {
+  # load data + function to fit model
+  data(heart.valve)
+  hvd1 <- heart.valve[!is.na(heart.valve$log.grad), ]
+  hvd2 <- heart.valve[!is.na(heart.valve$log.lvmi), ]
+  fit <- function() {
+    mjoint(formLongFixed = list("grad" = log.grad ~ time + sex + hs,
+                                "lvmi" = log.lvmi ~ time + sex),
+           formLongRandom = list("grad" = ~ 1 | num,
+                                 "lvmi" = ~ time | num),
+           formSurv = Surv(fuyrs, status) ~ age,
+           data = list(hvd1, hvd2),
+           inits = list("gamma" = c(0.11, 1.51, 0.80)),
+           timeVar = "time",
+           verbose = TRUE)
+  }
+  # tests
+  expect_error(fit(), "Every subject must have at least one measurement per each outcome")
+})
