@@ -54,3 +54,19 @@ test_that("convergence plots", {
   expect_silent(plot(fit, type = "convergence", params = "D"))
   expect_silent(plot(fit, type = "convergence", params = "sigma2"))
 })
+
+
+test_that("ranef plots", {
+  # load data + fit model
+  data(heart.valve)
+  hvd <- heart.valve[!is.na(heart.valve$log.grad) & !is.na(heart.valve$log.lvmi), ]
+  set.seed(1)
+  fit1 <- mjoint(formLongFixed = log.lvmi ~ time + age,
+                 formLongRandom = ~ time | num,
+                 formSurv = Surv(fuyrs, status) ~ age,
+                 data = hvd,
+                 timeVar = "time")
+  p <- plot(ranef(fit1, postVar = TRUE))
+  # tests
+  expect_true(is.ggplot(p))
+})

@@ -1,6 +1,6 @@
 #' Extract random effects estimates from an \code{mjoint} object
 #'
-#' Extract random effects estimates from an \code{mjoint} object.
+#' @description Extract random effects estimates from an \code{mjoint} object.
 #'
 #' @inheritParams confint.mjoint
 #' @param postVar logical: if \code{TRUE} the variance of the posterior
@@ -9,7 +9,8 @@
 #' @author Graeme L. Hickey (\email{graeme.hickey@@liverpool.ac.uk})
 #' @keywords methods
 #' @seealso \code{\link[nlme]{ranef}} for the generic method description, and
-#'   \code{\link{fixef.mjoint}}.
+#'   \code{\link{fixef.mjoint}}. To plot \code{ranef.mjoint} objects, see
+#'   \code{\link{plot.ranef.mjoint}}.
 #'
 #' @references
 #'
@@ -19,9 +20,10 @@
 #' Wulfsohn MS, Tsiatis AA. A joint model for survival and longitudinal data
 #' measured with error. \emph{Biometrics.} 1997; \strong{53(1)}: 330-339.
 #'
-#' @return A numeric matrix with rows denoting the individuals and columns the
-#'   random effects (e.g., intercepts, slopes, etc.). If \code{postVar=TRUE},
-#'   the numeric matrix has an extra attribute ``postVar".
+#' @return A \code{data.frame} (also of class \code{ranef.mjoint}) with rows
+#'   denoting the individuals and columns the random effects (e.g., intercepts,
+#'   slopes, etc.). If \code{postVar = TRUE}, the numeric matrix has an extra
+#'   attribute ``postVar".
 #' @importFrom lme4 ranef
 #' @export
 #'
@@ -52,11 +54,13 @@ ranef.mjoint <- function(object, postVar = FALSE, ...) {
   }
 
   out <- object$Eb
+  out <- as.data.frame(out)
 
   if (postVar) {
     attr(out, "postVar") <- object$Vb
   }
 
-  out
+  class(out) <- c("ranef.mjoint", "data.frame")
+  return(out)
 
 }
