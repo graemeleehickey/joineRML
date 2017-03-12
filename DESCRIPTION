@@ -35,6 +35,7 @@ Depends:
     nlme,
     survival
 Imports:
+    ggplot2,
     graphics,
     lme4 (>= 1.1-8),
     MASS,
