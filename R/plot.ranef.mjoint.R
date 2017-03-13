@@ -27,6 +27,7 @@
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' require(ggplot2)
 #' data(heart.valve)
 #' hvd <- heart.valve[!is.na(heart.valve$log.grad) & !is.na(heart.valve$log.lvmi), ]
@@ -39,6 +40,7 @@
 #'     timeVar = "time")
 #'
 #' plot(ranef(fit1, postVar = TRUE))
+#' }
 plot.ranef.mjoint <- function(x, ...) {
 
   if (!inherits(x, "ranef.mjoint")) {

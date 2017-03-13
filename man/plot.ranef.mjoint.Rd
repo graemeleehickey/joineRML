@@ -25,6 +25,7 @@ Displays a plot of the BLUPs and approximate 95\% prediction
   interval for each subject.
 }
 \examples{
+\dontrun{
 require(ggplot2)
 data(heart.valve)
 hvd <- heart.valve[!is.na(heart.valve$log.grad) & !is.na(heart.valve$log.lvmi), ]
@@ -37,6 +38,7 @@ fit1 <- mjoint(formLongFixed = log.lvmi ~ time,
     timeVar = "time")
 
 plot(ranef(fit1, postVar = TRUE))
+}
 }
 \references{
 Pinheiro JC, Bates DM. \emph{Mixed-Effects Models in S and S-PLUS.} New York:

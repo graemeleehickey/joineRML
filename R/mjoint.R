@@ -746,7 +746,6 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
   if (conv && pfs) {
     out$vcov <- postFitCalcs$ses
     out$SE.approx <- sqrt(diag(solve(out$vcov)))
-    out$log.lik <- postFitCalcs$ll
     out$Eb <- postFitCalcs$Eb # Posterior RE means
     out$Vb <- postFitCalcs$Vb # Posterior RE variances
   }

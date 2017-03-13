@@ -99,20 +99,21 @@ A list with the following components. \describe{
   \item{\code{finalnMC}}{the final number of Monte Carlo samples required
   prior to convergence.}
 
-  \item{\code{vcov}}{if \code{se.approx = TRUE} in the call to \code{mjoint},
-  the variance-covariance matrix of model parameters, as approximated by the
+  \item{\code{vcov}}{if \code{pfs = TRUE} in the call to \code{mjoint}, the
+  variance-covariance matrix of model parameters, as approximated by the
   empirical information matrix, is reported. See \code{\link{mjoint}} for
   details.}
 
-  \item{\code{SE.approx}}{if \code{se.approx = TRUE} in the call to
-  \code{mjoint}, the square-root of the diagonal of \code{vcov} is returned,
-  which are estimates of the standard errors for the parameters.}
+  \item{\code{SE.approx}}{if \code{pfs = TRUE} in the call to \code{mjoint},
+  the square-root of the diagonal of \code{vcov} is returned, which are
+  estimates of the standard errors for the parameters.}
 
-  \item{\code{Eb}}{a matrix with the estimated random effects values for each
-  subject.}
+  \item{\code{Eb}}{if \code{pfs = TRUE} in the call to \code{mjoint}, a
+  matrix with the estimated random effects values for each subject.}
 
-  \item{\code{Vb}}{an array with the estimated variance-covariance matrices
-  for the random effects values for each subject.}
+  \item{\code{Vb}}{if \code{pfs = TRUE} in the call to \code{mjoint}, an
+  array with the estimated variance-covariance matrices for the random
+  effects values for each subject.}
 
   \item{\code{call}}{the matched call.}
 
