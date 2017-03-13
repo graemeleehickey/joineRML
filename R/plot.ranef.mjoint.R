@@ -6,6 +6,7 @@
 #' @param x an object inheriting from class \code{ranef.mjoint}, representing
 #'   the estimated random effects for the \code{mjoint} object from which it was
 #'   produced.
+#' @inheritParams confint.mjoint
 #'
 #' @author Graeme L. Hickey (\email{graeme.hickey@@liverpool.ac.uk})
 #' @keywords methods
@@ -26,18 +27,19 @@
 #' @export
 #'
 #' @examples
+#' require(ggplot2)
 #' data(heart.valve)
 #' hvd <- heart.valve[!is.na(heart.valve$log.grad) & !is.na(heart.valve$log.lvmi), ]
 #' set.seed(1)
 #'
-#' fit1 <- mjoint(formLongFixed = log.lvmi ~ time + age,
+#' fit1 <- mjoint(formLongFixed = log.lvmi ~ time,
 #'     formLongRandom = ~ time | num,
-#'     formSurv = Surv(fuyrs, status) ~ age,
+#'     formSurv = Surv(fuyrs, status) ~ 1,
 #'     data = hvd,
 #'     timeVar = "time")
 #'
 #' plot(ranef(fit1, postVar = TRUE))
-plot.ranef.mjoint <- function(x) {
+plot.ranef.mjoint <- function(x, ...) {
 
   if (!inherits(x, "ranef.mjoint")) {
     stop("Use only with 'ranef.mjoint' objects.\n")
@@ -54,16 +56,18 @@ plot.ranef.mjoint <- function(x) {
       ses <- utils::stack(ses)
       xstk$se <- ses$values
     } else {
-      x$se <- sqrt(ranef.vars)
+      xstk$se <- sqrt(ranef.vars)
     }
+    xstk$xmin <- with(xstk, values - 1.96 * se)
+    xstk$xmax <- with(xstk, values + 1.96 * se)
   }
 
-  p <- ggplot(aes(x = values, y = subject), data = xstk) +
+  p <- ggplot(aes_string(x = 'values', y = 'subject'), data = xstk) +
     geom_point() +
     facet_grid(~ ind, scales = "free_x")
 
   if (!is.null(xstk$se)) {
-    p <- p + geom_errorbarh(aes(xmin = values - 1.96*se, xmax = values + 1.96*se),
+    p <- p + geom_errorbarh(aes_string(xmin = 'xmin', xmax = 'xmax'),
                             height = 0)
   }
 

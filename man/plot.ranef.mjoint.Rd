@@ -4,12 +4,14 @@
 \alias{plot.ranef.mjoint}
 \title{Plot a \code{ranef.mjoint} object}
 \usage{
-\method{plot}{ranef.mjoint}(x)
+\method{plot}{ranef.mjoint}(x, ...)
 }
 \arguments{
 \item{x}{an object inheriting from class \code{ranef.mjoint}, representing
 the estimated random effects for the \code{mjoint} object from which it was
 produced.}
+
+\item{...}{additional arguments; currently none are used.}
 }
 \value{
 an object inheriting from class \code{ggplot}, which displays a
@@ -23,13 +25,14 @@ Displays a plot of the BLUPs and approximate 95\% prediction
   interval for each subject.
 }
 \examples{
+require(ggplot2)
 data(heart.valve)
 hvd <- heart.valve[!is.na(heart.valve$log.grad) & !is.na(heart.valve$log.lvmi), ]
 set.seed(1)
 
-fit1 <- mjoint(formLongFixed = log.lvmi ~ time + age,
+fit1 <- mjoint(formLongFixed = log.lvmi ~ time,
     formLongRandom = ~ time | num,
-    formSurv = Surv(fuyrs, status) ~ age,
+    formSurv = Surv(fuyrs, status) ~ 1,
     data = hvd,
     timeVar = "time")
 
