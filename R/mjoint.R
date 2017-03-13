@@ -40,12 +40,15 @@
 #' @param verbose logical: if \code{TRUE}, the parameter estimates and other
 #'   convergence statistics are value are printed at each iteration of the MCEM
 #'   algorithm. Default is \code{FALSE}.
-#' @param se.approx logical: if \code{TRUE}, approximate standard errors are
-#'   estimated after the model has converged. Default is \code{TRUE}. See
-#'   details.
-#' @param postRE logical: if \code{TRUE}, the posterior means and variances of
-#'   the random effects are calculated after the model has converged. Default is
-#'   \code{TRUE}.
+#' @param pfs logical: if \code{TRUE}, then assuming the MCEM algorithm has
+#'   converged, post-fit statistics including the posterior means and variances
+#'   of the random effects, and the approximate standard errors are calculated
+#'   and returned as part of the model object. Default is \code{TRUE}. If
+#'   \code{FALSE}, then these additional calculations are not performed, which
+#'   can reduce the overall computational time. This option is intended to be
+#'   used with computationally intensive routines such as simulation and
+#'   bootstrap standard error estimation where these calculations are not
+#'   required.
 #' @param control a list of control values with components: \describe{
 #'
 #'   \item{\code{nMC}}{integer: the initial number of Monte Carlo samples to be
@@ -176,16 +179,16 @@
 #'
 #' @section Standard error estimation:
 #'
-#'   Approximate standard errors (SEs) can be calculated (if
-#'   \code{se.approx = TRUE}). These are based on the empirical observed
-#'   information function (McLachlan & Krishnan, 2008). Through simulation
-#'   studies, we have found that this approximation does not work particularly
-#'   well for \emph{n}<100 (where \emph{n} is the number of subjects). In these
-#'   cases, one would need to appeal to the bootstrap SE estimation approach.
-#'   However, in practice, the reliability of the approximate SEs will depend of
-#'   a mulitude of factors, including but not limited to, the average number of
-#'   repeated measurements per subject, the total number of events, and the
-#'   convergence of the MCEM algorithm.
+#'   Approximate standard errors (SEs) are calculated (if \code{pfs = TRUE}).
+#'   These are based on the empirical observed information function (McLachlan &
+#'   Krishnan, 2008). Through simulation studies, we have found that this
+#'   approximation does not work particularly well for \emph{n}<100 (where
+#'   \emph{n} is the number of subjects). In these cases, one would need to
+#'   appeal to the bootstrap SE estimation approach. However, in practice, the
+#'   reliability of the approximate SEs will depend of a mulitude of factors,
+#'   including but not limited to, the average number of repeated measurements
+#'   per subject, the total number of events, and the convergence of the MCEM
+#'   algorithm.
 #'
 #'   Bootstrap SEs are also available, however they are not calculated using the
 #'   \code{mjoint} function due to the intense computational time. Instead, a
@@ -300,8 +303,8 @@
 #' summary(fit.joineR)
 #' }
 mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NULL,
-                   timeVar, inits = NULL, verbose = FALSE,
-                   se.approx = TRUE, postRE = TRUE, control = list(), ...) {
+                   timeVar, inits = NULL, verbose = FALSE, pfs = TRUE,
+                   control = list(), ...) {
 
   #*****************************************************
   # Preamble
@@ -628,7 +631,7 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
 
     stepUpdate <- stepEM(theta = theta, l = l, t = t, z = z,
                          nMC = nMC, verbose = verbose, gammaOpt = con$gammaOpt,
-                         postRE = FALSE, se.approx = FALSE)
+                         pfs = FALSE)
     theta.new <- stepUpdate$theta.new
     log.lik.new <- stepUpdate$ll
     ll.hx[it] <- log.lik.new
@@ -674,18 +677,13 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
 
     # Once converged: calculate SEs and posterior REs (means + variances)
     if (conv) {
+      message("EM algorithm has converged!\n")
       theta <- theta.new
-      if (postRE || se.approx) {
-        message("EM algorithm has converged!\n")
-        if (postRE) {
-          message("Estimating posterior random effects...\n")
-        }
-        if (se.approx) {
-          message("Estimating approximate standard errors...\n")
-        }
+      if (pfs) {
+        message("Calculating post model fit statistics...\n")
         postFitCalcs <- stepEM(theta = theta, l = l, t = t, z = z,
                                nMC = nMC, verbose = FALSE, gammaOpt = "NR",
-                               postRE = postRE, se.approx = se.approx)
+                               pfs = TRUE)
       }
       break
     } else {
@@ -745,11 +743,9 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
   out$ll.hx <- ll.hx
   out$control <- con
   out$finalnMC <- nMC # not same as control nMC (used for early phase)
-  if (conv && se.approx) {
+  if (conv && pfs) {
     out$vcov <- postFitCalcs$ses
     out$SE.approx <- sqrt(diag(solve(out$vcov)))
-  }
-  if (conv && postRE) {
     out$log.lik <- postFitCalcs$ll
     out$Eb <- postFitCalcs$Eb # Posterior RE means
     out$Vb <- postFitCalcs$Vb # Posterior RE variances

@@ -5,8 +5,8 @@
 \title{Fit a joint model to time-to-event data and multivariate longitudinal data}
 \usage{
 mjoint(formLongFixed, formLongRandom, formSurv, data, survData = NULL,
-  timeVar, inits = NULL, verbose = FALSE, se.approx = TRUE,
-  postRE = TRUE, control = list(), ...)
+  timeVar, inits = NULL, verbose = FALSE, pfs = TRUE, control = list(),
+  ...)
 }
 \arguments{
 \item{formLongFixed}{a list of formulae for the fixed effects component of
@@ -48,13 +48,15 @@ proportional hazard regression models.}
 convergence statistics are value are printed at each iteration of the MCEM
 algorithm. Default is \code{FALSE}.}
 
-\item{se.approx}{logical: if \code{TRUE}, approximate standard errors are
-estimated after the model has converged. Default is \code{TRUE}. See
-details.}
-
-\item{postRE}{logical: if \code{TRUE}, the posterior means and variances of
-the random effects are calculated after the model has converged. Default is
-\code{TRUE}.}
+\item{pfs}{logical: if \code{TRUE}, then assuming the MCEM algorithm has
+converged, post-fit statistics including the posterior means and variances
+of the random effects, and the approximate standard errors are calculated
+and returned as part of the model object. Default is \code{TRUE}. If
+\code{FALSE}, then these additional calculations are not performed, which
+can reduce the overall computational time. This option is intended to be
+used with computationally intensive routines such as simulation and
+bootstrap standard error estimation where these calculations are not
+required.}
 
 \item{control}{a list of control values with components: \describe{
 
@@ -205,16 +207,16 @@ Function \code{mjoint} fits joint models for time-to-event and
 \section{Standard error estimation}{
 
 
-  Approximate standard errors (SEs) can be calculated (if
-  \code{se.approx = TRUE}). These are based on the empirical observed
-  information function (McLachlan & Krishnan, 2008). Through simulation
-  studies, we have found that this approximation does not work particularly
-  well for \emph{n}<100 (where \emph{n} is the number of subjects). In these
-  cases, one would need to appeal to the bootstrap SE estimation approach.
-  However, in practice, the reliability of the approximate SEs will depend of
-  a mulitude of factors, including but not limited to, the average number of
-  repeated measurements per subject, the total number of events, and the
-  convergence of the MCEM algorithm.
+  Approximate standard errors (SEs) are calculated (if \code{pfs = TRUE}).
+  These are based on the empirical observed information function (McLachlan &
+  Krishnan, 2008). Through simulation studies, we have found that this
+  approximation does not work particularly well for \emph{n}<100 (where
+  \emph{n} is the number of subjects). In these cases, one would need to
+  appeal to the bootstrap SE estimation approach. However, in practice, the
+  reliability of the approximate SEs will depend of a mulitude of factors,
+  including but not limited to, the average number of repeated measurements
+  per subject, the total number of events, and the convergence of the MCEM
+  algorithm.
 
   Bootstrap SEs are also available, however they are not calculated using the
   \code{mjoint} function due to the intense computational time. Instead, a

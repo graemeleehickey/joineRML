@@ -1,5 +1,5 @@
 #' @keywords internal
-stepEM <- function(theta, l, t, z, nMC, verbose, gammaOpt, postRE, se.approx) {
+stepEM <- function(theta, l, t, z, nMC, verbose, gammaOpt, pfs) {
 
   # Input parameter estimates
   D <- theta$D
@@ -247,7 +247,7 @@ stepEM <- function(theta, l, t, z, nMC, verbose, gammaOpt, postRE, se.approx) {
 
   t3 <- Sys.time()
 
-  if (verbose && !postRE) {
+  if (verbose && !pfs) {
     tdiff1 <- t1 - t0
     cat(paste("Step 1: Time to setup Monte Carlo expectations", round(tdiff1, 2),
               attr(tdiff1, "units"), "\n"))
@@ -285,9 +285,11 @@ stepEM <- function(theta, l, t, z, nMC, verbose, gammaOpt, postRE, se.approx) {
 
   #-----------------------------------------------------
 
-  ## Posterior means + variances of random effects
+  ## These are only calculated when pfs = TRUE
 
-  if (postRE) {
+  if (pfs) {
+
+    # Posterior means + variances of random effects
 
     # Var(b)
     Vb <- mapply(function(b, pb, mu) {
@@ -310,13 +312,9 @@ stepEM <- function(theta, l, t, z, nMC, verbose, gammaOpt, postRE, se.approx) {
     out$Eb = Eb.flat
     out$Vb = Vb
 
-  }
+    #-----------------------------------------------------
 
-  #*********************************************************
-  # Approximate standard errors
-  #*********************************************************
-
-  if (se.approx) {
+    # Approximate standard errors
 
     m <- list()
     m$Sigmai.inv <- Sigmai.inv

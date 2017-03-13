@@ -122,8 +122,7 @@ bootSE <- function(object, nboot = 100, ci = 0.95, use.mle = TRUE,
                          timeVar = timeVar,
                          inits = theta.hat,
                          verbose = verbose,
-                         se.approx = FALSE,
-                         postRE = FALSE,
+                         pfs = FALSE,
                          control = con,
                          ...)
     )
