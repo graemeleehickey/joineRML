@@ -85,14 +85,10 @@ stepEM <- function(theta, l, t, z, nMC, verbose, gammaOpt, pfs) {
   }
 
   # Expanded gamma_y (repeated for each random effect term)
-  if (sum(r) > 1) {
-    if (q > 0) {
-      gamma.scale <- diag(rep(gamma[-(1:q)], r))
-    } else {
-      gamma.scale <- diag(rep(gamma, r))
-    }
-  } else { # just a single gamma_y
-    gamma.scale <- matrix(gamma[length(gamma)], nrow = 1, ncol = 1)
+  if (q > 0) {
+    gamma.scale <- diag(rep(gamma[-(1:q)], r), ncol = sum(r))
+  } else {
+    gamma.scale <- diag(rep(gamma, r), ncol = sum(r))
   }
 
   # exp{W(tj, b)}
@@ -228,14 +224,10 @@ stepEM <- function(theta, l, t, z, nMC, verbose, gammaOpt, pfs) {
 
   # Expanded gamma_y (repeated for each random effect term)
   # - using the latest EM iteration estimate
-  if (sum(r) > 1) {
-    if (q > 0) {
-      gamma.new.scale <- diag(rep(gamma.new[-(1:q)], r))
-    } else {
-      gamma.new.scale <- diag(rep(gamma.new, r))
-    }
-  } else { # just a single gamma_y
-    gamma.new.scale <- matrix(gamma.new[length(gamma.new)], nrow = 1, ncol = 1)
+  if (q > 0) {
+    gamma.new.scale <- diag(rep(gamma.new[-(1:q)], r), ncol = sum(r))
+  } else {
+    gamma.new.scale <- diag(rep(gamma.new, r), ncol = sum(r))
   }
 
   haz.new <- lambdaUpdate(bi.y, IW.fail, Zi.fail, pb.yt, V,
