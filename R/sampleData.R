@@ -1,12 +1,15 @@
 #' Sample from an \code{mjoint} object
 #'
 #' @description Generic function used to sample a subset of data from an object
-#'   of class \code{mjoint}, with a specific size of number of subjects.
+#'   of class \code{mjoint} with a specific number of subjects.
 #'
 #' @inheritParams confint.mjoint
 #' @param size number of subjects to include in the sampled subset. If
 #'   \code{size = NULL} (default), then size is set equal to the number of
 #'   subjects used to fit the \code{mjoint} model.
+#' @param replace use replacement when sampling subjects? Default is
+#'   \code{TRUE}. If replacement is used, then the subjects are re-lablled from
+#'   1 to \code{size}.
 #'
 #' @details This function is primarily intended for internal use in the
 #'   \code{\link{bootSE}} function in order to permit bootstrapping. However, it
@@ -39,7 +42,11 @@
 #'     verbose = TRUE)
 #' sampleData(fit2, size = 10)
 #' }
-sampleData <- function(object, size = NULL) {
+sampleData <- function(object, size = NULL, replace = TRUE) {
+
+  if (!inherits(object, "mjoint")) {
+    stop("Use only with 'mjoint' model objects.\n")
+  }
 
   # Extract from model fit
   data <- object$data
@@ -49,25 +56,37 @@ sampleData <- function(object, size = NULL) {
   surv.time.lab <- all.vars(object$formSurv)[1]
   n <- length(id.labs)
   K <- object$dims$K
+  size <- ifelse(is.null(size), n, size)
+
+  if (!replace) {
+    if (!is.null(size)) {
+      if (size > n) {
+        stop("Cannot select more subjects than in data without replacement")
+      }
+    }
+  }
 
   # Random sample of subjects (with replacement)
-  i <- sample(id.labs, size = ifelse(is.null(size), n, size),
-              replace = TRUE)
+  i <- sample(id.labs, size = size, replace = replace)
 
   # Longitudinal data
   longData.boot <- list()
   for (k in 1:K) {
     out <- lapply(i, function(u) data[[k]][data[[k]][, id] == u, ])
     m <- do.call("c", lapply(out, nrow))
-    id.new <- rep(1:n, m)
     longData.boot[[k]] <- do.call("rbind", out)
-    longData.boot[[k]][, id] <- id.new
+    if (replace) {
+      id.new <- rep(1:size, m)
+      longData.boot[[k]][, id] <- id.new
+    }
   }
 
   # Time-to-event data
   survData.boot <- survData[match(i, survData[ , id]), ]
-  survData.boot[ , id] <- 1:n
-  survData.boot[surv.time.lab] <- survData.boot[surv.time.lab]
+  if (replace) {
+    survData.boot[, id] <- 1:size
+  }
+  survData.boot[, surv.time.lab] <- survData.boot[, surv.time.lab]
 
   return(list(longData.boot = longData.boot,
               survData.boot = survData.boot))
