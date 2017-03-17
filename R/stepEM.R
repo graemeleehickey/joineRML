@@ -11,7 +11,9 @@ stepEM <- function(theta, l, t, z, nMC, verbose, gammaOpt, pfs) {
   # Multivariate longitudinal data
   yi <- l$yi
   Xi <- l$Xi
-  Xit <- l$Xit
+  XtX.inv <- l$XtX.inv
+  Xtyi <- l$Xtyi
+  XtZi <- l$XtZi
   Zi <- l$Zi
   Zit <- l$Zit
   nik <- l$nik
@@ -176,20 +178,13 @@ stepEM <- function(theta, l, t, z, nMC, verbose, gammaOpt, pfs) {
   #-----------------------------------------------------
 
   # beta
-  XtX <- mapply(function(xt, x) {
-    xt %*% x
+  rr <- mapply(function(x1, x2, b) {
+    x1 - (x2 %*% b)
   },
-  xt = Xit, x = Xi,
-  SIMPLIFY = FALSE)
-  XtX.sum <- Reduce("+", XtX)
-
-  rr <- mapply(function(xt, y, z, b) {
-    xt %*% (y - (z %*% b))
-  },
-  xt = Xit, y = yi, z = Zi, b = Eb)
+  x1 = Xtyi, x2 = XtZi, b = Eb)
   rr.sum <- rowSums(rr)
 
-  beta.new <- solve(XtX.sum, rr.sum)
+  beta.new <- as.vector(XtX.inv %*% rr.sum)
   names(beta.new) <- names(beta)
 
   #-----------------------------------------------------

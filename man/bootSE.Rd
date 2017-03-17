@@ -73,7 +73,7 @@ algorithm. Default is \code{FALSE}.}
   initial parameters are those from the MV-LMM, which is estimated using a
   separate EM algorithm. Since both the E- and M-steps are available in
   closed-form, this algorithm convergences relatively rapidly with a high
-  precision. Default is min(\code{1e-04}, \code{tol0}).}
+  precision. Default is min(\code{1e-04}, \code{tol2}).}
 
   \item{\code{rav}}{numeric: threshold when using \code{convCrit = 'sas'}
   that applies absolute change (when <\code{rav}) or relative change (when

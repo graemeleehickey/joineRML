@@ -44,7 +44,7 @@
 
 * Minor documentation edits and corrections.
 
-* Minor code tidy-up.
+* Minor code tidy-up with slight speed-ups where found.
 
 * LICENSE upgraded to GPL-3 to be compatible with `joineR` v1.1.0.
 

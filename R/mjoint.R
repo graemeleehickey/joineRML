@@ -97,7 +97,7 @@
 #'   initial parameters are those from the MV-LMM, which is estimated using a
 #'   separate EM algorithm. Since both the E- and M-steps are available in
 #'   closed-form, this algorithm convergences relatively rapidly with a high
-#'   precision. Default is min(\code{1e-04}, \code{tol0}).}
+#'   precision. Default is min(\code{1e-04}, \code{tol2}).}
 #'
 #'   \item{\code{rav}}{numeric: threshold when using \code{convCrit = 'sas'}
 #'   that applies absolute change (when <\code{rav}) or relative change (when
@@ -382,7 +382,7 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
   if (("burnin" %in% control) && !("mcmaxIter" %in% control)) {
     con$mcmaxIter <- con$burnin + 200
   }
-  con$tol.em <- min(con$tol.em, con$tol0)
+  con$tol.em <- min(con$tol.em, con$tol2)
 
   if (length(unmatched <- conArgs[!(conArgs %in% nc)]) > 0) {
     warning("Unknown arguments passed to 'control': ", paste(unmatched, collapse = ", "))
@@ -450,14 +450,30 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
   },
   USE.NAMES = TRUE, simplify = FALSE)
 
-  Xit <- lapply(Xi, t)
-
   Zi <- sapply(names(Zik.list[[1]]), function(i) {
     as.matrix(Matrix::bdiag(lapply(Zik.list, "[[", i)))
   },
   USE.NAMES = TRUE, simplify = FALSE)
 
   Zit <- lapply(Zi, t)
+
+  # # t(X) %*% X [summed over i and inverted]
+  XtXi <- lapply(Xi, crossprod)
+  XtX.inv <- solve(Reduce("+", XtXi))
+
+  # t(X) %*% y [for each i]
+  Xtyi <- mapply(function(x, y) {
+    crossprod(x, y)
+  },
+  x = Xi, y = yi,
+  SIMPLIFY = FALSE)
+
+  # t(X) %*% Z [for each i]
+  XtZi <- mapply(function(x, z) {
+    crossprod(x, z)
+  },
+  x = Xi, z = Zi,
+  SIMPLIFY = FALSE)
 
   nik <- sapply(names(nik.list[[1]]), function(i) {
     unlist(lapply(nik.list, "[[", i))
@@ -473,9 +489,9 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
     ncol(Zik[[i]]) - 1
   })
 
-  l <- list(yi = yi, Xi = Xi, Xit = Xit, Zi = Zi, Zit = Zit, nik = nik,
-            yik = yik, Xik.list = Xik.list, Zik.list = Zik.list,
-            p = p, r = r, K = K, n = n, nk = nk)
+  l <- list(yi = yi, Xi = Xi, Zi = Zi, Zit = Zit, nik = nik, yik = yik,
+            Xik.list = Xik.list, Zik.list = Zik.list, XtX.inv = XtX.inv,
+            Xtyi = Xtyi, XtZi = XtZi, p = p, r = r, K = K, n = n, nk = nk)
 
   #*****************************************************
   # Time-to-event data

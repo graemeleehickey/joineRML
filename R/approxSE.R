@@ -11,7 +11,6 @@ approxSE <- function(theta, l, t, z, m) {
   # Multivariate longitudinal data
   yi <- l$yi
   Xi <- l$Xi
-  Xit <- l$Xit
   Zi <- l$Zi
   Zit <- l$Zit
   nik <- l$nik
@@ -53,10 +52,10 @@ approxSE <- function(theta, l, t, z, m) {
 
   # beta
 
-  sbeta <- mapply(function(xt, x, sinv, y, z, b) {
-    (xt %*% sinv) %*% (y - x %*% beta - z %*% b)
+  sbeta <- mapply(function(x, sinv, y, z, b) {
+    (t(x) %*% sinv) %*% (y - x %*% beta - z %*% b)
   },
-  xt = Xit, x = Xi, sinv = Sigmai.inv, y = yi, z = Zi, b = Eb,
+  x = Xi, sinv = Sigmai.inv, y = yi, z = Zi, b = Eb,
   SIMPLIFY = TRUE)
 
   rownames(sbeta) <- names(beta)
@@ -68,7 +67,9 @@ approxSE <- function(theta, l, t, z, m) {
   sDinv <- lapply(EbbT, function(b2) {
     0.5 * (2*D - diag(D)) - 0.5 * (2 * b2 - diag(b2))
   })
-  sDinv <- sapply(sDinv, function(d) d[lower.tri(d, diag = TRUE)])
+  sDinv <- sapply(sDinv, function(d) {
+    d[lower.tri(d, diag = TRUE)]
+  })
   if (sum(r) == 1) {
     sDinv <- matrix(sDinv, nrow = 1)
   }
