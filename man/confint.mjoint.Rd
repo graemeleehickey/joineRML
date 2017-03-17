@@ -13,7 +13,7 @@ of time-to-event and multivariate longitudinal data.}
 
 \item{parm}{a character string specifying which sub-model parameter
 confidence intervals should be returned for. Can be specified as
-\code{parm = 'Longitudinal'} (multvariate longitudinal sub-model),
+\code{parm = 'Longitudinal'} (multivariate longitudinal sub-model),
 \code{parm = 'Event'} (time-to-event sub-model), or \code{parm = 'both'}
 (default).}
 

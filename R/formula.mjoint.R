@@ -9,7 +9,7 @@
 #'   effects formula from the (multivariate) longitudinal sub-model is returned
 #'   for the \code{k}-th outcome. Else, if \code{process = 'Event'}, the
 #'   time-to-event model formula is returned.
-#' @param k inetger: a number between 1 and K (the total number of longitudinal
+#' @param k integer: a number between 1 and K (the total number of longitudinal
 #'   outcomes) that specifies the longitudinal outcome of interest.
 #'
 #' @author Graeme L. Hickey (\email{graeme.hickey@@liverpool.ac.uk})

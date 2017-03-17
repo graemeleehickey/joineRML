@@ -185,7 +185,7 @@
 #'   approximation does not work particularly well for \emph{n}<100 (where
 #'   \emph{n} is the number of subjects). In these cases, one would need to
 #'   appeal to the bootstrap SE estimation approach. However, in practice, the
-#'   reliability of the approximate SEs will depend of a mulitude of factors,
+#'   reliability of the approximate SEs will depend of a multitude of factors,
 #'   including but not limited to, the average number of repeated measurements
 #'   per subject, the total number of events, and the convergence of the MCEM
 #'   algorithm.

@@ -10,7 +10,7 @@
   \item{\code{id}}{patients identifier; in total there are 312 patients.}
 
   \item{\code{years}}{number of years between registration and the earlier of
-  death, transplantion, or study analysis time.}
+  death, transplantation, or study analysis time.}
 
   \item{\code{status}}{a factor with levels \code{alive}, \code{transplanted}
   and \code{dead}.}

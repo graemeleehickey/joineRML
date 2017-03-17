@@ -28,7 +28,7 @@ This is a generic function that extracts the variance-covariance
   matrix of parameters from an \code{mjoint} model fit. It is based on a
   profile likelihood, so no estimates are given for the baseline hazard
   function, which is generally considered a nuisance parameter. It is based
-  on the empiricial information matrix (see Lin et al. 2002, and McLachlan
+  on the empirical information matrix (see Lin et al. 2002, and McLachlan
   and Krishnan 2008 for details), so is only approximate.
 }
 \note{

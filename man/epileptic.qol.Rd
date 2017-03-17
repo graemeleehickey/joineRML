@@ -16,7 +16,7 @@
   carbamazepine and lamotrigine, respectively.}
 
   \item{\code{status}}{the reason for treatment failure. Coded as
-  \code{0 = }censored; \code{1 = }unacceptable advserse effects;
+  \code{0 = }censored; \code{1 = }unacceptable adverse effects;
   \code{2 = }inadequate seizure control.}
 
   \item{\code{time}}{the time the quality of life measures were recorded

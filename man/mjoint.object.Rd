@@ -91,7 +91,7 @@ A list with the following components. \describe{
   \item{\code{log.lik}}{the log-likelihood from the joint model fit.}
 
   \item{\code{ll.hx}}{a vector of the log-likelihood values for each MCEM
-  algorithm interation.}
+  algorithm interaction.}
 
   \item{\code{control}}{a list of control parameters used in the estimation
   of the joint model. See \code{\link{mjoint}} for details.}

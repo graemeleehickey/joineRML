@@ -71,7 +71,7 @@
 #'   \item{\code{sten.reg.mix}}{aortic valve haemodynamics (\code{1 = }stenosis,
 #'   \code{2 = }regurgitation, \code{3 = }mixed).}
 #'
-#'   \item{\code{hs}}{implanated aortic prosthesis type (\code{1 = }homograft
+#'   \item{\code{hs}}{implanted aortic prosthesis type (\code{1 = }homograft
 #'   and \code{0 = }stentless porcine tissue).}
 #'
 #'   }
