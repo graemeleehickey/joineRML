@@ -36,9 +36,6 @@ K)}, else if \code{model = 'intslope'}, the matrix has dimension \code{dim
 
 \item{theta0, theta1}{parameters controlling the failure rate. See Details.}
 
-\item{theta1}{the shape parameter for a Gompertz distribution used to
-simulate the time-to-event outcome.}
-
 \item{censoring}{logical: if \code{TRUE}, includes an independent censoring
 time.}
 

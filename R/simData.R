@@ -21,8 +21,6 @@
 #'   K)}, else if \code{model = 'intslope'}, the matrix has dimension \code{dim
 #'   = c(2K, 2K)}. If \code{D = NULL} (default), an identity matrix is assumed.
 #' @param theta0,theta1 parameters controlling the failure rate. See Details.
-#' @param theta1 the shape parameter for a Gompertz distribution used to
-#'   simulate the time-to-event outcome.
 #' @param censoring logical: if \code{TRUE}, includes an independent censoring
 #'   time.
 #' @param censlam a scale (\eqn{>0}) parameter for an exponential distribution
