@@ -15,7 +15,7 @@ of time-to-event and multivariate longitudinal data.}
 subjects used to fit the \code{mjoint} model.}
 
 \item{replace}{use replacement when sampling subjects? Default is
-\code{TRUE}. If replacement is used, then the subjects are re-lablled from
+\code{TRUE}. If replacement is used, then the subjects are re-labelled from
 1 to \code{size}.}
 }
 \value{

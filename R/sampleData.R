@@ -8,7 +8,7 @@
 #'   \code{size = NULL} (default), then size is set equal to the number of
 #'   subjects used to fit the \code{mjoint} model.
 #' @param replace use replacement when sampling subjects? Default is
-#'   \code{TRUE}. If replacement is used, then the subjects are re-lablled from
+#'   \code{TRUE}. If replacement is used, then the subjects are re-labelled from
 #'   1 to \code{size}.
 #'
 #' @details This function is primarily intended for internal use in the

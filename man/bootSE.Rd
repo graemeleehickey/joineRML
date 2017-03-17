@@ -17,7 +17,7 @@ of time-to-event and multivariate longitudinal data.}
 percentile-method. Default is \code{ci = 0.95} for a 95\% confidence
 interval.}
 
-\item{use.mle}{logical: should the algorithm use the maximiser from the
+\item{use.mle}{logical: should the algorithm use the maximizer from the
 converged model in \code{object} as initial values for coefficients in each
 bootstrap iteration. Default is \code{use.mle = TRUE}.}
 

@@ -11,7 +11,7 @@
 #' @param ci the confidence interval to be estimated using the
 #'   percentile-method. Default is \code{ci = 0.95} for a 95\% confidence
 #'   interval.
-#' @param use.mle logical: should the algorithm use the maximiser from the
+#' @param use.mle logical: should the algorithm use the maximizer from the
 #'   converged model in \code{object} as initial values for coefficients in each
 #'   bootstrap iteration. Default is \code{use.mle = TRUE}.
 #' @param progress logical: should a progress bar be shown on the console to
