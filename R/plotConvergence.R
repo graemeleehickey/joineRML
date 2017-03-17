@@ -12,6 +12,8 @@
 #'   \code{params = 'sigma2'} for the residual error variances from the
 #'   longitudinal sub-model; \code{params = 'D'} for the lower triangular matrix
 #'   of the variance-covariance matrix of random effects.
+#' @param discard logical; if \code{TRUE} then the 'burn-in' phase iterations of
+#'   the MCEM algorithm are discarded. Default is \code{discard = FALSE}.
 #'
 #' @references
 #'
@@ -26,7 +28,7 @@
 #'
 #' @importFrom graphics par plot
 #' @export
-plotConvergence <- function(object, params = "gamma") {
+plotConvergence <- function(object, params = "gamma", discard = FALSE) {
 
   if (class(object) != "mjoint") {
     stop("Use only with 'mjoint' model objects.\n")
@@ -54,6 +56,10 @@ plotConvergence <- function(object, params = "gamma") {
 
   old.par <- par(no.readonly = TRUE)
   nc <- 1
+
+  if (discard) {
+    his <- his[, (object$control$burnin + 1):ncol(his), drop = FALSE]
+  }
 
   #--------------------------------------------------------
 

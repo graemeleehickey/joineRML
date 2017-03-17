@@ -5,7 +5,7 @@
 \title{Plot convergence time series for parameter vectors from an \code{mjoint}
 object}
 \usage{
-plotConvergence(object, params = "gamma")
+plotConvergence(object, params = "gamma", discard = FALSE)
 }
 \arguments{
 \item{object}{an object inheriting from class \code{mjoint} for a joint model
@@ -18,6 +18,9 @@ coefficients, including the latent association parameters; \code{params =
 \code{params = 'sigma2'} for the residual error variances from the
 longitudinal sub-model; \code{params = 'D'} for the lower triangular matrix
 of the variance-covariance matrix of random effects.}
+
+\item{discard}{logical; if \code{TRUE} then the 'burn-in' phase iterations of
+the MCEM algorithm are discarded. Default is \code{discard = FALSE}.}
 }
 \description{
 Plot convergence time series for parameter vectors from an
