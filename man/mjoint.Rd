@@ -62,7 +62,7 @@ required.}
 
   \item{\code{nMC}}{integer: the initial number of Monte Carlo samples to be
   used for integration in the burn-in phase of the MCEM. Default is \code{nMC
-  = 100}.}
+  = }\eqn{100K}.}
 
   \item{\code{nMCscale}}{integer: the scale factor for the increase in Monte
   Carlo size when Monte Carlo has not reduced from the previous iteration.
@@ -75,7 +75,7 @@ required.}
   the optimization algorithm. It is computationally inefficient to use a
   large number of Monte Carlo samples early on until one is approximately
   near the maximum likelihood estimate. Default is \code{burnin =
-  }\eqn{100 \times K}.}
+  }\eqn{100K}.}
 
   \item{\code{mcmaxIter}}{integer: the maximum number of MCEM algorithm
   iterations allowed. Default is \code{mcmaxIter = burnin + 200}.}
@@ -210,8 +210,8 @@ Function \code{mjoint} fits joint models for time-to-event and
   Approximate standard errors (SEs) are calculated (if \code{pfs = TRUE}).
   These are based on the empirical observed information function (McLachlan &
   Krishnan, 2008). Through simulation studies, we have found that this
-  approximation does not work particularly well for \emph{n}<100 (where
-  \emph{n} is the number of subjects). In these cases, one would need to
+  approximation does not work particularly well for \eqn{n < 100} (where
+  \eqn{n} is the number of subjects). In these cases, one would need to
   appeal to the bootstrap SE estimation approach. However, in practice, the
   reliability of the approximate SEs will depend of a multitude of factors,
   including but not limited to, the average number of repeated measurements

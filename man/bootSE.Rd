@@ -29,7 +29,7 @@ algorithm. Default is \code{FALSE}.}
 
   \item{\code{nMC}}{integer: the initial number of Monte Carlo samples to be
   used for integration in the burn-in phase of the MCEM. Default is \code{nMC
-  = 100}.}
+  = }\eqn{100K}.}
 
   \item{\code{nMCscale}}{integer: the scale factor for the increase in Monte
   Carlo size when Monte Carlo has not reduced from the previous iteration.
@@ -42,7 +42,7 @@ algorithm. Default is \code{FALSE}.}
   the optimization algorithm. It is computationally inefficient to use a
   large number of Monte Carlo samples early on until one is approximately
   near the maximum likelihood estimate. Default is \code{burnin =
-  }\eqn{100 \times K}.}
+  }\eqn{100K}.}
 
   \item{\code{mcmaxIter}}{integer: the maximum number of MCEM algorithm
   iterations allowed. Default is \code{mcmaxIter = burnin + 200}.}

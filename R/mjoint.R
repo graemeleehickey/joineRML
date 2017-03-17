@@ -53,7 +53,7 @@
 #'
 #'   \item{\code{nMC}}{integer: the initial number of Monte Carlo samples to be
 #'   used for integration in the burn-in phase of the MCEM. Default is \code{nMC
-#'   = 100}.}
+#'   = }\eqn{100K}.}
 #'
 #'   \item{\code{nMCscale}}{integer: the scale factor for the increase in Monte
 #'   Carlo size when Monte Carlo has not reduced from the previous iteration.
@@ -66,7 +66,7 @@
 #'   the optimization algorithm. It is computationally inefficient to use a
 #'   large number of Monte Carlo samples early on until one is approximately
 #'   near the maximum likelihood estimate. Default is \code{burnin =
-#'   }\eqn{100 \times K}.}
+#'   }\eqn{100K}.}
 #'
 #'   \item{\code{mcmaxIter}}{integer: the maximum number of MCEM algorithm
 #'   iterations allowed. Default is \code{mcmaxIter = burnin + 200}.}
@@ -182,8 +182,8 @@
 #'   Approximate standard errors (SEs) are calculated (if \code{pfs = TRUE}).
 #'   These are based on the empirical observed information function (McLachlan &
 #'   Krishnan, 2008). Through simulation studies, we have found that this
-#'   approximation does not work particularly well for \emph{n}<100 (where
-#'   \emph{n} is the number of subjects). In these cases, one would need to
+#'   approximation does not work particularly well for \eqn{n < 100} (where
+#'   \eqn{n} is the number of subjects). In these cases, one would need to
 #'   appeal to the bootstrap SE estimation approach. However, in practice, the
 #'   reliability of the approximate SEs will depend of a multitude of factors,
 #'   including but not limited to, the average number of repeated measurements
@@ -372,14 +372,14 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
   # Control parameters
   #*****************************************************
 
-  con <- list(nMC = 100, nMCscale = 3, nMCmax = 20000, burnin = 100*K,
+  con <- list(nMC = 100*K, nMCscale = 3, nMCmax = 20000, burnin = 100*K,
               mcmaxIter = 100*K + 200, convCrit = "sas", gammaOpt = "NR",
               tol0 = 5e-03, tol1 = 1e-03, tol2 = 5e-03, tol.em = 1e-04,
               rav = 0.1)
   nc <- names(con)
   control <- c(control, list(...))
   con[(conArgs <- names(control))] <- control
-  if (("burnin" %in% control) && !("mcmaxIter" %in% control)) {
+  if (("burnin" %in% names(control)) && !("mcmaxIter" %in% names(control))) {
     con$mcmaxIter <- con$burnin + 200
   }
   con$tol.em <- min(con$tol.em, con$tol2)
