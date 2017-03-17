@@ -2,6 +2,8 @@
 
 ## New features
 
+* Add `residual()` and `fitted()` functions for `mjoint` objects.
+
 * Added a plot function -- `plot.ranef.mjoint()` -- for `ranef.mjoint` objects.
 
 * `bootSE()` now uses control parameters from fitted model and allows for individual parameter overwrite.
