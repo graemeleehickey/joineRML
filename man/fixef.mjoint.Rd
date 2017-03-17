@@ -37,7 +37,7 @@ fit1 <- mjoint(formLongFixed = log.lvmi ~ time + age,
     formSurv = Surv(fuyrs, status) ~ age,
     data = hvd,
     timeVar = "time",
-    control = list(nMCscale = 2, earlyPhase = 5)) # controls for illustration only
+    control = list(nMCscale = 2, burnin = 5)) # controls for illustration only
 
 fixef(fit1, process = "Longitudinal")
 fixef(fit1, process = "Event")

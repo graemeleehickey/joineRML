@@ -28,6 +28,8 @@
 
 ## Housekeeping
 
+* Renamed `control` argument `earlyPhase` to `burnin`.
+
 * Package now `Depends` on `survival` and `nlme` rather than `Imports` to allow `require()` statements to be removed from code.
 
 * Prevented `roxygen` from exporting all functions. 

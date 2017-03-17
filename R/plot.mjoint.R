@@ -28,7 +28,7 @@
 #'     formSurv = Surv(fuyrs, status) ~ age,
 #'     data = hvd,
 #'     timeVar = "time",
-#'     control = list(nMCscale = 2, earlyPhase = 5)) # controls for illustration only
+#'     control = list(nMCscale = 2, burin = 5)) # controls for illustration only
 #'
 #' plot(fit1, param = "beta")  # LMM fixed effect parameters
 #' plot(fit1, param = "gamma") # event model parameters

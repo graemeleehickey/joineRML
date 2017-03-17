@@ -98,7 +98,7 @@ test_that("unmatched control prarameter throws warning", {
       formSurv = Surv(fuyrs, status) ~ age,
       data = hvd,
       timeVar = "time",
-      control = list(convCrit = "abs", tol0 = 0.1, earlyPhase = 3,
+      control = list(convCrit = "abs", tol0 = 0.1, burnin = 3,
                      mcmaxIter = 4, fake_param = 5),
       verbose = FALSE)
   }
@@ -121,7 +121,7 @@ test_that("unmatched inits throws warning", {
       inits = list("fake_param" = 5),
       data = hvd,
       timeVar = "time",
-      control = list(convCrit = "abs", tol0 = 0.1, earlyPhase = 3,
+      control = list(convCrit = "abs", tol0 = 0.1, burnin = 3,
                      mcmaxIter = 4, fake_param = 5),
       verbose = FALSE)
   }
@@ -144,7 +144,7 @@ test_that("measurement time after event time throws error", {
       formSurv = Surv(fuyrs, status) ~ age,
       data = hvd,
       timeVar = "time",
-      control = list(convCrit = "sas", rav = 0.01, earlyPhase = 5,
+      control = list(convCrit = "sas", rav = 0.01, burnin = 5,
                      mcmaxIter = 10),
       verbose = FALSE)
   }
@@ -168,7 +168,7 @@ test_that("measurement time after event time throws error", {
       inits = list("D" = D),
       data = hvd,
       timeVar = "time",
-      control = list(convCrit = "sas", rav = 0.01, earlyPhase = 4,
+      control = list(convCrit = "sas", rav = 0.01, burnin = 4,
                      mcmaxIter = 5),
       verbose = FALSE)
   }
@@ -192,7 +192,7 @@ test_that("unbalanced data throws warning for survival inits", {
     formSurv = Surv(fuyrs, status) ~ age,
     data = list(hvd1, hvd2),
     timeVar = "time",
-    control = list(convCrit = "sas", earlyPhase = 5, mcmaxIter = 10),
+    control = list(convCrit = "sas", burnin = 5, mcmaxIter = 10),
     verbose = FALSE)
   }
   # test
@@ -234,7 +234,7 @@ test_that("formula with unspecified longitudinal measure throws error", {
     formSurv = Surv(fuyrs, status) ~ age,
     data = hvd,
     timeVar = "time",
-    control = list(convCrit = "abs", rav = 0.05, earlyPhase = 5,
+    control = list(convCrit = "abs", rav = 0.05, burnin = 5,
                    mcmaxIter = 7),
     verbose = FALSE)
   # tests

@@ -52,7 +52,7 @@
 #'     formSurv = Surv(fuyrs, status) ~ age,
 #'     data = hvd,
 #'     timeVar = "time",
-#'     control = list(nMCscale = 2, earlyPhase = 5)) # controls for illustration only
+#'     control = list(nMCscale = 2, burnin = 5)) # controls for illustration only
 #'
 #' vcov(fit1)
 #'

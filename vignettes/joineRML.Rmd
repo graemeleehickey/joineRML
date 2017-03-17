@@ -120,7 +120,7 @@ Once an `mjoint` model has converged, and assuming the `se.approx` argument is `
 
 ```{r hvd_model_boot, cache=TRUE}
 fit.se <- bootSE(fit, nboot = 25, use.mle = TRUE, control = list(
-    nMCmax = 10000, earlyPhase = 20, mcmaxIter = 50, 
+    nMCmax = 10000, burnin = 20, mcmaxIter = 50, 
     convCrit = "abs", tol0 = 1e-02, tol2 = 1e-02),
   progress = FALSE)
 ```
@@ -193,7 +193,7 @@ fit.joinerml <- mjoint(formLongFixed = log.lvmi ~ time + age,
 summary(fit.joinerml)
 
 fit.joinerml.boot <- bootSE(fit.joinerml, nboot = 25, use.mle = TRUE, control = 
-                            list(earlyPhase = 25, convCrit = "sas",
+                            list(burnin = 25, convCrit = "sas",
                                  tol0 = 1e-02, tol2 = 1e-02, mcmaxIter = 60),
                             progress = FALSE)
 

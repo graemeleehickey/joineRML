@@ -17,7 +17,7 @@ test_that("bootstrap MV models", {
     inits = list("gamma" = c(0.11, 1.51, 0.80)),
     timeVar = "time",
     control = list(convCrit = "abs", tol0 = 0.1, tol.em = 1e-02,
-                   earlyPhase = 40, mcmaxIter = 200),
+                   burnin = 40, mcmaxIter = 200),
     verbose = FALSE)
   fit.boot <- bootSE(fit, nboot = 1, verbose = TRUE)
   # tests
@@ -46,7 +46,7 @@ test_that("non-convergence", {
     data = pbc2,
     timeVar = "year",
     control = list(convCrit = "abs", tol0 = 1e-3,
-                   earlyPhase = 5, mcmaxIter = 10),
+                   burnin = 5, mcmaxIter = 10),
     verbose = FALSE)
   set.seed(1)
   # tests

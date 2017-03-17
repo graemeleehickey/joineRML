@@ -52,8 +52,8 @@
 #' @param control a list of control values with components: \describe{
 #'
 #'   \item{\code{nMC}}{integer: the initial number of Monte Carlo samples to be
-#'   used for integration in the early phase of the MCEM. Default is \code{nMC =
-#'   100}.}
+#'   used for integration in the burn-in phase of the MCEM. Default is \code{nMC
+#'   = 100}.}
 #'
 #'   \item{\code{nMCscale}}{integer: the scale factor for the increase in Monte
 #'   Carlo size when Monte Carlo has not reduced from the previous iteration.
@@ -62,10 +62,10 @@
 #'   \item{\code{nMCmax}}{integer: the maximum number of Monte Carlo samples
 #'   that the algorithm is allowed to reach. Default is \code{nMCmax = 20000}.}
 #'
-#'   \item{\code{earlyPhase}}{integer: the number of iterations for early phase
+#'   \item{\code{burnin}}{integer: the number of iterations for burn-in phase
 #'   of the optimization algorithm. It is computationally inefficient to use a
 #'   large number of Monte Carlo samples early on until one is approximately
-#'   near the maximum likelihood estimate. Default is \code{earlyPhase =
+#'   near the maximum likelihood estimate. Default is \code{burnin =
 #'   }\emph{50K}.}
 #'
 #'   \item{\code{mcmaxIter}}{integer: the maximum number of MCEM algorithm
@@ -169,7 +169,7 @@
 #'   Due to the Monte Caro error, the algorithm could spuriously declare
 #'   convergence. Therefore, we require convergence to be satisfied for 3
 #'   consecutive iterations. The algorithm starts with a low number of Monte
-#'   Carlo samples in the early phase, as it would be computationally
+#'   Carlo samples in the burn-in phase, as it would be computationally
 #'   inefficient to use a large sample whilst far away from the true maximizer.
 #'   After the algorithm moves out of the adaptive phase, it uses an automated
 #'   criterion based on the coefficient of variation of the relative parameter
@@ -251,7 +251,7 @@
 #'     formSurv = Surv(fuyrs, status) ~ age,
 #'     data = hvd,
 #'     timeVar = "time",
-#'     control = list(nMCscale = 2, earlyPhase = 5)) # controls for illustration only
+#'     control = list(nMCscale = 2, burnin = 5)) # controls for illustration only
 #' summary(fit1)
 #'
 #' \dontrun{
@@ -372,7 +372,7 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
   # Control parameters
   #*****************************************************
 
-  con <- list(nMC = 100, nMCscale = 3, nMCmax = 20000, earlyPhase = 50*K,
+  con <- list(nMC = 100, nMCscale = 3, nMCmax = 20000, burnin = 50*K,
               mcmaxIter = 50*K + 200, convCrit = "sas", gammaOpt = "NR",
               tol0 = 5e-03, tol1 = 1e-03, tol2 = 5e-03, tol.em = 1e-05, rav = 0.1)
   nc <- names(con)
@@ -650,16 +650,16 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
     Delta.vec[it] <- conv.status$max.reldelta.pars
     log.lik <- log.lik.new
 
-    if (it >= con$earlyPhase) {
+    if (it >= con$burnin) {
       # require convergence condition to be satisfied 3 iterations
-      # in a row + cannot converge during early stage
+      # in a row + cannot converge during burn-in stage
       conv <- all(conv.track[(it-2):it])
     } else {
       conv <- FALSE
     }
 
     # Ripatti decision-rule for nMC increase using CV statistics
-    if (it >= con$earlyPhase && !conv) {
+    if (it >= con$burnin && !conv) {
       cv <- sd(Delta.vec[(it-2):it]) / mean(Delta.vec[(it-2):it])
       if (verbose) {
         cat(paste("CV statistic (old) =", round(cv.old, 6), "\n"))
@@ -742,7 +742,7 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
   out$log.lik <- log.lik
   out$ll.hx <- ll.hx
   out$control <- con
-  out$finalnMC <- nMC # not same as control nMC (used for early phase)
+  out$finalnMC <- nMC # not same as control nMC (used for burn-in phase)
   if (conv && pfs) {
     out$vcov <- postFitCalcs$ses
     out$SE.approx <- sqrt(diag(solve(out$vcov)))

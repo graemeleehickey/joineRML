@@ -61,8 +61,8 @@ required.}
 \item{control}{a list of control values with components: \describe{
 
   \item{\code{nMC}}{integer: the initial number of Monte Carlo samples to be
-  used for integration in the early phase of the MCEM. Default is \code{nMC =
-  100}.}
+  used for integration in the burn-in phase of the MCEM. Default is \code{nMC
+  = 100}.}
 
   \item{\code{nMCscale}}{integer: the scale factor for the increase in Monte
   Carlo size when Monte Carlo has not reduced from the previous iteration.
@@ -71,10 +71,10 @@ required.}
   \item{\code{nMCmax}}{integer: the maximum number of Monte Carlo samples
   that the algorithm is allowed to reach. Default is \code{nMCmax = 20000}.}
 
-  \item{\code{earlyPhase}}{integer: the number of iterations for early phase
+  \item{\code{burnin}}{integer: the number of iterations for burn-in phase
   of the optimization algorithm. It is computationally inefficient to use a
   large number of Monte Carlo samples early on until one is approximately
-  near the maximum likelihood estimate. Default is \code{earlyPhase =
+  near the maximum likelihood estimate. Default is \code{burnin =
   }\emph{50K}.}
 
   \item{\code{mcmaxIter}}{integer: the maximum number of MCEM algorithm
@@ -195,7 +195,7 @@ Function \code{mjoint} fits joint models for time-to-event and
   Due to the Monte Caro error, the algorithm could spuriously declare
   convergence. Therefore, we require convergence to be satisfied for 3
   consecutive iterations. The algorithm starts with a low number of Monte
-  Carlo samples in the early phase, as it would be computationally
+  Carlo samples in the burn-in phase, as it would be computationally
   inefficient to use a large sample whilst far away from the true maximizer.
   After the algorithm moves out of the adaptive phase, it uses an automated
   criterion based on the coefficient of variation of the relative parameter
@@ -240,7 +240,7 @@ fit1 <- mjoint(formLongFixed = log.lvmi ~ time + age,
     formSurv = Surv(fuyrs, status) ~ age,
     data = hvd,
     timeVar = "time",
-    control = list(nMCscale = 2, earlyPhase = 5)) # controls for illustration only
+    control = list(nMCscale = 2, burnin = 5)) # controls for illustration only
 summary(fit1)
 
 \dontrun{

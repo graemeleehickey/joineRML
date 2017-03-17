@@ -63,7 +63,7 @@
 #'     data = hvd,
 #'     timeVar = "time",
 #'     inits = list(gamma = gamma, sigma2 = sigma2, beta = beta, D = D),
-#'     control = list(nMCscale = 2, earlyPhase = 5)) # controls for illustration only
+#'     control = list(nMCscale = 2, burnin = 5)) # controls for illustration only
 #'
 #' confint(fit1, parm = "Longitudinal")
 #'
