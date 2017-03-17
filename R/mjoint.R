@@ -62,14 +62,14 @@
 #'   \item{\code{nMCmax}}{integer: the maximum number of Monte Carlo samples
 #'   that the algorithm is allowed to reach. Default is \code{nMCmax = 20000}.}
 #'
-#'   \item{\code{burnin}}{integer: the number of iterations for burn-in phase
-#'   of the optimization algorithm. It is computationally inefficient to use a
+#'   \item{\code{burnin}}{integer: the number of iterations for burn-in phase of
+#'   the optimization algorithm. It is computationally inefficient to use a
 #'   large number of Monte Carlo samples early on until one is approximately
 #'   near the maximum likelihood estimate. Default is \code{burnin =
-#'   }\emph{50K}.}
+#'   }\eqn{100 \times K}.}
 #'
 #'   \item{\code{mcmaxIter}}{integer: the maximum number of MCEM algorithm
-#'   iterations allowed. Default is \code{mcmaxIter = }\emph{(50K+200)}.}
+#'   iterations allowed. Default is \code{mcmaxIter = burnin + 200}.}
 #'
 #'   \item{\code{convCrit}}{character string: the convergence criterion to be
 #'   used. See \strong{Details}.}
@@ -372,12 +372,15 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
   # Control parameters
   #*****************************************************
 
-  con <- list(nMC = 100, nMCscale = 3, nMCmax = 20000, burnin = 50*K,
-              mcmaxIter = 50*K + 200, convCrit = "sas", gammaOpt = "NR",
+  con <- list(nMC = 100, nMCscale = 3, nMCmax = 20000, burnin = 100*K,
+              mcmaxIter = 100*K + 200, convCrit = "sas", gammaOpt = "NR",
               tol0 = 5e-03, tol1 = 1e-03, tol2 = 5e-03, tol.em = 1e-05, rav = 0.1)
   nc <- names(con)
   control <- c(control, list(...))
   con[(conArgs <- names(control))] <- control
+  if (("burnin" %in% control) && !("mcmaxIter" %in% control)) {
+    con$mcmaxIter <- con$burnin + 200
+  }
 
   if (length(unmatched <- conArgs[!(conArgs %in% nc)]) > 0) {
     warning("Unknown arguments passed to 'control': ", paste(unmatched, collapse = ", "))
