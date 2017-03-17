@@ -52,7 +52,7 @@
 #'   approach of Austin (2012) is used.
 #'
 #' @author Pete Philipson (\email{pete.philipson@northumbria.ac.uk}) and Graeme
-#'   Hickey(\email{graeme.hickey@liverpool.ac.uk})
+#'   Hickey (\email{graeme.hickey@liverpool.ac.uk})
 #' @keywords datagen multivariate survival
 #'
 #' @references
@@ -86,7 +86,7 @@ simData <- function(n = 100, ntms = 5, beta = rbind(c(1, 1, 1, 1), c(1, 1, 1, 1)
                     gamma.x = c(1, 1), gamma.y = c(0.5, -1), sigma2 = c(1, 1),
                     D = NULL, model = "intslope", theta0 = -3, theta1 = 1,
                     censoring = TRUE, censlam = exp(-3), truncation = TRUE,
-                    trunctime = ntms + 0.001) {
+                    trunctime = (ntms - 1) + 0.1) {
 
   K <- nrow(beta)
   if ((K != length(gamma.y)) || (K != length(sigma2))) {
