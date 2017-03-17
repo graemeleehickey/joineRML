@@ -62,7 +62,7 @@ required.}
 
   \item{\code{nMC}}{integer: the initial number of Monte Carlo samples to be
   used for integration in the burn-in phase of the MCEM. Default is \code{nMC
-  = }\eqn{100K}.}
+  = }\eqn{\max(100, 50K)}.}
 
   \item{\code{nMCscale}}{integer: the scale factor for the increase in Monte
   Carlo size when Monte Carlo has not reduced from the previous iteration.

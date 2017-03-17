@@ -53,7 +53,7 @@
 #'
 #'   \item{\code{nMC}}{integer: the initial number of Monte Carlo samples to be
 #'   used for integration in the burn-in phase of the MCEM. Default is \code{nMC
-#'   = }\eqn{100K}.}
+#'   = }\eqn{\max(100, 50K)}.}
 #'
 #'   \item{\code{nMCscale}}{integer: the scale factor for the increase in Monte
 #'   Carlo size when Monte Carlo has not reduced from the previous iteration.
@@ -372,10 +372,9 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
   # Control parameters
   #*****************************************************
 
-  con <- list(nMC = 100*K, nMCscale = 3, nMCmax = 20000, burnin = 100*K,
+  con <- list(nMC = max(100, 50*K), nMCscale = 3, nMCmax = 20000, burnin = 100*K,
               mcmaxIter = 100*K + 200, convCrit = "sas", gammaOpt = "NR",
-              tol0 = 5e-03, tol1 = 1e-03, tol2 = 5e-03, tol.em = 1e-04,
-              rav = 0.1)
+              tol0 = 5e-03, tol1 = 1e-03, tol2 = 5e-03, tol.em = 1e-04, rav = 0.1)
   nc <- names(con)
   control <- c(control, list(...))
   con[(conArgs <- names(control))] <- control
