@@ -200,7 +200,7 @@ stepEM <- function(theta, l, t, z, nMC, verbose, gammaOpt, pfs) {
       b.k <- b[(b.inds[k] + 1):(b.inds[k + 1])]
       bbT.k <- b2[(b.inds[k] + 1):(b.inds[k + 1]), (b.inds[k] + 1):(b.inds[k + 1])]
       residFixed <- (y - x %*% beta.k)
-      t(residFixed) %*% (residFixed - 2*(z %*% b.k)) + sum(diag((t(z) %*% z) %*% bbT.k))
+      t(residFixed) %*% (residFixed - 2*(z %*% b.k)) + sum(diag(crossprod(z) %*% bbT.k))
     },
     y = yik[[k]], x = Xik.list[[k]], z = Zik.list[[k]], b = Eb, b2 = EbbT)
     sigma2.new[k] <- sum(SSq) / nk[[k]]
