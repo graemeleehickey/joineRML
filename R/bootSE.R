@@ -1,9 +1,9 @@
 #' Standard errors via bootstrap for an \code{mjoint} object
 #'
-#' This function takes a model fit from an \code{mjoint} object and calculates
-#' standard errors and confidence intervals for the main longitudinal and
-#' survival coefficient parameters, including the latent association parameters,
-#' using bootstrapping (Efron and Tibshirani, 2000).
+#' @description This function takes a model fit from an \code{mjoint} object and
+#'   calculates standard errors and confidence intervals for the main
+#'   longitudinal and survival coefficient parameters, including the latent
+#'   association parameters, using bootstrapping (Efron and Tibshirani, 2000).
 #'
 #' @param object an object inheriting from class \code{mjoint} for a joint model
 #'   of time-to-event and multivariate longitudinal data.

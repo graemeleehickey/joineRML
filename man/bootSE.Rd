@@ -93,10 +93,10 @@ indicate the percentage of bootstrap iterations completed? Default is
 An object of class \code{bootSE}.
 }
 \description{
-This function takes a model fit from an \code{mjoint} object and calculates
-standard errors and confidence intervals for the main longitudinal and
-survival coefficient parameters, including the latent association parameters,
-using bootstrapping (Efron and Tibshirani, 2000).
+This function takes a model fit from an \code{mjoint} object and
+  calculates standard errors and confidence intervals for the main
+  longitudinal and survival coefficient parameters, including the latent
+  association parameters, using bootstrapping (Efron and Tibshirani, 2000).
 }
 \details{
 Standard errors and confidence intervals are obtained by repeated

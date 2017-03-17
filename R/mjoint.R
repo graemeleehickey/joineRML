@@ -748,6 +748,7 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
     out$SE.approx <- sqrt(diag(solve(out$vcov)))
     out$Eb <- postFitCalcs$Eb # Posterior RE means
     out$Vb <- postFitCalcs$Vb # Posterior RE variances
+    out$dmats <- list(l = l, t = t, z = z)
   }
   out$call <- Call
   out$conv <- conv
