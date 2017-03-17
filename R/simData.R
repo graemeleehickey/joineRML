@@ -20,6 +20,8 @@
 #'   matrix. If \code{model = 'int'}, the matrix has dimension \code{dim = c(K,
 #'   K)}, else if \code{model = 'intslope'}, the matrix has dimension \code{dim
 #'   = c(2K, 2K)}. If \code{D = NULL} (default), an identity matrix is assumed.
+#' @param model follows the model definition in the \code{\link[joineR]{joint}}
+#'   function. See \strong{Details} for choices.
 #' @param theta0,theta1 parameters controlling the failure rate. See Details.
 #' @param censoring logical: if \code{TRUE}, includes an independent censoring
 #'   time.
