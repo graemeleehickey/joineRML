@@ -68,8 +68,8 @@
 #' measurements and event time data. \emph{Biostatistics.} 2000; \strong{1(4)}:
 #' 465-480.
 #'
-#' @return A list of 2 data.frames: one recording the requisite longitudinal
-#'   outcomes data, and one recording the time-to-event data.
+#' @return A list of 2 \code{data.frame}s: one recording the requisite
+#'   longitudinal outcomes data, and one recording the time-to-event data.
 #' @export
 #'
 #' @examples

@@ -51,6 +51,7 @@ fit2 <- mjoint(
     data = list(hvd, hvd),
     inits = list("gamma" = c(0.11, 1.51, 0.80)),
     timeVar = "time",
+    control = list(burnin = 50),
     verbose = TRUE)
 
 plot(fit2, type = "convergence", params = "gamma")

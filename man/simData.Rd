@@ -7,7 +7,7 @@
 simData(n = 100, ntms = 5, beta = rbind(c(1, 1, 1, 1), c(1, 1, 1, 1)),
   gamma.x = c(1, 1), gamma.y = c(0.5, -1), sigma2 = c(1, 1), D = NULL,
   model = "intslope", theta0 = -3, theta1 = 1, censoring = TRUE,
-  censlam = exp(-3), truncation = TRUE, trunctime = (ntms - 1) + 0.001)
+  censlam = exp(-3), truncation = TRUE, trunctime = (ntms - 1) + 0.1)
 }
 \arguments{
 \item{n}{the number of subjects to simulate data for.}
@@ -56,8 +56,8 @@ maximum event time.}
 \item{trunctime}{a truncation time for use when \code{truncation = TRUE}.}
 }
 \value{
-A list of 2 data.frames: one recording the requisite longitudinal
-  outcomes data, and one recording the time-to-event data.
+A list of 2 \code{data.frame}s: one recording the requisite
+  longitudinal outcomes data, and one recording the time-to-event data.
 }
 \description{
 This function simulates multivariate longitudinal and

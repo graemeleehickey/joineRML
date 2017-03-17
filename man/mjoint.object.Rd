@@ -128,7 +128,7 @@ An object returned by the \code{mjoint} function, inheriting
   approximated by the empirical information matrix, is reported. See
   \code{\link{mjoint}} for details.}
 
-  \item{\code{SE.approx}}{ the square-root of the diagonal of \code{vcov} is
+  \item{\code{SE.approx}}{the square-root of the diagonal of \code{vcov} is
   returned, which are estimates of the standard errors for the parameters.}
 
   \item{\code{Eb}}{a matrix with the estimated random effects values for each
