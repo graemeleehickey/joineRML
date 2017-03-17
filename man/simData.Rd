@@ -34,12 +34,7 @@ matrix. If \code{model = 'int'}, the matrix has dimension \code{dim = c(K,
 K)}, else if \code{model = 'intslope'}, the matrix has dimension \code{dim
 = c(2K, 2K)}. If \code{D = NULL} (default), an identity matrix is assumed.}
 
-\item{model}{follows the model definition in the \code{\link[joineR]{joint}}
-function. See \strong{Details} for choices.}
-
-\item{theta0}{the log-scale parameter for a Gompertz distribution used to
-simulate the time-to-event outcome. The scale is calculated as
-\eqn{\exp(\theta_0)} to ensure it is positive.}
+\item{theta0, theta1}{parameters controlling the failure rate. See Details.}
 
 \item{theta1}{the shape parameter for a Gompertz distribution used to
 simulate the time-to-event outcome.}
@@ -72,13 +67,30 @@ The function \code{simData} simulates data from a joint model,
   random-intercepts only in each of the longitudinal sub-models, or
   random-intercepts and random-slopes. Currently, all models must have the
   same structure. The failure times are simulated from proportional hazards
-  time-to-event models; either an exponential distribution (in the case of
-  random-intercepts models) or Gompertz distribution (random-intercept and
-  random-slopes models) conditional on either known baseline effects
-  (\code{model = 'int'}), or a predictable time-varying process (\code{model
-  = 'intslope'}). In the case of the former, the methodology of Bender et al.
-  (2005) is used to simulate the time, whilst in the case of latter, the
-  approach of Austin (2012) is used.
+  time-to-event models using the following methodologies:
+
+  \describe{
+
+  \item{\code{model="int"}}{The baseline hazard function is specified to be
+  an exponential distribution with
+
+  \deqn{\lambda_0(t) = \exp{\theta_0}.}
+
+  Simulation is conditional on known time-independent effects, and the
+  methodology of Bender et al. (2005) is used to simulate the failure time.}
+
+  \item{\code{model="intslope"}}{The baseline hazard function is specified to
+  be a Gompertz distribution with
+
+  \deqn{\lambda_0(t) = \exp{\theta_0 + \theta_1 t}.}
+
+  In the usual representation of the Gompertz distribution, \eqn{\theta_1} is
+  the shape parameter, and the scale parameter is equivalent to
+  \eqn{\exp(\theta_0)}. Simulation is conditional on on a predictable
+  (linear) time-varying process, and the methodology of Austin (2012) is used
+  to simulate the failure time.}
+
+  }
 }
 \examples{
 beta <- rbind(c(0.5, 2, 1, 1),
