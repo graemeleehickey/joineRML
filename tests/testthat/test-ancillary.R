@@ -45,7 +45,7 @@ test_that("convergence plots", {
     formSurv = Surv(years, status2) ~ age,
     data = pbc2,
     timeVar = "year",
-    control = list(convCrit = "abs", tol0 = 1e-02),
+    control = list(convCrit = "abs", tol0 = 1e-02, burnin = 20),
     verbose = FALSE)
   # tests
   expect_silent(plotConvergence(fit, params = "gamma"))
@@ -65,7 +65,8 @@ test_that("ranef plots", {
                  formLongRandom = ~ time | num,
                  formSurv = Surv(fuyrs, status) ~ age,
                  data = hvd,
-                 timeVar = "time")
+                 timeVar = "time",
+                 control = list(burnin = 20))
   p <- plot(ranef(fit1, postVar = TRUE))
   # tests
   expect_true(is.ggplot(p))

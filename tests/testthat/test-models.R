@@ -12,7 +12,7 @@ test_that("univariate random-intercept model works + no formula labels", {
     formSurv = Surv(years, status2) ~ age,
     data = pbc2,
     timeVar = "year",
-    control = list(convCrit = "abs", tol0 = 0.05),
+    control = list(convCrit = "abs", tol0 = 0.05, burnin = 100),
     verbose = FALSE)
   # tests
   expect_is(fit, "mjoint")

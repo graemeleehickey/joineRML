@@ -67,7 +67,7 @@ test_that("univariate intercept only + non-MLE inits", {
     formSurv = Surv(years, status2) ~ age,
     data = pbc2,
     timeVar = "year",
-    control = list(convCrit = "abs", tol0 = 0.05),
+    control = list(convCrit = "abs", tol0 = 0.05, burnin = 100),
     verbose = FALSE)
   set.seed(12345)
   fit.boot <- bootSE(fit, nboot = 1,
