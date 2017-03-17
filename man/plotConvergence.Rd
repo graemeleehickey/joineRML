@@ -20,8 +20,8 @@ longitudinal sub-model; \code{params = 'D'} for the lower triangular matrix
 of the variance-covariance matrix of random effects.}
 }
 \description{
-Plot convergence time series for parameter vectors from an \code{mjoint}
-object.
+Plot convergence time series for parameter vectors from an
+  \code{mjoint} object.
 }
 \references{
 Wei GC, Tanner MA. A Monte Carlo implementation of the EM algorithm and the

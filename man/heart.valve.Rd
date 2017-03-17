@@ -79,11 +79,11 @@ Mr Eric Lim (\url{http://www.drericlim.com})
 data(heart.valve)
 }
 \description{
-This is longitudinal data on an observational study on detecting effects of
-different heart valves, differing on type of tissue, implanted in the aortic
-position. The data consists of longitudinal measurements on three different
-heart function outcomes, after surgery occurred. There are several baseline
-covariates available, and also survival data.
+This is longitudinal data on an observational study on detecting
+  effects of different heart valves, differing on type of tissue, implanted
+  in the aortic position. The data consists of longitudinal measurements on
+  three different heart function outcomes, after surgery occurred. There are
+  several baseline covariates available, and also survival data.
 }
 \references{
 Lim E, Ali A, Theodorou P, Sousa I, Ashrafian H, Chamageorgakis T, Duncan M,

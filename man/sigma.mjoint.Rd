@@ -17,7 +17,8 @@ a number (standard deviation) if \eqn{K=1} (univariate model), or a
   vector if \eqn{K>1} (multivariate model).
 }
 \description{
-Extract residual standard deviation(s) from an \code{mjoint} object.
+Extract residual standard deviation(s) from an \code{mjoint}
+  object.
 }
 \references{
 Pinheiro JC, Bates DM. \emph{Mixed-Effects Models in S and S-PLUS.} New York:

@@ -1,6 +1,6 @@
 #' Extract model formulae from an \code{mjoint} object
 #'
-#' Extract model formulae from an \code{mjoint} object.
+#' @description Extract model formulae from an \code{mjoint} object.
 #'
 #' @inheritParams confint.mjoint
 #' @param x an object inheriting from class \code{mjoint} for a joint model of

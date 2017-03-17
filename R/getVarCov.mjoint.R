@@ -1,8 +1,8 @@
 #' Extract variance-covariance matrix of random effects from an \code{mjoint}
 #' object
 #'
-#' Extract variance-covariance matrix of random effects from an \code{mjoint}
-#' object.
+#' @description Extract variance-covariance matrix of random effects from an
+#'   \code{mjoint} object.
 #'
 #' @param obj an object inheriting from class \code{mjoint} for a joint model of
 #'   time-to-event and multivariate longitudinal data.

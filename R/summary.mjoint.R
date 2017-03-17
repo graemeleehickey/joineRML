@@ -1,6 +1,6 @@
 #' Summary of an \code{mjoint} object
 #'
-#' This function provides a summary of an \code{mjoint} object.
+#' @description This function provides a summary of an \code{mjoint} object.
 #'
 #' @inheritParams confint.mjoint
 #'

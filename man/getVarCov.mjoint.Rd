@@ -17,8 +17,8 @@ time-to-event and multivariate longitudinal data.}
 A variance-covariance matrix.
 }
 \description{
-Extract variance-covariance matrix of random effects from an \code{mjoint}
-object.
+Extract variance-covariance matrix of random effects from an
+  \code{mjoint} object.
 }
 \examples{
 \dontrun{

@@ -51,12 +51,13 @@ SANAD Trial: University of Liverpool. See Jacoby et al. (2015).
 data(epileptic.qol)
 }
 \description{
-The SANAD (Standard and New Antiepileptic Drugs) study (Marson et al., 2007)
-is a randomised control trial of standard and new antiepileptic drugs,
-comparing effects on longer term clinical outcomes. Quality of life (QoL)
-data were collected by mail at baseline, 3 months, and at 1 and 2 years using
-validated measures. This data is a subset of the trial for 544 patients
-randomised to one of 2 drugs: carbamazepine and lamotrigine.
+The SANAD (Standard and New Antiepileptic Drugs) study (Marson
+  et al., 2007) is a randomised control trial of standard and new
+  antiepileptic drugs, comparing effects on longer term clinical outcomes.
+  Quality of life (QoL) data were collected by mail at baseline, 3 months,
+  and at 1 and 2 years using validated measures. This data is a subset of the
+  trial for 544 patients randomised to one of 2 drugs: carbamazepine and
+  lamotrigine.
 }
 \references{
 Jacoby A, Sudell M, Tudur Smith C, et al. Quality-of-life outcomes of

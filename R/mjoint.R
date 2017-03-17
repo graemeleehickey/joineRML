@@ -1,13 +1,13 @@
 #' Fit a joint model to time-to-event data and multivariate longitudinal data
 #'
-#' This function fits the joint model proposed by Henderson et al. (2000), but
-#' extended to the case of multiple continuous longitudinal measures. The
-#' time-to-event data is modelled using a Cox proportional hazards regression
-#' model with time-varying covariates. The multiple longitudinal outcomes are
-#' modelled using a multivariate version of the Laird and Ware linear mixed
-#' model. The association is captured by a multivariate latent Gaussian process.
-#' The model is estimated using a Monte Carlo Expectation Maximization (MCEM)
-#' algorithm.
+#' @description This function fits the joint model proposed by Henderson et al.
+#'   (2000), but extended to the case of multiple continuous longitudinal
+#'   measures. The time-to-event data is modelled using a Cox proportional
+#'   hazards regression model with time-varying covariates. The multiple
+#'   longitudinal outcomes are modelled using a multivariate version of the
+#'   Laird and Ware linear mixed model. The association is captured by a
+#'   multivariate latent Gaussian process. The model is estimated using a Monte
+#'   Carlo Expectation Maximization (MCEM) algorithm.
 #'
 #' @param formLongFixed a list of formulae for the fixed effects component of
 #'   each longitudinal outcome. The left hand-hand side defines the response,

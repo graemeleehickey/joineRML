@@ -20,8 +20,8 @@ otherwise returns the variance-covariance matrix (default).}
 A variance-covariance matrix.
 }
 \description{
-Extract an approximate variance-covariance matrix of estimated parameters
-from an \code{mjoint} object
+Returns the variance-covariance matrix of the main parameters of
+  a fitted \code{mjoint} model object.
 }
 \details{
 This is a generic function that extracts the variance-covariance

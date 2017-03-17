@@ -1,6 +1,6 @@
 #' Extract log-likelihood from an \code{mjoint} object
 #'
-#' Extract log-likelihood from an \code{mjoint} object.
+#' @description Extract log-likelihood from an \code{mjoint} object.
 #'
 #' @inheritParams confint.mjoint
 #'

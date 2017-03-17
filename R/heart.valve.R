@@ -1,10 +1,10 @@
 #' Aortic valve replacement surgery data
 #'
-#' This is longitudinal data on an observational study on detecting effects of
-#' different heart valves, differing on type of tissue, implanted in the aortic
-#' position. The data consists of longitudinal measurements on three different
-#' heart function outcomes, after surgery occurred. There are several baseline
-#' covariates available, and also survival data.
+#' @description This is longitudinal data on an observational study on detecting
+#'   effects of different heart valves, differing on type of tissue, implanted
+#'   in the aortic position. The data consists of longitudinal measurements on
+#'   three different heart function outcomes, after surgery occurred. There are
+#'   several baseline covariates available, and also survival data.
 #'
 #' @usage data(heart.valve)
 #' @format This is a data frame in the unbalanced format, that is, with one row

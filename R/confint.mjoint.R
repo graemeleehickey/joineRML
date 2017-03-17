@@ -1,7 +1,7 @@
 #' Confidence intervals for model parameters of an \code{mjoint} object
 #'
-#' This function computes confidence intervals for one or more parameters in a
-#' fitted \code{mjoint} object.
+#' @description This function computes confidence intervals for one or more
+#'   parameters in a fitted \code{mjoint} object.
 #'
 #' @param object an object inheriting from class \code{mjoint} for a joint model
 #'   of time-to-event and multivariate longitudinal data.

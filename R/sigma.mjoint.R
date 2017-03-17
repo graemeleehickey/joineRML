@@ -1,6 +1,7 @@
 #' Extract residual standard deviation(s) from an \code{mjoint} object
 #'
-#' Extract residual standard deviation(s) from an \code{mjoint} object.
+#' @description Extract residual standard deviation(s) from an \code{mjoint}
+#'   object.
 #'
 #' @inheritParams confint.mjoint
 #'

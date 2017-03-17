@@ -19,8 +19,8 @@ A list of 2 data.frames: one recording the requisite longitudinal
   outcomes data, and the other recording the time-to-event data.
 }
 \description{
-Generic function used to sample a subset of data from an object of class
-\code{mjoint}, with a specific size of number of subjects.
+Generic function used to sample a subset of data from an object
+  of class \code{mjoint}, with a specific size of number of subjects.
 }
 \details{
 This function is primarily intended for internal use in the

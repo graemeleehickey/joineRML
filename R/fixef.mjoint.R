@@ -1,6 +1,6 @@
 #' Extract fixed effects estimates from an \code{mjoint} object
 #'
-#' Extract fixed effects estimates from an \code{mjoint} object.
+#' @description Extract fixed effects estimates from an \code{mjoint} object.
 #'
 #' @inheritParams confint.mjoint
 #' @param process character string: if \code{process = 'Longitudinal'} the fixed

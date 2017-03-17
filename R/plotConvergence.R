@@ -1,8 +1,8 @@
 #' Plot convergence time series for parameter vectors from an \code{mjoint}
 #' object
 #'
-#' Plot convergence time series for parameter vectors from an \code{mjoint}
-#' object.
+#' @description Plot convergence time series for parameter vectors from an
+#'   \code{mjoint} object.
 #'
 #' @inheritParams confint.mjoint
 #' @param params a string indicating what parameters are to be shown. Options

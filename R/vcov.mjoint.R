@@ -1,6 +1,9 @@
 #' Extract an approximate variance-covariance matrix of estimated parameters
 #' from an \code{mjoint} object
 #'
+#' @description Returns the variance-covariance matrix of the main parameters of
+#'   a fitted \code{mjoint} model object.
+#'
 #' @inheritParams confint.mjoint
 #' @param correlation logical: if \code{TRUE} returns the correlation matrix,
 #'   otherwise returns the variance-covariance matrix (default).

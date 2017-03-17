@@ -32,8 +32,8 @@ A matrix containing the confidence intervals for either the
   longitudinal, time-to-event, or both sub-models.
 }
 \description{
-This function computes confidence intervals for one or more parameters in a
-fitted \code{mjoint} object.
+This function computes confidence intervals for one or more
+  parameters in a fitted \code{mjoint} object.
 }
 \examples{
 # Fit a classical univariate joint model with a single longitudinal outcome

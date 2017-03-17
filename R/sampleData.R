@@ -1,7 +1,7 @@
 #' Sample from an \code{mjoint} object
 #'
-#' Generic function used to sample a subset of data from an object of class
-#' \code{mjoint}, with a specific size of number of subjects.
+#' @description Generic function used to sample a subset of data from an object
+#'   of class \code{mjoint}, with a specific size of number of subjects.
 #'
 #' @inheritParams confint.mjoint
 #' @param size number of subjects to include in the sampled subset. If
