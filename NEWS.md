@@ -20,6 +20,8 @@
 
 * `plot()` and `plotConvergence()` now have the option to discard burn-in phase iterations from the MCEM algorithm.
 
+* `plot()` and `plotConvergence()` now plot the log-likelihood trace.
+
 ## Bug patches
 
 * Patched a major bug in `gammaUpdate()` where ties in failure times were not being properly handled. The code for `gammaUpdate_approx()` always worked fine, as it was based only on the score vector. This bug manifested when `bootSE()` was called due to the resampling with replacement yielding datasets with many more ties than in the original dataset used to fit the model. To fix it, the information matrix required scaling at each failure time by the number of failures in the data. The formula for the information matrix in the Technical Details vignette has also been updated.

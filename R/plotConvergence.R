@@ -11,7 +11,8 @@
 #'   'beta'} for the longitudinal sub-model fixed effects coefficients;
 #'   \code{params = 'sigma2'} for the residual error variances from the
 #'   longitudinal sub-model; \code{params = 'D'} for the lower triangular matrix
-#'   of the variance-covariance matrix of random effects.
+#'   of the variance-covariance matrix of random effects; \code{params =
+#'   'loglik'} for the log-likelihood.
 #' @param discard logical; if \code{TRUE} then the 'burn-in' phase iterations of
 #'   the MCEM algorithm are discarded. Default is \code{discard = FALSE}.
 #'
@@ -111,7 +112,7 @@ plotConvergence <- function(object, params = "gamma", discard = FALSE) {
 
   # D
   if (params == "D") {
-    n.par <- r * (r+1) / 2 # upper triangle only
+    n.par <- r * (r + 1) / 2 # upper triangle only
     if (n.par > 3) {
       nc <- ceiling(n.par / 3)
     }
@@ -121,6 +122,20 @@ plotConvergence <- function(object, params = "gamma", discard = FALSE) {
            xlab = "Iteration",
            ylab = rownames(his[(inds[4] + 1):(inds[5]), , drop = FALSE])[i])
     }
+  }
+
+  #--------------------------------------------------------
+
+  # log-likelihood
+  if (params == "loglik") {
+    par(mfrow = c(1, 1))
+    ll <- na.omit(object$ll.hx)
+    if (discard) {
+      ll <- ll[(object$control$burnin + 1):length(ll)]
+    }
+    plot(ll, type = "l",
+         xlab = "Iteration",
+         ylab = "Log-likelihood")
   }
 
   on.exit(par(old.par))
