@@ -97,7 +97,7 @@
 #'   initial parameters are those from the MV-LMM, which is estimated using a
 #'   separate EM algorithm. Since both the E- and M-steps are available in
 #'   closed-form, this algorithm convergences relatively rapidly with a high
-#'   precision. Default is \code{1e-05}.}
+#'   precision. Default is min(\code{1e-04}, \code{tol0}).}
 #'
 #'   \item{\code{rav}}{numeric: threshold when using \code{convCrit = 'sas'}
 #'   that applies absolute change (when <\code{rav}) or relative change (when
@@ -374,13 +374,15 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
 
   con <- list(nMC = 100, nMCscale = 3, nMCmax = 20000, burnin = 100*K,
               mcmaxIter = 100*K + 200, convCrit = "sas", gammaOpt = "NR",
-              tol0 = 5e-03, tol1 = 1e-03, tol2 = 5e-03, tol.em = 1e-05, rav = 0.1)
+              tol0 = 5e-03, tol1 = 1e-03, tol2 = 5e-03, tol.em = 1e-04,
+              rav = 0.1)
   nc <- names(con)
   control <- c(control, list(...))
   con[(conArgs <- names(control))] <- control
   if (("burnin" %in% control) && !("mcmaxIter" %in% control)) {
     con$mcmaxIter <- con$burnin + 200
   }
+  con$tol.em <- min(con$tol.em, con$tol0)
 
   if (length(unmatched <- conArgs[!(conArgs %in% nc)]) > 0) {
     warning("Unknown arguments passed to 'control': ", paste(unmatched, collapse = ", "))
