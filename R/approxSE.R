@@ -100,7 +100,7 @@ approxSE <- function(theta, l, t, z, m) {
       b.k <- b[(b.inds[k] + 1):(b.inds[k + 1])]
       bbT.k <- b2[(b.inds[k] + 1):(b.inds[k + 1]), (b.inds[k] + 1):(b.inds[k + 1])]
       residFixed <- (y - x %*% beta.k)
-      resids <- t(residFixed) %*% (residFixed - 2*(z %*% b.k)) + sum(diag(t(z) %*% z %*% bbT.k))
+      resids <- t(residFixed) %*% (residFixed - 2*(z %*% b.k)) + sum(diag(crossprod(z) %*% bbT.k))
       (-0.5 * nik[k] / sigma2[k]) + (0.5 * resids / sigma2[k]^2)
     },
     y = yik[[k]], x = Xik.list[[k]], z = Zik.list[[k]], b = Eb, b2 = EbbT, nik = nik)
@@ -113,7 +113,9 @@ approxSE <- function(theta, l, t, z, m) {
   si <- rbind(sDinv, sbeta, ssigma2, sgamma)
 
   ses <- matrix(0, nrow(si), nrow(si))
-  for (j in 1:ncol(si)) ses <- ses + si[, j] %*% t(si[, j])
+  for (j in 1:ncol(si)) {
+    ses <- ses + tcrossprod(si[, j])
+  }
   # Although RHS term = 0 in theory, in practice with MC integration
   # not all terms are vanishingly small, so we add it in
   ses <- ses - (rowSums(si) %*% t(rowSums(si))) / ncol(si)
