@@ -35,6 +35,7 @@
 #' Edition. Wiley-Interscience; 2008.
 #'
 #' @import stats
+#' @importFrom MASS ginv
 #'
 #' @return A variance-covariance matrix.
 #' @export
@@ -77,14 +78,27 @@
 #' }
 vcov.mjoint <- function(object, correlation = FALSE, ...) {
 
+  # Have used code by Dimitris Rizopoulos here after having some
+  # issues inverting the matrix.
+  # URL: https://github.com/drizopoulos/JM/blob/master/R/vcov.jointModel.R
+
   if (!inherits(object, "mjoint")) {
     stop("Use only with 'mjoint' model objects.\n")
   }
 
-  if (!correlation) {
-    object$vcov
+  out <- try(qr.solve(object$Hessian, tol = 1e-12), silent = TRUE)
+
+  if (!inherits(out, "try-error")) {
+    vmat <- structure(out, dimnames = dimnames(object$Hessian))
   } else {
-    stats::cov2cor(object$vcov)
+    vmat <- structure(MASS::ginv(object$Hessian), dimnames = dimnames(object$Hessian))
+  }
+  vmat <- (vmat + t(vmat)) / 2
+
+  if (!correlation) {
+    vmat
+  } else {
+    stats::cov2cor(vmat)
   }
 
 }

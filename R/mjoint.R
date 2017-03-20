@@ -765,8 +765,7 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
   out$control <- con
   out$finalnMC <- nMC # not same as control nMC (used for burn-in phase)
   if (conv && pfs) {
-    out$vcov <- postFitCalcs$ses
-    out$SE.approx <- sqrt(diag(qr.solve(out$vcov)))
+    out$Hessian <- postFitCalcs$H
     out$Eb <- postFitCalcs$Eb # Posterior RE means
     out$Vb <- postFitCalcs$Vb # Posterior RE variances
     out$dmats <- list(l = l, t = t, z = z)

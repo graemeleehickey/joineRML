@@ -105,7 +105,7 @@ confint.mjoint <- function(object, parm = c("Both", "Longitudinal", "Event"),
   beta <- object$coefficients$beta
   beta.inds <- (num.d + 1):(num.d + num.b)
   if (is.null(bootSE)) {
-    beta.se <- object$SE.approx[beta.inds]
+    beta.se <- sqrt(diag(vcov(object)))[beta.inds]
   } else {
     beta.se <- bootSE$beta.se
   }
@@ -116,7 +116,7 @@ confint.mjoint <- function(object, parm = c("Both", "Longitudinal", "Event"),
   gamma <- object$coefficients$gamma
   gamma.inds <- (num.d + num.b + num.s + 1):(num.d + num.b + num.s + num.g)
   if (is.null(bootSE)) {
-    gamma.se <- object$SE.approx[gamma.inds]
+    gamma.se <- sqrt(diag(vcov(object)))[gamma.inds]
   } else {
     gamma.se <- bootSE$gamma.se
   }

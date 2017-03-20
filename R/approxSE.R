@@ -112,15 +112,15 @@ approxSE <- function(theta, l, t, z, m) {
 
   si <- rbind(sDinv, sbeta, ssigma2, sgamma)
 
-  ses <- matrix(0, nrow(si), nrow(si))
+  H <- matrix(0, nrow(si), nrow(si))
   for (j in 1:ncol(si)) {
-    ses <- ses + tcrossprod(si[, j])
+    H <- H + tcrossprod(si[, j])
   }
   # Although RHS term = 0 in theory, in practice with MC integration
   # not all terms are vanishingly small, so we add it in
-  ses <- ses - (rowSums(si) %*% t(rowSums(si))) / ncol(si)
-  rownames(ses) <- colnames(ses) <- rownames(si)
+  H <- H - (rowSums(si) %*% t(rowSums(si))) / ncol(si)
+  rownames(H) <- colnames(H) <- rownames(si)
 
-  return(ses)
+  return(H)
 
 }

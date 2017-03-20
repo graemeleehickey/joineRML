@@ -61,8 +61,8 @@ summary.mjoint <- function(object, bootSE = NULL, ...) {
 
   beta <- object$coefficients$beta
   beta.inds <- (num.d + 1):(num.d + num.b)
-  if (is.null(bootSE) & !is.null(object$SE.approx)) {
-    beta.se <- object$SE.approx[beta.inds]
+  if (is.null(bootSE) & !is.null(object$Hessian)) {
+    beta.se <- sqrt(diag(vcov(object)))[beta.inds]
   } else if (!is.null(bootSE)) {
     beta.se <- bootSE$beta.se
   } else {
@@ -76,8 +76,8 @@ summary.mjoint <- function(object, bootSE = NULL, ...) {
 
   gamma <- object$coefficients$gamma
   gamma.inds <- (num.d + num.b + num.s + 1):(num.d + num.b + num.s + num.g)
-  if (is.null(bootSE) & !is.null(object$SE.approx)) {
-    gamma.se <- object$SE.approx[gamma.inds]
+  if (is.null(bootSE) & !is.null(object$Hessian)) {
+    gamma.se <- sqrt(diag(vcov(object)))[gamma.inds]
   } else if (!is.null(bootSE)) {
     gamma.se <- bootSE$gamma.se
   } else {
@@ -109,7 +109,7 @@ summary.mjoint <- function(object, bootSE = NULL, ...) {
   out$call <- object$call
   out$comp.time <- object$comp.time
   out$conv <- object$conv
-  out$se.type <- ifelse(is.null(bootSE) & !is.null(object$SE.approx), "approx",
+  out$se.type <- ifelse(is.null(bootSE) & !is.null(object$Hessian), "approx",
                         ifelse(!is.null(bootSE), "boot", "none"))
   if (!is.null(bootSE)) {
     out$boot.time <- bootSE$boot.time
