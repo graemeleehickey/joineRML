@@ -355,6 +355,7 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
   for (k in 1:K) {
     data[[k]] <- data[[k]][order(xtfrm(data[[k]][, id]), data[[k]][, timeVar[k]]), ]
     data[[k]][, id] <- as.factor(data[[k]][, id])
+    data[[k]] <- droplevels(data[[k]])
   }
 
   # check the same patients measured at least once for each marker
