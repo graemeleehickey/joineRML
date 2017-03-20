@@ -31,8 +31,8 @@ longitudinal outcomes are measured at the same time points for each
 patient, then a \code{data.frame} object can be given instead of a list. It
 is assumed that each data frame is in long format.}
 
-\item{survData}{a data.frame in which to interpret the variables named in the
-\code{formSurv}.}
+\item{survData}{a \code{data.frame} in which to interpret the variables named
+in the \code{formSurv}.}
 
 \item{timeVar}{a character string indicating the time variable in the linear
 mixed effects model. If there are multiple longitudinal outcomes and the
