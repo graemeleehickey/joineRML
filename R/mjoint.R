@@ -393,6 +393,7 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
   #*****************************************************
 
   lfit <- list()
+  mf.fixed <- list()
   yik <- list()
   Xik <- list()
   nk <- vector(length = K)
@@ -409,9 +410,12 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
                            control = nlme::lmeControl(opt = "optim"))
     lfit[[k]]$call$fixed <- eval(lfit[[k]]$call$fixed)
 
+    # Model frames
+    mf.fixed[[k]] <- model.frame(lfit[[k]]$terms,
+                                 data[[k]][, all.vars(formLongFixed[[k]])])
+
     # Longitudinal outcomes
-    yik[[k]] <- by(data[[k]][, all.vars(formLongFixed[[k]])[1]], data[[k]][, id],
-                   as.vector)
+    yik[[k]] <- by(model.response(mf.fixed[[k]], "numeric"), data[[k]][, id], as.vector)
 
     # X design matrix
     Xik[[k]] <- data.frame("id" = data[[k]][, id],

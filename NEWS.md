@@ -26,6 +26,8 @@
 
 * `hessian()` (and therefore `vcov()`) now calculate the contribution for the random effect variance terms rather than the random effect precision (1 divided by the variance) terms. The correct contribution to the score for off-diagonal terms is now also impleted.
 
+* The left-hand side of the `formLongFixed` now handles transformations.
+
 ## Bug patches
 
 * `vcov()` now returns the variance-covariance matrix as intended. Previously it was only returning the profile empirical information matrix.
