@@ -296,8 +296,8 @@ stepEM <- function(theta, l, t, z, nMC, verbose, gammaOpt, pfs) {
     }
     colnames(Eb.flat) <- colnames(D)
 
-    out$Eb = Eb.flat
-    out$Vb = Vb
+    out$Eb <- Eb.flat
+    out$Vb <- Vb
 
     #-----------------------------------------------------
 
