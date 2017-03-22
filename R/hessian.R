@@ -82,7 +82,7 @@ hessian <- function(theta, l, t, z, m) {
 
   sDi <- function(i) {
     mapply(function(b, pb) {
-      out <- 0.5 * crossprod(b, b * pb) %*% Dinv %*% delta.D[[i]] / nrow(b)
+      out <- 0.5 * crossprod(b, b * pb) %*% (Dinv %*% delta.D[[i]] %*% Dinv) / nrow(b)
       term1[i] + sum(diag(out))
     },
     b = bi.y, pb = pb.yt,
