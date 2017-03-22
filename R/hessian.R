@@ -1,5 +1,5 @@
 #' @keywords internal
-approxSE <- function(theta, l, t, z, m) {
+hessian <- function(theta, l, t, z, m) {
 
   # MLE parameter estimates from EM algorithm
   D <- theta$D
@@ -62,20 +62,36 @@ approxSE <- function(theta, l, t, z, m) {
 
   #-----------------------------------------------------
 
-  # Dinv
+  # D
 
-  sDinv <- lapply(EbbT, function(b2) {
-    0.5 * (2*D - diag(D)) - 0.5 * (2 * b2 - diag(b2))
+  Dinv <- solve(D)
+
+  D.inds <- which(lower.tri(D, diag = TRUE), arr.ind = TRUE)
+  dimnames(D.inds) <- NULL
+
+  delta.D <- lapply(1:nrow(D.inds), function(x, ind) {
+    mat <- matrix(0, nrow = nrow(D), ncol = ncol(D))
+    ii <- ind[x, , drop = FALSE]
+    mat[ii[1], ii[2]] <- mat[ii[2], ii[1]] <- 1
+    mat
+  }, ind = D.inds[, 2:1, drop = FALSE])
+
+  term1 <- sapply(delta.D, function(d) {
+    -0.5 * sum(diag(Dinv %*% d))
   })
-  sDinv <- sapply(sDinv, function(d) {
-    d[lower.tri(d, diag = TRUE)]
-  })
-  if (sum(r) == 1) {
-    sDinv <- matrix(sDinv, nrow = 1)
+
+  sDi <- function(i) {
+    mapply(function(b, pb) {
+      out <- 0.5 * crossprod(b, b * pb) %*% Dinv %*% delta.D[[i]] / nrow(b)
+      term1[i] + sum(diag(out))
+    },
+    b = bi.y, pb = pb.yt,
+    SIMPLIFY = TRUE)
   }
 
-  ltri <- lower.tri(D, diag = TRUE)
-  rownames(sDinv) <- paste0("Dinv_", row = row(D)[ltri], ",", col = col(D)[ltri])
+  sD <- sapply(1:nrow(D.inds), sDi)
+  sD <- t(sD)
+  rownames(sD) <- paste0("D", D.inds[, 1], ",", D.inds[, 2])
 
   #-----------------------------------------------------
 
@@ -110,7 +126,7 @@ approxSE <- function(theta, l, t, z, m) {
 
   #-----------------------------------------------------
 
-  si <- rbind(sDinv, sbeta, ssigma2, sgamma)
+  si <- rbind(sD, sbeta, ssigma2, sgamma)
 
   H <- matrix(0, nrow(si), nrow(si))
   for (j in 1:ncol(si)) {

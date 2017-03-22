@@ -312,7 +312,7 @@ stepEM <- function(theta, l, t, z, nMC, verbose, gammaOpt, pfs) {
     m$pb.yt <- pb.yt
     m$haz.hat <- haz.hat
 
-    out$Hessian <- approxSE(theta, l, t, z, m)
+    out$Hessian <- hessian(theta, l, t, z, m)
 
   }
 

@@ -22,7 +22,13 @@
 
 * `plot()` and `plotConvergence()` now plot the log-likelihood trace.
 
+* `vcov()` now calculates the variance-covariance matrix rather than inside `mjoint()` and then extracting it. It also utilises the QR-decomposition inverse function and the Moore-Penrose matrix inverse, as in some cases the matrix was nearly singular.
+
+* `hessian()` (and therefore `vcov()`) now calculate the contribution for the random effect variance terms rather than the random effect precision (1 divided by the variance) terms. The correct contribution to the score for off-diagonal terms is now also impleted.
+
 ## Bug patches
+
+* `vcov()` now returns the variance-covariance matrix as intended. Previously it was only returning the profile empirical information matrix.
 
 * Patched a major bug in `gammaUpdate()` where ties in failure times were not being properly handled. The code for `gammaUpdate_approx()` always worked fine, as it was based only on the score vector. This bug manifested when `bootSE()` was called due to the resampling with replacement yielding datasets with many more ties than in the original dataset used to fit the model. To fix it, the information matrix required scaling at each failure time by the number of failures in the data. The formula for the information matrix in the Technical Details vignette has also been updated.
 
@@ -33,6 +39,8 @@
 * Patched a minor bug with bootstrapping univariate joint models without passing the MLEs as the initial values to the `mjoint()` call.
 
 ## Housekeeping
+
+* Renamed `approxSE()` function to `hessian()`.
 
 * Renamed `control` argument `earlyPhase` to `burnin`.
 
