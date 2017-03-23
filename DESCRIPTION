@@ -13,7 +13,10 @@ Authors@R: c(
     person("Ruwanthi", "Kolamunnage-Dona", email = "kdrr@liverpool.ac.uk", 
         role = "aut"),
     person("Paula", "Williamson", email = "p.r.williamson@liverpool.ac.uk",
-        role = "ctb")
+        role = "ctb"),
+    person("Dimitris", "Rizopoulos", email = "d.rizopoulos@erasmusmc.nl",
+        role = c("ctb", "dtc"),
+        comment = "R/renal.R, R/hessian.R, R/vcov.R")
     )
 Maintainer: Graeme L. Hickey <graeme.hickey@liverpool.ac.uk>
 Date: 2016-12-23
