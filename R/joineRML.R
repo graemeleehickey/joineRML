@@ -10,7 +10,7 @@
 #'   Carlo Expectation-Maximization (MCEM) algorithm, which closely follows the
 #'   methodology presented by Lin et al. (2002).
 #'
-#' @useDynLib joineRML
+#' @useDynLib joineRML, .registration = TRUE
 #' @importFrom Rcpp evalCpp
 #'
 #' @references

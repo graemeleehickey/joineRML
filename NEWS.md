@@ -66,6 +66,8 @@
 
 * Added unit tests.
 
+* Registered native C++ routines and disabled symbol search to satisfy CRAN CMD checks.
+
 # joineRML 0.1.1
 
 * Patched sigma.R roxygen documentation to handle sigma S3 method changing from lme4 to stats in R v3.3.0.
