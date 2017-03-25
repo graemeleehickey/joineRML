@@ -2,7 +2,7 @@ Package: joineRML
 Type: Package
 Title: Joint Modelling of Multivariate Longitudinal Data and Time-to-Event
     Outcomes
-Version: 0.1.1.9000
+Version: 0.2.0
 Authors@R: c(
     person("Graeme L.", "Hickey", email = "graeme.hickey@liverpool.ac.uk", 
         role = c("cre", "aut")),
@@ -19,7 +19,7 @@ Authors@R: c(
         comment = "R/renal.R, R/hessian.R, R/vcov.R")
     )
 Maintainer: Graeme L. Hickey <graeme.hickey@liverpool.ac.uk>
-Date: 2016-12-23
+Date: 2017-03-25
 Description: Fits the joint model proposed by Henderson and colleagues (2000) 
     <doi:10.1093/biostatistics/1.4.465>, but extended to the case of multiple 
     continuous longitudinal measures. The time-to-event data is modelled using a 
