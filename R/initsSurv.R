@@ -16,12 +16,12 @@ initsSurv_balanced <- function(data, lfit, survdat2, formSurv, id, timeVar, K, q
     stop <- c(u[, timeVar[k]][-1], T)
     status <- rep(0, length(id.col))
     status[length(id.col)] <- survdat2[survdat2$id == id.col[1], "delta"]
-    X <- survdat2[survdat2$id == id.col[1], 2:(q+1), drop = FALSE]
+    X <- survdat2[survdat2$id == id.col[1], 2:(q + 1), drop = FALSE]
     X <- X[rep(1, length(id.col)), ]
     if (q == 1) {
       X <- matrix(X, ncol = 1)
     }
-    colnames(X) <- all.vars(formSurv)[-(1:2)]
+    colnames(X) <- names(survdat2)[2:(q + 1)]
     if (q > 0) {
       data.frame("id" = id.col, start, stop, status, X)
     } else {
@@ -32,7 +32,7 @@ initsSurv_balanced <- function(data, lfit, survdat2, formSurv, id, timeVar, K, q
   dataAG <- cbind(dataAG, W)
 
   formK <- paste0("gamma_", 1:K, collapse = " + ")
-  formX <- paste0(all.vars(formSurv)[-(1:2)], collapse = " + ")
+  formX <- paste0(names(survdat2)[2:(q + 1)], collapse = " + ")
   formS <- paste("Surv(start, stop, status) ~ ", formX, "+", formK)
 
   fitAG <- survival::coxph(as.formula(formS), data = dataAG)

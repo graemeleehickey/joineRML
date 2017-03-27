@@ -515,16 +515,16 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
 
   survdat2 <- data.frame(survdat[, id], sfit$x, sfit$y[, 1], sfit$y[, 2])
   if (q > 0) {
-    survdat2[2:(q+1)] <- scale(survdat2[2:(q+1)], scale = FALSE)
+    survdat2[2:(q + 1)] <- scale(survdat2[2:(q + 1)], scale = FALSE)
   }
-  colnames(survdat2)[c(1, (q+2):(q+3))] <- c("id", "T", "delta")
+  colnames(survdat2)[c(1, (q + 2):(q + 3))] <- c("id", "T", "delta")
   survdat2$tj.ind <- sapply(1:n, function(i) {
     sum(tj <= survdat2$T[i])
   })
   survdat2.list <- by(survdat2, survdat2$id, list)
   if (q > 0) {
     V <- by(survdat2, survdat2$id, function(u) {
-      unlist(u[, 2:(q+1)])
+      unlist(u[, 2:(q + 1)])
     })
   } else {
     V <- by(survdat2, survdat2$id, function(u) {
@@ -572,7 +572,9 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
 
   for(k in 1:K) {
 
-    if (ncol(Zdat.fail) == 2) names(Zdat.fail)[2] <- timeVar[k]
+    if (ncol(Zdat.fail) == 2) {
+      names(Zdat.fail)[2] <- timeVar[k]
+    }
 
     # Z design matrix
     ffk <- nlme::splitFormula(formLongRandom[[k]], "|")[[1]]

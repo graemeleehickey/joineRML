@@ -9,10 +9,10 @@ test_that("univariate random-intercept model works + no formula labels", {
   fit <- mjoint(
     formLongFixed = list(log.b ~ year),
     formLongRandom = list(~ 1 | id),
-    formSurv = Surv(years, status2) ~ age,
+    formSurv = Surv(years, status2) ~ age + edema,
     data = pbc2,
     timeVar = "year",
-    control = list(convCrit = "abs", tol0 = 0.05, burnin = 100),
+    control = list(convCrit = "abs", tol0 = 0.05, burnin = 20),
     verbose = FALSE)
   # tests
   expect_is(fit, "mjoint")
@@ -22,6 +22,7 @@ test_that("univariate random-intercept model works + no formula labels", {
   expect_output(str(coef(fit)), "List of 5")
   expect_output(print(fit))
   expect_output(print(summary(fit)))
+  expect_equal(length(fixef(fit, process = "Event")), 4)
 })
 
 test_that("multivariate model works", {
