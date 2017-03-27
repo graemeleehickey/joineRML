@@ -1,5 +1,7 @@
 # joineRML 0.2.0.9000 (devel version)
 
+* Fixed a bug that prevented factors with >2 levels being included in the time-to-event submodel.
+
 # joineRML 0.2.0
 
 ## New features
