@@ -1,4 +1,4 @@
-# joineRML 0.1.1.9000 (devel version).
+# joineRML 0.2.0
 
 ## New features
 

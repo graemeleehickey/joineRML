@@ -16,7 +16,7 @@ Authors@R: c(
         role = "ctb"),
     person("Dimitris", "Rizopoulos", email = "d.rizopoulos@erasmusmc.nl",
         role = c("ctb", "dtc"),
-        comment = "R/renal.R, R/hessian.R, R/vcov.R")
+        comment = "data/renal.rda, R/hessian.R, R/vcov.R")
     )
 Maintainer: Graeme L. Hickey <graeme.hickey@liverpool.ac.uk>
 Date: 2017-03-25
