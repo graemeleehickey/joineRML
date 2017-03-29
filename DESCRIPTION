@@ -19,7 +19,7 @@ Authors@R: c(
         comment = "data/renal.rda, R/hessian.R, R/vcov.R")
     )
 Maintainer: Graeme L. Hickey <graeme.hickey@liverpool.ac.uk>
-Date: 2017-03-25
+Date: 2017-03-29
 Description: Fits the joint model proposed by Henderson and colleagues (2000) 
     <doi:10.1093/biostatistics/1.4.465>, but extended to the case of multiple 
     continuous longitudinal measures. The time-to-event data is modelled using a 
@@ -34,7 +34,7 @@ URL: https://github.com/graemeleehickey/joineRML/
 BugReports: https://github.com/graemeleehickey/joineRML/issues
 LazyData: true
 Depends:
-    R (>= 3.1.1),
+    R (>= 3.3.0),
     nlme,
     survival
 Imports:
