@@ -1,6 +1,14 @@
 # joineRML 0.2.0.9000 (devel version)
 
+## Bug patches
+
 * Fixed a bug that prevented factors with >2 levels being included in the time-to-event submodel.
+
+## Housekeeping
+
+* `joineRML` version 0.2.1 will depend on R version >=3.3.0 to remedy issue with `sigma.mjoint()` S3 issue.
+
+* Added a new badge to the README.
 
 # joineRML 0.2.0
 
