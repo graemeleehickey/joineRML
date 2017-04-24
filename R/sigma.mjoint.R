@@ -14,14 +14,9 @@
 #' Pinheiro JC, Bates DM. \emph{Mixed-Effects Models in S and S-PLUS.} New York:
 #' Springer Verlag; 2000.
 #'
-#' @return a number (standard deviation) if \eqn{K=1} (univariate model), or a
+#' @return a number (standard deviation) if \eqn{K = 1} (univariate model), or a
 #'   vector if \eqn{K>1} (multivariate model).
-#' @rawNamespace
-#' if (getRversion() >= '3.3.0') {
-#'     importFrom(stats,sigma)
-#' } else {
-#'     importFrom(lme4,sigma)
-#' }
+#' @importFrom stats sigma
 #' @export
 sigma.mjoint <- function(object, ...) {
 

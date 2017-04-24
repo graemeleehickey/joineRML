@@ -1,8 +1,10 @@
-# joineRML 0.2.0.9000 (devel version)
+# joineRML 0.2.1
 
 ## Bug patches
 
 * Fixed a bug that prevented factors with >2 levels being included in the time-to-event submodel.
+
+* Fixed package registration, which strangely broke on R 3.4.0 for OSX platform.
 
 ## Housekeeping
 

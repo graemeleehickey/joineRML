@@ -13,7 +13,7 @@ of time-to-event and multivariate longitudinal data.}
 \item{...}{additional arguments; currently none are used.}
 }
 \value{
-a number (standard deviation) if \eqn{K=1} (univariate model), or a
+a number (standard deviation) if \eqn{K = 1} (univariate model), or a
   vector if \eqn{K>1} (multivariate model).
 }
 \description{

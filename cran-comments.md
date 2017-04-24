@@ -1,8 +1,8 @@
 ## Test environments
-* local OS X install, R 3.3.3
-* ubuntu 12.04 (on travis-ci), R 3.3.2 (+ devel, oldrel)
-* windows (on appveyor)
-* win-builder (devel, release)
+* local OS X install, R 3.4.0
+* ubuntu (via travis-ci)
+* windows (via appveyor)
+* win-builder (release)
 * tested on several R-hub platforms
 
 ## R CMD check results
