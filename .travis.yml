@@ -7,17 +7,17 @@ sudo: false
 #before_install:
 #  - tlmgr install amsmath amsfonts setspace enumitem hyperref biblatex
 # disable_homebrew: true
+#r_build_args: '--no-build-vignettes'
+#r_check_args: '--as-cran --ignore-vignettes --no-examples'
 
 os:
   - linux
-  - osx
+#  - osx
 
 r:
+  - oldrel
   - release
-  - devel  
-
-r_build_args: '--no-build-vignettes'
-r_check_args: '--as-cran --ignore-vignettes --no-examples'
+  - devel
  
 cran: http://cran.rstudio.com
 repos:
