@@ -1,3 +1,7 @@
+# joineRML 0.2.1.9000 (devel)
+
+* Placeholder for next version
+
 # joineRML 0.2.1
 
 ## Bug patches
