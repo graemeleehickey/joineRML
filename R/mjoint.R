@@ -52,8 +52,8 @@
 #' @param control a list of control values with components: \describe{
 #'
 #'   \item{\code{nMC}}{integer: the initial number of Monte Carlo samples to be
-#'   used for integration in the burn-in phase of the MCEM. Default is \code{nMC
-#'   =}max(100, 50\emph{K}).}
+#'   used for integration in the burn-in phase of the MCEM. Default is
+#'   \code{nMC=}max(100, 50\emph{K}).}
 #'
 #'   \item{\code{nMCscale}}{integer: the scale factor for the increase in Monte
 #'   Carlo size when Monte Carlo has not reduced from the previous iteration.
@@ -195,8 +195,9 @@
 #'   separate function is available: \code{bootSE}, which takes the fitted joint
 #'   model as its main argument. Given a fitted joint model (of class
 #'   \code{mjoint}) and a bootstrap fit object (of class \code{bootSE}), the SEs
-#'   reported in the model can be updated by running \code{summary(fit_obj,
-#'   boot_obj)}. For details, consult the \code{\link{bootSE}} documentation.
+#'   reported in the model can be updated by running
+#'   \code{summary(fit_obj,boot_obj)}. For details, consult the
+#'   \code{\link{bootSE}} documentation.
 #'
 #' @author Graeme L. Hickey (\email{graeme.hickey@@liverpool.ac.uk})
 #' @keywords multivariate survival methods
