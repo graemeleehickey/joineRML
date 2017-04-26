@@ -2,16 +2,5 @@ base
 Matrix
 nlme
 survival
-joineRML
-MASS
-boot
-lattice
-statmod
-gdata
 joineR
-devtools
-dplyr
-ggplot2
-gridExtra
-reshape2
-R.rsp
+joineRML
