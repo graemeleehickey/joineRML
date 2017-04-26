@@ -2,9 +2,11 @@
 
 language: r
 cache: packages
+sudo: false
 
-before_install:
-  - tlmgr install amsmath amsfonts setspace enumitem hyperref biblatex
+#before_install:
+#  - tlmgr install amsmath amsfonts setspace enumitem hyperref biblatex
+# disable_homebrew: true
 
 os:
   - linux
@@ -12,18 +14,17 @@ os:
 
 r:
   - release
-  - devel
-  
+  - devel  
+
+r_build_args: '--no-build-vignettes'
+r_check_args: '--as-cran --ignore-vignettes --no-examples'
+ 
 cran: http://cran.rstudio.com
 repos:
   CRAN: http://cran.rstudio.com
   
 r_packages:
   - covr
-
-sudo: false
-
-# disable_homebrew: true
 
 after_success:
   - Rscript -e 'covr::codecov()'
