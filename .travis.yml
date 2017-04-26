@@ -1,11 +1,11 @@
 # R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
 
-language: R
+language: r
 cache: packages
 
 before_install:
-  - tlmgr install latex-xcolor texlive-generic-recommended texlive-fonts-recommended texlive-fonts-extra texlive-extra-utils texlive-latex-recommended texlive-latex-extra
-  
+  - tlmgr install graphicx amsmath amssymb amsfonts setspace enumitem hyperref biber
+
 os:
   - linux
   - osx
