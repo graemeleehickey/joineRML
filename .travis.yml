@@ -1,16 +1,27 @@
 # R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
 
 language: R
+
+os:
+  - linux
+  - osx
+
 r:
   - oldrel
   - release
   - devel
+  
 cran: http://cran.rstudio.com
 repos:
   CRAN: http://cran.rstudio.com
+  
 r_packages:
   - covr
+
 sudo: false
+
+disable_homebrew: true
+
 cache: packages
 
 after_success:
