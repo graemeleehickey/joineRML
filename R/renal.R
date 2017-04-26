@@ -43,8 +43,8 @@
 #'   \item{\code{fuyears}}{maximum follow up time, with transplant date as the
 #'   time origin (years).}
 #'
-#'   \item{\code{failure}}{censoring indicator (\code{1 = }graft failure and
-#'   \code{0 = }censored).}
+#'   \item{\code{failure}}{censoring indicator (\code{1=}graft failure and
+#'   \code{0=}censored).}
 #'
 #'   }
 #'
@@ -64,7 +64,7 @@
 #'   volume of red blood cells to the total volume of blood. Present in the
 #'   \code{haem} data.}
 #'
-#'   \item{\code{gfr}: measured as ml/min/1.73m\eqn{^2}. Present in the
+#'   \item{\code{gfr}: measured as ml/min/1.73\eqn{m^2}. Present in the
 #'   \code{gfr} data.}
 #'
 #'   }}
@@ -73,7 +73,7 @@
 #' @keywords datasets
 #' @seealso \code{\link{pbc2}}, \code{\link{heart.valve}},
 #'   \code{\link{epileptic.qol}}.
-#' @source Dr Dimitris Rizopoulos (d.rizopoulos@erasmusmc.nl).
+#' @source Dr Dimitris Rizopoulos (\email{d.rizopoulos@@erasmusmc.nl}).
 #' @references
 #'
 #' Rizopoulos D, Ghosh, P. A Bayesian semiparametric multivariate joint model

@@ -4,7 +4,7 @@
 #'
 #' @param x an object inheriting from class \code{mjoint} for a joint model of
 #'   time-to-event and multivariate longitudinal data.
-#' @param type currently the only option is \code{type = 'convergence'} for
+#' @param type currently the only option is \code{type='convergence'} for
 #'   graphical examination of convergence over MCEM iteration.
 #' @param ... other parameters passed to \code{\link{plotConvergence}}.
 #'

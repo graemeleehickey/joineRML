@@ -20,8 +20,8 @@
 #' @return an object inheriting from class \code{ggplot}, which displays a
 #'   trellis plot with a separate panel for each effect, showing a dotplot (with
 #'   optional error bars indicating approximate 95\% prediction intervals if the
-#'   argument \code{postVar = TRUE} is set in the call to \code{\link{ranef}})
-#'   for each subject (by row).
+#'   argument \code{postVar=TRUE} is set in the call to \code{\link{ranef}}) for
+#'   each subject (by row).
 #' @import ggplot2
 #' @importFrom utils stack
 #' @export

@@ -11,7 +11,7 @@ sampleData(object, size = NULL, replace = TRUE)
 of time-to-event and multivariate longitudinal data.}
 
 \item{size}{number of subjects to include in the sampled subset. If
-\code{size = NULL} (default), then size is set equal to the number of
+\code{size=NULL} (default), then size is set equal to the number of
 subjects used to fit the \code{mjoint} model.}
 
 \item{replace}{use replacement when sampling subjects? Default is

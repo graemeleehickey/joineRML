@@ -15,24 +15,24 @@ simData(n = 100, ntms = 5, beta = rbind(c(1, 1, 1, 1), c(1, 1, 1, 1)),
 \item{ntms}{the maximum number of (discrete) time points to simulate repeated
 longitudinal measurements at.}
 
-\item{beta}{a matrix of \code{dim = c(K,4)} specifying the coefficients of
-the fixed effects. The order in each row is intercept, time, a continuous
+\item{beta}{a matrix of \code{dim=c(K,4)} specifying the coefficients of the
+fixed effects. The order in each row is intercept, time, a continuous
 covariate, and a binary covariate.}
 
-\item{gamma.x}{a vector of \code{length = 2} specifying the coefficients for
+\item{gamma.x}{a vector of \code{length=2} specifying the coefficients for
 the time-to-event baseline covariates, in the order of a continuous
 covariate and a binary covariate.}
 
-\item{gamma.y}{a vector of \code{length = K} specifying the latent
-association parameters for each longitudinal outcome.}
+\item{gamma.y}{a vector of \code{length=K} specifying the latent association
+parameters for each longitudinal outcome.}
 
-\item{sigma2}{a vector of \code{length = K} specifying the residual standard
+\item{sigma2}{a vector of \code{length=K} specifying the residual standard
 errors.}
 
 \item{D}{a positive-definite matrix specifying the variance-covariance
-matrix. If \code{model = 'int'}, the matrix has dimension \code{dim = c(K,
-K)}, else if \code{model = 'intslope'}, the matrix has dimension \code{dim
-= c(2K, 2K)}. If \code{D = NULL} (default), an identity matrix is assumed.}
+matrix. If \code{model='int'}, the matrix has dimension \code{dim=c(K, K)},
+else if \code{model='intslope'}, the matrix has dimension \code{dim =c(2K,
+2K)}. If \code{D=NULL} (default), an identity matrix is assumed.}
 
 \item{model}{follows the model definition in the \code{\link[joineR]{joint}}
 function. See \strong{Details} for choices.}
@@ -42,13 +42,13 @@ function. See \strong{Details} for choices.}
 \item{censoring}{logical: if \code{TRUE}, includes an independent censoring
 time.}
 
-\item{censlam}{a scale (\eqn{>0}) parameter for an exponential distribution
-used to simulate random censoring times for when \code{censoring = TRUE}.}
+\item{censlam}{a scale (\eqn{> 0}) parameter for an exponential distribution
+used to simulate random censoring times for when \code{censoring=TRUE}.}
 
 \item{truncation}{logical: if \code{TRUE}, adds a truncation time for a
 maximum event time.}
 
-\item{trunctime}{a truncation time for use when \code{truncation = TRUE}.}
+\item{trunctime}{a truncation time for use when \code{truncation=TRUE}.}
 }
 \value{
 A list of 2 \code{data.frame}s: one recording the requisite
@@ -117,7 +117,7 @@ measurements and event time data. \emph{Biostatistics.} 2000; \strong{1(4)}:
 }
 \author{
 Pete Philipson (\email{pete.philipson@northumbria.ac.uk}) and Graeme
-  Hickey (\email{graeme.hickey@liverpool.ac.uk})
+  L. Hickey (\email{graeme.hickey@liverpool.ac.uk})
 }
 \keyword{datagen}
 \keyword{multivariate}

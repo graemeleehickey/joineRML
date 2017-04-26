@@ -18,8 +18,8 @@ distribution is also returned.}
 \value{
 A \code{data.frame} (also of class \code{ranef.mjoint}) with rows
   denoting the individuals and columns the random effects (e.g., intercepts,
-  slopes, etc.). If \code{postVar = TRUE}, the numeric matrix has an extra
-  attribute ``postVar".
+  slopes, etc.). If \code{postVar=TRUE}, the numeric matrix has an extra
+  attribute, \code{postVar}.
 }
 \description{
 Extract random effects estimates from an \code{mjoint} object.

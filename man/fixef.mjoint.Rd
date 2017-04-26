@@ -10,9 +10,9 @@
 \item{object}{an object inheriting from class \code{mjoint} for a joint model
 of time-to-event and multivariate longitudinal data.}
 
-\item{process}{character string: if \code{process = 'Longitudinal'} the fixed
+\item{process}{character string: if \code{process='Longitudinal'} the fixed
 effects coefficients from the (multivariate) longitudinal sub-model are
-returned. Else, if \code{process = 'Event'}, the coefficients from the
+returned. Else, if \code{process='Event'}, the coefficients from the
 time-to-event sub-model are returned.}
 
 \item{...}{additional arguments; currently none are used.}

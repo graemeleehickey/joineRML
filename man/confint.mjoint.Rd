@@ -13,15 +13,15 @@ of time-to-event and multivariate longitudinal data.}
 
 \item{parm}{a character string specifying which sub-model parameter
 confidence intervals should be returned for. Can be specified as
-\code{parm = 'Longitudinal'} (multivariate longitudinal sub-model),
-\code{parm = 'Event'} (time-to-event sub-model), or \code{parm = 'both'}
+\code{parm='Longitudinal'} (multivariate longitudinal sub-model),
+\code{parm='Event'} (time-to-event sub-model), or \code{parm='both'}
 (default).}
 
-\item{level}{the confidence level required. Default is \code{level = 0.95} for
+\item{level}{the confidence level required. Default is \code{level=0.95} for
 a 95\% confidence interval.}
 
 \item{bootSE}{an object inheriting from class \code{bootSE} for the
-corresponding model. If \code{bootSE = NULL}, the function will attempt to
+corresponding model. If \code{bootSE=NULL}, the function will attempt to
 utilize approximate standard error estimates (if available) calculated from
 the empirical information matrix.}
 

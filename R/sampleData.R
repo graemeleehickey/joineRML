@@ -5,7 +5,7 @@
 #'
 #' @inheritParams confint.mjoint
 #' @param size number of subjects to include in the sampled subset. If
-#'   \code{size = NULL} (default), then size is set equal to the number of
+#'   \code{size=NULL} (default), then size is set equal to the number of
 #'   subjects used to fit the \code{mjoint} model.
 #' @param replace use replacement when sampling subjects? Default is
 #'   \code{TRUE}. If replacement is used, then the subjects are re-labelled from

@@ -15,8 +15,7 @@
 #'
 #'   \item{\code{num}}{number for patient identification.}
 #'
-#'   \item{\code{sex}}{gender of patient (\code{0 = }Male and \code{1 =
-#'   }Female).}
+#'   \item{\code{sex}}{gender of patient (\code{0=}Male and \code{1=}Female).}
 #'
 #'   \item{\code{age}}{age of patient at day of surgery (years).}
 #'
@@ -26,8 +25,8 @@
 #'   \item{\code{fuyrs}}{maximum follow up time, with surgery date as the time
 #'   origin (years).}
 #'
-#'   \item{\code{status}}{censoring indicator (\code{1 = }died and \code{0 =
-#'   }lost at follow up).}
+#'   \item{\code{status}}{censoring indicator (\code{1=}died and \code{0=}lost
+#'   at follow up).}
 #'
 #'   \item{\code{grad}}{valve gradient at follow-up visit.}
 #'
@@ -45,7 +44,7 @@
 #'   \item{\code{lvh}}{preoperative left ventricular hypertrophy.}
 #'
 #'   \item{\code{prenyha}}{preoperative New York Heart Association (NYHA)
-#'   classification (\code{1 = }I/II and \code{3 = }III/IV).}
+#'   classification (\code{1=}I/II and \code{3=}III/IV).}
 #'
 #'   \item{\code{redo}}{previous cardiac surgery.}
 #'
@@ -60,19 +59,19 @@
 #'   \item{\code{acei}}{preoperative use of ace inhibitor.}
 #'
 #'   \item{\code{lv}}{preoperative left ventricular ejection fraction (LVEF)
-#'   (\code{1 = }good, \code{2 = }moderate, and \code{3 = }poor).}
+#'   (\code{1=}good, \code{2=}moderate, and \code{3=}poor).}
 #'
-#'   \item{\code{emergenc}}{operative urgency (\code{0 = }elective, \code{1 =
-#'   }urgent, and \code{3 = }emergency).}
+#'   \item{\code{emergenc}}{operative urgency (\code{0=}elective, \code{1 =
+#'   }urgent, and \code{3=}emergency).}
 #'
-#'   \item{\code{hc}}{preoperative high cholesterol (\code{0 = }absent, \code{1
-#'   = }present treated, and \code{2 = }present untreated).}
+#'   \item{\code{hc}}{preoperative high cholesterol (\code{0=}absent, \code{1
+#'   =}present treated, and \code{2=}present untreated).}
 #'
-#'   \item{\code{sten.reg.mix}}{aortic valve haemodynamics (\code{1 = }stenosis,
-#'   \code{2 = }regurgitation, \code{3 = }mixed).}
+#'   \item{\code{sten.reg.mix}}{aortic valve haemodynamics (\code{1=}stenosis,
+#'   \code{2=}regurgitation, \code{3=}mixed).}
 #'
-#'   \item{\code{hs}}{implanted aortic prosthesis type (\code{1 = }homograft
-#'   and \code{0 = }stentless porcine tissue).}
+#'   \item{\code{hs}}{implanted aortic prosthesis type (\code{1=}homograft and
+#'   \code{0=}stentless porcine tissue).}
 #'
 #'   }
 #' @keywords datasets

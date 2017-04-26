@@ -121,8 +121,8 @@ An object returned by the \code{mjoint} function, inheriting
 \section{Post model fit statistics}{
 
 
-  If \code{pfs = TRUE}, indicating that post-fit statistics are to be
-  returned, then the output also includes the following objects. \describe{
+  If \code{pfs=TRUE}, indicating that post-fit statistics are to be returned,
+  then the output also includes the following objects. \describe{
 
   \item{\code{vcov}}{the variance-covariance matrix of model parameters, as
   approximated by the empirical information matrix, is reported. See

@@ -6,30 +6,30 @@
 #' @param n the number of subjects to simulate data for.
 #' @param ntms the maximum number of (discrete) time points to simulate repeated
 #'   longitudinal measurements at.
-#' @param beta a matrix of \code{dim = c(K,4)} specifying the coefficients of
-#'   the fixed effects. The order in each row is intercept, time, a continuous
+#' @param beta a matrix of \code{dim=c(K,4)} specifying the coefficients of the
+#'   fixed effects. The order in each row is intercept, time, a continuous
 #'   covariate, and a binary covariate.
-#' @param gamma.x a vector of \code{length = 2} specifying the coefficients for
+#' @param gamma.x a vector of \code{length=2} specifying the coefficients for
 #'   the time-to-event baseline covariates, in the order of a continuous
 #'   covariate and a binary covariate.
-#' @param gamma.y a vector of \code{length = K} specifying the latent
-#'   association parameters for each longitudinal outcome.
-#' @param sigma2 a vector of \code{length = K} specifying the residual standard
+#' @param gamma.y a vector of \code{length=K} specifying the latent association
+#'   parameters for each longitudinal outcome.
+#' @param sigma2 a vector of \code{length=K} specifying the residual standard
 #'   errors.
 #' @param D a positive-definite matrix specifying the variance-covariance
-#'   matrix. If \code{model = 'int'}, the matrix has dimension \code{dim = c(K,
-#'   K)}, else if \code{model = 'intslope'}, the matrix has dimension \code{dim
-#'   = c(2K, 2K)}. If \code{D = NULL} (default), an identity matrix is assumed.
+#'   matrix. If \code{model='int'}, the matrix has dimension \code{dim=c(K, K)},
+#'   else if \code{model='intslope'}, the matrix has dimension \code{dim =c(2K,
+#'   2K)}. If \code{D=NULL} (default), an identity matrix is assumed.
 #' @param model follows the model definition in the \code{\link[joineR]{joint}}
 #'   function. See \strong{Details} for choices.
 #' @param theta0,theta1 parameters controlling the failure rate. See Details.
 #' @param censoring logical: if \code{TRUE}, includes an independent censoring
 #'   time.
-#' @param censlam a scale (\eqn{>0}) parameter for an exponential distribution
-#'   used to simulate random censoring times for when \code{censoring = TRUE}.
+#' @param censlam a scale (\eqn{> 0}) parameter for an exponential distribution
+#'   used to simulate random censoring times for when \code{censoring=TRUE}.
 #' @param truncation logical: if \code{TRUE}, adds a truncation time for a
 #'   maximum event time.
-#' @param trunctime a truncation time for use when \code{truncation = TRUE}.
+#' @param trunctime a truncation time for use when \code{truncation=TRUE}.
 #'
 #' @details The function \code{simData} simulates data from a joint model,
 #'   similar to that performed in Henderson et al. (2000). It works by first
@@ -64,8 +64,8 @@
 #'
 #'   }
 #'
-#' @author Pete Philipson (\email{pete.philipson@northumbria.ac.uk}) and Graeme
-#'   Hickey (\email{graeme.hickey@liverpool.ac.uk})
+#' @author Pete Philipson (\email{pete.philipson@@northumbria.ac.uk}) and Graeme
+#'   L. Hickey (\email{graeme.hickey@@liverpool.ac.uk})
 #' @keywords datagen multivariate survival
 #'
 #' @references

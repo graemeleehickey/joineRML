@@ -11,7 +11,7 @@
 of time-to-event and multivariate longitudinal data.}
 
 \item{bootSE}{an object inheriting from class \code{bootSE} for the
-corresponding model. If \code{bootSE = NULL}, the function will attempt to
+corresponding model. If \code{bootSE=NULL}, the function will attempt to
 utilize approximate standard error estimates (if available) calculated from
 the empirical information matrix.}
 

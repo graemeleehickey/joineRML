@@ -36,8 +36,8 @@
   \item{\code{fuyears}}{maximum follow up time, with transplant date as the
   time origin (years).}
 
-  \item{\code{failure}}{censoring indicator (\code{1 = }graft failure and
-  \code{0 = }censored).}
+  \item{\code{failure}}{censoring indicator (\code{1=}graft failure and
+  \code{0=}censored).}
 
   }
 
@@ -57,14 +57,14 @@
   volume of red blood cells to the total volume of blood. Present in the
   \code{haem} data.}
 
-  \item{\code{gfr}: measured as ml/min/1.73m\eqn{^2}. Present in the
+  \item{\code{gfr}: measured as ml/min/1.73\eqn{m^2}. Present in the
   \code{gfr} data.}
 
   }}
 
   }}
 \source{
-Dr Dimitris Rizopoulos (d.rizopoulos@erasmusmc.nl).
+Dr Dimitris Rizopoulos (\email{d.rizopoulos@erasmusmc.nl}).
 }
 \usage{
 data(renal)

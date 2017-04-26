@@ -9,12 +9,12 @@
 joineRML is an extension of the joineR package for fitting joint
   models of time-to-event data and multivariate longitudinal data. The model
   fitted in joineRML is an extension of the Wulfsohn and Tsiatis (1997) and
-  Henderson et al. (2000) models, which is comprised on \eqn{(K +
-  1)}-sub-models: a Cox proportional hazards regression model (Cox, 1972) and
-  a \eqn{K}-variate linear mixed-effects model - a direct extension of the
-  Laird and Ware (1982) regression model. The model is fitted using a Monte
-  Carlo Expectation-Maximization (MCEM) algorithm, which closely follows the
-  methodology presented by Lin et al. (2002).
+  Henderson et al. (2000) models, which is comprised on
+  \eqn{(K+1)}-sub-models: a Cox proportional hazards regression model (Cox,
+  1972) and a \eqn{K}-variate linear mixed-effects model - a direct extension
+  of the Laird and Ware (1982) regression model. The model is fitted using a
+  Monte Carlo Expectation-Maximization (MCEM) algorithm, which closely
+  follows the methodology presented by Lin et al. (2002).
 }
 \references{
 Wulfsohn MS, Tsiatis AA. A joint model for survival and longitudinal data

@@ -19,8 +19,8 @@
 #' Pinheiro JC, Bates DM. \emph{Mixed-Effects Models in S and S-PLUS.} New York:
 #' Springer Verlag; 2000.
 #'
-#' @return A \code{list} of length \eqn{K} with each element a vector of
-#'   residuals for the \eqn{k}-th longitudinal outcome.
+#' @return A \code{list} of length \emph{K} with each element a vector of
+#'   residuals for the \emph{k}-th longitudinal outcome.
 #' @export
 residuals.mjoint <- function(object, level = 0, ...) {
 
