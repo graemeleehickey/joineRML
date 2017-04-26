@@ -1,11 +1,10 @@
 # R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
 
 language: R
-sudo: required
+cache: packages
 
 before_install:
-  - sudo apt-get update -qq
-  - sudo apt-get install latex-xcolor texlive-generic-recommended texlive-fonts-recommended texlive-fonts-extra texlive-extra-utils texlive-latex-recommended texlive-latex-extra
+  - tlmgr install latex-xcolor texlive-generic-recommended texlive-fonts-recommended texlive-fonts-extra texlive-extra-utils texlive-latex-recommended texlive-latex-extra
   
 os:
   - linux
@@ -24,9 +23,7 @@ r_packages:
 
 sudo: false
 
-disable_homebrew: true
-
-cache: packages
+# disable_homebrew: true
 
 after_success:
   - Rscript -e 'covr::codecov()'
