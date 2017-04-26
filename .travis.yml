@@ -4,7 +4,7 @@ language: r
 cache: packages
 
 before_install:
-  - tlmgr install graphicx amsmath amssymb amsfonts setspace enumitem hyperref biblatex
+  - tlmgr install graphicx amsmath amsfonts setspace enumitem hyperref biblatex
 
 os:
   - linux
