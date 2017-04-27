@@ -38,8 +38,8 @@
 #'
 #'   \item{\code{edema}}{a factor with levels \code{No edema} (i.e. no edema and
 #'   no diuretic therapy for edema), \code{edema no diuretics} (i.e. edema
-#'   present without diuretics, or edema resolved by diuretics), and \code{edema
-#'   despite diuretics} (i.e. edema despite diuretic therapy).}
+#'   present without diuretics, or edema resolved by diuretics), and
+#'   \code{edema despite diuretics} (i.e. edema despite diuretic therapy).}
 #'
 #'   \item{\code{serBilir}}{serum bilirubin in mg/dl.}
 #'

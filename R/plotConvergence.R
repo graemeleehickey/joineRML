@@ -7,12 +7,12 @@
 #' @inheritParams confint.mjoint
 #' @param params a string indicating what parameters are to be shown. Options
 #'   are \code{params='gamma'} for the time-to-event sub-model covariate
-#'   coefficients, including the latent association parameters; \code{params =
-#'   'beta'} for the longitudinal sub-model fixed effects coefficients;
-#'   \code{params='sigma2'} for the residual error variances from the
-#'   longitudinal sub-model; \code{params='D'} for the lower triangular matrix
-#'   of the variance-covariance matrix of random effects; \code{params =
-#'   'loglik'} for the log-likelihood.
+#'   coefficients, including the latent association parameters;
+#'   \code{params='beta'} for the longitudinal sub-model fixed effects
+#'   coefficients; \code{params='sigma2'} for the residual error variances from
+#'   the longitudinal sub-model; \code{params='D'} for the lower triangular
+#'   matrix of the variance-covariance matrix of random effects;
+#'   \code{params='loglik'} for the log-likelihood.
 #' @param discard logical; if \code{TRUE} then the 'burn-in' phase iterations of
 #'   the MCEM algorithm are discarded. Default is \code{discard=FALSE}.
 #'
