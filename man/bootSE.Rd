@@ -11,7 +11,7 @@ bootSE(object, nboot = 100, ci = 0.95, use.mle = TRUE, verbose = FALSE,
 \item{object}{an object inheriting from class \code{mjoint} for a joint model
 of time-to-event and multivariate longitudinal data.}
 
-\item{nboot}{the number of bootstrap samples. Default is \code{nboot = 100}.}
+\item{nboot}{the number of bootstrap samples. Default is \code{nboot=100}.}
 
 \item{ci}{the confidence interval to be estimated using the
 percentile-method. Default is \code{ci=0.95} for a 95\% confidence

@@ -45,12 +45,12 @@ initsSurv_balanced <- function(data, lfit, survdat2, formSurv, id, timeVar, K, q
 }
 
 
-#' Internal function for generating initial parameters for the survival
-#' sub-model when the data are *unbalanced*, i.e. longitudinal outcomes can be
-#' measured at different times and frequencies within a patient
-#'
 #' @keywords internal
 initsSurv_unbalanced <- function(sfit, K, q) {
+
+  # Internal function for generating initial parameters for the survival
+  # sub-model when the data are *unbalanced*, i.e. longitudinal outcomes can be
+  # measured at different times and frequencies within a patient
 
   # hazard
   if (q > 0) {
@@ -76,13 +76,13 @@ initsSurv_unbalanced <- function(sfit, K, q) {
 }
 
 
-#' Internal function for generating initial parameters for the survival
-#' sub-model when the data are *unbalanced*, i.e. longitudinal outcomes can be
-#' measured at different times and frequencies within a patient
-#'
 #' @keywords internal
 initsSurv <- function(data, lfit, sfit, survdat2, formSurv, id, timeVar, K, q,
                       balanced, inits) {
+
+  # Internal function for generating initial parameters for the survival
+  # sub-model when the data are *unbalanced*, i.e. longitudinal outcomes can be
+  # measured at different times and frequencies within a patient
 
   if (balanced & !("gamma" %in% names(inits))) {
     inits.surv <- initsSurv_balanced(

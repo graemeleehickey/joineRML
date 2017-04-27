@@ -20,8 +20,8 @@
 #' Pinheiro JC, Bates DM. \emph{Mixed-Effects Models in S and S-PLUS.} New York:
 #' Springer Verlag; 2000.
 #'
-#' @return A \code{list} of length \eqn{K} with each element a vector of
-#'   fitted values for the \eqn{k}-th longitudinal outcome.
+#' @return A \code{list} of length \emph{K} with each element a vector of
+#'   fitted values for the \emph{k}-th longitudinal outcome.
 #' @export
 fitted.mjoint <- function(object, level = 0, ...) {
 

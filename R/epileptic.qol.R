@@ -71,5 +71,5 @@
 #'
 #' Abetz L, Jacoby A, Baker GA, et al. Patient-based assessments of quality of
 #' life in newly diagnosed epilepsy patients: validation of the NEWQOL.
-#' \emph{Epilepsia}. 2000; \strong{41:} 1119-1128.
+#' \emph{Epilepsia}. 2000; \strong{41}: 1119-1128.
 "epileptic.qol"

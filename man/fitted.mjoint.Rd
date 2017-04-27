@@ -19,8 +19,8 @@ to level 0.}
 \item{...}{additional arguments; currently none are used.}
 }
 \value{
-A \code{list} of length \eqn{K} with each element a vector of
-  fitted values for the \eqn{k}-th longitudinal outcome.
+A \code{list} of length \emph{K} with each element a vector of
+  fitted values for the \emph{k}-th longitudinal outcome.
 }
 \description{
 The fitted values at level \emph{i} are obtained by adding

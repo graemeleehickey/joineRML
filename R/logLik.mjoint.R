@@ -15,8 +15,9 @@
 #' 465-480.
 #'
 #' @return Returns an object of class \code{logLik}. This is a number with two
-#'   attributes: "df" (degrees of freedom), giving the number of parameters in
-#'   the model, and "nobs", the number of observations used in estimation.
+#'   attributes: \code{df} (degrees of freedom), giving the number of parameters
+#'   in the model, and \code{nobs}, the number of observations used in
+#'   estimation.
 #' @export
 #'
 #' @examples

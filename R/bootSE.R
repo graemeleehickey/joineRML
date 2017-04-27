@@ -7,7 +7,7 @@
 #'
 #' @param object an object inheriting from class \code{mjoint} for a joint model
 #'   of time-to-event and multivariate longitudinal data.
-#' @param nboot the number of bootstrap samples. Default is \code{nboot = 100}.
+#' @param nboot the number of bootstrap samples. Default is \code{nboot=100}.
 #' @param ci the confidence interval to be estimated using the
 #'   percentile-method. Default is \code{ci=0.95} for a 95\% confidence
 #'   interval.
