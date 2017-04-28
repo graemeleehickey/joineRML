@@ -57,5 +57,4 @@ Suggests:
     R.rsp,
     testthat
 VignetteBuilder:
-    knitr,
-    R.rsp
+    knitr

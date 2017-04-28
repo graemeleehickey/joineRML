@@ -3,26 +3,19 @@
 %\VignetteKeyword{multivariate}
 %\VignetteKeyword{joineRML}
 %\VignetteKeyword{survival}
-%\VignetteEngine{R.rsp::tex}
 
 \documentclass{article}
 
 \usepackage[top=2cm, bottom=2.5cm, left=2.5cm, right=2.5cm]{geometry}
-%\usepackage{xspace}
-%\usepackage{array}
 \usepackage{graphicx}
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{amsfonts}
 \usepackage{setspace}
-%\usepackage{lineno}
 \usepackage{enumitem}
 \usepackage{hyperref}
-\usepackage[backend=biber, doi=false, isbn=false, url=false, firstinits=true, sortcites, maxbibnames=6, minbibnames=3, maxcitenames=2, sorting=none]{biblatex}
+\usepackage[backend=bibtex, doi=false, isbn=false, url=false, firstinits=true, sortcites, maxbibnames=6, minbibnames=3, maxcitenames=2, sorting=none]{biblatex}
 
-%\bibliographystyle{plainnat}
-
-%\addbibresource{technical.bib}
 \bibliography{technical.bib}
 
 \newcommand{\half}{{\textstyle\frac{1}{2}}}
@@ -34,14 +27,14 @@
 \author{
 	G. L. Hickey$^1$ \& P. Philipson$^2$, A. L. Jorgensen$^1$, R. Kolamunnage-Dona$^1$\\
 	\\[-0.1cm]
-	$^1$\textit{Department of Biostatistics, University of Liverpool, UK}\\ 
+	$^1$\textit{Department of Biostatistics, University of Liverpool, UK}\\
 	$^2$\textit{Department of Mathematics, Physics and Electrical Engineering, Northumbria University, UK} \\
 }
 
 %\linenumbers
 
 \begin{document}
-	
+
 \onehalfspacing
 \maketitle
 
@@ -55,7 +48,7 @@ A new R package is presented, \texttt{joineRML}, which extends the ubiquitous jo
 
 For each subject $i=1,\dots,n$, $y_i = (y_{i1}^\top, \dots, y_{iK}^\top)$ is the $K$-variate continuous outcome vector, where each $y_{ik}$ denotes an $(n_{ik} \times 1)$-vector of observed longitudinal measurements for the $k$-th outcome type: $y_{ik} = (y_{i1k}, \dots, y_{in_{ik}k})^\top$. Each outcome is measured at observed (possibly pre-specified) times $t_{ijk}$ for $j=1,\dots,n_{ik}$, which can differ between subjects and outcomes. Additionally, for each subject there is an event time $T_i^*$, which is subject to right censoring. Therefore, we observe $T_i = \min(T_i^*, C_i)$, where $C_i$ corresponds to a potential censoring time, and the failure indicator $\delta_i$, which is equal to 1 if the failure is observed $(T_i^* \leq C_i)$ and 0 otherwise. We assume that both censoring and measurement times are non-informative.
 
-The model we describe is an extension of the model proposed by \textcite{Henderson2000} to the case of multivariate longitudinal data. The model posits an unobserved or latent zero-mean $(K+1)$-variate Gaussian process that is realised independently for each subject, $W_i(t) = \left\{W_{1i}^{(1)}(t), \dots, W_{1i}^{(K)}(t), W_{2i}(t)\right\}$. This latent process subsequently links the separate sub-models. 
+The model we describe is an extension of the model proposed by \textcite{Henderson2000} to the case of multivariate longitudinal data. The model posits an unobserved or latent zero-mean $(K+1)$-variate Gaussian process that is realised independently for each subject, $W_i(t) = \left\{W_{1i}^{(1)}(t), \dots, W_{1i}^{(K)}(t), W_{2i}(t)\right\}$. This latent process subsequently links the separate sub-models.
 
 The multivariate longitudinal data sub-model, also referred to as the \emph{measurement model} in \cite{Henderson2000}, is given by
 %
@@ -143,7 +136,7 @@ where $\theta = (\beta^\top, \text{vech}(D), \sigma_1^2, \dots, \sigma_K^2, \lam
 \begin{eqnarray*}
 	f(y_i \given b_i, \theta) &=& \left(\prod_{k=1}^K (2\pi)^{-\frac{n_{ik}}{2}}\right) |\Sigma_i|^{-\frac{1}{2}} \exp \left\{-\frac{1}{2}(y_i - X_i\beta - Z_i b_i)^\top\Sigma_i^{-1}(y_i - X_i\beta - Z_i b_i)\right\}, \\
 	f(T_i, \delta_i \given b_i; \theta)  &=& \left[\lambda_0(T_i) \exp\left\{v_i^\top \gamma_v + W_{2i}(T_i, b_i)\right\}\right]^{\delta_i} \exp\left\{-\int_0^{T_i}\lambda_0(u)\exp\left\{v_i^\top \gamma_v + W_{2i}(u, b_i)\right\}du\right\}, \\
-	f(b_i \given \theta) &=& (2\pi)^{-\frac{r}{2}} |D|^{-\frac{1}{2}} \exp\left\{-\frac{1}{2} b_i^\top D^{-1} b_i\right\},	
+	f(b_i \given \theta) &=& (2\pi)^{-\frac{r}{2}} |D|^{-\frac{1}{2}} \exp\left\{-\frac{1}{2} b_i^\top D^{-1} b_i\right\},
 \end{eqnarray*}
 %
 where $r = \sum_{k=1}^K r_k$ is the total dimensionality of the random effects variance-covariance matrix.
@@ -161,7 +154,7 @@ We determine maximum likelihood estimates of the parameters $\theta$ using the e
 	\end{eqnarray*}
 	%
 	Here, the complete-data likelihood contribution for subject $i$ is given by the integrand of \eqref{eqn:obs_lik}.
-	\item \emph{M-step}. We maximise $Q(\theta \given \hat{\theta}^{(m)})$ with respect to $\theta$. namely, 
+	\item \emph{M-step}. We maximise $Q(\theta \given \hat{\theta}^{(m)})$ with respect to $\theta$. namely,
 	%
 	\begin{equation*}
 		\hat{\theta}^{(m+1)} = \argmax{\theta} Q(\theta \given \hat{\theta}^{(m)})
@@ -178,11 +171,11 @@ The M-step estimators naturally follow from \textcite{Wulfsohn1997} and \textcit
 	\hat{\lambda}_0(t) = \frac{\sum_{i=1}^n \delta_i I(T_i = t)}{\sum_{i=1}^n \mathbb{E}\left[\exp\left\{v_i^\top \gamma_v + W_{2i}(t, b_i)\right\}\right]I(T_i \geq t)},
 \end{equation}
 %
-which is only evaluated a distinct observed event times, $t_j$ $(j=1,\dots,J)$, where $I(\mathcal{A})$ denotes an indicator function that takes the value 1 if event $\mathcal{A}$ occurs, and zero otherwise. Updates for $\beta$, $D$, and $\sigma_k^2$ (for $k=1,\dots,K$) are also given in closed-form as: 
+which is only evaluated a distinct observed event times, $t_j$ $(j=1,\dots,J)$, where $I(\mathcal{A})$ denotes an indicator function that takes the value 1 if event $\mathcal{A}$ occurs, and zero otherwise. Updates for $\beta$, $D$, and $\sigma_k^2$ (for $k=1,\dots,K$) are also given in closed-form as:
 %
 \begin{eqnarray*}
 	\hat{\beta} &=& \left(\sum_{i=1}^n X_i^\top\Sigma_i^{-1}X_i\right)^{-1}\left(\sum_{i=1}^n X_i^\top \Sigma_i^{-1}(y_i - Z_i\mathbb{E}[b_i])\right), \\
-	&=& \left(\sum_{i=1}^n X_i^\top X_i\right)^{-1}\left(\sum_{i=1}^n X_i^\top (y_i - Z_i\mathbb{E}[b_i])\right), \\	
+	&=& \left(\sum_{i=1}^n X_i^\top X_i\right)^{-1}\left(\sum_{i=1}^n X_i^\top (y_i - Z_i\mathbb{E}[b_i])\right), \\
 	\hat{\sigma}_k^2 &=& \frac{1}{\sum_{i=1}^n n_{ik}} \sum_{i=1}^n \mathbb{E}\left\{(y_{ik} - X_{ik}\beta_k - Z_{ik} b_{ik})^\top (y_{ik} - X_{ik}\beta_k - Z_{ik} b_{ik})\right\}, \\
 	&=& \frac{1}{\sum_{i=1}^n n_{ik}} \sum_{i=1}^n \left\{(y_{ik} - X_{ik}\beta_k)^\top (y_{ik} - X_{ik}\beta_k - 2Z_{ik} \mathbb{E}[b_{ik}]) + \text{trace}\left(Z_{ik}^\top Z_{ik}\mathbb{E}[b_{ik} b_{ik}^\top]\right)\right\}, \text{ and} \\
 	\hat{D} &=& \frac{1}{n} \sum_{i=1}^n \mathbb{E}\left[b_i b_i^\top\right].
@@ -210,7 +203,7 @@ where $f(T_i, \delta_i \given b_i; \hat{\theta})$ is given by \eqref{eqn:surv_lo
 \begin{equation}\label{eqn:bdist}
 	b_i \given y_i, \theta \sim N\left(A_i\left\{Z_i^\top\Sigma_i^{-1}(y_i-X_i\beta)\right\}, A_i\right),
 \end{equation}
-% 
+%
 where $A_i = \left(Z_i^\top\Sigma_i^{-1}Z_i + D^{-1}\right)^{-1}$. The derivation\footnote{The formulae given in \textcite{Wulfsohn1997} and \textcite{Lin2002} are equivalent, which can be seen by applying the Woodbury matrix identity.} is given in \textcite{Wulfsohn1997} and \textcite{Lin2002}. Gaussian quadrature, notably Gauss-Hermite quadrature, is a standard approach for evaluating the integrals in this estimation approach. However, for multivariate longitudinal data, the additional random effects required is commensurate with an exponential growth in the number of quadrature points at which the integrand must be evaluated. Therefore, we use Monte Carlo sampling methods to evaluate the integrals, which was also used by \textcite{Lin2002}. For $N$ Monte Carlo sample draws, $\{b_i^{(1)}, b_i^{(2)}, \dots, b_i^{(N)}\}$, \eqref{eqn:expectation} is approximated by  the ratio of the sample means for $h(b_i) f(T_i, \delta_i \given b_i; \hat{\theta})$ and $f(T_i, \delta_i \given b_i; \hat{\theta})$ evaluated at these values. Namely,
 %
 \begin{equation}\label{eqn:expectation_approx}
@@ -228,8 +221,8 @@ where $C_i$ is the Cholesky decomposition of $A_i$ such that $C_i C_i^\top = A_i
 
 \subsubsection{Initial values}
 
-The EM algorithm requires that initial parameters are specified, namely $\hat{\theta}^{(0)}$. By choosing values close to the maximizer, the number of iterations required to reach convergence will be reduced. 
-	
+The EM algorithm requires that initial parameters are specified, namely $\hat{\theta}^{(0)}$. By choosing values close to the maximizer, the number of iterations required to reach convergence will be reduced.
+
 For the time-to-event sub-model, a quasi-two-stage model is fitted when the measurement times are balanced., i.e. when $t_{ijk} = t_{ij}$ $\forall k$ That is, we fit \emph{separate} LMMs for each longitudinal outcome as per \eqref{eqn:long_model}, ignoring the correlation between different outcomes. This is straightforward to implement using standard software. From the fitted models, the best linear unbiased predictions of the separate model random effects are used to estimate each $W_{1i}^{(k)}(t)$ function. These estimates are then included as time-varying covariates in a Cox regression model, alongside any other fixed effect covariates, which can be straightforwardly fitted using standard software. In the situation that the data are not balanced, i.e. when $t_{ijk} \neq t_{ij}$ $\forall k$, then we fit a standard Cox proportional hazards regression model for the baseline covariates, and set $\gamma_{yk} = 0$ $\forall k$.
 
 For the longitudinal data sub-model, when $K > 1$ we first find the maximum likelihood estimate of $\{\beta, \text{vech}(D), \sigma_1^2, \dots, \sigma_K^2\}$ by running an EM algorithm for the multivariate linear mixed model. The E- and M-step updates are available in closed form, and the initial parameters for this EM algorithm are available from the separate LMM fits. As these are estimated using an EM rather than MCEM algorithm, we can specify a stricter convergence criterion on the estimates.
@@ -279,7 +272,7 @@ We consider two standard error (SE) estimators:
 	        \end{equation}
 	        %
 	        $s_i(\theta)$ is the conditional expectation of the complete-data score function for subject $i$, and $S(\theta)$ is the score defined by $S(\theta) = \sum_{i=1}^n s_i(\theta)$. At the maximizer, $S(\hat{\theta}) = 0$, meaning that the right hand-side of \eqref{eqn:empirical_info} is zero. Due to the Monte Carlo error in the MCEM algorithm, this will not be exactly zero, and therefore we include it in the calculations.
-	        
+
 	        Owing to the estimation approach described in Appendix~\ref{app:score_eqns}, we calculate approximate SEs for $\theta_{-\lambda_0} = (\beta^\top, \text{vech}(D), \sigma_1^2, \dots, \sigma_K^2, \gamma^\top)$ using the profile score vectors
 	        %
 	        \begin{equation*}
@@ -337,7 +330,7 @@ From \eqref{eqn:obs_lik}, the expected complete-data log-likelihood is given by
 	\sum_{i=1}^n \int_{-\infty}^{\infty} \Big\{\log f(y_i, T_i, \delta_i, b_i \given \theta)\Big\}f(b_i \given T_i, \delta_i, y_i, \hat{\theta}^{(m)}) db_i \nonumber
 \end{equation*}
 %
-where the expectation is taken over the conditional random effects distribution $f(b_i \given T_i, \delta_i, y_i, \hat{\theta}^{(m)})$. 
+where the expectation is taken over the conditional random effects distribution $f(b_i \given T_i, \delta_i, y_i, \hat{\theta}^{(m)})$.
 
 We can decompose the complete-data log-likelihood for subject $i$ into
 %
