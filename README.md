@@ -72,7 +72,7 @@ This project is funded by the [Medical Research Council](http://www.mrc.ac.uk) (
 Using the latest developmental version
 ======================================
 
-To install the latest **developmental version**, you will need R version (version 3.1 or higher) and some additional software depending on what platform you are using.
+To install the latest **developmental version**, you will need R version (version 3.3.0 or higher) and some additional software depending on what platform you are using.
 
 Windows
 -------
@@ -88,48 +88,17 @@ If not already installed, you will need to install Xcode Command Line Tools. To 
 $ xcode-select --install
 ```
 
-To verify that the install was successful, run the following line in the terminal
-
-``` bash
-$ xcode-select -p
-```
-
-which should return the following
-
-``` bash
-/Library/Developer/CommandLineTools
-```
-
 From R
 ------
 
 The latest developmental version will not yet be available on CRAN. Therefore, to install it, you will need `devtools`. You can check you are using the correct version by running
 
-``` bash
-pkg_check <- require('devtools')
-if (pkg_check) {
-  pkg_check <- (packageVersion("devtools") >= 1.6)
-}
-if (!pkg_check) {
-  install.packages('devtools')
-}
-```
-
-Once the prerequisite software is installed, you can install `joineRML` (**without** the vignettes) by running the following command in an R console
+Once the prerequisite software is installed, you can install `joineRML` by running the following command in an R console
 
 ``` r
 library('devtools')
 install_github('graemeleehickey/joineRML')
 ```
-
-If you have LaTeX installed, you can install `joineRML` (**with** the vignettes) by running the following command in an R console
-
-``` r
-library('devtools')
-install_github('graemeleehickey/joineRML', build_vignettes = TRUE)
-```
-
-Note that LaTeX will need the following packages: `graphicx`, `amsmath`, `amssymb`, `amsfonts`, `setspace`, `enumitem`, `hyperref`. Note, however, that one of the vignettes requires quite a bit of time to run and compile (approx. 15 minutes), so you may wish to skip this process.
 
 References
 ==========
