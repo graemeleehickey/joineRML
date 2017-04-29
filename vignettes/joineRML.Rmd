@@ -118,26 +118,21 @@ plot(fit, params = "beta")
 
 Once an `mjoint` model has converged, and assuming the `se.approx` argument is `TRUE` (default), then approximated standard errors are calculated based on the empirical information matrix of the profile likelihood at the maximizer. Theoretically, these standard errors will be underestimated (see the technical vignette). In principle, residual Monte Carlo error will oppose this through an increase in uncertainty.
 
-```{r hvd_model_boot, cache=TRUE}
-fit.se <- bootSE(fit, nboot = 25, use.mle = TRUE, control = list(
-    nMCmax = 10000, burnin = 20, mcmaxIter = 50, 
-    convCrit = "abs", tol0 = 1e-02, tol2 = 1e-02),
-  progress = FALSE)
+```{r hvd_model_boot, eval=FALSE}
+fit.se <- bootSE(fit, nboot = 100)
 ```
 
-Bootstrapping is a computationally intensive method, possibly taking many hours to fit. For this reason, the `bootSE` function makes use of the `use.mle` argument, which automatically initializes each model fit to the maximizer of the fitted model, `fit`. Also, one might relax the control parameter constraints on the optimization algorithm for each bootstrap model; however, this will be at the expense of inflated standard errors due to Monte Carlo error.
-
-Note that in the interests of compiling this vignette in a minimum amount of time, we have limited `bootSE` to only 25 iterations. In general, users will want at least 50-100 iterations. Also, we have increased the convergence tolerance limits to $10^{-2}$ and used an absolute change criterion. In general, stricter criteria will be required for reliable standard error estimates; the default is $5 \times 10^{-3}$.
+Bootstrapping is a computationally intensive method, possibly taking many hours to fit. For this reason, one can relax the control parameter constraints on the optimization algorithm for each bootstrap model; however, this will be at the possible expense of inflated standard errors due to Monte Carlo error.
 
 We can call the `bootSE` object to interrogate it
 
-```{r hvd_model_boot_print}
+```{r hvd_model_boot_print, eval=FALSE}
 fit.se
 ```
 
 or alternatively re-run the `summary` command, passing the additional argument of `bootSE = fit.se`
 
-```{r hvd_model_boot_summary}
+```{r hvd_model_boot_summary, eval=FALSE}
 summary(fit, bootSE = fit.se)
 ```
 
@@ -159,6 +154,7 @@ To fit a univariate model in `joineR` we run the following code for the `hvd` da
 
 ```{r joineR, cache=TRUE}
 library(joineR, quietly = TRUE)
+
 hvd.surv <- UniqueVariables(hvd, var.col = c("fuyrs", "status"), id.col = "num")
 hvd.cov <- UniqueVariables(hvd, "age", id.col = "num")
 hvd.long <- hvd[, c("num", "time", "log.lvmi")]
@@ -169,15 +165,12 @@ hvd.jd <- jointdata(longitudinal = hvd.long,
                     id.col = "num", 
                     time.col = "time")
 
-system.time(fit.joiner <- joint(data = hvd.jd,
-                                long.formula = log.lvmi ~ time + age, 
-                                surv.formula = Surv(fuyrs, status) ~ age, 
-                                model = "intslope"))
+fit.joiner <- joint(data = hvd.jd,
+                    long.formula = log.lvmi ~ time + age, 
+                    surv.formula = Surv(fuyrs, status) ~ age, 
+                    model = "intslope")
 
 summary(fit.joiner)
-
-system.time(fit.joiner.boot <- jointSE(fit.joiner, n.boot = 100))
-fit.joiner.boot
 ```
 
 To fit a univariate model in `joineRML` we run the following code for the `hvd` data
@@ -191,13 +184,6 @@ fit.joinerml <- mjoint(formLongFixed = log.lvmi ~ time + age,
                        timeVar = "time")
 
 summary(fit.joinerml)
-
-fit.joinerml.boot <- bootSE(fit.joinerml, nboot = 25, use.mle = TRUE, control = 
-                            list(burnin = 25, convCrit = "sas",
-                                 tol0 = 1e-02, tol2 = 1e-02, mcmaxIter = 60),
-                            progress = FALSE)
-
-fit.joinerml.boot
 ```
 
 In addition to just comparing model parameter estimates, we can also extract the predicted (or posterior) random effects from each model and plot them.

@@ -1,6 +1,12 @@
 # joineRML 0.2.1.9000 (devel)
 
-* Placeholder for next version
+## Housekeeping
+
+* Changed the technical vignette to Rnw (with engine = Sweave) from ltx (with engine = R.rsp) in attempt to remove some CMD check warnings.
+
+* Shortened the vignette to make it compile quicker (removed execution of bootstrapping).
+
+* Lots of tweaks of minor formatting tweaks in the documentation.
 
 # joineRML 0.2.1
 
