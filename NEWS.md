@@ -1,4 +1,6 @@
-# joineRML 0.2.1.9000 (devel)
+# joineRML 0.2.2
+
+* This update is an attempt to overcome a FAIL status on the CRAN checks for macOS.
 
 ## Housekeeping
 
