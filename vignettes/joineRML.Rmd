@@ -116,7 +116,7 @@ plot(fit, params = "beta")
 
 ## Bootstrap standard errors
 
-Once an `mjoint` model has converged, and assuming the `se.approx` argument is `TRUE` (default), then approximated standard errors are calculated based on the empirical information matrix of the profile likelihood at the maximizer. Theoretically, these standard errors will be underestimated (see the technical vignette). In principle, residual Monte Carlo error will oppose this through an increase in uncertainty.
+Once an `mjoint` model has converged, and assuming the `pfs` argument is `TRUE` (default), then approximated standard errors are calculated based on the empirical information matrix of the profile likelihood at the maximizer. Theoretically, these standard errors will be underestimated (see the technical vignette). In principle, residual Monte Carlo error will oppose this through an increase in uncertainty.
 
 ```{r hvd_model_boot, eval=FALSE}
 fit.se <- bootSE(fit, nboot = 100)
@@ -138,7 +138,7 @@ summary(fit, bootSE = fit.se)
 
 # Univariate joint models: `joineRML` versus `joineR`
 
-There are a growing number of software options for fitting joint models of a single longitudinal outcome and a single time-to-event outcome; what we call here *univariate* joint models. `joineR` (version 1.0-3) is one package available in R for fitting such models, however `joineRML` can fit these models too, since the univariate model is simply a special case of the multivariate model. It is useful to contrast these two packages. There are theoretical and practical implementation differences between the packages beyond just univariate versus multivariate capability:
+There are a growing number of software options for fitting joint models of a single longitudinal outcome and a single time-to-event outcome; what we call here *univariate* joint models. `joineR` (version 1.1.0) is one package available in R for fitting such models, however `joineRML` can fit these models too, since the univariate model is simply a special case of the multivariate model. It is useful to contrast these two packages. There are theoretical and practical implementation differences between the packages beyond just univariate versus multivariate capability:
 
 * `joineR` uses Gauss-Hermite quadrature (with 3 nodes) for numerical integration, whereas `joineRML` uses Monte Carlo integration with an automated selection of sample size.
 
