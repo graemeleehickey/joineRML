@@ -537,7 +537,7 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
   t <- list(V = V, survdat2 = survdat2, survdat2.list = survdat2.list,
             q = q, nev = nev, nev.uniq = nev.uniq)
 
-  # # Longitudinal data should not be recorded *after* event time
+  # Longitudinal data should not be recorded *after* event time
   for (k in 1:K) {
     for (i in survdat2$id) {
       if (max(data[[k]][data[[k]][, id] == i, timeVar[k]]) > survdat2[survdat2$id == i, "T"]) {
@@ -751,7 +751,10 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
     rownames(hx.sigma2) <- "sigma2"
   }
 
+  #*****************************************************
   # Output
+  #*****************************************************
+
   out <- list("coefficients" = theta.new)
   out$history <- rbind(hx.beta, hx.gamma, hx.sigma2, hx.D, hx.haz)
   out$nMC.hx <- nmc.iters
