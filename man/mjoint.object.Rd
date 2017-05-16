@@ -23,7 +23,8 @@ A list with the following components. \describe{
   linear mixed effects sub-model.}
 
   \item{\code{haz}}{the estimated baseline hazard values for each unique
-  failure time.}
+  failure time. Note that this is the \emph{centered} hazard, equivalent to
+  that returned by \code{\link[survival]{coxph.detail}}.}
 
   \item{\code{gamma}}{the vector of baseline covariates for the survival
   model and the latent association coefficient parameter estimates.}
