@@ -1,6 +1,8 @@
 # joineRML 0.2.2.9000
 
-* 
+* Correction to the vignette description of `mjoint()` arguments.
+
+* Minor tidy-up to comments in code.
 
 # joineRML 0.2.2
 
