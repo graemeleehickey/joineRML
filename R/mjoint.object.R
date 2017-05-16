@@ -130,9 +130,9 @@
 #'   for the random effects values for each subject.}
 #'
 #'   \item{\code{dmats}}{a list of length 3 containing the design matrices, data
-#'   frames, and vectors used in the MCEM algorithm. These are required to
-#'   calculated the residuals. The 3 items in the list are \code{l}
-#'   (longitudinal data), \code{t} (time-to-event data), and \code{z} (design
-#'   matrices expanded over unique failure times). These are not intended to be
-#'   extracted by the user.}}
+#'   frames, and vectors used in the MCEM algorithm. These are required for
+#'   prediction and to calculate the residuals and . The 3 items in the list are
+#'   \code{l} (longitudinal data), \code{t} (time-to-event data), and \code{z}
+#'   (design matrices expanded over unique failure times). These are not
+#'   intended to be extracted by the user.}}
 "mjoint.object" <- NULL

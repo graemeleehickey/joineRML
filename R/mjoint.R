@@ -516,7 +516,9 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
 
   survdat2 <- data.frame(survdat[, id], sfit$x, sfit$y[, 1], sfit$y[, 2])
   if (q > 0) {
-    survdat2[2:(q + 1)] <- scale(survdat2[2:(q + 1)], scale = FALSE)
+    xcenter <- apply(survdat2[2:(q + 1)], 2, mean)
+    survdat2[2:(q + 1)] <- scale(survdat2[2:(q + 1)],
+                                 center = xcenter, scale = FALSE)
   }
   colnames(survdat2)[c(1, (q + 2):(q + 3))] <- c("id", "T", "delta")
   survdat2$tj.ind <- sapply(1:n, function(i) {
@@ -535,7 +537,7 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
 
   # Collect together as inputs for EM algorithm
   t <- list(V = V, survdat2 = survdat2, survdat2.list = survdat2.list,
-            q = q, nev = nev, nev.uniq = nev.uniq)
+            q = q, nev = nev, nev.uniq = nev.uniq, xcenter = xcenter)
 
   # Longitudinal data should not be recorded *after* event time
   for (k in 1:K) {
