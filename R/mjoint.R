@@ -515,6 +515,7 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
   nev.uniq <- length(tj)
 
   survdat2 <- data.frame(survdat[, id], sfit$x, sfit$y[, 1], sfit$y[, 2])
+  xcenter <- NULL
   if (q > 0) {
     xcenter <- apply(survdat2[2:(q + 1)], 2, mean)
     survdat2[2:(q + 1)] <- scale(survdat2[2:(q + 1)],
