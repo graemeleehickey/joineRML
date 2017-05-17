@@ -538,7 +538,8 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
 
   # Collect together as inputs for EM algorithm
   t <- list(V = V, survdat2 = survdat2, survdat2.list = survdat2.list,
-            q = q, nev = nev, nev.uniq = nev.uniq, xcenter = xcenter)
+            q = q, nev = nev, nev.uniq = nev.uniq, xcenter = xcenter,
+            tj = tj)
 
   # Longitudinal data should not be recorded *after* event time
   for (k in 1:K) {
