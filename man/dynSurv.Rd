@@ -32,9 +32,10 @@ failure probabilities are reported for all observed failure times in the
 \code{mjoint} object data.}
 }
 \value{
-A \code{data.frame} of 2 columns with first column (named \code{u})
-  denoting times and the second column (named \code{surv}) denoting the
-  conditional failure probability.
+A list object inheriting from class \code{dynSurv}. The list returns
+  the arguments of the function and a \code{data.frame} of 2 columns, with
+  first column (named \code{u}) denoting times and the second column (named
+  \code{surv}) denoting the conditional failure probability.
 }
 \description{
 Calculates the conditional time-to-event distribution for a

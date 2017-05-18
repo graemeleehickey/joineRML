@@ -57,9 +57,10 @@
 #' Real-time individual predictions of prostate cancer recurrence using joint
 #' models. \emph{Biometrics}. 2013; \strong{69}: 206–13.
 #'
-#' @return A \code{data.frame} of 2 columns with first column (named \code{u})
-#'   denoting times and the second column (named \code{surv}) denoting the
-#'   conditional failure probability.
+#' @return A list object inheriting from class \code{dynSurv}. The list returns
+#'   the arguments of the function and a \code{data.frame} of 2 columns, with
+#'   first column (named \code{u}) denoting times and the second column (named
+#'   \code{surv}) denoting the conditional failure probability.
 #' @export
 #'
 #' @examples
@@ -127,7 +128,15 @@ dynSurv <- function(object, newdata, newSurvData = NULL, u = NULL) {
     S.u[i] <- S(b = b.hat, data = data.u, theta = object$coefficients)
   }
 
-  out <- data.frame("u" = u, "surv" = S.u / S.t)
+  pred <- data.frame("u" = u, "surv" = S.u / S.t)
+
+  out <- list("pred" = pred,
+              "newdata" = newdata,
+              "newSurvData" = newSurvData,
+              "u" = u,
+              "fit" = object)
+
+  class(out) <- "dynSurv"
   return(out)
 
 }
