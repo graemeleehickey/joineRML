@@ -30,16 +30,15 @@
 #'   Namely, given that the subject was last observed at time \emph{t}, we
 #'   calculate the conditional survival probability at time \eqn{u > t} as
 #'
-#'   \deqn{P[T_\text{new}^* \geq u \, | \, T_\text{new}^* \geq u; y_\text{new}, \theta] \approx
-#'   \frac{S(u \, | \, \hat{b}_\text{new}; \theta)}{S(t \, | \, \hat{b}_\text{new}; \theta)},}
+#'   \deqn{P[T \geq u | T \geq u; y, \theta] \approx
+#'   \frac{S(u | \hat{b}; \theta)}{S(t | \hat{b}; \theta)},}
 #'
-#'   where \eqn{T_\text{new}^*} is the failure time for the new subject,
-#'   \eqn{S(u \, | \, \hat{b}_\text{new}; \theta)} is the survival function, and
-#'   \eqn{\hat{b}_\text{new}} is the mode of the posterior distribution of the
-#'   random effects given by
+#'   where \eqn{T} is the failure time for the new subject, \eqn{y} is the
+#'   stacked-vector of longitudinal measurements, \eqn{S(u | \hat{b}; \theta)}
+#'   is the survival function, and \eqn{\hat{b}} is the mode of the posterior
+#'   distribution of the random effects given by
 #'
-#'   \deqn{\hat{b}_\text{new} = \underset{b}{\arg \max}
-#'   f(b \, | \, y_\text{new}, T_\text{new} \geq t; \theta)}.
+#'   \deqn{\hat{b} = {\arg \max}_b f(b | y, T \geq t; \theta).}
 #'
 #'   The predictions are based on plugging in \eqn{\theta = \hat{\theta}}, which
 #'   is extracted from the \code{mjoint} object.
