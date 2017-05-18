@@ -25,14 +25,15 @@ model (not including the latent association structure). See
 
 \item{data}{a list of \code{data.frame} objects for each longitudinal outcome
 in which to interpret the variables named in the \code{formLongFixed} and
-\code{formLongRandom}. The list structure enables one to include multiple
-longitudinal outcomes with different measurement protocols. If the multiple
-longitudinal outcomes are measured at the same time points for each
-patient, then a \code{data.frame} object can be given instead of a list. It
-is assumed that each data frame is in long format.}
+\code{formLongRandom}. The \code{list} structure enables one to include
+multiple longitudinal outcomes with different measurement protocols. If the
+multiple longitudinal outcomes are measured at the same time points for
+each patient, then a \code{data.frame} object can be given instead of a
+\code{list}. It is assumed that each data frame is in long format.}
 
 \item{survData}{a \code{data.frame} in which to interpret the variables named
-in the \code{formSurv}.}
+in the \code{formSurv}. This is optional, and if not given, the required
+data is searched for in \code{data}. Default is \code{survData=NULL}.}
 
 \item{timeVar}{a character string indicating the time variable in the linear
 mixed effects model. If there are multiple longitudinal outcomes and the
