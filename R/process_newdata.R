@@ -25,6 +25,7 @@ process_newdata <- function(object, newdata, newSurvData = NULL, tobs = NULL) {
   #*****************************************************
 
   Xk.new <- list()
+  tk.new <- list()
   Zk.new <- list()
   yk.new <- list()
   ffk <- list()
@@ -32,18 +33,13 @@ process_newdata <- function(object, newdata, newSurvData = NULL, tobs = NULL) {
 
   for (k in 1:K) {
     termsX <- object$lfit[[k]]$terms
-    #xlev <- list()
     origData <- model.frame(termsX, object$data[[k]])
-    #for (i in names(origData)) {
-    #  if (class(origData[[i]]) == "factor") {
-    #    xlev[[i]] <- levels(origData[[i]])
-    #  }
-    #}
     xlev <- .getXlevels(termsX, origData)
     mfX.new <- model.frame(termsX, newdata[[k]], xlev = xlev)
     ffk[[k]] <- nlme::splitFormula(object$formLongRandom[[k]], "|")[[1]]
 
     Xk.new[[k]] <- model.matrix(termsX, mfX.new)
+    tk.new[[k]] <- newdata[[k]][[object$timeVar[[k]]]]
     yk.new[[k]] <- model.response(mfX.new, "numeric")
     Zk.new[[k]] <- model.matrix(ffk[[k]], newdata[[k]])
     nk[k] <- nrow(Xk.new[[k]])
@@ -75,7 +71,7 @@ process_newdata <- function(object, newdata, newSurvData = NULL, tobs = NULL) {
   survdat2 <- object$dmats$t$survdat2[object$dmats$t$survdat2$delta == 1, ]
   survdat2 <- survdat2[order(survdat2$T), ]
   tmax <- max(survdat2$T)
-  
+
   if (is.null(tobs)) {
     tobs <- 0
     for (k in 1:K) {
@@ -86,7 +82,7 @@ process_newdata <- function(object, newdata, newSurvData = NULL, tobs = NULL) {
       stop("Cannot extrapolate beyond final failure time")
     }
   }
-  
+
   tj <- object$dmats$t$tj # if tj.ind = 0, deal with it elsewhere
   tj.ind <- sum(tj <= tobs)
 
@@ -112,6 +108,7 @@ process_newdata <- function(object, newdata, newSurvData = NULL, tobs = NULL) {
   out <- list(
     X = X.new,
     Xk = Xk.new,
+    tk = tk.new,
     Z = Z.new,
     Zk = Zk.new,
     y = y.new,

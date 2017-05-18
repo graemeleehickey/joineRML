@@ -96,7 +96,7 @@ dynSurv <- function(object, newdata, newSurvData = NULL, u = NULL) {
   if (is.null(u)) {
     u <- object$dmats$t$tj
     if (length(u) > 1) {
-      u <- u[u > data.t$tobs]
+      u <- c(data.t$tobs, u[u > data.t$tobs])
       #u <- u[-length(u)]
     }
   } else {
@@ -131,10 +131,11 @@ dynSurv <- function(object, newdata, newSurvData = NULL, u = NULL) {
   pred <- data.frame("u" = u, "surv" = S.u / S.t)
 
   out <- list("pred" = pred,
+              "fit" = object,
               "newdata" = newdata,
               "newSurvData" = newSurvData,
               "u" = u,
-              "fit" = object)
+              "data.t" = data.t)
 
   class(out) <- "dynSurv"
   return(out)
