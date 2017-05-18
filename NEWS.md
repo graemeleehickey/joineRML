@@ -1,8 +1,16 @@
-# joineRML 0.2.2.9000
+# joineRML 0.3.0.9000
+
+## New features
+
+* Added new function `dynSurv()`, which generates survival probabilities for a new subject conditional on their last measurement time and longitudial history.
+
+## Housekeeping
 
 * Correction to the vignette description of `mjoint()` arguments.
 
 * Minor tidy-up to comments in code.
+
+* Updates to documentation.
 
 # joineRML 0.2.2
 

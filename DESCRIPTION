@@ -2,7 +2,7 @@ Package: joineRML
 Type: Package
 Title: Joint Modelling of Multivariate Longitudinal Data and Time-to-Event
     Outcomes
-Version: 0.2.2.9000
+Version: 0.3.0.9000
 Authors@R: c(
     person("Graeme L.", "Hickey", email = "graeme.hickey@liverpool.ac.uk", 
         role = c("cre", "aut")),
@@ -42,6 +42,7 @@ Imports:
     lme4 (>= 1.1-8),
     MASS,
     Matrix,
+    mvtnorm,
     Rcpp (>= 0.12.7),
     stats,
     utils

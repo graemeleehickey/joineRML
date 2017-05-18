@@ -6,7 +6,7 @@
 #'   have methods for the generic functions \code{coef}, \code{logLik},
 #'   \code{plot}, \code{print}, \code{ranef}, \code{fixef}, \code{summary},
 #'   \code{AIC}, \code{getVarCov}, \code{vcov}, \code{confint}, \code{sigma},
-#'   and \code{formula}.
+#'   \code{fitted}, \code{residuals}, and \code{formula}.
 #'
 #' @author Graeme L. Hickey (\email{graeme.hickey@@liverpool.ac.uk})
 #' @keywords multivariate survival
