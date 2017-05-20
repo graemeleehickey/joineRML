@@ -87,6 +87,10 @@
 #' }
 dynSurv <- function(object, newdata, newSurvData = NULL, u = NULL) {
 
+  if (!inherits(object, "mjoint")) {
+    stop("Use only with 'mjoint' model objects.\n")
+  }
+
   data.t <- process_newdata(newdata = newdata,
                             object = object,
                             tobs = NULL,

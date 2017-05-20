@@ -1,5 +1,9 @@
 process_newdata <- function(object, newdata, newSurvData = NULL, tobs = NULL) {
 
+  if (!inherits(object, "mjoint")) {
+    stop("Use only with 'mjoint' model objects.\n")
+  }
+
   K <- object$dims$K
   r <- object$dims$r
   p <- object$dims$p
