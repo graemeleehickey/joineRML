@@ -4,9 +4,15 @@
 
 * Added new function `dynSurv()`, which generates survival probabilities for a new subject conditional on their last measurement time and longitudial history.
 
-## Housekeeping
+* Added an associated `plot()` method for `dynSurv` objects.
+
+## Bug patches
+
+* Fixed a bug that prevented models being fitted with no covariates in the survival sub-model, i.e. `Surv() ~ 1`.
 
 * Correction to the vignette description of `mjoint()` arguments.
+
+## Housekeeping
 
 * Minor tidy-up to comments in code.
 

@@ -25,7 +25,7 @@ test_that("univariate random-intercept model works + no formula labels", {
   expect_equal(length(fixef(fit, process = "Event")), 4)
 })
 
-test_that("multivariate model works", {
+test_that("multivariate model", {
   skip_on_cran()
   # load data + fit model
   data(heart.valve)
@@ -74,7 +74,7 @@ test_that("multivariate model works", {
 })
 
 
-test_that("different convergence criteria work", {
+test_that("different convergence criteria", {
   # load data + fit model
   data(heart.valve)
   hvd <- heart.valve[!is.na(heart.valve$log.grad) & !is.na(heart.valve$log.lvmi), ]
@@ -159,3 +159,18 @@ test_that("Gauss-Newton updates", {
             "mjoint")
 })
 
+test_that("no covariates in survival model", {
+  # load data + fit model
+  data(pbc2)
+  pbc2$log.b <- log(pbc2$serBilir)
+  fit <- mjoint(
+    formLongFixed = list(log.b ~ year),
+    formLongRandom = list(~ 1 | id),
+    formSurv = Surv(years, status2) ~ 1,
+    data = pbc2,
+    timeVar = "year",
+    control = list(convCrit = "abs", tol0 = 0.05, burnin = 3),
+    verbose = FALSE)
+  # tests
+  expect_is(fit, "mjoint")
+})

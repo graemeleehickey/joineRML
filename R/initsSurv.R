@@ -32,9 +32,12 @@ initsSurv_balanced <- function(data, lfit, survdat2, formSurv, id, timeVar, K, q
   dataAG <- cbind(dataAG, W)
 
   formK <- paste0("gamma_", 1:K, collapse = " + ")
-  formX <- paste0(names(survdat2)[2:(q + 1)], collapse = " + ")
-  formS <- paste("Surv(start, stop, status) ~ ", formX, "+", formK)
-
+  if (q > 0) {
+    formX <- paste0(names(survdat2)[2:(q + 1)], collapse = " + ")
+    formS <- paste("Surv(start, stop, status) ~ ", formX, "+", formK)
+  } else {
+    formS <- paste("Surv(start, stop, status) ~", formK)
+  }
   fitAG <- survival::coxph(as.formula(formS), data = dataAG)
 
   gamma <- coef(fitAG)
