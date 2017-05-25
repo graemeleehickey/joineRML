@@ -12,6 +12,8 @@
 
 * Correction to the vignette description of `mjoint()` arguments.
 
+* Removed `enumintem` package for Sweave vignette to satisfy CRAN checks on macOS (release).
+
 ## Housekeeping
 
 * Minor tidy-up of in-code comments.
