@@ -30,7 +30,7 @@
 #'   Namely, given that the subject was last observed at time \emph{t}, we
 #'   calculate the conditional survival probability at time \eqn{u > t} as
 #'
-#'   \deqn{P[T \geq u | T \geq u; y, \theta] \approx
+#'   \deqn{P[T \ge u | T \ge u; y, \theta] \approx
 #'   \frac{S(u | \hat{b}; \theta)}{S(t | \hat{b}; \theta)},}
 #'
 #'   where \eqn{T} is the failure time for the new subject, \eqn{y} is the
@@ -38,7 +38,7 @@
 #'   is the survival function, and \eqn{\hat{b}} is the mode of the posterior
 #'   distribution of the random effects given by
 #'
-#'   \deqn{\hat{b} = {\arg \max}_b f(b | y, T \geq t; \theta).}
+#'   \deqn{\hat{b} = {\arg \max}_b f(b | y, T \ge t; \theta).}
 #'
 #'   The predictions are based on plugging in \eqn{\theta = \hat{\theta}}, which
 #'   is extracted from the \code{mjoint} object.

@@ -14,9 +14,9 @@
 
 ## Housekeeping
 
-* Minor tidy-up to comments in code.
+* Minor tidy-up of in-code comments.
 
-* Updates to documentation.
+* Minor updates and corrections to documentation.
 
 # joineRML 0.2.2
 
