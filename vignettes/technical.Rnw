@@ -12,7 +12,6 @@
 \usepackage{amssymb}
 \usepackage{amsfonts}
 \usepackage{setspace}
-\usepackage{enumitem}
 \usepackage{hyperref}
 \usepackage[backend=bibtex, doi=false, isbn=false, url=false, firstinits=true, sortcites, maxbibnames=6, minbibnames=3, maxcitenames=2, sorting=none]{biblatex}
 
