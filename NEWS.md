@@ -24,6 +24,10 @@
 
 * Minor updates and corrections to documentation.
 
+* Added unit tests for dynamic prediction functions.
+
+* Added unit tests for residual and fitted value functions.
+
 # joineRML 0.2.2
 
 * This update is an attempt to overcome a FAIL status on the CRAN checks for macOS.
