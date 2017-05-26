@@ -77,7 +77,6 @@ test_that("dynamic predictions", {
   # load data + fit model
   data(heart.valve)
   hvd <- heart.valve[!is.na(heart.valve$log.grad) & !is.na(heart.valve$log.lvmi), ]
-
   fit2 <- mjoint(
     formLongFixed = list("grad" = log.grad ~ time + sex + hs,
                          "lvmi" = log.lvmi ~ time + sex),
@@ -104,4 +103,26 @@ test_that("dynamic predictions", {
   expect_silent(plot(test3))
   expect_output(print(test3))
   expect_is(test4, "dynSurv")
+})
+
+
+test_that("residuals + fitted values", {
+  # load data + fit model
+  data(heart.valve)
+  hvd <- heart.valve[!is.na(heart.valve$log.grad) & !is.na(heart.valve$log.lvmi), ]
+  fit2 <- mjoint(
+    formLongFixed = list("grad" = log.grad ~ time + sex + hs,
+                         "lvmi" = log.lvmi ~ time + sex),
+    formLongRandom = list("grad" = ~ 1 | num,
+                          "lvmi" = ~ time | num),
+    formSurv = Surv(fuyrs, status) ~ age,
+    data = list(hvd, hvd),
+    inits = list("gamma" = c(0.11, 1.51, 0.80)),
+    timeVar = "time",
+    verbose = TRUE)
+  # tests
+  expect_output(str(resid(fit2, level = 0)), "List of 2")
+  expect_output(str(resid(fit2, level = 1)), "List of 2")
+  expect_output(str(fitted(fit2)), "List of 2")
+  expect_equal(names(resid(fit2)), c("grad", "lvmi"))
 })
