@@ -1,4 +1,4 @@
-#' Dynamic predictions for the time-to-event sub-model
+#' Dynamic predictions for the time-to-event data sub-model
 #'
 #' @description Calculates the conditional time-to-event distribution for a
 #'   \emph{new} subject from the last observation time given their longitudinal
@@ -24,19 +24,19 @@
 #'   failure probabilities are reported for all observed failure times in the
 #'   \code{mjoint} object data.
 #'
-#' @details Dynamic predictions for the time-to-event sub-model based on an
+#' @details Dynamic predictions for the time-to-event data sub-model based on an
 #'   observed measurement history for the longitudinal outcomes of a new subject
 #'   are based on a first-order approximation described in Rizopoulos (2011).
 #'   Namely, given that the subject was last observed at time \emph{t}, we
 #'   calculate the conditional survival probability at time \eqn{u > t} as
 #'
-#'   \deqn{P[T \ge u | T \ge u; y, \theta] \approx
+#'   \deqn{P[T \ge u | T \ge t; y, \theta] \approx
 #'   \frac{S(u | \hat{b}; \theta)}{S(t | \hat{b}; \theta)},}
 #'
 #'   where \eqn{T} is the failure time for the new subject, \eqn{y} is the
-#'   stacked-vector of longitudinal measurements, \eqn{S(u | \hat{b}; \theta)}
-#'   is the survival function, and \eqn{\hat{b}} is the mode of the posterior
-#'   distribution of the random effects given by
+#'   stacked-vector of longitudinal measurements up to time \emph{t}, \eqn{S(u |
+#'   \hat{b}; \theta)} is the survival function, and \eqn{\hat{b}} is the mode
+#'   of the posterior distribution of the random effects given by
 #'
 #'   \deqn{\hat{b} = {\arg \max}_b f(b | y, T \ge t; \theta).}
 #'
@@ -45,7 +45,8 @@
 #'
 #' @author Graeme L. Hickey (\email{graeme.hickey@@liverpool.ac.uk})
 #' @keywords survival
-#' @seealso \code{\link{mjoint}}
+#' @seealso \code{\link{mjoint}}, \code{\link{dynLong}}, and
+#'   \code{\link{plot.dynSurv}}.
 #'
 #' @references
 #'

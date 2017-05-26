@@ -4,7 +4,11 @@
 
 * Added new function `dynSurv()`, which generates survival probabilities for a new subject conditional on their last measurement time and longitudial history.
 
-* Added an associated `plot()` method for `dynSurv` objects.
+* Added new function `dynLong()`, which generates expected longitudinal predictions for a new subject conditional on their last measurement time and longitudial history.
+
+* Added an associated `print()` method for `dynSurv` and `dynLong` objects.
+
+* Added an associated `plot()` method for `dynSurv` and `dynLong` objects.
 
 ## Bug patches
 

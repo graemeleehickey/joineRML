@@ -7,13 +7,13 @@
 #'   \code{\link{dynSurv}} function.
 #' @param main an overall title for the plot: see \code{\link[graphics]{title}}.
 #' @param xlab a title for the x [time] axis: see \code{\link[graphics]{title}}.
-#' @param ylab1 a title for the \emph{K} longitudinal outcomes y-axes: see
-#'   \code{\link[graphics]{title}}.
+#' @param ylab1 a character vector of the titles for the \emph{K} longitudinal
+#'   outcomes y-axes: see \code{\link[graphics]{title}}.
 #' @param ylab2 a title for the event-time outcome axis: see
 #'   \code{\link[graphics]{title}}.
 #' @param grid adds a rectangular grid to an existing plot: see
 #'   \code{\link[graphics]{grid}}.
-#' @param ... additional plotting arguments; currently none are used.
+#' @param ... additional plotting arguments;.
 #'
 #' @author Graeme L. Hickey (\email{graeme.hickey@@liverpool.ac.uk})
 #' @keywords hplot
@@ -25,7 +25,7 @@
 #' for longitudinal and time-to-event data. \emph{Biometrics}. 2011;
 #' \strong{67}: 819–829.
 #'
-#' @return A plot.
+#' @return A dynamic prediction plot.
 #' @import graphics
 #' @export
 #'
@@ -77,7 +77,7 @@ plot.dynSurv <- function(x, main = NULL, xlab = NULL, ylab1 = NULL,
 
   if (!is.null(ylab1)) {
     if (length(ylab1) != K) {
-      stop("Number of longitudinal axes labels does not match number of outcomes.")
+      stop("Number of longitudinal axes labels does not match number of outcomes.\n")
     }
   }
 
