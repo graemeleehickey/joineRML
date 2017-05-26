@@ -8,7 +8,7 @@
 #'   extracting the residuals from object. Level values increase from outermost
 #'   to innermost grouping, with level 0 corresponding to the population
 #'   residuals and level 1 corresponding to subject-specific residuals. Defaults
-#'   to level 0.
+#'   to \code{level=0}.
 #'
 #' @author Graeme L. Hickey (\email{graeme.hickey@@liverpool.ac.uk})
 #' @keywords methods
