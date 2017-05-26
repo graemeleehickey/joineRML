@@ -2,7 +2,7 @@
 % Please edit documentation in R/dynSurv.R
 \name{dynSurv}
 \alias{dynSurv}
-\title{Dynamic predictions for the time-to-event submodel}
+\title{Dynamic predictions for the time-to-event sub-model}
 \usage{
 dynSurv(object, newdata, newSurvData = NULL, u = NULL)
 }
@@ -43,7 +43,7 @@ Calculates the conditional time-to-event distribution for a
   history data and a fitted \code{mjoint} object.
 }
 \details{
-Dynamic predictions for the time-to-event submodel based on an
+Dynamic predictions for the time-to-event sub-model based on an
   observed measurement history for the longitudinal outcomes of a new subject
   are based on a first-order approximation described in Rizopoulos (2011).
   Namely, given that the subject was last observed at time \emph{t}, we

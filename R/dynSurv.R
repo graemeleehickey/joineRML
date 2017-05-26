@@ -1,4 +1,4 @@
-#' Dynamic predictions for the time-to-event submodel
+#' Dynamic predictions for the time-to-event sub-model
 #'
 #' @description Calculates the conditional time-to-event distribution for a
 #'   \emph{new} subject from the last observation time given their longitudinal
@@ -24,7 +24,7 @@
 #'   failure probabilities are reported for all observed failure times in the
 #'   \code{mjoint} object data.
 #'
-#' @details Dynamic predictions for the time-to-event submodel based on an
+#' @details Dynamic predictions for the time-to-event sub-model based on an
 #'   observed measurement history for the longitudinal outcomes of a new subject
 #'   are based on a first-order approximation described in Rizopoulos (2011).
 #'   Namely, given that the subject was last observed at time \emph{t}, we

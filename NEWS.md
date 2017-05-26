@@ -36,7 +36,7 @@
 
 ## Bug patches
 
-* Fixed a bug that prevented factors with >2 levels being included in the time-to-event submodel.
+* Fixed a bug that prevented factors with >2 levels being included in the time-to-event sub-model.
 
 * Fixed package registration, which strangely broke on R 3.4.0 for OSX platform.
 
