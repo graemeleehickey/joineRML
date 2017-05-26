@@ -71,3 +71,37 @@ test_that("ranef plots", {
   # tests
   expect_true(is.ggplot(p))
 })
+
+
+test_that("dynamic predictions", {
+  # load data + fit model
+  data(heart.valve)
+  hvd <- heart.valve[!is.na(heart.valve$log.grad) & !is.na(heart.valve$log.lvmi), ]
+
+  fit2 <- mjoint(
+    formLongFixed = list("grad" = log.grad ~ time + sex + hs,
+                         "lvmi" = log.lvmi ~ time + sex),
+    formLongRandom = list("grad" = ~ 1 | num,
+                          "lvmi" = ~ time | num),
+    formSurv = Surv(fuyrs, status) ~ age,
+    data = list(hvd, hvd),
+    inits = list("gamma" = c(0.11, 1.51, 0.80)),
+    timeVar = "time",
+    verbose = TRUE)
+  hvd2 <- droplevels(hvd[hvd$num == 1, ])
+  test1 <- dynLong(fit2, hvd2)
+  test2 <- dynLong(fit2, hvd2, u = 7)
+  test3 <- dynSurv(fit2, hvd2)
+  test4 <- dynSurv(fit2, hvd2, u = 7)
+  # tests
+  expect_is(test1, "dynLong")
+  expect_output(str(test1$pred), "List of 2")
+  expect_silent(plot(test1))
+  expect_output(print(test1))
+  expect_is(test2, "dynLong")
+  expect_is(test3, "dynSurv")
+  expect_output(str(test3$pred), "data.frame")
+  expect_silent(plot(test3))
+  expect_output(print(test3))
+  expect_is(test4, "dynSurv")
+})
