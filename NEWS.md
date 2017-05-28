@@ -10,7 +10,7 @@
 
 * Added an associated `plot()` method for `dynSurv` and `dynLong` objects.
 
-* Added a function for extracting the centered and uncetered estimates of the baseline hazard function.
+* Added a function `baseHaz()` for extracting the centered and uncetered estimates of the baseline hazard function.
 
 ## Bug patches
 
