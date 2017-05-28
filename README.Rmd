@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 
 [![Travis-CI Build Status](https://travis-ci.org/graemeleehickey/joineRML.svg?branch=master)](https://travis-ci.org/graemeleehickey/joineRML)
 [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/graemeleehickey/joineRML?branch=master&svg=true)](https://ci.appveyor.com/project/graemeleehickey/joineRML)
-[![License](https://img.shields.io/badge/License-GPL%20%28%3E=%203%29-brightgreen.svg)](http://www.gnu.org/licenses/gpl-3.0.html)
+<!--[![License](https://img.shields.io/badge/License-GPL%20%28%3E=%203%29-brightgreen.svg)](http://www.gnu.org/licenses/gpl-3.0.html)-->
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/joineRML)](https://CRAN.R-project.org/package=joineRML)
 [![](http://cranlogs.r-pkg.org/badges/joineRML)](https://CRAN.R-project.org/package=joineRML)
 [![](https://cranlogs.r-pkg.org/badges/grand-total/joineRML)](https://CRAN.R-project.org/package=joineRML)
@@ -48,7 +48,7 @@ fit <- mjoint(
     timeVar = "time")
 ```
 
-The fitted model is assigned to `fit`. We can apply a number of functions to this object, e.g. `coef`, `logLik`, `plot`, `print`, `ranef`, `fixef`, `summary`, `AIC`, `getVarCov`, `vcov`, `confint`, `sigma`, `update`, and `formula`. For example,
+The fitted model is assigned to `fit`. We can apply a number of functions to this object, e.g. `coef`, `logLik`, `plot`, `print`, `ranef`, `fixef`, `summary`, `AIC`, `getVarCov`, `vcov`, `confint`, `sigma`, `update`, `formula`, `resid`, and `fitted`. In addition, several special functions have been added, including `dynSurv`, `dynLong`, and `baseHaz`, as well as plotting functions for objects inheriting from the `dynSurv`, `dynLong`, `ranef`, and `mjoint` functions. For example,
 
 ```r
 summary(fit)

@@ -3,7 +3,7 @@
 joineRML
 ========
 
-[![Travis-CI Build Status](https://travis-ci.org/graemeleehickey/joineRML.svg?branch=master)](https://travis-ci.org/graemeleehickey/joineRML) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/graemeleehickey/joineRML?branch=master&svg=true)](https://ci.appveyor.com/project/graemeleehickey/joineRML) [![License](https://img.shields.io/badge/License-GPL%20%28%3E=%203%29-brightgreen.svg)](http://www.gnu.org/licenses/gpl-3.0.html) [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/joineRML)](https://CRAN.R-project.org/package=joineRML) [![](http://cranlogs.r-pkg.org/badges/joineRML)](https://CRAN.R-project.org/package=joineRML) [![](https://cranlogs.r-pkg.org/badges/grand-total/joineRML)](https://CRAN.R-project.org/package=joineRML) [![codecov](https://codecov.io/gh/graemeleehickey/joineRML/branch/master/graph/badge.svg)](https://codecov.io/gh/graemeleehickey/joineRML)
+[![Travis-CI Build Status](https://travis-ci.org/graemeleehickey/joineRML.svg?branch=master)](https://travis-ci.org/graemeleehickey/joineRML) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/graemeleehickey/joineRML?branch=master&svg=true)](https://ci.appveyor.com/project/graemeleehickey/joineRML) <!--[![License](https://img.shields.io/badge/License-GPL%20%28%3E=%203%29-brightgreen.svg)](http://www.gnu.org/licenses/gpl-3.0.html)--> [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/joineRML)](https://CRAN.R-project.org/package=joineRML) [![](http://cranlogs.r-pkg.org/badges/joineRML)](https://CRAN.R-project.org/package=joineRML) [![](https://cranlogs.r-pkg.org/badges/grand-total/joineRML)](https://CRAN.R-project.org/package=joineRML) [![codecov](https://codecov.io/gh/graemeleehickey/joineRML/branch/master/graph/badge.svg)](https://codecov.io/gh/graemeleehickey/joineRML)
 
 `joineRML` is an extension of the joineR package for fitting joint models of time-to-event data and multivariate longitudinal data. The model fitted in joineRML is an extension of the Wulfsohn and Tsiatis (1997) and Henderson et al. (2000) models, which is comprised on (*K* + 1)-sub-models: a Cox proportional hazards regression model (Cox, 1972) and a *K*-variate linear mixed-effects model - a direct extension of the Laird and Ware (1982) regression model. The model is fitted using a Monte Carlo Expectation-Maximization (MCEM) algorithm, which closely follows the methodology presented by Lin et al. (2002).
 
@@ -33,7 +33,7 @@ fit <- mjoint(
     timeVar = "time")
 ```
 
-The fitted model is assigned to `fit`. We can apply a number of functions to this object, e.g. `coef`, `logLik`, `plot`, `print`, `ranef`, `fixef`, `summary`, `AIC`, `getVarCov`, `vcov`, `confint`, `sigma`, `update`, and `formula`. For example,
+The fitted model is assigned to `fit`. We can apply a number of functions to this object, e.g. `coef`, `logLik`, `plot`, `print`, `ranef`, `fixef`, `summary`, `AIC`, `getVarCov`, `vcov`, `confint`, `sigma`, `update`, `formula`, `resid`, and `fitted`. In addition, several special functions have been added, including `dynSurv`, `dynLong`, and `baseHaz`, as well as plotting functions for objects inheriting from the `dynSurv`, `dynLong`, `ranef`, and `mjoint` functions. For example,
 
 ``` r
 summary(fit)
