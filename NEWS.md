@@ -10,6 +10,8 @@
 
 * Added an associated `plot()` method for `dynSurv` and `dynLong` objects.
 
+* Added a function for extracting the centered and uncetered estimates of the baseline hazard function.
+
 ## Bug patches
 
 * Fixed a bug that prevented models being fitted with no covariates in the survival sub-model, i.e. `Surv() ~ 1`.
@@ -24,9 +26,7 @@
 
 * Minor updates and corrections to documentation.
 
-* Added unit tests for dynamic prediction functions.
-
-* Added unit tests for residual and fitted value functions.
+* Added unit tests for new features.
 
 # joineRML 0.2.2
 

@@ -73,7 +73,7 @@ test_that("ranef plots", {
 })
 
 
-test_that("dynamic predictions, residuals, fitted values", {
+test_that("dynamic predictions, residuals, fitted values, baseline hazard", {
   # load data + fit model
   data(heart.valve)
   hvd <- heart.valve[!is.na(heart.valve$log.grad) & !is.na(heart.valve$log.lvmi), ]
@@ -85,6 +85,7 @@ test_that("dynamic predictions, residuals, fitted values", {
     formSurv = Surv(fuyrs, status) ~ age,
     data = list(hvd, hvd),
     inits = list("gamma" = c(0.11, 1.51, 0.80)),
+    control = list("burnin" = 50, mcmaxIter = 150, tol0 = 1e-02),
     timeVar = "time",
     verbose = TRUE)
   hvd2 <- droplevels(hvd[hvd$num == 1, ])
@@ -108,5 +109,8 @@ test_that("dynamic predictions, residuals, fitted values", {
   expect_output(str(resid(fit2, level = 1)), "List of 2")
   expect_output(str(fitted(fit2)), "List of 2")
   expect_equal(names(resid(fit2)), c("grad", "lvmi"))
+  # tests: baseline hazard
+  expect_is(baseHaz(fit2), "data.frame")
+  expect_is(baseHaz(fit2, centered = FALSE), "data.frame")
 })
 
