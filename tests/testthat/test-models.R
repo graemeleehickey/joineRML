@@ -159,6 +159,7 @@ test_that("Gauss-Newton updates", {
             "mjoint")
 })
 
+
 test_that("no covariates in survival model", {
   # load data + fit model
   data(pbc2)
@@ -173,4 +174,5 @@ test_that("no covariates in survival model", {
     verbose = FALSE)
   # tests
   expect_is(fit, "mjoint")
+  expect_warning(baseHaz(fit), "No covariates in model to centre.")
 })

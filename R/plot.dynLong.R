@@ -49,7 +49,7 @@ plot.dynLong <- function(x, main = NULL, xlab = NULL, ylab = NULL,
                          grid = TRUE, ...) {
 
   if (!inherits(x, "dynLong")) {
-    stop("Use only with 'dynLong' model objects.\n")
+    stop("Use only with 'dynLong' objects.\n")
   }
 
   # Extract information we need

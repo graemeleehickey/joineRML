@@ -55,7 +55,7 @@ plot.dynSurv <- function(x, main = NULL, xlab = NULL, ylab1 = NULL,
                          ylab2 = NULL, grid = TRUE, ...) {
 
   if (!inherits(x, "dynSurv")) {
-    stop("Use only with 'dynSurv' model objects.\n")
+    stop("Use only with 'dynSurv' objects.\n")
   }
 
   # Extract information we need

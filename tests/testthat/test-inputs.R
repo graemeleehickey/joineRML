@@ -200,7 +200,7 @@ test_that("unbalanced data throws warning for survival inits", {
 })
 
 
-test_that("argument not an mjoint object", {
+test_that("argument not correct object class", {
   expect_error(vcov.mjoint(1), "Use only with 'mjoint' model objects.")
   expect_error(summary.mjoint(1), "Use only with 'mjoint' model objects.")
   expect_error(ranef.mjoint(1), "Use only with 'mjoint' model objects.")
@@ -214,11 +214,17 @@ test_that("argument not an mjoint object", {
   expect_error(sigma.mjoint(1), "Use only with 'mjoint' model objects.")
   expect_error(logLik.mjoint(1), "Use only with 'mjoint' model objects.")
   expect_error(print.mjoint(1), "Use only with 'mjoint' model objects.")
+  expect_error(baseHaz(1), "Use only with 'mjoint' model objects.")
+  expect_error(sampleData(1), "Use only with 'mjoint' model objects.")
+  expect_error(print.dynSurv(1), "Use only with 'dynSurv' objects.")
+  expect_error(print.dynLong(1), "Use only with 'dynLong' objects.")
+  expect_error(plot.dynSurv(1), "Use only with 'dynSurv' objects.")
+  expect_error(plot.dynLong(1), "Use only with 'dynLong' objects.")
+  expect_error(print.summary.mjoint(1), "Use only with 'summary.mjoint' objects.")
 })
 
 
 test_that("argument not a summary.mjoint object", {
-  expect_error(print.summary.mjoint(1), "Use only with 'summary.mjoint' objects.")
 })
 
 

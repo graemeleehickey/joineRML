@@ -25,7 +25,8 @@ test_that("simulated data: int", {
   beta <- rbind(c(0.5, 2, 1, 1),
                 c(2, 2, -0.5, -1))
   sim <- simData(n = 250, beta = beta, sigma2 = c(0.25, 0.25),
-                 censlam = exp(-0.2), gamma.y = c(-0.2, 1), ntms = 8)
+                 censlam = exp(-0.2), gamma.y = c(-0.2, 1), ntms = 8,
+                 model = "int")
   # tests
   expect_is(sim, "list")
   expect_output(str(sim), "List of 2")
@@ -45,7 +46,7 @@ test_that("convergence plots", {
     formSurv = Surv(years, status2) ~ age,
     data = pbc2,
     timeVar = "year",
-    control = list(convCrit = "abs", tol0 = 1e-02, burnin = 20),
+    control = list(convCrit = "abs", tol0 = 5e-03, burnin = 20),
     verbose = FALSE)
   # tests
   expect_silent(plotConvergence(fit, params = "gamma"))
@@ -53,10 +54,11 @@ test_that("convergence plots", {
   expect_silent(plot(fit, type = "convergence", params = "gamma"))
   expect_silent(plot(fit, type = "convergence", params = "D"))
   expect_silent(plot(fit, type = "convergence", params = "sigma2"))
+  expect_silent(plot(fit, type = "convergence", params = "loglik", discard = TRUE))
 })
 
 
-test_that("ranef plots", {
+test_that("ranef plots + sampling", {
   # load data + fit model
   data(heart.valve)
   hvd <- heart.valve[!is.na(heart.valve$log.grad) & !is.na(heart.valve$log.lvmi), ]
@@ -70,6 +72,7 @@ test_that("ranef plots", {
   p <- plot(ranef(fit1, postVar = TRUE))
   # tests
   expect_true(is.ggplot(p))
+  expect_error(sampleData(fit1, size = 1000, replace = FALSE), "Cannot select more subjects than in data without replacement")
 })
 
 
@@ -107,10 +110,15 @@ test_that("dynamic predictions, residuals, fitted values, baseline hazard", {
   # tests: residuals + fitted values
   expect_output(str(resid(fit2, level = 0)), "List of 2")
   expect_output(str(resid(fit2, level = 1)), "List of 2")
-  expect_output(str(fitted(fit2)), "List of 2")
+  expect_output(str(fitted(fit2, level = 0)), "List of 2")
+  expect_output(str(fitted(fit2, level = 1)), "List of 2")
+  expect_error(fitted(fit2, level = 3))
   expect_equal(names(resid(fit2)), c("grad", "lvmi"))
   # tests: baseline hazard
   expect_is(baseHaz(fit2), "data.frame")
   expect_is(baseHaz(fit2, centered = FALSE), "data.frame")
+  # tests: missingg damts
+  fit2$dmats <- NULL
+  expect_error(fitted(fit2))
 })
 
