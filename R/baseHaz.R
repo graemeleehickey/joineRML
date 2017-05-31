@@ -8,6 +8,8 @@
 #' @param centered logical: should the baseline hazard be for the mean-centered
 #'   covariates model or not? Default is \code{centered=TRUE}. See
 #'   \strong{Details}.
+#' @param se logical: should standard errors be approximated for the hazard
+#'   increments? Default is \code{se=FALSE}.
 #'
 #' @details When covariates are included in the time-to-event sub-model,
 #'   \code{\link{mjoint}} automatically centers them about their respective
@@ -18,8 +20,8 @@
 #'   the baseline hazard increments from \code{\link{mjoint.object}} returns the
 #'   Breslow hazard estimate (Lin, 2007) that corresponds to this mean-centered
 #'   model. This is the same as is done in the R \code{survival} package when
-#'   using \code{\link[survival]{coxph.detail}} (Therneau and Grambsh, 2000). If
-#'   the user wants to access the baseline hazard estimate for the model in
+#'   using \code{\link[survival]{coxph.detail}} (Therneau and Grambsch, 2000).
+#'   If the user wants to access the baseline hazard estimate for the model in
 #'   which no mean-centering is applied, then they can use this function, which
 #'   scales the mean-centered baseline hazard by
 #'
@@ -40,8 +42,9 @@
 #' Lin DY. On the Breslow estimator. \emph{Lifetime Data Anal.} 2007;
 #' \strong{13(4)}: 471-480.
 #'
-#' @return A \code{data.frame} with 2 columns: the unique failure times and the
-#'   estimate baseline hazard.
+#' @return A \code{data.frame} with two columns: the unique failure times and
+#'   the estimate baseline hazard. If \code{se=TRUE}, then a third column is
+#'   appended with the corresponding standard errors (for the centred case).
 #' @export
 #'
 #' @examples
@@ -64,7 +67,7 @@
 #'     verbose = TRUE)
 #' baseHaz(fit2, centered = FALSE)
 #' }
-baseHaz <- function(object, centered = TRUE) {
+baseHaz <- function(object, centered = TRUE, se = FALSE) {
 
   if (!inherits(object, "mjoint")) {
     stop("Use only with 'mjoint' model objects.\n")
@@ -73,6 +76,7 @@ baseHaz <- function(object, centered = TRUE) {
   times <- object$dmats$t$tj
   haz <- object$coefficients$haz
   q <- object$dims$q
+  nev <- object$dmats$t$nev
 
   if ((q == 0) && centered) {
     warning("No covariates in model to centre.\n")
@@ -85,6 +89,14 @@ baseHaz <- function(object, centered = TRUE) {
   }
 
   out <- data.frame("time" = times, "haz" = haz)
+
+  if (se) {
+    if (!centered) {
+      stop("Can only estimate standard errors for the centered case.\n")
+    }
+    out$se <- 1 / sqrt(nev / (haz^2))
+  }
+
   return(out)
 
 }

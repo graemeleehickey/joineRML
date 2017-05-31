@@ -4,7 +4,7 @@
 \alias{baseHaz}
 \title{The baseline hazard estimate of an \code{mjoint} object}
 \usage{
-baseHaz(object, centered = TRUE)
+baseHaz(object, centered = TRUE, se = FALSE)
 }
 \arguments{
 \item{object}{an object inheriting from class \code{mjoint} for a joint model
@@ -13,10 +13,14 @@ of time-to-event and multivariate longitudinal data.}
 \item{centered}{logical: should the baseline hazard be for the mean-centered
 covariates model or not? Default is \code{centered=TRUE}. See
 \strong{Details}.}
+
+\item{se}{logical: should standard errors be approximated for the hazard
+increments? Default is \code{se=FALSE}.}
 }
 \value{
-A \code{data.frame} with 2 columns: the unique failure times and the
-  estimate baseline hazard.
+A \code{data.frame} with two columns: the unique failure times and
+  the estimate baseline hazard. If \code{se=TRUE}, then a third column is
+  appended with the corresponding standard errors (for the centred case).
 }
 \description{
 This function returns the (baseline) hazard increment from a
@@ -33,8 +37,8 @@ When covariates are included in the time-to-event sub-model,
   the baseline hazard increments from \code{\link{mjoint.object}} returns the
   Breslow hazard estimate (Lin, 2007) that corresponds to this mean-centered
   model. This is the same as is done in the R \code{survival} package when
-  using \code{\link[survival]{coxph.detail}} (Therneau and Grambsh, 2000). If
-  the user wants to access the baseline hazard estimate for the model in
+  using \code{\link[survival]{coxph.detail}} (Therneau and Grambsch, 2000).
+  If the user wants to access the baseline hazard estimate for the model in
   which no mean-centering is applied, then they can use this function, which
   scales the mean-centered baseline hazard by
 
