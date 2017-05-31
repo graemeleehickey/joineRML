@@ -164,7 +164,7 @@ The updates require expectations about the random effects be calculated of the f
 
 \subsubsection{M-step details}
 
-The M-step estimators naturally follow from \textcite{Wulfsohn1997} and \textcite{Lin2002}. The baseline hazard function $\lambda_0(t)$ is estimated in closed-form using the Breslow estimator:
+The M-step estimators naturally follow from \textcite{Wulfsohn1997} and \textcite{Lin2002}. The baseline hazard is estimated in closed-form using the Breslow estimator, with jump size:
 %
 \begin{equation}\label{eqn:hazard_update}
 	\hat{\lambda}_0(t) = \frac{\sum_{i=1}^n \delta_i I(T_i = t)}{\sum_{i=1}^n \mathbb{E}\left[\exp\left\{v_i^\top \gamma_v + W_{2i}(t, b_i)\right\}\right]I(T_i \geq t)},
@@ -278,10 +278,10 @@ We consider two standard error (SE) estimators:
 		        s_i\left(\theta_{-\lambda_0}, \hat{\lambda}_0(t \given \theta_{-\lambda_0})\right),
 	        \end{equation*}
 	        %
-	        where $\lambda_0(t)$ is substituted by $\hat{\lambda}_0(t)$, which is a function of $\gamma$ (and implicitly, the other parameters via the conditional expectation in the E-step, \eqref{eqn:expectation}) given by \eqref{eqn:hazard_update}. Therefore, we do not calculate approximate SEs for the baseline hazard function; however, this is generally not of inferential interest, hence the application of the Cox model formulation in the first place.
+	        where $\lambda_0(t)$ is substituted by $\hat{\lambda}_0(t)$, which is a function of $\gamma$ (and implicitly, the other parameters via the conditional expectation in the E-step, \eqref{eqn:expectation}) given by \eqref{eqn:hazard_update}. Therefore, we do not calculate approximate SEs for the baseline hazard; however, this is generally not of inferential interest, hence the application of the Cox model formulation in the first place.
 	        %
 	\item \textbf{Bootstrap estimated SEs.}
-			These are estimated by sampling $n$ subjects with replacement and re-labelling the subjects with indices $i^\prime = 1, \dots, n$. We then re-fit the model to the bootstrap-sampled dataset. It is important to note that we re-sample patients, not individual data points. This is repeated $B$-times. For each iteration, we extract the model parameter estimates for $(\beta^\top, \text{vech}(D), \sigma_1^2, \dots, \sigma_K^2, \gamma_v^\top, \gamma_y^\top)$. Note that as the the event times might be tied, the dimension of the baseline of $\lambda_0(t)$ will vary for each iteration; therefore, we do not consider standard error estimates of the baseline hazard function. When $B$ is sufficiently large, the SEs can be estimated from the estimated coefficients. Alternatively, $100(1-\alpha)$\%-confidence intervals can be estimated from the the $100\alpha/2$-th and $100(1-\alpha/2)$-th percentiles.
+			These are estimated by sampling $n$ subjects with replacement and re-labelling the subjects with indices $i^\prime = 1, \dots, n$. We then re-fit the model to the bootstrap-sampled dataset. It is important to note that we re-sample patients, not individual data points. This is repeated $B$-times. For each iteration, we extract the model parameter estimates for $(\beta^\top, \text{vech}(D), \sigma_1^2, \dots, \sigma_K^2, \gamma_v^\top, \gamma_y^\top)$. Note that as the the event times might be tied, the dimension of $\lambda_0(t)$ evaluated at the unique failure times will vary for each iteration; therefore, for simplicity, we do not consider standard error estimates of the baseline hazard. When $B$ is sufficiently large, the SEs can be estimated from the estimated coefficients. Alternatively, $100(1-\alpha)$\%-confidence intervals can be estimated from the the $100\alpha/2$-th and $100(1-\alpha/2)$-th percentiles.
 			%
 \end{enumerate}
 %
@@ -368,7 +368,7 @@ The score equations for $\gamma_v$ and $\gamma_y$ don't have closed-form solutio
 	&=& \sum_{i=1}^n \left[\delta_i \mathbb{E}\left[\tilde{v}_i(T_i)\right] - \sum_{j=1}^J\lambda_0(t_j)\mathbb{E}\left[\tilde{v}_i(t_j)\exp\{\tilde{v}_i(t_j)^\top \gamma\}\right]I(T_i \geq t_j)\right],
 \end{eqnarray*}
 %
-where $\tilde{v}_i(t) = \left(v_i^\top, z_{i1}^\top(t) b_{i1}, \dots, z_{iK}^\top(t) b_{iK}\right)$ is a $(q+K)$-vector, and the integration over the survival process has been replaced with a finite summation over the process evaluated at the unique failure times, since the non-parametric estimator of baseline hazard function is zero except at observed failure times \cite{Henderson2000}. As $\lambda_0(t_j)$ is a function of $\gamma$, this is not a closed-form solution. Substituting $\lambda_0(t)$ by $\hat{\lambda}_0(t)$ from \eqref{eqn:hazard_update}, which is a function of $\gamma$ and the observed data itself, gives a score that is independent of $\lambda_0(t)$. Discussion of this in the context of univariate joint modelling is given by \textcite{Hsieh2006}. A useful result is that the maximum profile likelihood estimator is the same as the maximum partial likelihood estimator \cite{Lin2000}.
+where $\tilde{v}_i(t) = \left(v_i^\top, z_{i1}^\top(t) b_{i1}, \dots, z_{iK}^\top(t) b_{iK}\right)$ is a $(q+K)$-vector, and the integration over the survival process has been replaced with a finite summation over the process evaluated at the unique failure times, since the non-parametric estimator of baseline hazard is zero except at observed failure times \cite{Henderson2000}. As $\lambda_0(t_j)$ is a function of $\gamma$, this is not a closed-form solution. Substituting $\lambda_0(t)$ by $\hat{\lambda}_0(t)$ from \eqref{eqn:hazard_update}, which is a function of $\gamma$ and the observed data itself, gives a score that is independent of $\lambda_0(t)$. Discussion of this in the context of univariate joint modelling is given by \textcite{Hsieh2006}. A useful result is that the maximum profile likelihood estimator is the same as the maximum partial likelihood estimator \cite{Lin2000}.
 
 The observed information matrix for $\gamma$ is calculated by taking the partial derivative of the score above (with $\lambda_0(t)$ substituted by $\hat{\lambda}_0(t_j)$ defined by \eqref{eqn:hazard_update}), and is given by
 %

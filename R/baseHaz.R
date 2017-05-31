@@ -1,8 +1,8 @@
-#' The baseline hazard function estimate of an \code{mjoint} object
+#' The baseline hazard estimate of an \code{mjoint} object
 #'
-#' @description This function returns the baseline hazard function from a fitted
-#'   \code{mjoint} object. In addition, it can report the \emph{uncentered}
-#'   version.
+#' @description This function returns the (baseline) hazard increment from a
+#'   fitted \code{mjoint} object. In addition, it can report either the
+#'   \emph{uncentered} or the more ubiquitous \emph{centered} version.
 #'
 #' @inheritParams confint.mjoint
 #' @param centered logical: should the baseline hazard be for the mean-centered
@@ -14,14 +14,14 @@
 #'   means. This also applies to non-continuous covariates, which are first
 #'   coded using a dummy-transformation for the design matrix and subsequently
 #'   centered. The reason for the mean-centering is to improve numerial
-#'   statbility, as the survival function involves exponenetial terms.
-#'   Extracting the baseline hazard function from \code{\link{mjoint.object}}
-#'   returns the Breslow hazard estimate (Lin, 2007). that corresponds to this
-#'   mean-centered model. This is the same as is done in the R \code{survival}
-#'   package when using \code{\link[survival]{coxph.detail}} (Therneau and
-#'   Grambsh, 2000). If the user wants to access the baseline hazard estimate
-#'   for the model in which no mean-centering is applied, then they can use this
-#'   function, which scales the mean-centered baseline hazard by
+#'   statbility, as the survival function involves exponential terms. Extracting
+#'   the baseline hazard increments from \code{\link{mjoint.object}} returns the
+#'   Breslow hazard estimate (Lin, 2007) that corresponds to this mean-centered
+#'   model. This is the same as is done in the R \code{survival} package when
+#'   using \code{\link[survival]{coxph.detail}} (Therneau and Grambsh, 2000). If
+#'   the user wants to access the baseline hazard estimate for the model in
+#'   which no mean-centering is applied, then they can use this function, which
+#'   scales the mean-centered baseline hazard by
 #'
 #'   \deqn{\exp\{-\bar{w}^\top \gamma_v\},}
 #'
