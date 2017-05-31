@@ -115,7 +115,7 @@ test_that("dynamic predictions, residuals, fitted values, baseline hazard", {
   expect_error(fitted(fit2, level = 3))
   expect_equal(names(resid(fit2)), c("grad", "lvmi"))
   # tests: baseline hazard
-  expect_is(baseHaz(fit2), "data.frame")
+  expect_is(baseHaz(fit2, se = TRUE), "data.frame")
   expect_is(baseHaz(fit2, centered = FALSE), "data.frame")
   # tests: missingg damts
   fit2$dmats <- NULL
