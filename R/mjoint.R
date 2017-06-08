@@ -312,6 +312,7 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
   # Preamble
   #*****************************************************
 
+  time.start <- Sys.time()
   Call <- match.call()
   balanced <- FALSE # assume unless proven o/w
 
@@ -648,7 +649,7 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
   Delta.vec <- rep(NA, con$mcmaxIter)
   ll.hx <- rep(NA, con$mcmaxIter)
   cv.old <- 0
-  time.start <- Sys.time()
+  time.em.start <- Sys.time()
 
   nMC <- con$nMC
   nmc.iters <- c()
@@ -790,11 +791,14 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
 
   # Time
   time.end <- Sys.time()
-  time.diff <- time.end - time.start
+  time.diff <- c("Total" = time.end - time.start,
+                 "EM" = time.end - time.em.start)
   out$comp.time <- time.diff
   if (verbose) {
-    cat(paste("EM algorithm took", round(as.numeric(time.diff), 1),
-              attr(time.diff, "units"), "\n\n"))
+    cat(paste("Total time taken:", round(as.numeric(time.diff[1]), 1),
+              attr(time.diff[1], "units"), "\n"))
+    cat(paste("EM algorithm took", round(as.numeric(time.diff[2]), 1),
+              attr(time.diff[2], "units"), "\n\n"))
   }
 
   class(out) <- "mjoint"

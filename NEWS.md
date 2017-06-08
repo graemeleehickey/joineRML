@@ -12,6 +12,8 @@
 
 * Added a function `baseHaz()` for extracting the centered and uncetered estimates of the baseline hazard function.
 
+* `print()` and `summary()` now report the total computation time in addition to just the EM algorithm time. This was deemed useful after some examples showed that the time to get initial values was more expensive than the time for the MCEM algorithm to converge.
+
 ## Bug patches
 
 * Fixed a bug that prevented models being fitted with no covariates in the survival sub-model, i.e. `Surv() ~ 1`.
