@@ -99,8 +99,10 @@ print.summary.mjoint <- function(x, digits = max(4, getOption("digits") - 4), ..
 
   cat("\nAlgorithm Summary:\n")
 
-  cat("    EM algorithm computational time:", round(x$comp.time, 1),
-      attr(x$comp.time, "units"), "\n")
+  cat("    Total computational time:", round(x$comp.time[1], 1),
+      attr(x$comp.time[1], "units"), "\n")
+  cat("    EM algorithm computational time:", round(x$comp.time[2], 1),
+      attr(x$comp.time[2], "units"), "\n")
   cat("    Convergence status:", ifelse(x$conv, "converged\n", "failed\n"))
   cat("    Convergence criterion:", x$control$convCrit, "\n")
   cat("    Final Monte Carlo sample size:", x$finalnMC, "\n")

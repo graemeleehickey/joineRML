@@ -117,7 +117,7 @@ dynLong <- function(object, newdata, newSurvData = NULL, u = NULL,
   }
 
   # Get posterior mode of [b | data, theta]
-  b.hat <- b.mode(data = data.t, theta = object$coefficients)
+  b.hat <- b_mode(data = data.t, theta = object$coefficients)
 
   # Extrapolated data
   newdata2 <- list()

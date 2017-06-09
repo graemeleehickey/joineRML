@@ -2,9 +2,9 @@
 
 ## New features
 
-* Added new function `dynSurv()`, which generates survival probabilities for a new subject conditional on their last measurement time and longitudial history.
+* Added new function `dynSurv()`, which generates survival probabilities for a new subject conditional on their last measurement time and longitudial history. Prediction can be implemented using either a first order approximation or a Monte Carlo simulation approach.
 
-* Added new function `dynLong()`, which generates expected longitudinal predictions for a new subject conditional on their last measurement time and longitudial history.
+* Added new function `dynLong()`, which generates expected longitudinal predictions for a new subject conditional on their last measurement time and longitudial history. Prediction can be implemented using a first order approximation.
 
 * Added an associated `print()` method for `dynSurv` and `dynLong` objects.
 

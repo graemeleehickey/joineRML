@@ -33,7 +33,7 @@ When covariates are included in the time-to-event sub-model,
   means. This also applies to non-continuous covariates, which are first
   coded using a dummy-transformation for the design matrix and subsequently
   centered. The reason for the mean-centering is to improve numerial
-  statbility, as the survival function involves exponential terms. Extracting
+  stability, as the survival function involves exponential terms. Extracting
   the baseline hazard increments from \code{\link{mjoint.object}} returns the
   Breslow hazard estimate (Lin, 2007) that corresponds to this mean-centered
   model. This is the same as is done in the R \code{survival} package when

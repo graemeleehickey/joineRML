@@ -13,6 +13,12 @@
 #'   \code{\link[graphics]{title}}.
 #' @param grid adds a rectangular grid to an existing plot: see
 #'   \code{\link[graphics]{grid}}.
+#' @param estimator a character string that can take values \code{mean} or
+#'   \code{median} to specify what prediction statistic is plotted from an
+#'   objecting inheritting of class \code{dynSurv}. Default is
+#'   \code{estimator='median'}. This argument is ignored for non-simulated
+#'   \code{dynSurv} objects, i.e. those of \code{type='first-order'}, as in that
+#'   case a mode-based prediction is plotted.
 #' @param ... additional plotting arguments;.
 #'
 #' @author Graeme L. Hickey (\email{graeme.hickey@@liverpool.ac.uk})
@@ -48,11 +54,18 @@
 #'     verbose = TRUE)
 #'
 #' hvd2 <- droplevels(hvd[hvd$num == 1, ])
-#' out <- dynSurv(fit2, hvd2)
-#' plot(out, main = "Patient 1")
+#' out1 <- dynSurv(fit2, hvd2)
+#' plot(out1, main = "Patient 1")
+#' }
+#'
+#' \dontrun{
+#' # Monte Carlo simulation with 95% confidence intervals on plot
+#'
+#' out2 <- dynSurv(fit2, hvd2, type = "simulated", M = 200)
+#' plot(out2, main = "Patient 1")
 #' }
 plot.dynSurv <- function(x, main = NULL, xlab = NULL, ylab1 = NULL,
-                         ylab2 = NULL, grid = TRUE, ...) {
+                         ylab2 = NULL, grid = TRUE, estimator, ...) {
 
   if (!inherits(x, "dynSurv")) {
     stop("Use only with 'dynSurv' objects.\n")
@@ -100,20 +113,50 @@ plot.dynSurv <- function(x, main = NULL, xlab = NULL, ylab1 = NULL,
     if (grid) {
       grid()
     }
+  }
 
+  ylim <- NULL
+  if (x$type == "simulated") {
+    ylim <- c(min(pred$lower), max(pred$upper))
   }
 
   # Plot survival distribution
   par(mar = c(0, 0, 0, 4.5))
-  plot(pred$u, pred$surv,
+  xpts <- pred$u
+  if (x$type == "first-order") {
+    ypts <- pred$surv
+  } else if (x$type == "simulated") {
+    if (missing(estimator) || estimator == "median") {
+      ypts <- pred$median
+    } else if (estimator == "mean") {
+      ypts <- pred$mean
+    } else {
+      stop("estimator must be equal to 'mean' or 'median'\n")
+    }
+  }
+  plot(xpts, ypts,
        yaxt = "n",
        xaxs = "i",
        xlim = c(data.t$tobs, 1.04 * max(pred$u)),
+       ylim = ylim,
        type = "s",
        las = 1)
+  if (x$type == "simulated") { # CIs for MC simulated predictions only
+    n <- length(xpts)
+    xpts2 <- rep(c(xpts, rev(xpts)), each = 2)
+    xpts2 <- xpts2[-c(2*n, 2*n + 1)]
+    ypts2 <- c(rep(pred$lower, each = 2)[-1], rep(rev(pred$upper), each = 2)[-2*n])
+    polygon(x = xpts2, y = ypts2,
+            #x = c(xpts, rev(xpts)), y = c(pred$lower, rev(pred$upper)),
+            col = "lightgrey",
+            border = "lightgrey",
+            lwd = 2)
+    lines(xpts, ypts, type = "s")
+  }
   axis(4, las = 1)
   if (grid) {
     grid()
+    grid(col = "white")
   }
   abline(v = data.t$tobs, col = "white", lwd = 3, xpd = NA)
   abline(v = data.t$tobs, col = "darkgrey", lty = "dotted", lwd = 3, xpd = FALSE)

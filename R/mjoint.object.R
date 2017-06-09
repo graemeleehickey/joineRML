@@ -107,9 +107,10 @@
 #'   \item{\code{conv}}{logical: did the MCEM algorithm converge within the
 #'   specified maximum number of iterations?}
 #'
-#'   \item{\code{comp.time}}{a vector of length 2 with each element an object of class \code{difftime}
-#'   that reports the \emph{total} time taken for model fitting (including all
-#'   stages) and the time spent in the \emph{EM algorithm}.}
+#'   \item{\code{comp.time}}{a vector of length 2 with each element an object of
+#'   class \code{difftime} that reports the \emph{total} time taken for model
+#'   fitting (including all stages) and the time spent in the \emph{EM
+#'   algorithm}.}
 #'
 #'   }
 #'

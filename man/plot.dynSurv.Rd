@@ -5,7 +5,7 @@
 \title{Plot a \code{dynSurv} object}
 \usage{
 \method{plot}{dynSurv}(x, main = NULL, xlab = NULL, ylab1 = NULL,
-  ylab2 = NULL, grid = TRUE, ...)
+  ylab2 = NULL, grid = TRUE, estimator, ...)
 }
 \arguments{
 \item{x}{an object of class \code{dynSurv} calculated by the
@@ -23,6 +23,13 @@ outcomes y-axes: see \code{\link[graphics]{title}}.}
 
 \item{grid}{adds a rectangular grid to an existing plot: see
 \code{\link[graphics]{grid}}.}
+
+\item{estimator}{a character string that can take values \code{mean} or
+\code{median} to specify what prediction statistic is plotted from an
+objecting inheritting of class \code{dynSurv}. Default is
+\code{estimator='median'}. This argument is ignored for non-simulated
+\code{dynSurv} objects, i.e. those of \code{type='first-order'}, as in that
+case a mode-based prediction is plotted.}
 
 \item{...}{additional plotting arguments;.}
 }
@@ -52,8 +59,15 @@ fit2 <- mjoint(
     verbose = TRUE)
 
 hvd2 <- droplevels(hvd[hvd$num == 1, ])
-out <- dynSurv(fit2, hvd2)
-plot(out, main = "Patient 1")
+out1 <- dynSurv(fit2, hvd2)
+plot(out1, main = "Patient 1")
+}
+
+\dontrun{
+# Monte Carlo simulation with 95\% confidence intervals on plot
+
+out2 <- dynSurv(fit2, hvd2, type = "simulated", M = 200)
+plot(out2, main = "Patient 1")
 }
 }
 \references{

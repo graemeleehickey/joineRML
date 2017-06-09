@@ -1,0 +1,66 @@
+#' @keywords internal
+b_mode <- function(theta, data) {
+
+  out <- optim(par = rep(0, sum(data$r)),
+               fn = logpb,
+               theta = theta,
+               data = data,
+               control = list(fnscale = -1),
+               method = "BFGS",
+               hessian = TRUE)
+
+  return(out)
+
+}
+
+
+#' @keywords internal
+#' @importFrom Matrix nearPD
+#' @importFrom mvtnorm rmvnorm
+#' @importFrom utils relist as.relistable
+theta_draw <- function(object) {
+
+  # Mean
+  theta.mean <- coef(object)
+  theta.mean <- theta.mean[-which(names(theta.mean) == "haz")]
+  D.inds <- which(lower.tri(theta.mean[["D"]], diag = TRUE), arr.ind = TRUE)
+  theta.mean[["D"]] <- theta.mean[["D"]][D.inds]
+
+  # Variance
+  theta.var <- vcov(object)
+
+  theta.samp <- mvtnorm::rmvnorm(n = 1,
+                                 mean = unlist(as.relistable(theta.mean)),
+                                 sigma = theta.var)
+  theta.samp <- relist(theta.samp, skeleton = theta.mean)
+  D <- matrix(0, nrow = max(D.inds), ncol = max(D.inds))
+  D[D.inds] <- theta.samp[["D"]]
+  D <- D + t(D) - diag(diag(D))
+  D <- Matrix::nearPD(D)
+  theta.samp[["D"]] <- as.matrix(D$mat)
+
+  # Baseline hazard
+  haz <- baseHaz(object, se = TRUE)
+  haz.samp <- rnorm(nrow(haz), mean = haz$haz, sd = haz$se)
+  haz.samp <- pmax(haz.samp, 0)
+
+  theta.samp[["haz"]] <- haz.samp
+  return(theta.samp)
+
+}
+
+
+#' @keywords internal
+#' @importFrom mvtnorm rmvt
+b_draw <- function(object, theta, data, scale) {
+
+  b.hat <- b_mode(theta, data)
+
+  b.prop <- mvtnorm::rmvt(n = 1,
+                          delta = b.hat$par,
+                          sigma = -solve(b.hat$hessian) * scale,
+                          df = 4)
+
+  return(as.vector(b.prop))
+
+}

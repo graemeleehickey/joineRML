@@ -4,7 +4,8 @@
 \alias{dynSurv}
 \title{Dynamic predictions for the time-to-event data sub-model}
 \usage{
-dynSurv(object, newdata, newSurvData = NULL, u = NULL)
+dynSurv(object, newdata, newSurvData = NULL, u = NULL,
+  type = "first-order", M = 200, scale = 2, ci, progress = TRUE)
 }
 \arguments{
 \item{object}{an object inheriting from class \code{mjoint} for a joint model
@@ -30,12 +31,37 @@ required for dynamic prediction. Defaults to \code{newSurvData=NULL}.}
 measurement time. If omitted (default is \code{u=NULL}), then conditional
 failure probabilities are reported for all observed failure times in the
 \code{mjoint} object data.}
+
+\item{type}{a character string for whether a first-order
+(\code{type="first-order"}) or Monte Carlo simulation approach
+(\code{type="simulated"}) should be used for the dynamic prediction.
+Defaults to the computationally faster first-order prediction method.}
+
+\item{M}{for \code{type="simulated"}, the number of simulations to performs.
+Default is \code{M=200}.}
+
+\item{scale}{a numeric scalar that scales the variance parameter of the
+proposal distribution for the Metropolis-Hastings algorithm, which
+therefore controls the acceptance rate of the sampling algorithm.}
+
+\item{ci}{a numeric value with value in the interval \eqn{(0, 1)} specifying
+the confidence interval level for predictions of \code{type='simulated'}.
+If missing, defaults to \code{ci=0.95} for a 95\% confidence interval. If
+\code{type='first-order'} is used, then this argument is ignored.}
+
+\item{progress}{logical: should a progress bar be shown on the console to
+indicate the percentage of simulations completed? Default is
+\code{progress=TRUE}.}
 }
 \value{
 A list object inheriting from class \code{dynSurv}. The list returns
-  the arguments of the function and a \code{data.frame} of 2 columns, with
-  first column (named \code{u}) denoting times and the second column (named
-  \code{surv}) denoting the conditional failure probability.
+  the arguments of the function and a \code{data.frame} with first column
+  (named \code{u}) denoting times and the subsequent columns returning
+  summary statistics for the conditional failure probabilities For
+  \code{type="first-order"}, a single column named \code{surv} is appended.
+  For \code{type="simulated"}, four columns named \code{mean}, \code{median},
+  \code{lower} and \code{upper} are appended, denoting the mean, median and
+  lower and upper confidence intervals from the Monte Carlo draws.
 }
 \description{
 Calculates the conditional time-to-event distribution for a
@@ -45,22 +71,46 @@ Calculates the conditional time-to-event distribution for a
 \details{
 Dynamic predictions for the time-to-event data sub-model based on an
   observed measurement history for the longitudinal outcomes of a new subject
-  are based on a first-order approximation described in Rizopoulos (2011).
-  Namely, given that the subject was last observed at time \emph{t}, we
-  calculate the conditional survival probability at time \eqn{u > t} as
+  are based on either a first-order approximation or Monte Carlo simulation
+  approach, both of which are described in Rizopoulos (2011). Namely, given
+  that the subject was last observed at time \emph{t}, we calculate the
+  conditional survival probability at time \eqn{u > t} as
 
-  \deqn{P[T \ge u | T \ge t; y, \theta] \approx
-  \frac{S(u | \hat{b}; \theta)}{S(t | \hat{b}; \theta)},}
+  \deqn{P[T \ge u | T \ge t; y, \theta] \approx \frac{S(u | \hat{b};
+  \theta)}{S(t | \hat{b}; \theta)},}
 
   where \eqn{T} is the failure time for the new subject, \eqn{y} is the
-  stacked-vector of longitudinal measurements up to time \emph{t}, \eqn{S(u |
-  \hat{b}; \theta)} is the survival function, and \eqn{\hat{b}} is the mode
+  stacked-vector of longitudinal measurements up to time \emph{t} and
+  \eqn{S(u | \hat{b}; \theta)} is the survival function.
+
+  \strong{First order predictions}
+
+  For \code{type="first-order"}, \eqn{\hat{b}} is the mode
   of the posterior distribution of the random effects given by
 
   \deqn{\hat{b} = {\arg \max}_b f(b | y, T \ge t; \theta).}
 
   The predictions are based on plugging in \eqn{\theta = \hat{\theta}}, which
   is extracted from the \code{mjoint} object.
+
+  \strong{Monte Carlo simulation predictions}
+
+  For \code{type="simulated"}, \eqn{\theta} is drawn from a multivariate
+  normal distribution with means \eqn{\hat{\theta}} and variance-covariance
+  matrix both extracted from the fitted \code{mjoint} object via the
+  \code{coef()} and \code{vcov()} functions. \eqn{\hat{b}} is drawn from the
+  the posterior distribution of the random effects
+
+  \deqn{f(b | y, T \ge t; \theta)}
+
+  by means of a Metropolis-Hasting algorithm with independent multivariate
+  non-central \emph{t}-distribution proposal distributions with
+  non-centrality parameter \eqn{\hat{b}} from the first-order prediction and
+  variance-covariance matrix equal to \code{scale} \eqn{\times} the inverse
+  of the negative Hessian of the posterior distribution. The choice os
+  \code{scale} can be used to tune the acceptance rate of the
+  Metropolis-Hastings sampler. This simulation algorithm is iterated \code{M}
+  times, at each time calculating the conditional survival probability.
 }
 \examples{
 \dontrun{
@@ -83,6 +133,7 @@ fit2 <- mjoint(
 hvd2 <- droplevels(hvd[hvd$num == 1, ])
 dynSurv(fit2, hvd2)
 dynSurv(fit2, hvd2, u = 7) # survival at 7-years only
+dynSurv(fit2, hvd2, type = "simulate", M = 2)
 }
 }
 \references{
