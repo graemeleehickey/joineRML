@@ -70,7 +70,7 @@ print.summary.mjoint <- function(x, digits = max(4, getOption("digits") - 4), ..
   print(x$D)
 
   sigma <- x$sigma
-  cat("\nResidual standard errors:\n")
+  cat("\nResidual standard deviation(s):\n")
   print(sigma)
 
   #*****************************************************
