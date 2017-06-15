@@ -276,21 +276,20 @@ fit.joineRML <- mjoint(
     formLongRandom = list("log.bil" = ~ 1 | id),
     formSurv = Surv(years, status2) ~ age,
     data = pbc2,
-    timeVar = "year",
-    control = list(convCrit = "sas", rav = 0.01),
-    verbose = TRUE)
+    timeVar = "year")
 summary(fit.joineRML)
 
 # joineR package
-pbc.surv <- UniqueVariables(pbc2, var.col = c("years","status2"), id.col = "id")
+pbc.surv <- UniqueVariables(pbc2, var.col = c("years", "status2"),
+                            id.col = "id")
 pbc.long <- pbc2[, c("id", "year", "log.b")]
-pbc.cov <- UniqueVariables(pbc2, c("age", "drug"), id.col = "id")
+pbc.cov <- UniqueVariables(pbc2, "age", id.col = "id")
 pbc.jd <- jointdata(longitudinal = pbc.long, baseline = pbc.cov,
                     survival = pbc.surv, id.col = "id", time.col = "year")
 fit.joineR <- joint(data = pbc.jd,
     long.formula = log.b ~ 1 + year,
     surv.formula = Surv(years, status2) ~ age,
-    model = "intslope")
+    model = "int")
 summary(fit.joineR)
 }
 }
