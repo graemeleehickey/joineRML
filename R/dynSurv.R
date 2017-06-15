@@ -226,6 +226,7 @@ dynSurv <- function(object, newdata, newSurvData = NULL, u = NULL,
                               delta = delta.prop,
                               sigma = sigma.prop,
                               df = 4)
+      b.prop <- as.vector(b.prop)
       # Step 2ii: M-H acceptance
       log.a1 <- logpb(b.prop, theta.samp, data.t) - logpb(b.curr, object$coefficients, data.t)
       dens.curr <- mvtnorm::dmvt(x = b.curr,
@@ -239,9 +240,9 @@ dynSurv <- function(object, newdata, newSurvData = NULL, u = NULL,
                                  df = 4,
                                  log = TRUE)
       log.a2 <- dens.curr - dens.prop
-      log.a <- min(log.a1 - log.a2, 0)
-      log.u <- log(runif(1))
-      if (log.u <= log.a) {
+      a <- min(exp(log.a1 - log.a2), 1)
+      randu <- runif(1)
+      if (randu <= a) {
         b.curr <- b.prop
         accept <- accept + 1
       }
