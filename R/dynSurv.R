@@ -85,6 +85,7 @@
 #'
 #' @author Graeme L. Hickey (\email{graeme.hickey@@liverpool.ac.uk})
 #' @keywords survival
+#' @importFrom mvtnorm rmvt
 #' @seealso \code{\link{mjoint}}, \code{\link{dynLong}}, and
 #'   \code{\link{plot.dynSurv}}.
 #'
@@ -221,7 +222,10 @@ dynSurv <- function(object, newdata, newSurvData = NULL, u = NULL,
       # Step 1: draw theta
       theta.samp <- theta_draw(object)
       # Step 2i: draw b from proposal distribution
-      b.prop <- b_draw(object, theta.samp, data.t, scale)
+      b.prop <- mvtnorm::rmvt(n = 1,
+                              delta = delta.prop,
+                              sigma = sigma.prop,
+                              df = 4)
       # Step 2ii: M-H acceptance
       log.a1 <- logpb(b.prop, theta.samp, data.t) - logpb(b.curr, object$coefficients, data.t)
       dens.curr <- mvtnorm::dmvt(x = b.curr,
