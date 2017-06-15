@@ -42,25 +42,9 @@ theta_draw <- function(object) {
   # Baseline hazard
   haz <- baseHaz(object, se = TRUE)
   haz.samp <- rnorm(nrow(haz), mean = haz$haz, sd = haz$se)
-  haz.samp <- pmax(haz.samp, 0)
+  haz.samp <- pmax(haz.samp, min(1e-06, haz$haz))
 
   theta.samp[["haz"]] <- haz.samp
   return(theta.samp)
-
-}
-
-
-#' @keywords internal
-#' @importFrom mvtnorm rmvt
-b_draw <- function(object, theta, data, scale) {
-
-  b.hat <- b_mode(theta, data)
-
-  b.prop <- mvtnorm::rmvt(n = 1,
-                          delta = b.hat$par,
-                          sigma = -solve(b.hat$hessian) * scale,
-                          df = 4)
-
-  return(as.vector(b.prop))
 
 }
