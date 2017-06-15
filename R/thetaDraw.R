@@ -19,9 +19,14 @@ thetaDraw <- function(object) {
   theta.samp <- relist(theta.samp, skeleton = theta.mean)
   D <- matrix(0, nrow = max(D.inds), ncol = max(D.inds))
   D[D.inds] <- theta.samp[["D"]]
-  D <- D + t(D) - diag(diag(D))
-  D <- Matrix::nearPD(D)
-  theta.samp[["D"]] <- as.matrix(D$mat)
+  if (object$dims$r > 1) {
+    D <- D + t(D) - diag(diag(D))
+    D <- Matrix::nearPD(D)
+    theta.samp[["D"]] <- as.matrix(D$mat)
+  } else {
+    D <- max(D, 1e-08)
+    theta.samp[["D"]] <- D
+  }
 
   # Baseline hazard
   haz <- baseHaz(object, se = TRUE)

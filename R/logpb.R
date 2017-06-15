@@ -19,6 +19,9 @@ logpb <- function(b, theta, data) {
   sigma2 <- theta$sigma2
   haz <- theta$haz
   D <- theta$D
+  if (sum(r) == 1) {
+    D <- as.matrix(D)
+  }
 
   if (length(b) != sum(r)) {
     stop("Incorrect length of b")
