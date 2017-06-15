@@ -220,7 +220,7 @@ dynSurv <- function(object, newdata, newSurvData = NULL, u = NULL,
     surv <- matrix(nrow = length(u), ncol = M)
     for (m in 1:M) {
       # Step 1: draw theta
-      theta.samp <- theta_draw(object)
+      theta.samp <- thetaDraw(object)
       # Step 2i: draw b from proposal distribution
       b.prop <- mvtnorm::rmvt(n = 1,
                               delta = delta.prop,

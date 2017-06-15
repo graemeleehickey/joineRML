@@ -1,24 +1,8 @@
 #' @keywords internal
-b_mode <- function(theta, data) {
-
-  out <- optim(par = rep(0, sum(data$r)),
-               fn = logpb,
-               theta = theta,
-               data = data,
-               control = list(fnscale = -1),
-               method = "BFGS",
-               hessian = TRUE)
-
-  return(out)
-
-}
-
-
-#' @keywords internal
 #' @importFrom Matrix nearPD
 #' @importFrom mvtnorm rmvnorm
 #' @importFrom utils relist as.relistable
-theta_draw <- function(object) {
+thetaDraw <- function(object) {
 
   # Mean
   theta.mean <- coef(object)

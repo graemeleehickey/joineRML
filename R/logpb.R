@@ -58,7 +58,19 @@ logpb <- function(b, theta, data) {
 }
 
 
+#' @keywords internal
+b_mode <- function(theta, data) {
 
+  out <- optim(par = rep(0, sum(data$r)),
+               fn = logpb,
+               theta = theta,
+               data = data,
+               control = list(fnscale = -1),
+               method = "BFGS",
+               hessian = TRUE)
 
+  return(out)
+
+}
 
 
