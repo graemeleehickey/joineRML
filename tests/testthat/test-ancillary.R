@@ -38,6 +38,7 @@ test_that("simulated data: int", {
 
 test_that("convergence plots", {
   # load data + fit model
+  set.seed(1)
   data(pbc2)
   pbc2$log.b <- log(pbc2$serBilir)
   fit <- mjoint(
@@ -46,7 +47,7 @@ test_that("convergence plots", {
     formSurv = Surv(years, status2) ~ age,
     data = pbc2,
     timeVar = "year",
-    control = list(convCrit = "abs", tol0 = 5e-03, burnin = 20),
+    control = list(convCrit = "abs", tol0 = 5e-03, burnin = 5),
     verbose = FALSE)
   # tests
   expect_silent(plotConvergence(fit, params = "gamma"))
@@ -68,7 +69,7 @@ test_that("ranef plots + sampling", {
                  formSurv = Surv(fuyrs, status) ~ age,
                  data = hvd,
                  timeVar = "time",
-                 control = list(burnin = 20))
+                 control = list(burnin = 6))
   p <- plot(ranef(fit1, postVar = TRUE))
   # tests
   expect_true(is.ggplot(p))
@@ -80,6 +81,7 @@ test_that("dynamic predictions, residuals, fitted values, baseline hazard", {
   # load data + fit model
   data(heart.valve)
   hvd <- heart.valve[!is.na(heart.valve$log.grad) & !is.na(heart.valve$log.lvmi), ]
+  set.seed(1)
   fit2 <- mjoint(
     formLongFixed = list("grad" = log.grad ~ time + sex + hs,
                          "lvmi" = log.lvmi ~ time + sex),
@@ -88,9 +90,8 @@ test_that("dynamic predictions, residuals, fitted values, baseline hazard", {
     formSurv = Surv(fuyrs, status) ~ age,
     data = list(hvd, hvd),
     inits = list("gamma" = c(0.11, 1.51, 0.80)),
-    control = list("burnin" = 50, mcmaxIter = 150, tol0 = 1e-02),
-    timeVar = "time",
-    verbose = TRUE)
+    control = list("burnin" = 30, mcmaxIter = 120, tol0 = 1e-02),
+    timeVar = "time")
   hvd2 <- droplevels(hvd[hvd$num == 1, ])
   test1 <- dynLong(fit2, hvd2)
   test2 <- dynLong(fit2, hvd2, u = 7)
