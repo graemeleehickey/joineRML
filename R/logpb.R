@@ -77,3 +77,43 @@ b_mode <- function(theta, data) {
 }
 
 
+#' @keywords internal
+b_metropolis <- function(object, theta.samp, delta.prop, sigma.prop, b.curr, data.t) {
+
+  accept <- 0
+
+  # Draw b from proposal distribution
+  b.prop <- mvtnorm::rmvt(n = 1,
+                          delta = delta.prop,
+                          sigma = sigma.prop,
+                          df = 4)
+  b.prop <- as.vector(b.prop)
+
+  # Metropolis-Hastings acceptance
+  log.a1 <- logpb(b.prop, theta.samp, data.t)
+  log.a1 <- log.a1 - logpb(b.curr, object$coefficients, data.t)
+
+  dens.curr <- mvtnorm::dmvt(x = b.curr,
+                             delta = delta.prop,
+                             sigma = sigma.prop,
+                             df = 4,
+                             log = TRUE)
+  dens.prop <- mvtnorm::dmvt(x = b.prop,
+                             delta = delta.prop,
+                             sigma = sigma.prop,
+                             df = 4,
+                             log = TRUE)
+  log.a2 <- dens.curr - dens.prop
+  a <- min(exp(log.a1 - log.a2), 1)
+  randu <- runif(1)
+  if (randu <= a) {
+    b.curr <- b.prop
+    accept <- 1
+  }
+
+
+  out <- list("b.curr" = b.curr, "accept" = accept)
+  return(out)
+
+}
+

@@ -133,7 +133,7 @@ fit2 <- mjoint(
 hvd2 <- droplevels(hvd[hvd$num == 1, ])
 dynSurv(fit2, hvd2)
 dynSurv(fit2, hvd2, u = 7) # survival at 7-years only
-dynSurv(fit2, hvd2, type = "simulate", M = 2)
+dynSurv(fit2, hvd2, type = "simulated")
 }
 }
 \references{

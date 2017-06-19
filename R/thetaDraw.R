@@ -19,7 +19,7 @@ thetaDraw <- function(object) {
   theta.samp <- relist(theta.samp, skeleton = theta.mean)
   D <- matrix(0, nrow = max(D.inds), ncol = max(D.inds))
   D[D.inds] <- theta.samp[["D"]]
-  if (object$dims$r > 1) {
+  if (sum(object$dims$r) > 1) {
     D <- D + t(D) - diag(diag(D))
     D <- Matrix::nearPD(D)
     theta.samp[["D"]] <- as.matrix(D$mat)

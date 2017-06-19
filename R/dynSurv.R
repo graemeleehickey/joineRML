@@ -130,7 +130,7 @@
 #' hvd2 <- droplevels(hvd[hvd$num == 1, ])
 #' dynSurv(fit2, hvd2)
 #' dynSurv(fit2, hvd2, u = 7) # survival at 7-years only
-#' dynSurv(fit2, hvd2, type = "simulate", M = 2)
+#' dynSurv(fit2, hvd2, type = "simulated")
 #' }
 dynSurv <- function(object, newdata, newSurvData = NULL, u = NULL,
                     type = "first-order", M = 200, scale = 2, ci, progress = TRUE) {
@@ -221,31 +221,11 @@ dynSurv <- function(object, newdata, newSurvData = NULL, u = NULL,
     for (m in 1:M) {
       # Step 1: draw theta
       theta.samp <- thetaDraw(object)
-      # Step 2i: draw b from proposal distribution
-      b.prop <- mvtnorm::rmvt(n = 1,
-                              delta = delta.prop,
-                              sigma = sigma.prop,
-                              df = 4)
-      b.prop <- as.vector(b.prop)
-      # Step 2ii: M-H acceptance
-      log.a1 <- logpb(b.prop, theta.samp, data.t) - logpb(b.curr, object$coefficients, data.t)
-      dens.curr <- mvtnorm::dmvt(x = b.curr,
-                                 delta = delta.prop,
-                                 sigma = sigma.prop,
-                                 df = 4,
-                                 log = TRUE)
-      dens.prop <- mvtnorm::dmvt(x = b.prop,
-                                 delta = delta.prop,
-                                 sigma = sigma.prop,
-                                 df = 4,
-                                 log = TRUE)
-      log.a2 <- dens.curr - dens.prop
-      a <- min(exp(log.a1 - log.a2), 1)
-      randu <- runif(1)
-      if (randu <= a) {
-        b.curr <- b.prop
-        accept <- accept + 1
-      }
+      # Step 2: Metropolis-Hastings simulation
+      mh_sim <- b_metropolis(object, theta.samp, delta.prop, sigma.prop,
+                             b.curr, data.t)
+      b.curr <- mh_sim$b.curr
+      accept <- accept + mh_sim$accept
       # Step 3: predicted survival
       S.t <- S(b = b.curr, data = data.t, theta = theta.samp)
       S.u <- vector(length = length(u))
