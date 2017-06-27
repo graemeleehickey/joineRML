@@ -9,28 +9,51 @@
 #'   extrapolated time region into. Default is \code{ntimes=100}.
 #' @param level an optional integer giving the level of grouping to be used in
 #'   extracting the residuals from object. Level values increase from outermost
-#'   to innermost grouping, with level 0 corresponding to the population
-#'   residuals and level 1 corresponding to subject-specific residuals. Defaults
-#'   to \code{level=1}.
+#'   to innermost grouping, with level 0 corresponding to the population model
+#'   fit and level 1 corresponding to subject-specific model fit. Defaults to
+#'   \code{level=1}.
 #'
 #' @details Dynamic predictions for the longitudinal data sub-model based on an
 #'   observed measurement history for the longitudinal outcomes of a new subject
-#'   are based on a first-order approximation described in Rizopoulos (2011).
-#'   Namely, given that the subject was last observed at time \emph{t}, we
-#'   calculate the conditional expectation of each longitudinal outcome at time
-#'   \emph{u} as
+#'   are based on either a first-order approximation or Monte Carlo simulation
+#'   approach, both of which are described in Rizopoulos (2011). Namely, given
+#'   that the subject was last observed at time \emph{t}, we calculate the
+#'   conditional expectation of each longitudinal outcome at time \emph{u} as
 #'
-#'   \deqn{E[y_k(u) | T \ge t, y, \theta] \approx x^T(u)\beta_k + z^T(u)\hat{b}_k,}
+#'   \deqn{E[y_k(u) | T \ge t, y, \theta] \approx x^T(u)\beta_k +
+#'   z^T(u)\hat{b}_k,}
 #'
-#'   where \eqn{T} is the failure time for the new subject, \eqn{y} is the
-#'   stacked-vector of longitudinal measurements up to time \emph{t}, and
-#'   \eqn{\hat{b}} is the mode of the posterior distribution of the random
-#'   effects given by
+#'   where \eqn{T} is the failure time for the new subject, and \eqn{y} is the
+#'   stacked-vector of longitudinal measurements up to time \emph{t}.
+#'
+#'   \strong{First order predictions}
+#'
+#'   For \code{type="first-order"}, \eqn{\hat{b}} is the mode of the posterior
+#'   distribution of the random effects given by
 #'
 #'   \deqn{\hat{b} = {\arg \max}_b f(b | y, T \ge t; \theta).}
 #'
 #'   The predictions are based on plugging in \eqn{\theta = \hat{\theta}}, which
 #'   is extracted from the \code{mjoint} object.
+#'
+#'   \strong{Monte Carlo simulation predictions}
+#'
+#'   For \code{type="simulated"}, \eqn{\theta} is drawn from a multivariate
+#'   normal distribution with means \eqn{\hat{\theta}} and variance-covariance
+#'   matrix both extracted from the fitted \code{mjoint} object via the
+#'   \code{coef()} and \code{vcov()} functions. \eqn{\hat{b}} is drawn from the
+#'   the posterior distribution of the random effects
+#'
+#'   \deqn{f(b | y, T \ge t; \theta)}
+#'
+#'   by means of a Metropolis-Hasting algorithm with independent multivariate
+#'   non-central \emph{t}-distribution proposal distributions with
+#'   non-centrality parameter \eqn{\hat{b}} from the first-order prediction and
+#'   variance-covariance matrix equal to \code{scale} \eqn{\times} the inverse
+#'   of the negative Hessian of the posterior distribution. The choice os
+#'   \code{scale} can be used to tune the acceptance rate of the
+#'   Metropolis-Hastings sampler. This simulation algorithm is iterated \code{M}
+#'   times, at each time calculating the conditional survival probability.
 #'
 #' @author Graeme L. Hickey (\email{graeme.hickey@@liverpool.ac.uk})
 #' @keywords multivariate
@@ -73,7 +96,8 @@
 #' dynLong(fit2, hvd2, u = 7) # outcomes at 7-years only
 #' }
 dynLong <- function(object, newdata, newSurvData = NULL, u = NULL,
-                    ntimes = 100, level = 1) {
+                    type = "first-order", M = 200, scale = 2, ci,
+                    progress = TRUE, ntimes = 100, level = 1) {
 
   K <- object$dims$K
   p <- object$dims$p
@@ -119,6 +143,10 @@ dynLong <- function(object, newdata, newSurvData = NULL, u = NULL,
   # Get posterior mode of [b | data, theta]
   b.hat <- b_mode(data = data.t, theta = object$coefficients)
 
+  if (b.hat$convergence != 0) {
+    stop("Optimisation failed")
+  }
+
   # Extrapolated data
   newdata2 <- list()
   for (k in 1:K) {
@@ -136,34 +164,115 @@ dynLong <- function(object, newdata, newSurvData = NULL, u = NULL,
                              tobs = NULL,
                              newSurvData = newSurvData)
 
-  # Predicted y over extrapolated data
-  y.pred <- list()
-  for (k in 1:K) {
-    beta.k <- beta[(beta.inds[k] + 1):(beta.inds[k + 1])]
-    Xbeta.k <- data.t2$Xk[[k]] %*% beta.k
-    y.pred[[k]] <- Xbeta.k
-    if (level == 1) {
-      Zb.k <- data.t2$Zk[[k]] %*% b.hat$par[(b.inds[k] + 1):(b.inds[k + 1])]
-      y.pred[[k]] <- y.pred[[k]] + Zb.k
+  #***********************************************
+  # First-order prediction
+  #***********************************************
+
+  if (type == "first-order") {
+
+    # Predicted y over extrapolated data
+    y.pred <- list()
+    for (k in 1:K) {
+      beta.k <- beta[(beta.inds[k] + 1):(beta.inds[k + 1])]
+      Xbeta.k <- data.t2$Xk[[k]] %*% beta.k
+      y.pred[[k]] <- Xbeta.k
+      if (level == 1) {
+        Zb.k <- data.t2$Zk[[k]] %*% b.hat$par[(b.inds[k] + 1):(b.inds[k + 1])]
+        y.pred[[k]] <- y.pred[[k]] + Zb.k
+      }
     }
+
+    pred <- lapply(y.pred, function(x) {
+      df <- cbind(pred.times, x)
+      df <- as.data.frame(df)
+      names(df) <- c("time", "y.pred")
+      df
+    })
   }
 
-  pred <- lapply(y.pred, function(x) {
-    df <- cbind(pred.times, x)
-    df <- as.data.frame(df)
-    names(df) <- c("time", "y.pred")
-    df
-  })
-  names(pred) <- names(object$formLongFixed)
+  #***********************************************
+  # Simulated prediction
+  #***********************************************
 
+  if (type == "simulated") {
+
+    if (progress) {
+      cat("\n")
+      pb <- utils::txtProgressBar(min = 0, max = M, style = 3)
+    }
+
+    if (missing(ci)) {
+      ci <- 0.95
+    } else {
+      if (!is.numeric(ci) || (ci < 0) || (ci > 1)) {
+        stop("ci argument has been misspecified.\n")
+      }
+    }
+    alpha <- (1 - ci) / 2
+
+    b.curr <- delta.prop <- b.hat$par
+    sigma.prop <- -solve(b.hat$hessian) * scale
+    accept <- 0
+    y.pred <- list()
+    for (k in 1:K) {
+      y.pred[[k]] <- matrix(nrow = ntimes, ncol = M)
+    }
+    for (m in 1:M) {
+      # Step 1: draw theta
+      theta.samp <- thetaDraw(object)
+      # Step 2: Metropolis-Hastings simulation
+      mh_sim <- b_metropolis(object, theta.samp, delta.prop, sigma.prop,
+                             b.curr, data.t)
+      b.curr <- mh_sim$b.curr
+      accept <- accept + mh_sim$accept
+      # Step 3: predicted longitudinal value
+      for (k in 1:K) {
+        beta.k <- theta.samp$beta[(beta.inds[k] + 1):(beta.inds[k + 1])]
+        Xbeta.k <- data.t2$Xk[[k]] %*% beta.k
+        y.pred[[k]][, m] <- Xbeta.k
+        if (level == 1) {
+          Zb.k <- data.t2$Zk[[k]] %*% b.curr[(b.inds[k] + 1):(b.inds[k + 1])]
+          y.pred[[k]][, m] <- y.pred[[k]][, m] + Zb.k
+        }
+      }
+      if (progress) {
+        utils::setTxtProgressBar(pb, m)
+      }
+    }
+
+    if (progress) {
+      close(pb)
+    }
+
+    pred <- lapply(y.pred, function(x) {
+      long.mean <- apply(x, 1, mean)
+      long.med <- apply(x, 1, median)
+      long.se <- apply(x, 1, sd)
+      long.low <- apply(x, 1, quantile, prob = alpha)
+      long.upp <- apply(x, 1, quantile, prob = 1 - alpha)
+      df <- cbind(pred.times, long.mean, long.med, long.se, long.low, long.upp)
+      df <- as.data.frame(df)
+      names(df) <- c("time", "mean", "median", "se", "lower", "upper")
+      df
+    })
+
+  }
+
+  names(pred) <- names(object$formLongFixed)
   out <- list("pred" = pred,
               "fit" = object,
               "newdata" = newdata,
               "newSurvData" = newSurvData,
               "u" = u,
-              "data.t" = data.t)
+              "data.t" = data.t,
+              "type" = type)
+
+  if (type == "simulated") {
+    out$M <- ifelse(type == "simulated", M, NULL)
+    out$accept <- ifelse(type == "simulated", accept / M, NULL)
+  }
 
   class(out) <- "dynLong"
-  invisible(out)
+  return(out)
 
 }

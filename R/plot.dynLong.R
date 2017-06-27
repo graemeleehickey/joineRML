@@ -46,7 +46,7 @@
 #' plot(out, main = "Patient 1")
 #' }
 plot.dynLong <- function(x, main = NULL, xlab = NULL, ylab = NULL,
-                         grid = TRUE, ...) {
+                         grid = TRUE, estimator, ...) {
 
   if (!inherits(x, "dynLong")) {
     stop("Use only with 'dynLong' objects.\n")
@@ -70,26 +70,52 @@ plot.dynLong <- function(x, main = NULL, xlab = NULL, ylab = NULL,
   }
 
   ylimfun <- function(k) {
-    y.min <- min(data.t$yk[[k]], pred[[k]][, 2])
-    y.max <- max(data.t$yk[[k]], pred[[k]][, 2])
-    return(c(y.min, y.max))
+    if (x$type == "first-order") {
+      ylim <- range(data.t$yk[[k]], pred[[k]][, 2])
+    }
+    if (x$type == "simulated") {
+      ylim <- range(data.t$yk[[k]], min(pred[[k]]$lower), max(pred[[k]]$upper))
+    }
+    return(ylim)
   }
 
   # Plot longitudinal markers (extrapolated)
   for (k in 1:K) {
-    plot(pred[[k]], type = "l", col = "red",
+    xpts <- pred[[k]]$time
+    if (x$type == "first-order") {
+      ypts <- pred[[k]]$y.pred
+    } else if (x$type == "simulated") {
+      if (missing(estimator) || estimator == "median") {
+        ypts <- pred[[k]]$median
+      } else if (estimator == "mean") {
+        ypts <- pred[[k]]$mean
+      } else {
+        stop("estimator must be equal to 'mean' or 'median'\n")
+      }
+    }
+    plot(xpts, ypts,
+         type = "l",
+         col = "red",
          xlim = c(0, data.t$tmax),
          ylim = ylimfun(k),
          ylab = ifelse(is.null(ylab), toString(formula(fit$lfit[[k]])[[2]]),
                        ylab[[1]]),
          las = 1,
          xaxt = "n", ...)
+    if (x$type == "simulated") { # CIs for MC simulated predictions only
+      polygon(x = c(xpts, rev(xpts)),
+              y = c(pred[[k]]$lower, rev(pred[[k]]$upper)),
+              col = "lightgrey",
+              border = "lightgrey",
+              lwd = 2)
+      lines(xpts, ypts, col = "red")
+    }
     if (k == K) {
       axis(1)
     }
     lines(x = data.t$tk[[k]],
-         y = data.t$yk[[k]],
-         col = "blue")
+          y = data.t$yk[[k]],
+          col = "blue")
     points(x = data.t$tk[[k]],
            y = data.t$yk[[k]],
            pch = 8,

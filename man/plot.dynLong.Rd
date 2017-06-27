@@ -5,7 +5,7 @@
 \title{Plot a \code{dynLong} object}
 \usage{
 \method{plot}{dynLong}(x, main = NULL, xlab = NULL, ylab = NULL,
-  grid = TRUE, ...)
+  grid = TRUE, estimator, ...)
 }
 \arguments{
 \item{x}{an object of class \code{dynLong} calculated by the
@@ -20,6 +20,13 @@ outcomes y-axes: see \code{\link[graphics]{title}}.}
 
 \item{grid}{adds a rectangular grid to an existing plot: see
 \code{\link[graphics]{grid}}.}
+
+\item{estimator}{a character string that can take values \code{mean} or
+\code{median} to specify what prediction statistic is plotted from an
+objecting inheritting of class \code{dynSurv}. Default is
+\code{estimator='median'}. This argument is ignored for non-simulated
+\code{dynSurv} objects, i.e. those of \code{type='first-order'}, as in that
+case a mode-based prediction is plotted.}
 
 \item{...}{additional plotting arguments;.}
 }
