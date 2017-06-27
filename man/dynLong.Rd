@@ -5,7 +5,7 @@
 \title{Dynamic predictions for the longitudinal data sub-model}
 \usage{
 dynLong(object, newdata, newSurvData = NULL, u = NULL,
-  type = "first-order", M = 200, scale = 2, ci, progress = TRUE,
+  type = "first-order", M = 200, scale = 1.6, ci, progress = TRUE,
   ntimes = 100, level = 1)
 }
 \arguments{
@@ -140,6 +140,9 @@ fit2 <- mjoint(
 hvd2 <- droplevels(hvd[hvd$num == 1, ])
 dynLong(fit2, hvd2)
 dynLong(fit2, hvd2, u = 7) # outcomes at 7-years only
+
+out <- dynLong(fit2, hvd2, type = "simulated")
+out
 }
 }
 \references{

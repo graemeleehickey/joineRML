@@ -130,7 +130,9 @@
 #' hvd2 <- droplevels(hvd[hvd$num == 1, ])
 #' dynSurv(fit2, hvd2)
 #' dynSurv(fit2, hvd2, u = 7) # survival at 7-years only
-#' dynSurv(fit2, hvd2, type = "simulated")
+#'
+#' out <- dynSurv(fit2, hvd2, type = "simulated")
+#' out
 #' }
 dynSurv <- function(object, newdata, newSurvData = NULL, u = NULL,
                     type = "first-order", M = 200, scale = 2, ci, progress = TRUE) {
@@ -222,8 +224,7 @@ dynSurv <- function(object, newdata, newSurvData = NULL, u = NULL,
       # Step 1: draw theta
       theta.samp <- thetaDraw(object)
       # Step 2: Metropolis-Hastings simulation
-      mh_sim <- b_metropolis(object, theta.samp, delta.prop, sigma.prop,
-                             b.curr, data.t)
+      mh_sim <- b_metropolis(theta.samp, delta.prop, sigma.prop, b.curr, data.t)
       b.curr <- mh_sim$b.curr
       accept <- accept + mh_sim$accept
       # Step 3: predicted survival

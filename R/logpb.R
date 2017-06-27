@@ -78,7 +78,7 @@ b_mode <- function(theta, data) {
 
 
 #' @keywords internal
-b_metropolis <- function(object, theta.samp, delta.prop, sigma.prop, b.curr, data.t) {
+b_metropolis <- function(theta.samp, delta.prop, sigma.prop, b.curr, data.t) {
 
   accept <- 0
 
