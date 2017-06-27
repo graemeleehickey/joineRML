@@ -90,8 +90,7 @@ b_metropolis <- function(object, theta.samp, delta.prop, sigma.prop, b.curr, dat
   b.prop <- as.vector(b.prop)
 
   # Metropolis-Hastings acceptance
-  log.a1 <- logpb(b.prop, theta.samp, data.t)
-  log.a1 <- log.a1 - logpb(b.curr, object$coefficients, data.t)
+  log.a1 <- logpb(b.prop, theta.samp, data.t) - logpb(b.curr, theta.samp, data.t)
 
   dens.curr <- mvtnorm::dmvt(x = b.curr,
                              delta = delta.prop,
