@@ -19,7 +19,8 @@
 #'   \code{estimator='median'}. This argument is ignored for non-simulated
 #'   \code{dynSurv} objects, i.e. those of \code{type='first-order'}, as in that
 #'   case a mode-based prediction is plotted.
-#' @param ... additional plotting arguments;.
+#' @param ... additional plotting arguments; currently limited to \code{lwd} and
+#'   \code{cex}. See \code{\link[graphics]{par}} for details.
 #'
 #' @author Graeme L. Hickey (\email{graeme.hickey@@liverpool.ac.uk})
 #' @keywords hplot
@@ -85,8 +86,22 @@ plot.dynSurv <- function(x, main = NULL, xlab = NULL, ylab1 = NULL,
   m <- cbind(c(1:K), rep(K + 1, K))
   widths <- c(data.t$tobs, max(pred$u) - data.t$tobs)
   layout(m, widths = widths)
+  xticks <- pretty(c(unlist(data.t$tk), pred$u))
   #layout.show(K + 1)
   par(mar = c(0, 4.5, 0, 0), oma = c(4, 0, 3, 0))
+
+  # Fine control plotting arguments
+  lwd <- 1
+  cex <- 1
+  if (!missing(...)) {
+    dots <- list(...)
+    if ("lwd" %in% names(dots)) {
+      lwd <- dots[["lwd"]]
+    }
+    if ("cex" %in% names(dots)) {
+      cex <- dots[["cex"]]
+    }
+  }
 
   if (!is.null(ylab1)) {
     if (length(ylab1) != K) {
@@ -102,14 +117,19 @@ plot.dynSurv <- function(x, main = NULL, xlab = NULL, ylab1 = NULL,
          col = "blue",
          las = 1,
          #xaxs = "i",
-         xaxt = ifelse(k == K, "s", "n"),
+         xaxt = "n",
          ylab = ifelse(is.null(ylab1), toString(formula(fit$lfit[[k]])[[2]]),
-                       ylab1[[1]]))
+                       ylab1[[1]]),
+         lwd = lwd)
     points(x = data.t$tk[[k]],
            y = data.t$yk[[k]],
            pch = 8,
            #xpd = TRUE,
-           col = "red")
+           col = "red",
+           cex = cex)
+    if (k == K) {
+      axis(1, at = xticks)
+    }
     if (grid) {
       grid()
     }
@@ -140,7 +160,8 @@ plot.dynSurv <- function(x, main = NULL, xlab = NULL, ylab1 = NULL,
        xlim = c(data.t$tobs, 1.04 * max(pred$u)),
        ylim = ylim,
        type = "s",
-       las = 1)
+       las = 1,
+       lwd = lwd)
   if (x$type == "simulated") { # CIs for MC simulated predictions only
     n <- length(xpts)
     xpts2 <- rep(c(xpts, rev(xpts)), each = 2)
@@ -151,7 +172,7 @@ plot.dynSurv <- function(x, main = NULL, xlab = NULL, ylab1 = NULL,
             col = "lightgrey",
             border = "lightgrey",
             lwd = 2)
-    lines(xpts, ypts, type = "s")
+    lines(xpts, ypts, type = "s", lwd = lwd)
   }
   axis(4, las = 1)
   if (grid) {
@@ -169,6 +190,6 @@ plot.dynSurv <- function(x, main = NULL, xlab = NULL, ylab1 = NULL,
   mtext(ifelse(is.null(ylab2), "Event-free probability", ylab), 4,
         line = 2.5)
 
-  par(old.par)
+  on.exit(par(old.par))
 
 }

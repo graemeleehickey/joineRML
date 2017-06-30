@@ -31,7 +31,8 @@ objecting inheritting of class \code{dynSurv}. Default is
 \code{dynSurv} objects, i.e. those of \code{type='first-order'}, as in that
 case a mode-based prediction is plotted.}
 
-\item{...}{additional plotting arguments;.}
+\item{...}{additional plotting arguments; currently limited to \code{lwd} and
+\code{cex}. See \code{\link[graphics]{par}} for details.}
 }
 \value{
 A dynamic prediction plot.

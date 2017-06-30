@@ -69,6 +69,19 @@ plot.dynLong <- function(x, main = NULL, xlab = NULL, ylab = NULL,
     }
   }
 
+  # Fine control plotting arguments
+  lwd <- 1
+  cex <- 1
+  if (!missing(...)) {
+    dots <- list(...)
+    if ("lwd" %in% names(dots)) {
+      lwd <- dots[["lwd"]]
+    }
+    if ("cex" %in% names(dots)) {
+      cex <- dots[["cex"]]
+    }
+  }
+
   ylimfun <- function(k) {
     if (x$type == "first-order") {
       ylim <- range(data.t$yk[[k]], pred[[k]][, 2])
@@ -101,30 +114,33 @@ plot.dynLong <- function(x, main = NULL, xlab = NULL, ylab = NULL,
          ylab = ifelse(is.null(ylab), toString(formula(fit$lfit[[k]])[[2]]),
                        ylab[[1]]),
          las = 1,
-         xaxt = "n", ...)
+         xaxt = "n",
+         lwd = lwd)
     if (x$type == "simulated") { # CIs for MC simulated predictions only
       polygon(x = c(xpts, rev(xpts)),
               y = c(pred[[k]]$lower, rev(pred[[k]]$upper)),
               col = "lightgrey",
               border = "lightgrey",
               lwd = 2)
-      lines(xpts, ypts, col = "red")
+      lines(xpts, ypts, col = "red", lwd = lwd)
     }
     if (k == K) {
       axis(1)
     }
     lines(x = data.t$tk[[k]],
           y = data.t$yk[[k]],
-          col = "blue")
+          col = "blue",
+          lwd = lwd)
     points(x = data.t$tk[[k]],
            y = data.t$yk[[k]],
            pch = 8,
            #xpd = TRUE,
-           col = "red")
+           col = "red",
+           cex = cex)
     if (grid) {
       grid()
     }
-    abline(v = data.t$tobs)
+    abline(v = data.t$tobs, col = "darkgrey", lty = "dotted", lwd = 3)
   }
 
   # Axis labels
@@ -133,6 +149,6 @@ plot.dynLong <- function(x, main = NULL, xlab = NULL, ylab = NULL,
   mtext(ifelse(is.null(xlab), "Time", xlab), 1,
         line = 2.5, outer = TRUE)
 
-  par(old.par)
+  on.exit(par(old.par))
 
 }
