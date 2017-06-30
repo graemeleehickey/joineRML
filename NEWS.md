@@ -4,7 +4,7 @@
 
 * Added new function `dynSurv()`, which generates survival probabilities for a new subject conditional on their last measurement time and longitudial history. Prediction can be implemented using either a first order approximation or a Monte Carlo simulation approach.
 
-* Added new function `dynLong()`, which generates expected longitudinal predictions for a new subject conditional on their last measurement time and longitudial history. Prediction can be implemented using a first order approximation.
+* Added new function `dynLong()`, which generates expected longitudinal predictions for a new subject conditional on their last measurement time and longitudial history. Prediction can be implemented using a first order approximation or a Monte Carlo simulation approach.
 
 * Added an associated `print()` method for `dynSurv` and `dynLong` objects.
 
@@ -23,6 +23,8 @@
 * Removed `enumintem` package for Sweave vignette to satisfy CRAN checks on macOS (release).
 
 ## Housekeeping
+
+* Updated `Makevars` and `Markvars.win` to allow for OpenMP, which can be used by RcppArmadillo.
 
 * Minor tidy-up of in-code comments.
 
