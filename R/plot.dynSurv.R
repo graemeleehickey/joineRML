@@ -85,6 +85,11 @@ plot.dynSurv <- function(x, main = NULL, xlab = NULL, ylab1 = NULL,
   K <- fit$dims$K
   m <- cbind(c(1:K), rep(K + 1, K))
   widths <- c(data.t$tobs, max(pred$u) - data.t$tobs)
+  widths <- widths / sum(widths)
+  if (widths[1] < 0.1) {
+    widths <- c(0.15, 0.85)
+    warning("Longitudinal and event-time time data may be shown on different scales")
+  }
   layout(m, widths = widths)
   xticks <- pretty(c(unlist(data.t$tk), pred$u))
   #layout.show(K + 1)
