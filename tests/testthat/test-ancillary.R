@@ -110,6 +110,8 @@ test_that("dynamic predictions, residuals, fitted values, baseline hazard", {
   expect_silent(plot(test3))
   expect_output(print(test3))
   expect_is(test4, "dynSurv")
+  expect_is(test5, "dynLong")
+  expect_is(test6, "dynSurv")
   # tests: residuals + fitted values
   expect_output(str(resid(fit2, level = 0)), "List of 2")
   expect_output(str(resid(fit2, level = 1)), "List of 2")
