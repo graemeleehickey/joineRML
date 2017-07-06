@@ -97,6 +97,8 @@ test_that("dynamic predictions, residuals, fitted values, baseline hazard", {
   test2 <- dynLong(fit2, hvd2, u = 7)
   test3 <- dynSurv(fit2, hvd2)
   test4 <- dynSurv(fit2, hvd2, u = 7)
+  test5 <- dynLong(fit2, hvd2, type = "simulated", M = 3)
+  test6 <- dynSurv(fit2, hvd2, type = "simulated", M = 3)
   # tests: dynamic predictions
   expect_is(test1, "dynLong")
   expect_output(str(test1$pred), "List of 2")
