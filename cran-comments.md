@@ -8,7 +8,6 @@ None
 * ubuntu (via travis-ci)
 * windows (via appveyor)
 * win-builder (release, devel)
-* tested on several R-hub platforms
 
 ## R CMD check results
 

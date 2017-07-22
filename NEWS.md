@@ -1,10 +1,8 @@
-# joineRML 0.3.0.9000
+# joineRML 0.3.0
 
 ## New features
 
-* Added new function `dynSurv()`, which generates survival probabilities for a new subject conditional on their last measurement time and longitudial history. Prediction can be implemented using either a first order approximation or a Monte Carlo simulation approach.
-
-* Added new function `dynLong()`, which generates expected longitudinal predictions for a new subject conditional on their last measurement time and longitudial history. Prediction can be implemented using a first order approximation or a Monte Carlo simulation approach.
+* Added new functions `dynSurv()` and `dynLong()`, which generates survival probabilities and xpected longitudinal predictions, respectively, for a new subject conditional on their last measurement time and longitudial history. Prediction can be implemented using either a first order approximation or a Monte Carlo simulation approach.
 
 * Added an associated `print()` method for `dynSurv` and `dynLong` objects.
 
