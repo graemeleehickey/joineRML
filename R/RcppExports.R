@@ -3,36 +3,36 @@
 
 #' @keywords internal
 expWArma <- function(iz_, b_, gam, h_) {
-    .Call(joineRML_expWArma, iz_, b_, gam, h_)
+    .Call(`_joineRML_expWArma`, iz_, b_, gam, h_)
 }
 
 #' @keywords internal
 gammaUpdate_approx <- function(b_, z_, w_, pb_, haz, v_, h_, K, q, nev) {
-    .Call(joineRML_gammaUpdate_approx, b_, z_, w_, pb_, haz, v_, h_, K, q, nev)
+    .Call(`_joineRML_gammaUpdate_approx`, b_, z_, w_, pb_, haz, v_, h_, K, q, nev)
 }
 
 #' @keywords internal
 gammaUpdate <- function(b_, z_, w_, pb_, haz, v_, h_, K, q, nev, jcount) {
-    .Call(joineRML_gammaUpdate, b_, z_, w_, pb_, haz, v_, h_, K, q, nev, jcount)
+    .Call(`_joineRML_gammaUpdate`, b_, z_, w_, pb_, haz, v_, h_, K, q, nev, jcount)
 }
 
 #' @keywords internal
 hazHat <- function(w_, pb_, nev) {
-    .Call(joineRML_hazHat, w_, pb_, nev)
+    .Call(`_joineRML_hazHat`, w_, pb_, nev)
 }
 
 #' @keywords internal
 lambdaUpdate <- function(b_, imat_, zt_, pb_, v_, gam, gam_vec, q, nev, h_) {
-    .Call(joineRML_lambdaUpdate, b_, imat_, zt_, pb_, v_, gam, gam_vec, q, nev, h_)
+    .Call(`_joineRML_lambdaUpdate`, b_, imat_, zt_, pb_, v_, gam, gam_vec, q, nev, h_)
 }
 
 #' @keywords internal
 mvrnormArma <- function(n, mu, sigma) {
-    .Call(joineRML_mvrnormArma, n, mu, sigma)
+    .Call(`_joineRML_mvrnormArma`, n, mu, sigma)
 }
 
 #' @keywords internal
 bSim <- function(n, Mean_, Sigma_) {
-    .Call(joineRML_bSim, n, Mean_, Sigma_)
+    .Call(`_joineRML_bSim`, n, Mean_, Sigma_)
 }
 

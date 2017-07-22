@@ -8,7 +8,7 @@ using namespace Rcpp;
 
 // expWArma
 List expWArma(const Rcpp::List& iz_, const Rcpp::List& b_, const arma::mat& gam, const Rcpp::List& h_);
-RcppExport SEXP joineRML_expWArma(SEXP iz_SEXP, SEXP b_SEXP, SEXP gamSEXP, SEXP h_SEXP) {
+RcppExport SEXP _joineRML_expWArma(SEXP iz_SEXP, SEXP b_SEXP, SEXP gamSEXP, SEXP h_SEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -22,7 +22,7 @@ END_RCPP
 }
 // gammaUpdate_approx
 List gammaUpdate_approx(const Rcpp::List& b_, const Rcpp::List& z_, const Rcpp::List& w_, const Rcpp::List& pb_, const arma::vec& haz, const Rcpp::List& v_, const Rcpp::List& h_, const int& K, const int& q, const int& nev);
-RcppExport SEXP joineRML_gammaUpdate_approx(SEXP b_SEXP, SEXP z_SEXP, SEXP w_SEXP, SEXP pb_SEXP, SEXP hazSEXP, SEXP v_SEXP, SEXP h_SEXP, SEXP KSEXP, SEXP qSEXP, SEXP nevSEXP) {
+RcppExport SEXP _joineRML_gammaUpdate_approx(SEXP b_SEXP, SEXP z_SEXP, SEXP w_SEXP, SEXP pb_SEXP, SEXP hazSEXP, SEXP v_SEXP, SEXP h_SEXP, SEXP KSEXP, SEXP qSEXP, SEXP nevSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -42,7 +42,7 @@ END_RCPP
 }
 // gammaUpdate
 List gammaUpdate(const Rcpp::List& b_, const Rcpp::List& z_, const Rcpp::List& w_, const Rcpp::List& pb_, const arma::vec& haz, const Rcpp::List& v_, const Rcpp::List& h_, const int& K, const int& q, const int& nev, const arma::vec& jcount);
-RcppExport SEXP joineRML_gammaUpdate(SEXP b_SEXP, SEXP z_SEXP, SEXP w_SEXP, SEXP pb_SEXP, SEXP hazSEXP, SEXP v_SEXP, SEXP h_SEXP, SEXP KSEXP, SEXP qSEXP, SEXP nevSEXP, SEXP jcountSEXP) {
+RcppExport SEXP _joineRML_gammaUpdate(SEXP b_SEXP, SEXP z_SEXP, SEXP w_SEXP, SEXP pb_SEXP, SEXP hazSEXP, SEXP v_SEXP, SEXP h_SEXP, SEXP KSEXP, SEXP qSEXP, SEXP nevSEXP, SEXP jcountSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -63,7 +63,7 @@ END_RCPP
 }
 // hazHat
 arma::mat hazHat(const Rcpp::List& w_, const Rcpp::List& pb_, const arma::vec& nev);
-RcppExport SEXP joineRML_hazHat(SEXP w_SEXP, SEXP pb_SEXP, SEXP nevSEXP) {
+RcppExport SEXP _joineRML_hazHat(SEXP w_SEXP, SEXP pb_SEXP, SEXP nevSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -76,7 +76,7 @@ END_RCPP
 }
 // lambdaUpdate
 arma::mat lambdaUpdate(const Rcpp::List& b_, const Rcpp::List& imat_, const Rcpp::List& zt_, const Rcpp::List& pb_, const Rcpp::List& v_, const arma::mat& gam, const arma::vec& gam_vec, const int& q, const arma::vec& nev, const Rcpp::List& h_);
-RcppExport SEXP joineRML_lambdaUpdate(SEXP b_SEXP, SEXP imat_SEXP, SEXP zt_SEXP, SEXP pb_SEXP, SEXP v_SEXP, SEXP gamSEXP, SEXP gam_vecSEXP, SEXP qSEXP, SEXP nevSEXP, SEXP h_SEXP) {
+RcppExport SEXP _joineRML_lambdaUpdate(SEXP b_SEXP, SEXP imat_SEXP, SEXP zt_SEXP, SEXP pb_SEXP, SEXP v_SEXP, SEXP gamSEXP, SEXP gam_vecSEXP, SEXP qSEXP, SEXP nevSEXP, SEXP h_SEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -96,7 +96,7 @@ END_RCPP
 }
 // mvrnormArma
 arma::mat mvrnormArma(const int& n, const arma::vec& mu, const arma::mat& sigma);
-RcppExport SEXP joineRML_mvrnormArma(SEXP nSEXP, SEXP muSEXP, SEXP sigmaSEXP) {
+RcppExport SEXP _joineRML_mvrnormArma(SEXP nSEXP, SEXP muSEXP, SEXP sigmaSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -109,7 +109,7 @@ END_RCPP
 }
 // bSim
 List bSim(const int& n, const Rcpp::List& Mean_, const Rcpp::List& Sigma_);
-RcppExport SEXP joineRML_bSim(SEXP nSEXP, SEXP Mean_SEXP, SEXP Sigma_SEXP) {
+RcppExport SEXP _joineRML_bSim(SEXP nSEXP, SEXP Mean_SEXP, SEXP Sigma_SEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
