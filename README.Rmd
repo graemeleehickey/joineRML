@@ -12,7 +12,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# joineRML
+# joineRML <img src="inst/image/hex/hex.png" width = "175" height = "200" align="right" /> 
 
 [![Travis-CI Build Status](https://travis-ci.org/graemeleehickey/joineRML.svg?branch=master)](https://travis-ci.org/graemeleehickey/joineRML)
 [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/graemeleehickey/joineRML?branch=master&svg=true)](https://ci.appveyor.com/project/graemeleehickey/joineRML)
