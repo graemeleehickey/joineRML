@@ -1,3 +1,7 @@
+# joineRML 0.3.0.9000
+
+* Added hex sticker badge.
+
 # joineRML 0.3.0
 
 ## New features
