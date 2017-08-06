@@ -1,0 +1,3 @@
+load("/Users/graemeleehickey/GitHub/datasets/epileptic.qol/epileptic.qol.Rdata")
+load("/Users/graemeleehickey/GitHub/datasets/qol/qol.Rdata")
+ls()
