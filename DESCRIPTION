@@ -37,12 +37,15 @@ Depends:
     nlme,
     survival
 Imports:
+    doParallel,
+    foreach,
     ggplot2,
     graphics,
     lme4 (>= 1.1-8),
     MASS,
     Matrix,
     mvtnorm,
+    parallel,
     Rcpp (>= 0.12.7),
     stats,
     utils

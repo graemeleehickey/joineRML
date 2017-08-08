@@ -5,7 +5,7 @@
 \title{Standard errors via bootstrap for an \code{mjoint} object}
 \usage{
 bootSE(object, nboot = 100, ci = 0.95, use.mle = TRUE, verbose = FALSE,
-  control = list(), progress = TRUE, ...)
+  control = list(), progress = TRUE, ncores = 1, ...)
 }
 \arguments{
 \item{object}{an object inheriting from class \code{mjoint} for a joint model
@@ -87,6 +87,13 @@ algorithm. Default is \code{FALSE}.}
 indicate the percentage of bootstrap iterations completed? Default is
 \code{progress=TRUE}.}
 
+\item{ncores}{integer: if more than one core is available, then the \code{bootSE}
+function can run in parallel via the \code{\link[foreach]{foreach}}
+function. By default, \code{ncores=1}, which defaults to serial mode. Note
+that if \code{ncores}>1, then \code{progress} is set to \code{FALSE} by
+default, as it is not possible to display progress bars for parallel
+processes at the current time.}
+
 \item{...}{options passed to the \code{control} argument.}
 }
 \value{
@@ -106,7 +113,12 @@ Standard errors and confidence intervals are obtained by repeated
 }
 \note{
 This function is computationally intensive. A dynamic progress bar is
-  displayed showing the percentage of bootstrap models fitted.
+  displayed showing the percentage of bootstrap models fitted. On computer
+  systems with more than one core available, computational time can be
+  reduced by passing the argument \code{ncores} (with integer value >1) to
+  \code{bootSE}, which implements parallel processing via the
+  \code{\link[foreach]{foreach}} package. \strong{Note:} if parallel
+  processing is implemented, then the progress bar is not displayed.
 
   Due to random sampling, an \code{mjoint} model fitted to some bootstrap
   samples may not converge within the specified control parameter settings.

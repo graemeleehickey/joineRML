@@ -19,18 +19,22 @@ test_that("bootstrap MV models", {
     control = list(convCrit = "abs", tol0 = 0.1, tol.em = 1e-02,
                    burnin = 40, mcmaxIter = 200),
     verbose = FALSE)
-  fit.boot <- bootSE(fit, nboot = 1, verbose = TRUE)
+  set.seed(1)
+  fit.boot1 <- bootSE(fit, nboot = 1, verbose = TRUE)
+  set.seed(1)
+  fit.boot2 <- bootSE(fit, nboot = 1, ncores = 2)
   # tests
-  expect_is(fit.boot, "bootSE")
-  expect_output(str(fit.boot), "List of 11")
-  expect_output(print(fit.boot))
-  expect_is(summary(fit, bootSE = fit.boot), "summary.mjoint")
-  expect_output(print(summary(fit.boot, bootSE = fit.boot)))
-  expect_output(str(summary(fit, bootSE = fit.boot)), "List of 22")
-  expect_equal(summary(fit, bootSE = fit.boot)$se.type, "boot")
-  expect_equal(dim(confint(fit, bootSE = fit.boot)), c(10, 2))
-  expect_equal(dim(confint(fit, parm = "Longitudinal", bootSE = fit.boot)), c(7, 2))
-  expect_equal(dim(confint(fit, parm = "Event", bootSE = fit.boot)), c(3, 2))
+  expect_is(fit.boot1, "bootSE")
+  expect_is(fit.boot2, "bootSE")
+  expect_output(str(fit.boot1), "List of 11")
+  expect_output(print(fit.boot1))
+  expect_is(summary(fit, bootSE = fit.boot1), "summary.mjoint")
+  expect_output(print(summary(fit.boot1, bootSE = fit.boot)))
+  expect_output(str(summary(fit, bootSE = fit.boot1)), "List of 22")
+  expect_equal(summary(fit, bootSE = fit.boot1)$se.type, "boot")
+  expect_equal(dim(confint(fit, bootSE = fit.boot1)), c(10, 2))
+  expect_equal(dim(confint(fit, parm = "Longitudinal", bootSE = fit.boot1)), c(7, 2))
+  expect_equal(dim(confint(fit, parm = "Event", bootSE = fit.boot1)), c(3, 2))
 })
 
 

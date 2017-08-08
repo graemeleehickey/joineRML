@@ -1,6 +1,14 @@
 # joineRML 0.3.0.9000
 
+## New features
+
+* `bootSE()` now has option to use parallel computing via the `foreach` package.
+
+## Housekeeping
+
 * Added hex sticker badge.
+
+* Moved the make files and raw data for `qol` and `renal` datasets into the `~/data-raw/` directory.
 
 # joineRML 0.3.0
 
