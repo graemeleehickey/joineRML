@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-joineRML <img src="inst/image/hex/hex.png" width = "175" height = "200" align="right" />
-========================================================================================
+joineRML <img src="man/figures/hex.png" width = "175" height = "200" align="right" />
+=====================================================================================
 
 [![Travis-CI Build Status](https://travis-ci.org/graemeleehickey/joineRML.svg?branch=master)](https://travis-ci.org/graemeleehickey/joineRML) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/graemeleehickey/joineRML?branch=master&svg=true)](https://ci.appveyor.com/project/graemeleehickey/joineRML) <!--[![License](https://img.shields.io/badge/License-GPL%20%28%3E=%203%29-brightgreen.svg)](http://www.gnu.org/licenses/gpl-3.0.html)--> [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/joineRML)](https://CRAN.R-project.org/package=joineRML) [![](http://cranlogs.r-pkg.org/badges/joineRML)](https://CRAN.R-project.org/package=joineRML) [![](https://cranlogs.r-pkg.org/badges/grand-total/joineRML)](https://CRAN.R-project.org/package=joineRML) [![codecov](https://codecov.io/gh/graemeleehickey/joineRML/branch/master/graph/badge.svg)](https://codecov.io/gh/graemeleehickey/joineRML)
 
