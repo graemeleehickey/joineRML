@@ -29,7 +29,7 @@ algorithm. Default is \code{FALSE}.}
 
   \item{\code{nMC}}{integer: the initial number of Monte Carlo samples to be
   used for integration in the burn-in phase of the MCEM. Default is
-  \code{nMC=}max(100, 50\emph{K}).}
+  \code{nMC=}100\emph{K}).}
 
   \item{\code{nMCscale}}{integer: the scale factor for the increase in Monte
   Carlo size when Monte Carlo has not reduced from the previous iteration.
@@ -38,11 +38,13 @@ algorithm. Default is \code{FALSE}.}
   \item{\code{nMCmax}}{integer: the maximum number of Monte Carlo samples
   that the algorithm is allowed to reach. Default is \code{nMCmax=20000}.}
 
-  \item{\code{burnin}}{integer: the number of iterations for burn-in phase of
-  the optimization algorithm. It is computationally inefficient to use a
+  \item{\code{burnin}}{integer: the number of iterations for 'burn-in' phase
+  of the optimization algorithm. It is computationally inefficient to use a
   large number of Monte Carlo samples early on until one is approximately
-  near the maximum likelihood estimate. Default is
-  \code{burnin=}100\emph{K}.}
+  near the maximum likelihood estimate. Default is \code{burnin=}100\emph{K}
+  for \code{type='antithetic'} and \code{burnin=}5 for \code{type='sobol'}.
+  Since convergence requires 3 successive iterations to satisfy the
+  convergence criterion chosen, \code{burnin} must be \eqn{\ge 3}.}
 
   \item{\code{mcmaxIter}}{integer: the maximum number of MCEM algorithm
   iterations allowed. Default is \code{mcmaxIter=burnin+200}.}
@@ -80,6 +82,12 @@ algorithm. Default is \code{FALSE}.}
   \eqn{\ge}\code{rav}) criterion; see \strong{Details}. Default is
   \code{0.1}, which is an order of magnitude higher than the SAS
   implementation.}
+
+  \item{\code{type}}{character: type of Monte Carlo integration method to
+  use. Default is \code{type='antithetic'}, which uses the variance reduction
+  technique of antithetic simulation. The alternative option is
+  \code{type='sobol'}, which uses quasi-Monte Carlo with a low deterministic
+  Sobol sequence with Owen-type scrambling.}
 
   }}
 

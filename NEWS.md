@@ -4,6 +4,10 @@
 
 * `bootSE()` now has option to use parallel computing via the `foreach` package.
 
+## Bug patches
+
+* Fixed some small errors in the `epileptic.qol` dataset.
+
 ## Housekeeping
 
 * Added hex sticker badge.

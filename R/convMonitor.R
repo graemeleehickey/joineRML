@@ -34,7 +34,7 @@ convMonitor <- function(theta, theta.new, log.lik, log.lik.new, con, verbose) {
   max.reldelta.pars2 <- ifelse(any(mag), max(unlist(reldelta.pars)[mag]), NA)
 
   # Log-likelihood: for reporting only
-  rel.ll <- (log.lik.new - log.lik) / (log.lik + con$tol1)
+  rel.ll <- (log.lik.new - log.lik) / abs(log.lik + con$tol1)
 
   # Choose convergence criterion to use
   if (con$convCrit == "abs") {

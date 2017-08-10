@@ -46,6 +46,7 @@ Imports:
     Matrix,
     mvtnorm,
     parallel,
+    randtoolbox,
     Rcpp (>= 0.12.7),
     stats,
     utils

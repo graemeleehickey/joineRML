@@ -63,7 +63,7 @@ required.}
 
   \item{\code{nMC}}{integer: the initial number of Monte Carlo samples to be
   used for integration in the burn-in phase of the MCEM. Default is
-  \code{nMC=}max(100, 50\emph{K}).}
+  \code{nMC=}100\emph{K}).}
 
   \item{\code{nMCscale}}{integer: the scale factor for the increase in Monte
   Carlo size when Monte Carlo has not reduced from the previous iteration.
@@ -72,11 +72,13 @@ required.}
   \item{\code{nMCmax}}{integer: the maximum number of Monte Carlo samples
   that the algorithm is allowed to reach. Default is \code{nMCmax=20000}.}
 
-  \item{\code{burnin}}{integer: the number of iterations for burn-in phase of
-  the optimization algorithm. It is computationally inefficient to use a
+  \item{\code{burnin}}{integer: the number of iterations for 'burn-in' phase
+  of the optimization algorithm. It is computationally inefficient to use a
   large number of Monte Carlo samples early on until one is approximately
-  near the maximum likelihood estimate. Default is
-  \code{burnin=}100\emph{K}.}
+  near the maximum likelihood estimate. Default is \code{burnin=}100\emph{K}
+  for \code{type='antithetic'} and \code{burnin=}5 for \code{type='sobol'}.
+  Since convergence requires 3 successive iterations to satisfy the
+  convergence criterion chosen, \code{burnin} must be \eqn{\ge 3}.}
 
   \item{\code{mcmaxIter}}{integer: the maximum number of MCEM algorithm
   iterations allowed. Default is \code{mcmaxIter=burnin+200}.}
@@ -115,6 +117,12 @@ required.}
   \code{0.1}, which is an order of magnitude higher than the SAS
   implementation.}
 
+  \item{\code{type}}{character: type of Monte Carlo integration method to
+  use. Default is \code{type='antithetic'}, which uses the variance reduction
+  technique of antithetic simulation. The alternative option is
+  \code{type='sobol'}, which uses quasi-Monte Carlo with a low deterministic
+  Sobol sequence with Owen-type scrambling.}
+
   }}
 
 \item{...}{options passed to the \code{control} argument.}
@@ -130,8 +138,8 @@ This function fits the joint model proposed by Henderson et al.
   hazards regression model with time-varying covariates. The multiple
   longitudinal outcomes are modelled using a multivariate version of the
   Laird and Ware linear mixed model. The association is captured by a
-  multivariate latent Gaussian process. The model is estimated using a Monte
-  Carlo Expectation Maximization (MCEM) algorithm.
+  multivariate latent Gaussian process. The model is estimated using a
+  (quasi-) Monte Carlo Expectation Maximization (MCEM) algorithm.
 }
 \details{
 Function \code{mjoint} fits joint models for time-to-event and
@@ -196,9 +204,9 @@ Function \code{mjoint} fits joint models for time-to-event and
   Due to the Monte Caro error, the algorithm could spuriously declare
   convergence. Therefore, we require convergence to be satisfied for 3
   consecutive iterations. The algorithm starts with a low number of Monte
-  Carlo samples in the burn-in phase, as it would be computationally
+  Carlo samples in the 'burn-in' phase, as it would be computationally
   inefficient to use a large sample whilst far away from the true maximizer.
-  After the algorithm moves out of the adaptive phase, it uses an automated
+  After the algorithm moves out of this adaptive phase, it uses an automated
   criterion based on the coefficient of variation of the relative parameter
   change of the last 3 iterations to decide whether to increase the Monte
   Carlo sample size. See the technical vignette and Ripatti et al. (2002) for

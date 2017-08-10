@@ -1,5 +1,6 @@
 #' @keywords internal
-stepEM <- function(theta, l, t, z, nMC, verbose, gammaOpt, pfs) {
+#' @importFrom randtoolbox sobol
+stepEM <- function(theta, l, t, z, nMC, verbose, gammaOpt, pfs, type) {
 
   # Input parameter estimates
   D <- theta$D
@@ -72,7 +73,17 @@ stepEM <- function(theta, l, t, z, nMC, verbose, gammaOpt, pfs) {
   SIMPLIFY = FALSE)
 
   # Monte Carlo sample of [b | y]
-  bi.y <- bSim(floor(nMC / 2),  Mi, Ai)
+  if (type == "antithetic") {
+    bi.y <- bSim(floor(nMC / 2),  Mi, Ai)
+  } else if (type == "sobol") {
+    Zq <- randtoolbox::sobol(nMC, dim = sum(r), normal = TRUE, scrambling = 1)
+    bi.y <- mapply(function(m, a) {
+      C <- chol(a)
+      matrix(rep(m, nMC), nrow = nMC, byrow = TRUE) + (Zq %*% C)
+    },
+    m = Mi, a = Ai,
+    SIMPLIFY = FALSE)
+  }
   names(bi.y) <- names(Ai)
 
   # Calculation of t(v) %*% gamma_v
