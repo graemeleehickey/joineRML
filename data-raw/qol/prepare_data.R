@@ -5,9 +5,9 @@
 # Read-in CSV data
 #**********************************************
 
-epileptic <- read.csv("qol.csv")
+epileptic <- read.csv("./data-raw/qol/qol.csv")
 
-colnames(epileptic)[1:4] <- c("id", "fuyears", "trt", "status")
+colnames(epileptic)[1:4] <- c("id", "with.time", "trt", "with.status")
 
 epileptic <- by(epileptic, epileptic$id, FUN = function(x) {
   fu <- x[rep(1, 4), 1:4]
@@ -26,6 +26,7 @@ epileptic <- by(epileptic, epileptic$id, FUN = function(x) {
 
 epileptic <- do.call("rbind", epileptic)
 epileptic$time[epileptic$time == "999"] <- NA
+epileptic$time[epileptic$time < 0] <- NA
 epileptic$anxiety[epileptic$anxiety == "999"] <- NA
 epileptic$depress[epileptic$depress == "999"] <- NA
 epileptic$aep[epileptic$aep == "999"] <- NA
@@ -38,7 +39,8 @@ epileptic <- epileptic[!is.na(epileptic$time), ]
 # Finalise datasets
 #**********************************************
 
-epileptic$status2 <- as.numeric(epileptic$status != 0)
+epileptic$with.status2 <- as.numeric(epileptic$with.status != 0)
 row.names(epileptic) <- seq_len(nrow(epileptic))
-qol <- epileptic
-save(qol, file = "qol.Rdata")
+epileptic.qol <- epileptic
+epileptic.qol <- droplevels(qol)
+save(epileptic.qol, file = "epileptic.qol.Rdata")

@@ -14,13 +14,13 @@
 #'
 #'   \item{\code{id}}{patients identifier; in total there are 544 patients.}
 #'
-#'   \item{\code{fuyears}}{number of years between registration and the earlier
+#'   \item{\code{with.time}}{number of days between registration and the earlier
 #'   of treatment failure or study analysis time.}
 #'
 #'   \item{\code{trt}}{a factor with levels \code{CBZ} and \code{LTG} denoting
 #'   carbamazepine and lamotrigine, respectively.}
 #'
-#'   \item{\code{status}}{the reason for treatment failure. Coded as
+#'   \item{\code{with.status}}{the reason for treatment failure. Coded as
 #'   \code{0=}censored; \code{1=}unacceptable adverse effects;
 #'   \code{2=}inadequate seizure control.}
 #'
@@ -44,8 +44,8 @@
 #'   Profile (AEP), as defined according to the NEWQOL (Newly Diagnosed Epilepsy
 #'   Quality of Life) assessment. Higher scores are indicative of worse QoL.}
 #'
-#'   \item{\code{status2}}{a binary indicator of composite treatment failure
-#'   (for any reason), coded \code{status2=1}, or right-censoring
+#'   \item{\code{with.status2}}{a binary indicator of composite treatment
+#'   failure (for any reason), coded \code{status2=1}, or right-censoring
 #'   \code{status2=0}.}
 #'
 #'   }
