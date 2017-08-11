@@ -2,6 +2,8 @@
 
 ## New features
 
+* The MCEM algorithm can be implemented with vanilla Monte Carlo and quasi-Monte Carlo (using either the scrambled Sobol sequence or the Halton sequence). This is implemented through the `type` argument passed to the list of `control` parameters in `mjoint()`.
+
 * `bootSE()` now has option to use parallel computing via the `foreach` package.
 
 ## Bug patches

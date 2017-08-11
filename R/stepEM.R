@@ -1,5 +1,6 @@
 #' @keywords internal
-#' @importFrom randtoolbox sobol
+#' @importFrom randtoolbox sobol halton
+#' @importFrom MASS mvrnorm
 stepEM <- function(theta, l, t, z, nMC, verbose, gammaOpt, pfs, type) {
 
   # Input parameter estimates
@@ -73,10 +74,20 @@ stepEM <- function(theta, l, t, z, nMC, verbose, gammaOpt, pfs, type) {
   SIMPLIFY = FALSE)
 
   # Monte Carlo sample of [b | y]
-  if (type == "antithetic") {
+  if (type == "montecarlo") {
+    bi.y <- mapply(function(m, a) {
+      MASS::mvrnorm(nMC, mu = m, Sigma = a)
+    },
+    m = Mi, a = Ai,
+    SIMPLIFY = FALSE)
+  } else if (type == "antithetic") {
     bi.y <- bSim(floor(nMC / 2),  Mi, Ai)
-  } else if (type == "sobol") {
-    Zq <- randtoolbox::sobol(nMC, dim = sum(r), normal = TRUE, scrambling = 1)
+  } else if (type %in% c("sobol", "halton")) {
+    if (type == "sobol") {
+      Zq <- randtoolbox::sobol(nMC, dim = sum(r), normal = TRUE, scrambling = 1)
+    } else if (type == "halton") {
+      Zq <- randtoolbox::halton(nMC, dim = sum(r), normal = TRUE)
+    }
     bi.y <- mapply(function(m, a) {
       C <- chol(a)
       matrix(rep(m, nMC), nrow = nMC, byrow = TRUE) + (Zq %*% C)

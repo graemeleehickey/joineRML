@@ -33,7 +33,7 @@ algorithm. Default is \code{FALSE}.}
 
   \item{\code{nMCscale}}{integer: the scale factor for the increase in Monte
   Carlo size when Monte Carlo has not reduced from the previous iteration.
-  Default is \code{nMCscale=3}.}
+  Default is \code{nMCscale=5}.}
 
   \item{\code{nMCmax}}{integer: the maximum number of Monte Carlo samples
   that the algorithm is allowed to reach. Default is \code{nMCmax=20000}.}
@@ -42,9 +42,10 @@ algorithm. Default is \code{FALSE}.}
   of the optimization algorithm. It is computationally inefficient to use a
   large number of Monte Carlo samples early on until one is approximately
   near the maximum likelihood estimate. Default is \code{burnin=}100\emph{K}
-  for \code{type='antithetic'} and \code{burnin=}5 for \code{type='sobol'}.
-  Since convergence requires 3 successive iterations to satisfy the
-  convergence criterion chosen, \code{burnin} must be \eqn{\ge 3}.}
+  for \code{type='antithetic'} or \code{type='montecarlo'} and
+  \code{burnin=}5 for \code{type='sobol'} or \code{type='halton'}. Since
+  convergence requires 3 successive iterations to satisfy the convergence
+  criterion chosen, \code{burnin} must be \eqn{\ge 3}.}
 
   \item{\code{mcmaxIter}}{integer: the maximum number of MCEM algorithm
   iterations allowed. Default is \code{mcmaxIter=burnin+200}.}
@@ -62,13 +63,17 @@ algorithm. Default is \code{FALSE}.}
   chance of over-shooting the maximizer.}
 
   \item{\code{tol0}}{numeric: tolerance value for convergence in the
-  parameters; see \strong{Details}. Default is \code{5e-03}.}
+  parameters; see \strong{Details}. Default is \code{tol0=1e-03} for
+  \code{type='antithetic'} or \code{type='montecarlo'} and \code{tol0=1e-04}
+  for \code{type='sobol'} or \code{type='halton'}.}
 
   \item{\code{tol1}}{numeric: tolerance value for convergence in the
-  parameters; see \strong{Details}. Default is \code{1e-03}.}
+  parameters; see \strong{Details}. Default is \code{tol1=1e-03}.}
 
   \item{\code{tol2}}{numeric: tolerance value for convergence in the
-  parameters; see \strong{Details}. Default is \code{5e-03}.}
+  parameters; see \strong{Details}. Default is \code{tol2=5e-03} for
+  \code{type='antithetic'} or \code{type='montecarlo'} and \code{tol2=1e-03}
+  for \code{type='sobol'} or \code{type='halton'}.}
 
   \item{\code{tol.em}}{numeric: tolerance value for convergence in the
   multivariate linear mixed model (MV-LMM). When \eqn{K > 1}, the optimal
@@ -84,10 +89,20 @@ algorithm. Default is \code{FALSE}.}
   implementation.}
 
   \item{\code{type}}{character: type of Monte Carlo integration method to
-  use. Default is \code{type='antithetic'}, which uses the variance reduction
-  technique of antithetic simulation. The alternative option is
-  \code{type='sobol'}, which uses quasi-Monte Carlo with a low deterministic
-  Sobol sequence with Owen-type scrambling.}
+  use. Options are \describe{
+
+  \item{\code{type='montecarlo'}}{Vanilla Monte Carlo sampling.}
+
+  \item{\code{type='antithetic'}}{Variance reduction method using antithetic
+  simulation. This is the default option.}
+
+  \item{\code{type='sobol'}}{Quasi-Monte Carlo with a low
+  deterministic Sobol sequence with Owen-type scrambling.}
+
+  \item{\code{type='halton'}}{Quasi-Monte Carlo with a low deterministic
+  Halton sequence.}
+
+  }}
 
   }}
 

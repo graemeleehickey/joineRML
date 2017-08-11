@@ -58,7 +58,7 @@
 #'
 #'   \item{\code{nMCscale}}{integer: the scale factor for the increase in Monte
 #'   Carlo size when Monte Carlo has not reduced from the previous iteration.
-#'   Default is \code{nMCscale=3}.}
+#'   Default is \code{nMCscale=5}.}
 #'
 #'   \item{\code{nMCmax}}{integer: the maximum number of Monte Carlo samples
 #'   that the algorithm is allowed to reach. Default is \code{nMCmax=20000}.}
@@ -67,9 +67,10 @@
 #'   of the optimization algorithm. It is computationally inefficient to use a
 #'   large number of Monte Carlo samples early on until one is approximately
 #'   near the maximum likelihood estimate. Default is \code{burnin=}100\emph{K}
-#'   for \code{type='antithetic'} and \code{burnin=}5 for \code{type='sobol'}.
-#'   Since convergence requires 3 successive iterations to satisfy the
-#'   convergence criterion chosen, \code{burnin} must be \eqn{\ge 3}.}
+#'   for \code{type='antithetic'} or \code{type='montecarlo'} and
+#'   \code{burnin=}5 for \code{type='sobol'} or \code{type='halton'}. Since
+#'   convergence requires 3 successive iterations to satisfy the convergence
+#'   criterion chosen, \code{burnin} must be \eqn{\ge 3}.}
 #'
 #'   \item{\code{mcmaxIter}}{integer: the maximum number of MCEM algorithm
 #'   iterations allowed. Default is \code{mcmaxIter=burnin+200}.}
@@ -87,13 +88,17 @@
 #'   chance of over-shooting the maximizer.}
 #'
 #'   \item{\code{tol0}}{numeric: tolerance value for convergence in the
-#'   parameters; see \strong{Details}. Default is \code{5e-03}.}
+#'   parameters; see \strong{Details}. Default is \code{tol0=1e-03} for
+#'   \code{type='antithetic'} or \code{type='montecarlo'} and \code{tol0=1e-04}
+#'   for \code{type='sobol'} or \code{type='halton'}.}
 #'
 #'   \item{\code{tol1}}{numeric: tolerance value for convergence in the
-#'   parameters; see \strong{Details}. Default is \code{1e-03}.}
+#'   parameters; see \strong{Details}. Default is \code{tol1=1e-03}.}
 #'
 #'   \item{\code{tol2}}{numeric: tolerance value for convergence in the
-#'   parameters; see \strong{Details}. Default is \code{5e-03}.}
+#'   parameters; see \strong{Details}. Default is \code{tol2=5e-03} for
+#'   \code{type='antithetic'} or \code{type='montecarlo'} and \code{tol2=1e-03}
+#'   for \code{type='sobol'} or \code{type='halton'}.}
 #'
 #'   \item{\code{tol.em}}{numeric: tolerance value for convergence in the
 #'   multivariate linear mixed model (MV-LMM). When \eqn{K > 1}, the optimal
@@ -109,10 +114,20 @@
 #'   implementation.}
 #'
 #'   \item{\code{type}}{character: type of Monte Carlo integration method to
-#'   use. Default is \code{type='antithetic'}, which uses the variance reduction
-#'   technique of antithetic simulation. The alternative option is
-#'   \code{type='sobol'}, which uses quasi-Monte Carlo with a low deterministic
-#'   Sobol sequence with Owen-type scrambling.}
+#'   use. Options are \describe{
+#'
+#'   \item{\code{type='montecarlo'}}{Vanilla Monte Carlo sampling.}
+#'
+#'   \item{\code{type='antithetic'}}{Variance reduction method using antithetic
+#'   simulation. This is the default option.}
+#'
+#'   \item{\code{type='sobol'}}{Quasi-Monte Carlo with a low
+#'   deterministic Sobol sequence with Owen-type scrambling.}
+#'
+#'   \item{\code{type='halton'}}{Quasi-Monte Carlo with a low deterministic
+#'   Halton sequence.}
+#'
+#'   }}
 #'
 #'   }
 #' @param ... options passed to the \code{control} argument.
@@ -145,9 +160,10 @@
 #'   association parameters of length \emph{K} for estimation.
 #'
 #'   The optimization routine is based on a Monte Carlo Expectation Maximization
-#'   algorithm (MCEM) algorithm, as described by Wei and Tanner (1990). As
-#'   proposed by Henderson et al. (2000), we use antithetic simulation for
-#'   variance reduction in the Monte Carlo integration.
+#'   algorithm (MCEM) algorithm, as described by Wei and Tanner (1990). With
+#'   options for using antithetic simulation for variance reduction in the Monte
+#'   Carlo integration, or quasi-Monte Carlo based on low order deterministic
+#'   sequences.
 #'
 #' @section Convergence criteria:
 #'
@@ -323,7 +339,7 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
   Call <- match.call()
   balanced <- FALSE # assume unless proven o/w
 
-  # formulas do not need to be given as lists if K=1
+  # Formulas do not need to be given as lists if K=1
   if (!is.list(formLongFixed)) {
     balanced <- TRUE
     formLongFixed <- list(formLongFixed)
@@ -333,7 +349,7 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
     K <- length(formLongFixed)
   }
 
-  # data does not need to a list if K=1
+  # Data does not need to a list if K=1
   # if K>1 and not a list, assume data balanced
   if (class(data) != "list") {
     balanced <- TRUE
@@ -353,7 +369,7 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
   id <- as.character(nlme::splitFormula(formLongRandom[[1]], "|")[[2]])[2]
   n <- length(unique(data[[1]][, id]))
 
-  # incase timeVar not a vector when K>1
+  # Incase timeVar not a vector when K>1
   if (length(timeVar) == 1 & (K > 1)) {
     timeVar <- rep(timeVar, K)
   }
@@ -361,14 +377,14 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
     stop(paste("The length of timeVar must equal", K))
   }
 
-  # order the data + id -> factor
+  # Order the data + id -> factor
   for (k in 1:K) {
     data[[k]] <- data[[k]][order(xtfrm(data[[k]][, id]), data[[k]][, timeVar[k]]), ]
     data[[k]][, id] <- as.factor(data[[k]][, id])
     data[[k]] <- droplevels(data[[k]])
   }
 
-  # check the same patients measured at least once for each marker
+  # Check the same patients measured at least once for each marker
   if (K > 1) {
     uniq.ids <- list(sort(unique(data[[1]][, id])))
     for (k in 2:K) {
@@ -383,28 +399,45 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
   # Control parameters
   #*****************************************************
 
-  con <- list(nMC = 100*K, nMCscale = 3, nMCmax = 20000, burnin = 100*K,
+  con <- list(nMC = 100*K, nMCscale = 5, nMCmax = 20000, burnin = 100*K,
               mcmaxIter = 100*K + 200, convCrit = "sas", gammaOpt = "NR",
-              tol0 = 5e-03, tol1 = 1e-03, tol2 = 5e-03, tol.em = 1e-04,
+              tol0 = 1e-03, tol1 = 1e-03, tol2 = 5e-03, tol.em = 1e-04,
               rav = 0.1, type = "antithetic")
   nc <- names(con)
   control <- c(control, list(...))
   con[(conArgs <- names(control))] <- control
 
-  # Checks ad over-rides
-  if (("burnin" %in% names(control)) && !("mcmaxIter" %in% names(control))) {
-    con$mcmaxIter <- con$burnin + 200 # can't terminate before end of burnin
+  # Checks and over-rides
+
+  # Default for tol.em
+  if (("tol.em" %in% names(control)) || ("tol2" %in% names(control))) {
+    con$tol.em <- min(con$tol.em, con$tol2)
   }
+  # Don't allow algorithm to terminate before end of burnin
+  if (("burnin" %in% names(control)) && !("mcmaxIter" %in% names(control))) {
+    con$mcmaxIter <- con$burnin + 200
+  }
+  # Enforce minimum burnin
   if (con$burnin < 3) {
     con$burnin <- 3
     warning("burning must be at least 3: changing to burnin = 3")
   }
-  if (!("burnin" %in% names(control)) && (con$type == "sobol")) {
-    con$burnin <- 5 # tiny burnin for QMC methods
+  # Separate defaults for QMC methods
+  if (con$type %in% c("sobol", "halton")) {
+    # reduce burn-in
+    if (!("burnin" %in% names(control))) {
+      con$burnin <- 5
+    }
+    # reduce tol0
+    if (!("tol0" %in% names(control))) {
+      con$tol0 <- 1e-04
+    }
+    # reduce tol2
+    if (!("tol2" %in% names(control))) {
+      con$tol2 <- 1e-03
+    }
   }
-  if (("tol.em" %in% names(control)) || ("tol2" %in% names(control))) {
-    con$tol.em <- min(con$tol.em, con$tol2)
-  }
+  # If any unmatched arguments given
   if (length(unmatched <- conArgs[!(conArgs %in% nc)]) > 0) {
     warning("Unknown arguments passed to 'control': ", paste(unmatched, collapse = ", "))
   }
@@ -718,7 +751,7 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
       cat(paste("CV statistic (new) =", round(cv, 6), "\n\n"))
     }
     mc_swamp_type1 <- (it >= con$burnin) && (cv > cv.old) && !conv
-    mc_swamp_type2 <- (it >= 2) && (con$type == "sobol")
+    mc_swamp_type2 <- (it >= 2) && (con$type %in% c("sobol", "halton"))
     if (mc_swamp_type1 || mc_swamp_type2) {
       nMC.old <- nMC
       nMC <- min(nMC + floor(nMC / con$nMCscale), con$nMCmax)
