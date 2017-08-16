@@ -69,6 +69,8 @@ convMonitor <- function(theta, theta.new, log.lik, log.lik.new, con, verbose) {
     cat(paste("Converged:", conv, "\n\n"))
   }
 
-  return(list(conv = conv, max.reldelta.pars = max.reldelta.pars))
+  return(list("conv" = conv,
+              "max.reldelta.pars" = max.reldelta.pars,
+              "rel.ll" = rel.ll))
 
 }
