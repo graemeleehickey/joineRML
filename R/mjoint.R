@@ -68,9 +68,9 @@
 #'   large number of Monte Carlo samples early on until one is approximately
 #'   near the maximum likelihood estimate. Default is \code{burnin=}100\emph{K}
 #'   for \code{type='antithetic'} or \code{type='montecarlo'} and
-#'   \code{burnin=}5 for \code{type='sobol'} or \code{type='halton'}. Since
-#'   convergence requires 3 successive iterations to satisfy the convergence
-#'   criterion chosen, \code{burnin} must be \eqn{\ge 3}.}
+#'   \code{burnin=}5 for \code{type='sobol'} or \code{type='halton'}. For
+#'   standard methods, such a large burn-in will generally be unnecessary and
+#'   can be reduced on an application-specific basis.}
 #'
 #'   \item{\code{mcmaxIter}}{integer: the maximum number of MCEM algorithm
 #'   iterations allowed. Default is \code{mcmaxIter=burnin+200}.}
@@ -88,9 +88,7 @@
 #'   chance of over-shooting the maximizer.}
 #'
 #'   \item{\code{tol0}}{numeric: tolerance value for convergence in the
-#'   parameters; see \strong{Details}. Default is \code{tol0=1e-03} for
-#'   \code{type='antithetic'} or \code{type='montecarlo'} and \code{tol0=1e-04}
-#'   for \code{type='sobol'} or \code{type='halton'}.}
+#'   parameters; see \strong{Details}. Default is \code{tol0=1e-03}.}
 #'
 #'   \item{\code{tol1}}{numeric: tolerance value for convergence in the
 #'   parameters; see \strong{Details}. Default is \code{tol1=1e-03}.}
@@ -417,20 +415,11 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
   if (("burnin" %in% names(control)) && !("mcmaxIter" %in% names(control))) {
     con$mcmaxIter <- con$burnin + 200
   }
-  # Enforce minimum burnin
-  if (con$burnin < 3) {
-    con$burnin <- 3
-    warning("burning must be at least 3: changing to burnin = 3")
-  }
   # Separate defaults for QMC methods
   if (con$type %in% c("sobol", "halton")) {
     # reduce burn-in
     if (!("burnin" %in% names(control))) {
       con$burnin <- 5
-    }
-    # reduce tol0
-    if (!("tol0" %in% names(control))) {
-      con$tol0 <- 1e-04
     }
     # reduce tol2
     if (!("tol2" %in% names(control))) {
@@ -735,7 +724,7 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
     Delta.vec[it] <- conv.status$max.reldelta.pars
     log.lik <- log.lik.new
 
-    if (it >= con$burnin) {
+    if (it >= con$burnin + 3) {
       # require convergence condition to be satisfied 3 iterations
       # in a row + cannot converge during burn-in stage
       conv <- all(conv.track[(it - 2):it])
@@ -743,23 +732,24 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
       conv <- FALSE
     }
 
-    # Ripatti decision-rule for nMC increase using CV statistics
-    # For QMC we increase nMC irrespectively
-    cv <- ifelse(it >= 3, sd(Delta.vec[(it - 2):it]) / mean(Delta.vec[(it - 2):it]), 0)
-    if (verbose) {
-      cat(paste("CV statistic (old) =", round(cv.old, 6), "\n"))
-      cat(paste("CV statistic (new) =", round(cv, 6), "\n\n"))
-    }
-    mc_swamp_type1 <- (it >= con$burnin) && (cv > cv.old) && !conv
-    mc_swamp_type2 <- (it >= 2) && (con$type %in% c("sobol", "halton"))
-    if (mc_swamp_type1 || mc_swamp_type2) {
-      nMC.old <- nMC
-      nMC <- min(nMC + floor(nMC / con$nMCscale), con$nMCmax)
-    }
-    cv.old <- cv
-
-    if (verbose) {
-      cat(paste("Set number of MC nodes:", nMC, "\n\n"))
+    if (!conv && (it >= con$burnin)) {
+      # Ripatti decision-rule for nMC increase using CV statistics
+      cv <- ifelse(it >= 3, sd(Delta.vec[(it - 2):it]) / mean(Delta.vec[(it - 2):it]), 0)
+      if (verbose) {
+        cat(paste("CV statistic (old) =", round(cv.old, 6), "\n"))
+        cat(paste("CV statistic (new) =", round(cv, 6), "\n\n"))
+      }
+      ripatti <- (cv > cv.old)
+      cv.old <- cv
+      # Check for drift in log-likelihood with using QMC
+      lldrift <- (con$type %in% c("sobol", "halton")) && (conv.status$rel.ll < 0)
+      if (ripatti || lldrift) {
+        nMC.old <- nMC
+        nMC <- min(nMC + floor(nMC / con$nMCscale), con$nMCmax)
+      }
+      if (verbose) {
+        cat(paste("Using number of MC nodes:", nMC, "\n\n"))
+      }
     }
 
     # Once converged: calculate SEs and posterior REs (means + variances)

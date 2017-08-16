@@ -77,9 +77,9 @@ required.}
   large number of Monte Carlo samples early on until one is approximately
   near the maximum likelihood estimate. Default is \code{burnin=}100\emph{K}
   for \code{type='antithetic'} or \code{type='montecarlo'} and
-  \code{burnin=}5 for \code{type='sobol'} or \code{type='halton'}. Since
-  convergence requires 3 successive iterations to satisfy the convergence
-  criterion chosen, \code{burnin} must be \eqn{\ge 3}.}
+  \code{burnin=}5 for \code{type='sobol'} or \code{type='halton'}. For
+  standard methods, such a large burn-in will generally be unnecessary and
+  can be reduced on an application-specific basis.}
 
   \item{\code{mcmaxIter}}{integer: the maximum number of MCEM algorithm
   iterations allowed. Default is \code{mcmaxIter=burnin+200}.}
@@ -97,9 +97,7 @@ required.}
   chance of over-shooting the maximizer.}
 
   \item{\code{tol0}}{numeric: tolerance value for convergence in the
-  parameters; see \strong{Details}. Default is \code{tol0=1e-03} for
-  \code{type='antithetic'} or \code{type='montecarlo'} and \code{tol0=1e-04}
-  for \code{type='sobol'} or \code{type='halton'}.}
+  parameters; see \strong{Details}. Default is \code{tol0=1e-03}.}
 
   \item{\code{tol1}}{numeric: tolerance value for convergence in the
   parameters; see \strong{Details}. Default is \code{tol1=1e-03}.}
