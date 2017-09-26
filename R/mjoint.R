@@ -349,7 +349,7 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
 
   # Data does not need to a list if K=1
   # if K>1 and not a list, assume data balanced
-  if (class(data) != "list") {
+  if (!("list" %in% class(data))) {
     balanced <- TRUE
     data <- list(data)
     if (K > 1) {
