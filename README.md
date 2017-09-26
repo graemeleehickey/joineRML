@@ -5,10 +5,6 @@ joineRML <img src="man/figures/hex.png" width = "175" height = "200" align="righ
 
 [![Travis-CI Build Status](https://travis-ci.org/graemeleehickey/joineRML.svg?branch=master)](https://travis-ci.org/graemeleehickey/joineRML) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/graemeleehickey/joineRML?branch=master&svg=true)](https://ci.appveyor.com/project/graemeleehickey/joineRML) <!--[![License](https://img.shields.io/badge/License-GPL%20%28%3E=%203%29-brightgreen.svg)](http://www.gnu.org/licenses/gpl-3.0.html)--> [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/joineRML)](https://CRAN.R-project.org/package=joineRML) [![](http://cranlogs.r-pkg.org/badges/joineRML)](https://CRAN.R-project.org/package=joineRML) [![](https://cranlogs.r-pkg.org/badges/grand-total/joineRML)](https://CRAN.R-project.org/package=joineRML) [![codecov](https://codecov.io/gh/graemeleehickey/joineRML/branch/master/graph/badge.svg)](https://codecov.io/gh/graemeleehickey/joineRML)
 
-Fork build status and code coverage:
-
-[![Travis-CI Build Status](https://travis-ci.org/ellessenne/joineRML.svg?branch=master)](https://travis-ci.org/ellessenne/joineRML) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/ellessenne/joineRML?branch=master&svg=true)](https://ci.appveyor.com/project/ellessenne/joineRML) [![codecov](https://codecov.io/gh/ellessenne/joineRML/branch/master/graph/badge.svg)](https://codecov.io/gh/ellessenne/joineRML)
-
 `joineRML` is an extension of the joineR package for fitting joint models of time-to-event data and multivariate longitudinal data. The model fitted in joineRML is an extension of the Wulfsohn and Tsiatis (1997) and Henderson et al. (2000) models, which is comprised on (*K* + 1)-sub-models: a Cox proportional hazards regression model (Cox, 1972) and a *K*-variate linear mixed-effects model - a direct extension of the Laird and Ware (1982) regression model. The model is fitted using a Monte Carlo Expectation-Maximization (MCEM) algorithm, which closely follows the methodology presented by Lin et al. (2002).
 
 Why use joineRML?
