@@ -127,27 +127,23 @@ bootSE <- function(object, nboot = 100, ci = 0.95, use.mle = TRUE,
         # bootstrap sample data
         data.boot <- sampleData(object = object)
         # fit joint model
-        fit.boot <- tryCatch({
-          fit.boot <- suppressMessages(
-            mjoint(formLongFixed = formLongFixed,
-                   formLongRandom = formLongRandom,
-                   formSurv = formSurv,
-                   data = data.boot$longData.boot,
-                   survData = data.boot$survData.boot,
-                   timeVar = timeVar,
-                   inits = theta.hat,
-                   verbose = verbose,
-                   pfs = FALSE,
-                   control = con,
-                   ...))
-          return(fit.boot)
-        },
-        error = function(e) return(NULL))
+        fit.boot <- tryCatch(suppressMessages(
+          mjoint(formLongFixed = formLongFixed,
+                 formLongRandom = formLongRandom,
+                 formSurv = formSurv,
+                 data = data.boot$longData.boot,
+                 survData = data.boot$survData.boot,
+                 timeVar = timeVar,
+                 inits = theta.hat,
+                 verbose = verbose,
+                 pfs = FALSE,
+                 control = con,
+                 ...)),
+          error = function(e) NULL)
       }
       return(fit.boot)
     }} else {
       bootfun <- function() {
-        fit.boot <- NULL
         # bootstrap sample data
         data.boot <- sampleData(object = object)
         # fit joint model
