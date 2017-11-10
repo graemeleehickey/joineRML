@@ -2,14 +2,14 @@
 
 language: r
 cache: packages
-sudo: false
+sudo: true
 
-#before_install:
+before_install:
 #  - tlmgr install amsmath amsfonts setspace enumitem hyperref biblatex
 # disable_homebrew: true
 #r_build_args: '--no-build-vignettes'
 #r_check_args: '--as-cran --ignore-vignettes --no-examples'
-sudo apt-get install libnlopt-dev
+  - sudo apt-get install libnlopt-dev
 
 os:
   - linux
