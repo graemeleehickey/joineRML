@@ -9,6 +9,7 @@ sudo: false
 # disable_homebrew: true
 #r_build_args: '--no-build-vignettes'
 #r_check_args: '--as-cran --ignore-vignettes --no-examples'
+sudo apt-get install libnlopt-dev
 
 os:
   - linux
