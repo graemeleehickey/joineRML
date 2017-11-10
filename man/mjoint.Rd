@@ -29,7 +29,8 @@ in which to interpret the variables named in the \code{formLongFixed} and
 multiple longitudinal outcomes with different measurement protocols. If the
 multiple longitudinal outcomes are measured at the same time points for
 each patient, then a \code{data.frame} object can be given instead of a
-\code{list}. It is assumed that each data frame is in long format.}
+\code{list}. It is assumed that each data frame is in long format. \code{tibble}
+objects are automatically converted to plain \code{data.frame} objects.}
 
 \item{survData}{a \code{data.frame} in which to interpret the variables named
 in the \code{formSurv}. This is optional, and if not given, the required

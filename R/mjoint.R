@@ -26,7 +26,8 @@
 #'   multiple longitudinal outcomes with different measurement protocols. If the
 #'   multiple longitudinal outcomes are measured at the same time points for
 #'   each patient, then a \code{data.frame} object can be given instead of a
-#'   \code{list}. It is assumed that each data frame is in long format.
+#'   \code{list}. It is assumed that each data frame is in long format. \code{tibble}
+#'   objects are automatically converted to plain \code{data.frame} objects.
 #' @param survData a \code{data.frame} in which to interpret the variables named
 #'   in the \code{formSurv}. This is optional, and if not given, the required
 #'   data is searched for in \code{data}. Default is \code{survData=NULL}.
@@ -349,7 +350,7 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
 
   # Data does not need to a list if K=1
   # if K>1 and not a list, assume data balanced
-  if (class(data) != "list") {
+  if (!("list" %in% class(data))) {
     balanced <- TRUE
     data <- list(data)
     if (K > 1) {
@@ -363,6 +364,15 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
   if (length(data) != K) {
     stop(paste("The number of datasets expected is K =", K))
   }
+
+  # Strip `tibble` class from data (breaks indexing by column) if present
+  data <- lapply(data, function(d) {
+    if (any(c("tbl_df", "tbl") %in% class(d))) {
+      return(as.data.frame(d))
+    } else {
+      return(d)
+    }
+  })
 
   id <- as.character(nlme::splitFormula(formLongRandom[[1]], "|")[[2]])[2]
   n <- length(unique(data[[1]][, id]))
