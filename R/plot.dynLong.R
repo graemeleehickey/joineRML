@@ -112,7 +112,7 @@ plot.dynLong <- function(x, main = NULL, xlab = NULL, ylab = NULL,
          xlim = c(0, data.t$tmax),
          ylim = ylimfun(k),
          ylab = ifelse(is.null(ylab), toString(formula(fit$lfit[[k]])[[2]]),
-                       ylab[[1]]),
+                       ylab[[k]]),
          las = 1,
          xaxt = "n",
          lwd = lwd)

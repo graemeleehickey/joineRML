@@ -124,7 +124,7 @@ plot.dynSurv <- function(x, main = NULL, xlab = NULL, ylab1 = NULL,
          #xaxs = "i",
          xaxt = "n",
          ylab = ifelse(is.null(ylab1), toString(formula(fit$lfit[[k]])[[2]]),
-                       ylab1[[1]]),
+                       ylab1[[k]]),
          lwd = lwd)
     points(x = data.t$tk[[k]],
            y = data.t$yk[[k]],
