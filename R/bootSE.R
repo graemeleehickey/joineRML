@@ -23,6 +23,7 @@
 #'   that if \code{ncores}>1, then \code{progress} is set to \code{FALSE} by
 #'   default, as it is not possible to display progress bars for parallel
 #'   processes at the current time.
+#' @param safe.boot logical: should each bootstrap replication be wrapped in a \code{\link[base]{tryCatch}} statement to catch errors (e.g. during the optimisation progress)? When model fitting throws errors, a new bootstrap sample is drawn for the current iteration and the model is re-fit; this process continue until a model fits succesfully. Default is \code{FALSE}.
 #' @inheritParams mjoint
 #'
 #' @details Standard errors and confidence intervals are obtained by repeated
@@ -84,7 +85,7 @@
 #' }
 bootSE <- function(object, nboot = 100, ci = 0.95, use.mle = TRUE,
                    verbose = FALSE, control = list(), progress = TRUE,
-                   ncores = 1, ...) {
+                   ncores = 1, safe.boot = FALSE, ...) {
 
   if (!inherits(object, "mjoint")) {
     stop("Use only with 'mjoint' model objects.\n")
@@ -118,25 +119,50 @@ bootSE <- function(object, nboot = 100, ci = 0.95, use.mle = TRUE,
   }
 
   # Internal function for bootstrap
-  bootfun <- function() {
-    # bootstrap sample data
-    data.boot <- sampleData(object = object)
-    # fit joint model
-    suppressMessages(
-      fit.boot <- mjoint(formLongFixed = formLongFixed,
-                         formLongRandom = formLongRandom,
-                         formSurv = formSurv,
-                         data = data.boot$longData.boot,
-                         survData = data.boot$survData.boot,
-                         timeVar = timeVar,
-                         inits = theta.hat,
-                         verbose = verbose,
-                         pfs = FALSE,
-                         control = con,
-                         ...)
-    )
-    return(fit.boot)
-  }
+  if (safe.boot) {
+    bootfun <- function() {
+      fit.boot <- NULL
+      # keep iterating if the model fails with errors
+      while (is.null(fit.boot)) {
+        # bootstrap sample data
+        data.boot <- sampleData(object = object)
+        # fit joint model
+        fit.boot <- tryCatch(suppressMessages(
+          mjoint(formLongFixed = formLongFixed,
+                 formLongRandom = formLongRandom,
+                 formSurv = formSurv,
+                 data = data.boot$longData.boot,
+                 survData = data.boot$survData.boot,
+                 timeVar = timeVar,
+                 inits = theta.hat,
+                 verbose = verbose,
+                 pfs = FALSE,
+                 control = con,
+                 ...)),
+          error = function(e) NULL)
+      }
+      return(fit.boot)
+    }} else {
+      bootfun <- function() {
+        # bootstrap sample data
+        data.boot <- sampleData(object = object)
+        # fit joint model
+        fit.boot <- suppressMessages(
+          mjoint(formLongFixed = formLongFixed,
+                 formLongRandom = formLongRandom,
+                 formSurv = formSurv,
+                 data = data.boot$longData.boot,
+                 survData = data.boot$survData.boot,
+                 timeVar = timeVar,
+                 inits = theta.hat,
+                 verbose = verbose,
+                 pfs = FALSE,
+                 control = con,
+                 ...)
+        )
+        return(fit.boot)
+      }
+    }
 
   if (ncores > 1) {
     ncores.max <- parallel::detectCores()
