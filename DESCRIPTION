@@ -2,7 +2,7 @@ Package: joineRML
 Type: Package
 Title: Joint Modelling of Multivariate Longitudinal Data and Time-to-Event
     Outcomes
-Version: 0.3.0.9000
+Version: 0.4.0
 Authors@R: c(
     person("Graeme L.", "Hickey", email = "graeme.hickey@liverpool.ac.uk", 
         role = c("cre", "aut")),
@@ -16,7 +16,9 @@ Authors@R: c(
         role = "ctb"),
     person("Dimitris", "Rizopoulos", email = "d.rizopoulos@erasmusmc.nl",
         role = c("ctb", "dtc"),
-        comment = "data/renal.rda, R/hessian.R, R/vcov.R")
+        comment = "data/renal.rda, R/hessian.R, R/vcov.R"),
+    person("Alessandro", "Gasparini", email = "ag475@le.ac.uk",
+        role = "ctb")
     )
 Encoding: UTF-8
 Description: Fits the joint model proposed by Henderson and colleagues (2000) 

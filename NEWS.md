@@ -1,4 +1,4 @@
-# joineRML 0.3.0.9000
+# joineRML 0.4.0
 
 ## New features
 
@@ -10,11 +10,17 @@
 
 * Fixed some small errors in the `epileptic.qol` dataset.
 
+* Fixed situation where a tibble might be given as the dataset (#55 @ellessenne).
+
+* Catches errors in bootstrap due to "bad" data and automatically restarts the bootstrap (#57 @ellessenne) 
+
 ## Housekeeping
 
 * Added hex sticker badge.
 
 * Moved the make files and raw data for `qol` and `renal` datasets into the `~/data-raw/` directory.
+
+* Added @ellessenne as package contributor for testing and bug corrections (PRs #55 and #57).
 
 # joineRML 0.3.0
 

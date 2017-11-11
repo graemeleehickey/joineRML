@@ -3,8 +3,7 @@
 None
 
 ## Test environments
-
-* local OS X install, R 3.4.0
+* local OS X (High Sierra) install, R 3.4.2
 * ubuntu (via travis-ci)
 * windows (via appveyor)
 * win-builder (release, devel)
