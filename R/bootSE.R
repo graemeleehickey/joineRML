@@ -23,7 +23,11 @@
 #'   that if \code{ncores}>1, then \code{progress} is set to \code{FALSE} by
 #'   default, as it is not possible to display progress bars for parallel
 #'   processes at the current time.
-#' @param safe.boot logical: should each bootstrap replication be wrapped in a \code{\link[base]{tryCatch}} statement to catch errors (e.g. during the optimisation progress)? When model fitting throws errors, a new bootstrap sample is drawn for the current iteration and the model is re-fit; this process continue until a model fits succesfully. Default is \code{FALSE}.
+#' @param safe.boot logical: should each bootstrap replication be wrapped in a
+#'   \code{\link[base]{tryCatch}} statement to catch errors (e.g. during the
+#'   optimisation progress)? When model fitting throws errors, a new bootstrap
+#'   sample is drawn for the current iteration and the model is re-fit; this
+#'   process continuex until a model fits succesfully. Default is \code{FALSE}.
 #' @inheritParams mjoint
 #'
 #' @details Standard errors and confidence intervals are obtained by repeated
