@@ -39,6 +39,7 @@ Depends:
     nlme,
     survival
 Imports:
+    cobs,
     doParallel,
     foreach,
     ggplot2,

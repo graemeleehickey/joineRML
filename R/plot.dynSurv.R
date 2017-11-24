@@ -19,11 +19,22 @@
 #'   \code{estimator='median'}. This argument is ignored for non-simulated
 #'   \code{dynSurv} objects, i.e. those of \code{type='first-order'}, as in that
 #'   case a mode-based prediction is plotted.
+#' @param smooth whether to overlay a smooth survival curve. Defaults to
+#'   \code{FALSE}.
 #' @param ... additional plotting arguments; currently limited to \code{lwd} and
 #'   \code{cex}. See \code{\link[graphics]{par}} for details.
 #'
+#' @details The \code{joineRML} package is based on a semi-parametrc model, such
+#'   that the baseline hazards function is left unspecified. For prediction, it
+#'   might be preferable to have a smooth survival curve. Rather than changing
+#'   modelling framework \emph{a prior}, a constrained B-splines non-parametric
+#'   median quantile curve is estimated using \code{\link[cobs]{cobs}}, with a
+#'   penalty function of \eqn{\lambda=1}, and subject to constraints of
+#'   monotonicity and \eqn{S(t=0)=1}.
+#'
 #' @author Graeme L. Hickey (\email{graeme.hickey@@liverpool.ac.uk})
 #' @keywords hplot
+#' @importFrom cobs cobs
 #' @seealso \code{\link{dynSurv}}
 #'
 #' @references
@@ -66,7 +77,7 @@
 #' plot(out2, main = "Patient 1")
 #' }
 plot.dynSurv <- function(x, main = NULL, xlab = NULL, ylab1 = NULL,
-                         ylab2 = NULL, grid = TRUE, estimator, ...) {
+                         ylab2 = NULL, grid = TRUE, estimator, smooth = FALSE, ...) {
 
   if (!inherits(x, "dynSurv")) {
     stop("Use only with 'dynSurv' objects.\n")
@@ -186,6 +197,15 @@ plot.dynSurv <- function(x, main = NULL, xlab = NULL, ylab1 = NULL,
   }
   abline(v = data.t$tobs, col = "white", lwd = 3, xpd = NA)
   abline(v = data.t$tobs, col = "darkgrey", lty = "dotted", lwd = 3, xpd = FALSE)
+
+  # smoothed survival function
+  if (smooth) {
+    cobs_fit <- cobs::cobs(xpts, ypts, constraint = "decrease", lambda = 1,
+                           nknots = 10, pointwise = rbind(c(0, 0, 1)),
+                           print.warn = FALSE, print.mesg = FALSE)
+    smooth_pts <- predict(cobs_fit)
+    lines(smooth_pts[, 1], smooth_pts[, 2], col = 2, lwd = 2)
+  }
 
   # Axis labels
   mtext(main, 3,
