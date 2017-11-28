@@ -19,8 +19,8 @@
 #'   \code{estimator='median'}. This argument is ignored for non-simulated
 #'   \code{dynSurv} objects, i.e. those of \code{type='first-order'}, as in that
 #'   case a mode-based prediction is plotted.
-#' @param smooth whether to overlay a smooth survival curve. Defaults to
-#'   \code{FALSE}.
+#' @param smooth logical: whether to overlay a smooth survival curve (see
+#'   \strong{Details}). Defaults to \code{FALSE}.
 #' @param ... additional plotting arguments; currently limited to \code{lwd} and
 #'   \code{cex}. See \code{\link[graphics]{par}} for details.
 #'
@@ -30,7 +30,7 @@
 #'   modelling framework \emph{a prior}, a constrained B-splines non-parametric
 #'   median quantile curve is estimated using \code{\link[cobs]{cobs}}, with a
 #'   penalty function of \eqn{\lambda=1}, and subject to constraints of
-#'   monotonicity and \eqn{S(t=0)=1}.
+#'   monotonicity and \eqn{S(t)=1}.
 #'
 #' @author Graeme L. Hickey (\email{graeme.hickey@@liverpool.ac.uk})
 #' @keywords hplot
@@ -38,6 +38,10 @@
 #' @seealso \code{\link{dynSurv}}
 #'
 #' @references
+#'
+#' Ng P, Maechler M. A fast and efficient implementation of qualitatively
+#' constrained quantile smoothing splines. \emph{Statistical Modelling}. 2007;
+#' \strong{7(4)}: 315-328.
 #'
 #' Rizopoulos D. Dynamic predictions and prospective accuracy in joint models
 #' for longitudinal and time-to-event data. \emph{Biometrics}. 2011;
@@ -200,11 +204,26 @@ plot.dynSurv <- function(x, main = NULL, xlab = NULL, ylab1 = NULL,
 
   # smoothed survival function
   if (smooth) {
-    cobs_fit <- cobs::cobs(xpts, ypts, constraint = "decrease", lambda = 1,
-                           nknots = 10, pointwise = rbind(c(0, 0, 1)),
+    cobs_fit <- cobs::cobs(xpts, ypts, constraint = "decrease", lambda = 0.1,
+                           nknots = 7, pointwise = rbind(c(0, x$data.t$tobs, 1)),
                            print.warn = FALSE, print.mesg = FALSE)
     smooth_pts <- predict(cobs_fit)
     lines(smooth_pts[, 1], smooth_pts[, 2], col = 2, lwd = 2)
+
+    if(x$type == "simulated") {
+      # lower CI
+      cobs_fit_low <- cobs::cobs(xpts, pred$lower, constraint = "decrease",
+                             nknots = 7, pointwise = rbind(c(0, x$data.t$tobs, 1)),
+                             print.warn = FALSE, print.mesg = FALSE)
+      smooth_pts_low <- predict(cobs_fit_low)
+      lines(smooth_pts_low[, 1], smooth_pts_low[, 2], col = 2, lwd = 2, lty = 2)
+      # upper CI
+      cobs_fit_upp <- cobs::cobs(xpts, pred$upper, constraint = "decrease",
+                                 nknots = 7, pointwise = rbind(c(0, x$data.t$tobs, 1)),
+                                 print.warn = FALSE, print.mesg = FALSE)
+      smooth_pts_upp <- predict(cobs_fit_upp)
+      lines(smooth_pts_upp[, 1], smooth_pts_upp[, 2], col = 2, lwd = 2, lty = 2)
+    }
   }
 
   # Axis labels

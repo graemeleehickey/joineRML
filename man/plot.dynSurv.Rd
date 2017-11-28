@@ -31,8 +31,8 @@ objecting inheritting of class \code{dynSurv}. Default is
 \code{dynSurv} objects, i.e. those of \code{type='first-order'}, as in that
 case a mode-based prediction is plotted.}
 
-\item{smooth}{whether to overlay a smooth survival curve. Defaults to
-\code{FALSE}.}
+\item{smooth}{logical: whether to overlay a smooth survival curve (see
+\strong{Details}). Defaults to \code{FALSE}.}
 
 \item{...}{additional plotting arguments; currently limited to \code{lwd} and
 \code{cex}. See \code{\link[graphics]{par}} for details.}
@@ -51,7 +51,7 @@ The \code{joineRML} package is based on a semi-parametrc model, such
   modelling framework \emph{a prior}, a constrained B-splines non-parametric
   median quantile curve is estimated using \code{\link[cobs]{cobs}}, with a
   penalty function of \eqn{\lambda=1}, and subject to constraints of
-  monotonicity and \eqn{S(t=0)=1}.
+  monotonicity and \eqn{S(t)=1}.
 }
 \examples{
 \dontrun{
@@ -84,6 +84,10 @@ plot(out2, main = "Patient 1")
 }
 }
 \references{
+Ng P, Maechler M. A fast and efficient implementation of qualitatively
+constrained quantile smoothing splines. \emph{Statistical Modelling}. 2007;
+\strong{7(4)}: 315-328.
+
 Rizopoulos D. Dynamic predictions and prospective accuracy in joint models
 for longitudinal and time-to-event data. \emph{Biometrics}. 2011;
 \strong{67}: 819–829.
