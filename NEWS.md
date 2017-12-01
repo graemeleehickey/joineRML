@@ -1,6 +1,14 @@
 # joineRML 0.4.0.9000
 
-* Place holder for next update.
+## New features
+
+* Added smoothed predicted survival curves to the `plot.dynSuv()`. Smoothing is based on the contrainsed B-splines method.
+
+* `dynSurv()` now includes argument to specify a horizon time from the last known observation time.
+
+## Housekeeping
+
+* Minor corrections to documentation.
 
 # joineRML 0.4.0
 

@@ -21,8 +21,17 @@
 #'   required for dynamic prediction. Defaults to \code{newSurvData=NULL}.
 #' @param u an optional time that must be greater than the last observed
 #'   measurement time. If omitted (default is \code{u=NULL}), then conditional
-#'   failure probabilities are reported for all observed failure times in the
-#'   \code{mjoint} object data.
+#'   failure probabilities are reported for \emph{all} observed failure times in
+#'   the \code{mjoint} object data.
+#' @param horizon an optional horizon time. Instead of specifying a specific
+#'   time \code{u} relative to the time origin, one can specify a horizon time
+#'   that is relative to the last known follow-up time. The hoirzon time is
+#'   essentially equivalent to \code{u} + \eqn{t_\text{obs}}, where
+#'   \eqn{t_\text{obs}} is the last known follow-up time where the patient had
+#'   not yet experienced the event. Default is \code{horizon=NULL}, and
+#'   predictions are based on absolute \code{u}-times. If \code{horizon} is
+#'   non-\code{NULL}, then the output will be reported still in terms of
+#'   absolute time (from origin), \code{u}.
 #' @param type a character string for whether a first-order
 #'   (\code{type="first-order"}) or Monte Carlo simulation approach
 #'   (\code{type="simulated"}) should be used for the dynamic prediction.
@@ -106,7 +115,8 @@
 #'   \code{type="first-order"}, a single column named \code{surv} is appended.
 #'   For \code{type="simulated"}, four columns named \code{mean}, \code{median},
 #'   \code{lower} and \code{upper} are appended, denoting the mean, median and
-#'   lower and upper confidence intervals from the Monte Carlo draws.
+#'   lower and upper confidence intervals from the Monte Carlo draws. Additional
+#'   objects are returned that are used in the intermediate calculations.
 #' @export
 #'
 #' @examples
@@ -134,7 +144,7 @@
 #' out <- dynSurv(fit2, hvd2, type = "simulated")
 #' out
 #' }
-dynSurv <- function(object, newdata, newSurvData = NULL, u = NULL,
+dynSurv <- function(object, newdata, newSurvData = NULL, u = NULL, horizon = NULL,
                     type = "first-order", M = 200, scale = 2, ci, progress = TRUE) {
 
   if (!inherits(object, "mjoint")) {
@@ -150,12 +160,20 @@ dynSurv <- function(object, newdata, newSurvData = NULL, u = NULL,
                             tobs = NULL,
                             newSurvData = newSurvData)
 
+  if (!is.null(u) && !is.null(horizon)) {
+    stop("Cannot specify 'u' and 'horizon' times simultaneously")
+  }
+
   # Construct u (if needed) + check valid
   if (is.null(u)) {
-    u <- object$dmats$t$tj
-    if (length(u) > 1) {
-      u <- c(data.t$tobs, u[u > data.t$tobs])
-      #u <- u[-length(u)]
+    if (is.null(horizon)) {
+      u <- object$dmats$t$tj
+      if (length(u) > 1) {
+        u <- c(data.t$tobs, u[u > data.t$tobs])
+        #u <- u[-length(u)]
+      }
+    } else {
+      u <- horizon + data.t$tobs
     }
   } else {
     if (any(u <= data.t$tobs)) {
@@ -265,7 +283,9 @@ dynSurv <- function(object, newdata, newSurvData = NULL, u = NULL,
               "newSurvData" = newSurvData,
               "u" = u,
               "data.t" = data.t,
-              "type" = type)
+              "type" = type,
+              "horizon" = horizon,
+              "b.hat" = b.hat)
 
   if (type == "simulated") {
     out$M <- ifelse(type == "simulated", M, NULL)

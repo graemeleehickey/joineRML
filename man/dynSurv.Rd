@@ -4,7 +4,7 @@
 \alias{dynSurv}
 \title{Dynamic predictions for the time-to-event data sub-model}
 \usage{
-dynSurv(object, newdata, newSurvData = NULL, u = NULL,
+dynSurv(object, newdata, newSurvData = NULL, u = NULL, horizon = NULL,
   type = "first-order", M = 200, scale = 2, ci, progress = TRUE)
 }
 \arguments{
@@ -29,8 +29,18 @@ required for dynamic prediction. Defaults to \code{newSurvData=NULL}.}
 
 \item{u}{an optional time that must be greater than the last observed
 measurement time. If omitted (default is \code{u=NULL}), then conditional
-failure probabilities are reported for all observed failure times in the
-\code{mjoint} object data.}
+failure probabilities are reported for \emph{all} observed failure times in
+the \code{mjoint} object data.}
+
+\item{horizon}{an optional horizon time. Instead of specifying a specific
+time \code{u} relative to the time origin, one can specify a horizon time
+that is relative to the last known follow-up time. The hoirzon time is
+essentially equivalent to \code{u} + \eqn{t_\text{obs}}, where
+\eqn{t_\text{obs}} is the last known follow-up time where the patient had
+not yet experienced the event. Default is \code{horizon=NULL}, and
+predictions are based on absolute \code{u}-times. If \code{horizon} is
+non-\code{NULL}, then the output will be reported still in terms of
+absolute time (from origin), \code{u}.}
 
 \item{type}{a character string for whether a first-order
 (\code{type="first-order"}) or Monte Carlo simulation approach
@@ -61,7 +71,8 @@ A list object inheriting from class \code{dynSurv}. The list returns
   \code{type="first-order"}, a single column named \code{surv} is appended.
   For \code{type="simulated"}, four columns named \code{mean}, \code{median},
   \code{lower} and \code{upper} are appended, denoting the mean, median and
-  lower and upper confidence intervals from the Monte Carlo draws.
+  lower and upper confidence intervals from the Monte Carlo draws. Additional
+  objects are returned that are used in the intermediate calculations.
 }
 \description{
 Calculates the conditional time-to-event distribution for a

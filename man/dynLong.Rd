@@ -30,8 +30,8 @@ required for dynamic prediction. Defaults to \code{newSurvData=NULL}.}
 
 \item{u}{an optional time that must be greater than the last observed
 measurement time. If omitted (default is \code{u=NULL}), then conditional
-failure probabilities are reported for all observed failure times in the
-\code{mjoint} object data.}
+failure probabilities are reported for \emph{all} observed failure times in
+the \code{mjoint} object data.}
 
 \item{type}{a character string for whether a first-order
 (\code{type="first-order"}) or Monte Carlo simulation approach
