@@ -27,7 +27,7 @@
 #'   \code{\link[base]{tryCatch}} statement to catch errors (e.g. during the
 #'   optimisation progress)? When model fitting throws errors, a new bootstrap
 #'   sample is drawn for the current iteration and the model is re-fit; this
-#'   process continuex until a model fits succesfully. Default is \code{FALSE}.
+#'   process continuex until a model fits successfully. Default is \code{FALSE}.
 #' @inheritParams mjoint
 #'
 #' @details Standard errors and confidence intervals are obtained by repeated

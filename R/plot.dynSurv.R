@@ -24,13 +24,13 @@
 #' @param ... additional plotting arguments; currently limited to \code{lwd} and
 #'   \code{cex}. See \code{\link[graphics]{par}} for details.
 #'
-#' @details The \code{joineRML} package is based on a semi-parametrc model, such
-#'   that the baseline hazards function is left unspecified. For prediction, it
-#'   might be preferable to have a smooth survival curve. Rather than changing
-#'   modelling framework \emph{a prior}, a constrained B-splines non-parametric
-#'   median quantile curve is estimated using \code{\link[cobs]{cobs}}, with a
-#'   penalty function of \eqn{\lambda=1}, and subject to constraints of
-#'   monotonicity and \eqn{S(t)=1}.
+#' @details The \code{joineRML} package is based on a semi-parametric model,
+#'   such that the baseline hazards function is left unspecified. For
+#'   prediction, it might be preferable to have a smooth survival curve. Rather
+#'   than changing modelling framework \emph{a prior}, a constrained B-splines
+#'   non-parametric median quantile curve is estimated using
+#'   \code{\link[cobs]{cobs}}, with a penalty function of \eqn{\lambda=1}, and
+#'   subject to constraints of monotonicity and \eqn{S(t)=1}.
 #'
 #' @author Graeme L. Hickey (\email{graeme.hickey@@liverpool.ac.uk})
 #' @keywords hplot

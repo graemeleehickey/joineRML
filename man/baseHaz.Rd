@@ -32,7 +32,7 @@ When covariates are included in the time-to-event sub-model,
   \code{\link{mjoint}} automatically centers them about their respective
   means. This also applies to non-continuous covariates, which are first
   coded using a dummy-transformation for the design matrix and subsequently
-  centered. The reason for the mean-centering is to improve numerial
+  centered. The reason for the mean-centering is to improve numerical
   stability, as the survival function involves exponential terms. Extracting
   the baseline hazard increments from \code{\link{mjoint.object}} returns the
   Breslow hazard estimate (Lin, 2007) that corresponds to this mean-centered
