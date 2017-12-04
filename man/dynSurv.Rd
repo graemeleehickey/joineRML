@@ -35,15 +35,12 @@ subject.}
 
 \item{horizon}{an optional horizon time. Instead of specifying a specific
 time \code{u} relative to the time origin, one can specify a horizon time
-that is relative to the last known follow-up time (\code{u=NULL}) or a
-specific time \code{u}. The prediction time is essentially equivalent to
-\code{horizon} + \eqn{t_\text{obs}} (for \code{u=NULL}), where
+that is relative to the last known follow-up time. The prediction time is
+essentially equivalent to \code{horizon} + \eqn{t_\text{obs}}, where
 \eqn{t_\text{obs}} is the last known follow-up time where the patient had
-not yet experienced the event, or \code{horizon+u} (if \code{u} is
-supplied). Default is \code{horizon=NULL}, and predictions are reported in
-terms of absolute \code{u}-times. If \code{horizon} is non-\code{NULL},
-then the output will be reported still in terms of absolute time (from
-origin), \code{u}.}
+not yet experienced the event. Default is \code{horizon=NULL}. If
+\code{horizon} is non-\code{NULL}, then the output will be reported still
+in terms of absolute time (from origin), \code{u}.}
 
 \item{type}{a character string for whether a first-order
 (\code{type="first-order"}) or Monte Carlo simulation approach
