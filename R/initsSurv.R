@@ -16,12 +16,14 @@ initsSurv_balanced <- function(data, lfit, survdat2, formSurv, id, timeVar, K, q
     stop <- c(u[, timeVar[k]][-1], T)
     status <- rep(0, length(id.col))
     status[length(id.col)] <- survdat2[survdat2$id == id.col[1], "delta"]
-    X <- survdat2[survdat2$id == id.col[1], 2:(q + 1), drop = FALSE]
-    X <- X[rep(1, length(id.col)), ]
-    if (q == 1) {
-      X <- matrix(X, ncol = 1)
+    if (q > 0) {
+      X <- survdat2[survdat2$id == id.col[1], 2:(q + 1), drop = FALSE]
+      X <- X[rep(1, length(id.col)), ]
+      if (q == 1) {
+        X <- matrix(X, ncol = 1)
+      }
+      colnames(X) <- names(survdat2)[2:(q + 1)]
     }
-    colnames(X) <- names(survdat2)[2:(q + 1)]
     if (q > 0) {
       data.frame("id" = id.col, start, stop, status, X)
     } else {
@@ -91,7 +93,6 @@ initsSurv <- function(data, lfit, sfit, survdat2, formSurv, id, timeVar, K, q,
     inits.surv <- initsSurv_balanced(
       data = data, lfit = lfit, survdat2 = survdat2, formSurv = formSurv,
       id = id, timeVar = timeVar, K = K, q = q)
-
   } else {
     if (!("gamma" %in% names(inits))) {
       message("Data are unbalanced... using sub-optimal initial parameters for gamma")

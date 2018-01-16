@@ -55,7 +55,7 @@
 #'
 #'   \item{\code{nMC}}{integer: the initial number of Monte Carlo samples to be
 #'   used for integration in the burn-in phase of the MCEM. Default is
-#'   \code{nMC=}100\emph{K}).}
+#'   \code{nMC=}100\emph{K}.}
 #'
 #'   \item{\code{nMCscale}}{integer: the scale factor for the increase in Monte
 #'   Carlo size when Monte Carlo has not reduced from the previous iteration.
@@ -514,7 +514,7 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
 
   Zit <- lapply(Zi, t)
 
-  # # t(X) %*% X [summed over i and inverted]
+  # t(X) %*% X [summed over i and inverted]
   XtXi <- lapply(Xi, crossprod)
   XtX.inv <- solve(Reduce("+", XtXi))
 
