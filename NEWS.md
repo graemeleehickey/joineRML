@@ -4,7 +4,9 @@
 
 * Added smoothed predicted survival curves to the `plot.dynSuv()`. Smoothing is based on the contrainsed B-splines method.
 
-* `dynSurv()` now includes argument to specify a horizon time from the last known observation time.
+* `dynSurv()` now includes an argument to specify a horizon time from the last known observation time.
+
+* `simData()` now includes an argument to choose multivariate *t*-distributed random effects with varying degrees of freedom, thus allowing for sensitivity analyses of heavier tail distributions.
 
 ## Housekeeping
 

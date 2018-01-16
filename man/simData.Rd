@@ -6,8 +6,9 @@
 \usage{
 simData(n = 100, ntms = 5, beta = rbind(c(1, 1, 1, 1), c(1, 1, 1, 1)),
   gamma.x = c(1, 1), gamma.y = c(0.5, -1), sigma2 = c(1, 1), D = NULL,
-  model = "intslope", theta0 = -3, theta1 = 1, censoring = TRUE,
-  censlam = exp(-3), truncation = TRUE, trunctime = (ntms - 1) + 0.1)
+  df = Inf, model = "intslope", theta0 = -3, theta1 = 1,
+  censoring = TRUE, censlam = exp(-3), truncation = TRUE,
+  trunctime = (ntms - 1) + 0.1)
 }
 \arguments{
 \item{n}{the number of subjects to simulate data for.}
@@ -33,6 +34,11 @@ errors.}
 matrix. If \code{model='int'}, the matrix has dimension \code{dim=c(K, K)},
 else if \code{model='intslope'}, the matrix has dimension \code{dim =c(2K,
 2K)}. If \code{D=NULL} (default), an identity matrix is assumed.}
+
+\item{df}{a non-negative scalar specifying the degrees of freedom for the
+random effects if sampled from a multivariate \emph{t}-distribution. The
+default is \code{df=Inf}, which corresponds to a multivariate normal
+distribution.}
 
 \item{model}{follows the model definition in the \code{\link[joineR]{joint}}
 function. See \strong{Details} for choices.}

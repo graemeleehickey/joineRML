@@ -20,6 +20,10 @@
 #'   matrix. If \code{model='int'}, the matrix has dimension \code{dim=c(K, K)},
 #'   else if \code{model='intslope'}, the matrix has dimension \code{dim =c(2K,
 #'   2K)}. If \code{D=NULL} (default), an identity matrix is assumed.
+#' @param df a non-negative scalar specifying the degrees of freedom for the
+#'   random effects if sampled from a multivariate \emph{t}-distribution. The
+#'   default is \code{df=Inf}, which corresponds to a multivariate normal
+#'   distribution.
 #' @param model follows the model definition in the \code{\link[joineR]{joint}}
 #'   function. See \strong{Details} for choices.
 #' @param theta0,theta1 parameters controlling the failure rate. See Details.
@@ -81,6 +85,8 @@
 #' measurements and event time data. \emph{Biostatistics.} 2000; \strong{1(4)}:
 #' 465-480.
 #'
+#' @importFrom mvtnorm rmvt
+#'
 #' @return A list of 2 \code{data.frame}s: one recording the requisite
 #'   longitudinal outcomes data, and one recording the time-to-event data.
 #' @export
@@ -97,7 +103,7 @@
 #'                censlam = exp(-0.2), gamma.y = c(-.2, 1), ntms = 8)
 simData <- function(n = 100, ntms = 5, beta = rbind(c(1, 1, 1, 1), c(1, 1, 1, 1)),
                     gamma.x = c(1, 1), gamma.y = c(0.5, -1), sigma2 = c(1, 1),
-                    D = NULL, model = "intslope", theta0 = -3, theta1 = 1,
+                    D = NULL, df = Inf, model = "intslope", theta0 = -3, theta1 = 1,
                     censoring = TRUE, censlam = exp(-3), truncation = TRUE,
                     trunctime = (ntms - 1) + 0.1) {
 
@@ -148,7 +154,11 @@ simData <- function(n = 100, ntms = 5, beta = rbind(c(1, 1, 1, 1), c(1, 1, 1, 1)
   binxl <- rep(binx, each = ntms)
   time <- rep(0:(ntms-1), length = n*ntms)
   X <- cbind(intercept = 1, ltime = time, ctsxl, binxl) # common to all K-variates
-  b <- MASS::mvrnorm(n, mu = rep(0, r), Sigma = D)
+  if (df == Inf) {
+    b <- MASS::mvrnorm(n, mu = rep(0, r), Sigma = D)
+  } else {
+    b <- mvtnorm::rmvt(n, sigma = D, df = df)
+  }
   bl <- b[rep(1:n, each = ntms), ]
   Z <- matrix(0, nrow =  rk, ncol =  length(time))
   for(i in 1:rk) {
