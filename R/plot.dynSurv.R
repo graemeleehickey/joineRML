@@ -231,7 +231,7 @@ plot.dynSurv <- function(x, main = NULL, xlab = NULL, ylab1 = NULL,
         line = 1, outer = TRUE, font = 2, cex = 1.3)
   mtext(ifelse(is.null(xlab), "Time", xlab), 1,
         line = 2.5, outer = TRUE)
-  mtext(ifelse(is.null(ylab2), "Event-free probability", ylab), 4,
+  mtext(ifelse(is.null(ylab2), "Event-free probability", ylab2), 4,
         line = 2.5)
 
   on.exit(par(old.par))

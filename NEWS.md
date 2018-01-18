@@ -12,6 +12,8 @@
 
 * Minor corrections to documentation.
 
+* Minor bug fixes to plotting functions.
+
 # joineRML 0.4.0
 
 ## New features
