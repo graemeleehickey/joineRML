@@ -19,7 +19,8 @@ Authors@R: c(
         comment = "data/renal.rda, R/hessian.R, R/vcov.R"),
     person("Alessandro", "Gasparini", email = "ag475@le.ac.uk",
         role = "ctb"),
-    person(,)
+    person("Medical Research Council", role = "fnd",
+        comment = "Grant number: MR/M013227/1")
     )
 Encoding: UTF-8
 Description: Fits the joint model proposed by Henderson and colleagues (2000) 

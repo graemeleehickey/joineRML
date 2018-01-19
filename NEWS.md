@@ -14,6 +14,8 @@
 
 * Minor bug fixes to plotting functions.
 
+* Added MRC to DESCRIPTION as funder.
+
 # joineRML 0.4.0
 
 ## New features
