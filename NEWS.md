@@ -1,3 +1,9 @@
+# joineRML 0.4.1.9000
+
+## Housekeeping
+
+* Added Zenodo DOI badge to README.
+
 # joineRML 0.4.1
 
 ## New features
