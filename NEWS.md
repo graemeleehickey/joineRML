@@ -4,6 +4,8 @@
 
 * Added Zenodo DOI badge to README.
 
+* Added ORCID IDs for authors.
+
 # joineRML 0.4.1
 
 ## New features
@@ -21,6 +23,8 @@
 * Minor bug fixes to plotting functions.
 
 * Added MRC to DESCRIPTION as funder.
+
+* Added Depsy badge to README.
 
 # joineRML 0.4.0
 
