@@ -3,6 +3,7 @@ Type: Package
 Title: Joint Modelling of Multivariate Longitudinal Data and Time-to-Event
     Outcomes
 Version: 0.4.1.9000
+Date: 2018-02-04
 Authors@R: c(
     person("Graeme L.", "Hickey", email = "graeme.hickey@liverpool.ac.uk", 
         role = c("cre", "aut"),

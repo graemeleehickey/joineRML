@@ -1,5 +1,9 @@
 # joineRML 0.4.1.9000
 
+## Bug patches
+
+* Fixed issue with citation date due to DATE not being present in the DESCRIPTION file.
+
 ## Housekeeping
 
 * Added Zenodo DOI badge to README.
