@@ -24,7 +24,8 @@ Authors@R: c(
         role = c("ctb", "dtc"),
         comment = "data/renal.rda, R/hessian.R, R/vcov.R"),
     person("Alessandro", "Gasparini", email = "ag475@le.ac.uk",
-        role = "ctb"),
+        role = "ctb",
+        comment = c(ORCID = "0000-0002-8319-7624")),
     person("Medical Research Council", role = "fnd",
         comment = "Grant number: MR/M013227/1")
     )
