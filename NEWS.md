@@ -10,6 +10,8 @@
 
 * Added ORCID IDs for authors.
 
+* Remove unused objects once finished with them to try and reduce memory overheads.
+
 # joineRML 0.4.1
 
 ## New features

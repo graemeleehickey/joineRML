@@ -657,8 +657,7 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
   })
 
   # Collect together as inputs for EM algorithm
-  z <- list(Zi.fail = Zi.fail, Zit.fail = Zit.fail, Zik.list = Zik.list,
-            IW.fail = IW.fail)
+  z <- list(Zi.fail = Zi.fail, Zit.fail = Zit.fail, IW.fail = IW.fail)
 
   #*****************************************************
   # Initial values
@@ -693,6 +692,10 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
   #*****************************************************
   # Run EM algorithm
   #*****************************************************
+
+  rm(yi, Xi, Zi, Zit, yik, Xik.list, Zik.list, XtX.inv, Xtyi, XtZi,
+     V, survdat2, survdat2.list, nev, nev.uniq, xcenter, tj,
+     Zdat.fail, Zi.fail, Zit.fail, IW.fail)
 
   all.iters <- list()
   conv.track <- rep(FALSE, con$mcmaxIter)

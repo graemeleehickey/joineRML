@@ -34,7 +34,6 @@ hessian <- function(theta, l, t, z, m) {
   # Covariate data for W(u, b)
   Zi.fail <- z$Zi.fail
   Zit.fail <- z$Zit.fail
-  Zik.list <- z$Zik.list
   IW.fail <- z$IW.fail
 
   # MCEM calculations

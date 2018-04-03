@@ -39,7 +39,6 @@ stepEM <- function(theta, l, t, z, nMC, verbose, gammaOpt, pfs, type) {
   # Covariate data for W(u, b)
   Zi.fail <- z$Zi.fail
   Zit.fail <- z$Zit.fail
-  Zik.list <- z$Zik.list
   IW.fail <- z$IW.fail
 
   t0 <- Sys.time()
@@ -174,6 +173,7 @@ stepEM <- function(theta, l, t, z, nMC, verbose, gammaOpt, pfs, type) {
   },
   w = expW, v = Vtgamma,
   SIMPLIFY = FALSE)
+  rm(expW) # don't need this anymore (large memory object)
 
   # lambda0(t) for profile score function of beta
   haz.hat <- hazHat(expvstargam, pb.yt, nev)
