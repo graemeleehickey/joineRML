@@ -1,8 +1,9 @@
 ## Other notes
 
-None
+Pete Philipson has now taken over as package maintainer from Graeme Hickey.
 
 ## Test environments
+
 * local OS X (High Sierra) install, R 3.4.2
 * ubuntu (via travis-ci)
 * windows (via appveyor)
