@@ -1,4 +1,4 @@
-# joineRML 0.4.1.9000
+# joineRML 0.4.2
 
 ## Bug patches
 
@@ -11,6 +11,8 @@
 * Added ORCID IDs for authors.
 
 * Remove unused objects once finished with them to try and reduce memory overheads.
+
+* Changed maintainer to Pete Philipson.
 
 # joineRML 0.4.1
 
