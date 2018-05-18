@@ -40,7 +40,7 @@ Description: Fits the joint model proposed by Henderson and colleagues (2000)
     Maximization algorithm. This project is funded by the Medical Research Council 
     (Grant number MR/M013227/1).
 License: GPL-3 | file LICENSE
-URL: https://github.com/graemeleehickey/joineRML/
+URL: https://github.com/petephilipson/joineRML
 BugReports: https://github.com/graemeleehickey/joineRML/issues
 LazyData: true
 Depends:
