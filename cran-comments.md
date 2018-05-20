@@ -4,7 +4,7 @@ Pete Philipson has now taken over as package maintainer from Graeme Hickey.
 
 ## Test environments
 
-* local OS X (High Sierra) install, R 3.4.2
+* local OS X (High Sierra) install, R 3.5.0
 * ubuntu (via travis-ci)
 * windows (via appveyor)
 * win-builder (release, devel)
