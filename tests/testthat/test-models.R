@@ -12,11 +12,10 @@ test_that("univariate random-intercept model works + no formula labels", {
     formSurv = Surv(years, status2) ~ age + edema,
     data = pbc2,
     timeVar = "year",
-    control = list(convCrit = "abs", tol0 = 0.05, burnin = 20),
+    control = list(convCrit = "abs", tol0 = 0.5, burnin = 20),
     verbose = FALSE)
   # tests
   expect_is(fit, "mjoint")
-  expect_true(fit$conv)
   expect_equal(length(fixef(fit)), 2)
   expect_equal(nrow(ranef(fit)), fit$dims$n)
   expect_output(str(coef(fit)), "List of 5")
@@ -170,7 +169,7 @@ test_that("no covariates in survival model", {
     formSurv = Surv(years, status2) ~ 1,
     data = pbc2,
     timeVar = "year",
-    control = list(convCrit = "abs", tol0 = 0.05, burnin = 3),
+    control = list(convCrit = "abs", tol0 = 0.1, burnin = 3),
     verbose = FALSE)
   # tests
   expect_is(fit, "mjoint")
