@@ -3,6 +3,7 @@ context("Bootstrap")
 
 test_that("bootstrap MV models", {
   skip_on_cran()
+  skip_on_os("mac")
   # load data + fit model
   data(heart.valve)
   hvd <- heart.valve[!is.na(heart.valve$log.grad) & !is.na(heart.valve$log.lvmi), ]
@@ -40,6 +41,7 @@ test_that("bootstrap MV models", {
 
 test_that("non-convergence", {
   skip_on_cran()
+  skip_on_os("mac")
   # load data + fit model
   data(pbc2)
   pbc2$log.b <- log(pbc2$serBilir)
@@ -62,6 +64,7 @@ test_that("non-convergence", {
 test_that("univariate intercept only + non-MLE inits", {
   skip_on_cran()
   skip_on_appveyor()
+  skip_on_os("mac")
   # load data + fit model
   data(pbc2)
   pbc2$log.b <- log(pbc2$serBilir)
