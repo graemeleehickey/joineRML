@@ -3,7 +3,8 @@ context("Models fit")
 
 
 test_that("univariate random-intercept model works + no formula labels", {
-  # load data + fit model
+  skip_on_cran()
+    # load data + fit model
   data(pbc2)
   pbc2$log.b <- log(pbc2$serBilir)
   fit <- mjoint(
@@ -16,6 +17,7 @@ test_that("univariate random-intercept model works + no formula labels", {
     verbose = FALSE)
   # tests
   expect_is(fit, "mjoint")
+  expect_true(fit$conv)
   expect_equal(length(fixef(fit)), 2)
   expect_equal(nrow(ranef(fit)), fit$dims$n)
   expect_output(str(coef(fit)), "List of 5")
@@ -26,7 +28,8 @@ test_that("univariate random-intercept model works + no formula labels", {
 
 test_that("multivariate model", {
   skip_on_cran()
-  # load data + fit model
+  skip_on_os("mac")
+    # load data + fit model
   data(heart.valve)
   hvd <- heart.valve[!is.na(heart.valve$log.grad) & !is.na(heart.valve$log.lvmi), ]
   set.seed(1)
@@ -74,7 +77,8 @@ test_that("multivariate model", {
 
 
 test_that("different convergence criteria", {
-  # load data + fit model
+  skip_on_cran()
+    # load data + fit model
   data(heart.valve)
   hvd <- heart.valve[!is.na(heart.valve$log.grad) & !is.na(heart.valve$log.lvmi), ]
   fit1 <- mjoint(
@@ -111,6 +115,7 @@ test_that("different convergence criteria", {
 
 
 test_that("models fit to unbalanced data", {
+  skip_on_cran()
   # load data + fit model
   data(heart.valve)
   # make unbalanced dataset for patients in common
@@ -160,7 +165,8 @@ test_that("Gauss-Newton updates", {
 
 
 test_that("no covariates in survival model", {
-  # load data + fit model
+  skip_on_cran()
+    # load data + fit model
   data(pbc2)
   pbc2$log.b <- log(pbc2$serBilir)
   fit <- mjoint(
