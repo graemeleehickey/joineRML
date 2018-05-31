@@ -47,7 +47,7 @@ test_that("convergence plots", {
     formSurv = Surv(years, status2) ~ age,
     data = pbc2,
     timeVar = "year",
-    control = list(convCrit = "abs", tol0 = 5e-03, burnin = 5),
+    control = list(convCrit = "abs", tol0 = 5e-01, burnin = 5),
     verbose = FALSE)
   # tests
   expect_silent(plotConvergence(fit, params = "gamma"))
@@ -69,7 +69,7 @@ test_that("ranef plots + sampling", {
                  formSurv = Surv(fuyrs, status) ~ age,
                  data = hvd,
                  timeVar = "time",
-                 control = list(burnin = 6))
+                 control = list(burnin = 6, tol0 = 5e-01))
   p <- plot(ranef(fit1, postVar = TRUE))
   # tests
   expect_true(is.ggplot(p))
@@ -78,6 +78,9 @@ test_that("ranef plots + sampling", {
 
 
 test_that("dynamic predictions, residuals, fitted values, baseline hazard", {
+  # Takes the most time so skip testing to pass Windows time-limit threshold
+  skip_on_cran()
+  skip_on_os("mac")
   # load data + fit model
   data(heart.valve)
   hvd <- heart.valve[!is.na(heart.valve$log.grad) & !is.na(heart.valve$log.lvmi), ]
@@ -90,7 +93,7 @@ test_that("dynamic predictions, residuals, fitted values, baseline hazard", {
     formSurv = Surv(fuyrs, status) ~ age,
     data = list(hvd, hvd),
     inits = list("gamma" = c(0.11, 1.51, 0.80)),
-    control = list("burnin" = 30, mcmaxIter = 120, tol0 = 1e-02),
+    control = list("burnin" = 10, mcmaxIter = 120, tol0 = 0.5),
     timeVar = "time")
   hvd2 <- droplevels(hvd[hvd$num == 1, ])
   test1 <- dynLong(fit2, hvd2)

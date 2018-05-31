@@ -3,7 +3,8 @@ context("Models fit")
 
 
 test_that("univariate random-intercept model works + no formula labels", {
-  # load data + fit model
+  skip_on_cran()
+    # load data + fit model
   data(pbc2)
   pbc2$log.b <- log(pbc2$serBilir)
   fit <- mjoint(
@@ -12,7 +13,7 @@ test_that("univariate random-intercept model works + no formula labels", {
     formSurv = Surv(years, status2) ~ age + edema,
     data = pbc2,
     timeVar = "year",
-    control = list(convCrit = "abs", tol0 = 0.05, burnin = 20),
+    control = list(convCrit = "abs", tol0 = 0.5, burnin = 20),
     verbose = FALSE)
   # tests
   expect_is(fit, "mjoint")
@@ -27,7 +28,8 @@ test_that("univariate random-intercept model works + no formula labels", {
 
 test_that("multivariate model", {
   skip_on_cran()
-  # load data + fit model
+  skip_on_os("mac")
+    # load data + fit model
   data(heart.valve)
   hvd <- heart.valve[!is.na(heart.valve$log.grad) & !is.na(heart.valve$log.lvmi), ]
   set.seed(1)
@@ -75,7 +77,8 @@ test_that("multivariate model", {
 
 
 test_that("different convergence criteria", {
-  # load data + fit model
+  skip_on_cran()
+    # load data + fit model
   data(heart.valve)
   hvd <- heart.valve[!is.na(heart.valve$log.grad) & !is.na(heart.valve$log.lvmi), ]
   fit1 <- mjoint(
@@ -112,6 +115,7 @@ test_that("different convergence criteria", {
 
 
 test_that("models fit to unbalanced data", {
+  skip_on_cran()
   # load data + fit model
   data(heart.valve)
   # make unbalanced dataset for patients in common
@@ -161,7 +165,8 @@ test_that("Gauss-Newton updates", {
 
 
 test_that("no covariates in survival model", {
-  # load data + fit model
+  skip_on_cran()
+    # load data + fit model
   data(pbc2)
   pbc2$log.b <- log(pbc2$serBilir)
   fit <- mjoint(
@@ -170,7 +175,7 @@ test_that("no covariates in survival model", {
     formSurv = Surv(years, status2) ~ 1,
     data = pbc2,
     timeVar = "year",
-    control = list(convCrit = "abs", tol0 = 0.05, burnin = 3),
+    control = list(convCrit = "abs", tol0 = 0.1, burnin = 3),
     verbose = FALSE)
   # tests
   expect_is(fit, "mjoint")
