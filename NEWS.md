@@ -1,3 +1,9 @@
+# joineRML 0.4.2-9000
+
+## New features
+
+* Added `AIC` and `BIC` methods for objects of class `mjoint`.
+
 # joineRML 0.4.2
 
 ## Bug patches
