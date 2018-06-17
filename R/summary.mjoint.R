@@ -95,7 +95,7 @@ summary.mjoint <- function(object, bootSE = NULL, ...) {
               sigma = sqrt(object$coefficients$sigma2),
               logLik = as.vector(logLik(object)),
               AIC = AIC(object),
-              BIC = AIC(object, k = log(dims$n)))
+              BIC = BIC(object))
 
   out$formLongFixed <- object$formLongFixed
   out$formLongRandom <- object$formLongRandom
