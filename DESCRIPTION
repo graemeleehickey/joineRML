@@ -67,6 +67,8 @@ LinkingTo:
     RcppArmadillo
 RoxygenNote: 6.1.0
 Suggests:
+    broom (>= 0.5.0),
+    dplyr,
     JM,
     joineR,
     knitr,
