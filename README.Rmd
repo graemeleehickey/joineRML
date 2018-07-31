@@ -110,6 +110,12 @@ library('devtools')
 install_github('graemeleehickey/joineRML')
 ```
 
+# Compatibility with [`broom`](https://github.com/tidymodels/broom/)
+
+Tidiers methods for objects of class `mjoint` (i.e. models fit with `joineRML`) are included in the [`broom`](https://github.com/tidymodels/broom/) package; this provides methods that allow extracting model estimates, predictions, and comparing models in a straightforward way.
+
+See `vignette(topic = "joineRML-broom", package = "joineRML")` for further details and examples.
+
 # References
 
 1. Cox DR. Regression models and life-tables. *J R Stat Soc Ser B Stat Methodol.* 1972; **34(2)**: 187-220.
