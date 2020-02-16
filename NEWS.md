@@ -1,3 +1,10 @@
+# joineRML 0.4.3
+
+## Housekeeping
+
+* Graeme Hickey taken over the package as creator and maintainer.
+* Updates to DESCRIPTION
+
 # joineRML 0.4.2
 
 ## Bug patches

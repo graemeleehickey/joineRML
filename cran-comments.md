@@ -1,10 +1,11 @@
 ## Other notes
 
-Pete Philipson has now taken over as package maintainer from Graeme Hickey.
+Graeme Hickey has now taken over as package maintainer from Pete Philipson since
+the package has been orphaned. Graeme was the original package creator.
 
 ## Test environments
 
-* local OS X (High Sierra) install, R 3.5.0
+* local OS X (Catalina) install, R 3.6.2
 * ubuntu (via travis-ci)
 * windows (via appveyor)
 * win-builder (release, devel)

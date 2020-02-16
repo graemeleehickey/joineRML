@@ -4,8 +4,18 @@
 \alias{dynSurv}
 \title{Dynamic predictions for the time-to-event data sub-model}
 \usage{
-dynSurv(object, newdata, newSurvData = NULL, u = NULL, horizon = NULL,
-  type = "first-order", M = 200, scale = 2, ci, progress = TRUE)
+dynSurv(
+  object,
+  newdata,
+  newSurvData = NULL,
+  u = NULL,
+  horizon = NULL,
+  type = "first-order",
+  M = 200,
+  scale = 2,
+  ci,
+  progress = TRUE
+)
 }
 \arguments{
 \item{object}{an object inheriting from class \code{mjoint} for a joint model

@@ -2,8 +2,8 @@ Package: joineRML
 Type: Package
 Title: Joint Modelling of Multivariate Longitudinal Data and Time-to-Event
     Outcomes
-Version: 0.4.2
-Date: 2018-04-26
+Version: 0.4.3
+Date: 2020-02-18
 Authors@R: c(
     person("Graeme L.", "Hickey", email = "graeme.hickey@liverpool.ac.uk", 
         role = "aut",
@@ -12,7 +12,7 @@ Authors@R: c(
         role = c("cre", "aut"),
         comment = c(ORCID = "0000-0001-7846-0208")),
     person("Andrea", "Jorgensen", email = "aljorgen@liverpool.ac.uk", 
-        role = "aut",
+        role = "ctb",
         comment = c(ORCID = "0000-0002-6977-9337")),
     person("Ruwanthi", "Kolamunnage-Dona", email = "kdrr@liverpool.ac.uk", 
         role = "aut",
@@ -44,7 +44,7 @@ URL: https://github.com/petephilipson/joineRML
 BugReports: https://github.com/graemeleehickey/joineRML/issues
 LazyData: true
 Depends:
-    R (>= 3.3.0),
+    R (>= 3.6.0),
     nlme,
     survival
 Imports:
@@ -65,7 +65,7 @@ Imports:
 LinkingTo:
     Rcpp,
     RcppArmadillo
-RoxygenNote: 6.0.1
+RoxygenNote: 7.0.2
 Suggests:
     JM,
     joineR,

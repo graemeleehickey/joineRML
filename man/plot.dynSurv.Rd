@@ -4,8 +4,17 @@
 \alias{plot.dynSurv}
 \title{Plot a \code{dynSurv} object}
 \usage{
-\method{plot}{dynSurv}(x, main = NULL, xlab = NULL, ylab1 = NULL,
-  ylab2 = NULL, grid = TRUE, estimator, smooth = FALSE, ...)
+\method{plot}{dynSurv}(
+  x,
+  main = NULL,
+  xlab = NULL,
+  ylab1 = NULL,
+  ylab2 = NULL,
+  grid = TRUE,
+  estimator,
+  smooth = FALSE,
+  ...
+)
 }
 \arguments{
 \item{x}{an object of class \code{dynSurv} calculated by the

@@ -4,8 +4,7 @@
 \alias{formula.mjoint}
 \title{Extract model formulae from an \code{mjoint} object}
 \usage{
-\method{formula}{mjoint}(x, process = c("Longitudinal", "Event"), k = 1,
-  ...)
+\method{formula}{mjoint}(x, process = c("Longitudinal", "Event"), k = 1, ...)
 }
 \arguments{
 \item{x}{an object inheriting from class \code{mjoint} for a joint model of

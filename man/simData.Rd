@@ -4,11 +4,23 @@
 \alias{simData}
 \title{Simulate data from a joint model}
 \usage{
-simData(n = 100, ntms = 5, beta = rbind(c(1, 1, 1, 1), c(1, 1, 1, 1)),
-  gamma.x = c(1, 1), gamma.y = c(0.5, -1), sigma2 = c(1, 1), D = NULL,
-  df = Inf, model = "intslope", theta0 = -3, theta1 = 1,
-  censoring = TRUE, censlam = exp(-3), truncation = TRUE,
-  trunctime = (ntms - 1) + 0.1)
+simData(
+  n = 100,
+  ntms = 5,
+  beta = rbind(c(1, 1, 1, 1), c(1, 1, 1, 1)),
+  gamma.x = c(1, 1),
+  gamma.y = c(0.5, -1),
+  sigma2 = c(1, 1),
+  D = NULL,
+  df = Inf,
+  model = "intslope",
+  theta0 = -3,
+  theta1 = 1,
+  censoring = TRUE,
+  censlam = exp(-3),
+  truncation = TRUE,
+  trunctime = (ntms - 1) + 0.1
+)
 }
 \arguments{
 \item{n}{the number of subjects to simulate data for.}

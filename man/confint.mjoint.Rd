@@ -4,8 +4,13 @@
 \alias{confint.mjoint}
 \title{Confidence intervals for model parameters of an \code{mjoint} object}
 \usage{
-\method{confint}{mjoint}(object, parm = c("Both", "Longitudinal", "Event"),
-  level = 0.95, bootSE = NULL, ...)
+\method{confint}{mjoint}(
+  object,
+  parm = c("Both", "Longitudinal", "Event"),
+  level = 0.95,
+  bootSE = NULL,
+  ...
+)
 }
 \arguments{
 \item{object}{an object inheriting from class \code{mjoint} for a joint model
