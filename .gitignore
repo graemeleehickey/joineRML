@@ -42,3 +42,5 @@ docs/*.
 
 # macOS files
 .DS_Store
+doc
+Meta

@@ -8,3 +8,5 @@
 ^codecov\.yml$
 inst/image
 ^data-raw$
+^doc$
+^Meta$
