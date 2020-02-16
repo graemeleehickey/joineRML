@@ -5,11 +5,11 @@ Title: Joint Modelling of Multivariate Longitudinal Data and Time-to-Event
 Version: 0.4.3
 Date: 2020-02-18
 Authors@R: c(
-    person("Graeme L.", "Hickey", email = "graeme.hickey@liverpool.ac.uk", 
-        role = "aut",
-        comment = c(ORCID = "0000-0002-4989-0054")),
-    person("Pete", "Philipson", email = "pete.philipson@northumbria.ac.uk", 
+    person("Graeme L.", "Hickey", email = "graemeleehickey@gmail.com", 
         role = c("cre", "aut"),
+        comment = c(ORCID = "0000-0002-4989-0054")),
+    person("Pete", "Philipson", email = "peter.philipson1@newcastle.ac.uk", 
+        role = "aut",
         comment = c(ORCID = "0000-0001-7846-0208")),
     person("Andrea", "Jorgensen", email = "aljorgen@liverpool.ac.uk", 
         role = "ctb",

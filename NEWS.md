@@ -4,6 +4,9 @@
 
 * Graeme Hickey taken over the package as creator and maintainer.
 * Updates to DESCRIPTION
+* Updates to Makevars and Makevars.win
+* Updates to appveyor.yml and .travis.yml settings
+* Updates to .gitignore
 
 # joineRML 0.4.2
 
