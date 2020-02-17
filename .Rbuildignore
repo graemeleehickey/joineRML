@@ -10,3 +10,4 @@ inst/image
 ^data-raw$
 ^doc$
 ^Meta$
+^CRAN-RELEASE$
