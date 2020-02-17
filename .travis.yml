@@ -4,7 +4,7 @@ language: r
 cache: packages
 sudo: true
 
-before_install:
+#before_install:
 #  - tlmgr install amsmath amsfonts setspace enumitem hyperref biblatex
 # disable_homebrew: true
 #r_build_args: '--no-build-vignettes'
@@ -24,7 +24,7 @@ os:
 #  - osx
 
 r:
-  - oldrel
+#  - oldrel
   - release
   - devel
   
