@@ -4,8 +4,7 @@
 \alias{plot.dynLong}
 \title{Plot a \code{dynLong} object}
 \usage{
-\method{plot}{dynLong}(x, main = NULL, xlab = NULL, ylab = NULL,
-  grid = TRUE, estimator, ...)
+\method{plot}{dynLong}(x, main = NULL, xlab = NULL, ylab = NULL, grid = TRUE, estimator, ...)
 }
 \arguments{
 \item{x}{an object of class \code{dynLong} calculated by the

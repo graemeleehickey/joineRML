@@ -4,9 +4,19 @@
 \alias{dynLong}
 \title{Dynamic predictions for the longitudinal data sub-model}
 \usage{
-dynLong(object, newdata, newSurvData = NULL, u = NULL,
-  type = "first-order", M = 200, scale = 1.6, ci, progress = TRUE,
-  ntimes = 100, level = 1)
+dynLong(
+  object,
+  newdata,
+  newSurvData = NULL,
+  u = NULL,
+  type = "first-order",
+  M = 200,
+  scale = 1.6,
+  ci,
+  progress = TRUE,
+  ntimes = 100,
+  level = 1
+)
 }
 \arguments{
 \item{object}{an object inheriting from class \code{mjoint} for a joint model

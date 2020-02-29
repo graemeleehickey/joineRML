@@ -3,7 +3,6 @@
 \docType{package}
 \name{joineRML}
 \alias{joineRML}
-\alias{joineRML-package}
 \title{joineRML}
 \description{
 joineRML is an extension of the joineR package for fitting joint

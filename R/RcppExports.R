@@ -7,11 +7,6 @@ expWArma <- function(iz_, b_, gam, h_) {
 }
 
 #' @keywords internal
-gammaUpdate_approx <- function(b_, z_, w_, pb_, haz, v_, h_, K, q, nev) {
-    .Call(`_joineRML_gammaUpdate_approx`, b_, z_, w_, pb_, haz, v_, h_, K, q, nev)
-}
-
-#' @keywords internal
 gammaUpdate <- function(b_, z_, w_, pb_, haz, v_, h_, K, q, nev, jcount) {
     .Call(`_joineRML_gammaUpdate`, b_, z_, w_, pb_, haz, v_, h_, K, q, nev, jcount)
 }
@@ -19,6 +14,11 @@ gammaUpdate <- function(b_, z_, w_, pb_, haz, v_, h_, K, q, nev, jcount) {
 #' @keywords internal
 hazHat <- function(w_, pb_, nev) {
     .Call(`_joineRML_hazHat`, w_, pb_, nev)
+}
+
+#' @keywords internal
+gammaUpdate_approx <- function(b_, z_, w_, pb_, haz, v_, h_, K, q, nev) {
+    .Call(`_joineRML_gammaUpdate_approx`, b_, z_, w_, pb_, haz, v_, h_, K, q, nev)
 }
 
 #' @keywords internal
