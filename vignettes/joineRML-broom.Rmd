@@ -1,0 +1,165 @@
+---
+title: "joineRML and the broom package"
+author: "Alessandro Gasparini"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{joineRML and the broom package}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r load-joineRML, include = FALSE}
+library(joineRML)
+library(knitr)
+```
+
+# Introduction
+
+Tidiers for objects of class `mjoint` have been included in latest release of the `broom` package (version 0.5.0). 
+
+As the introductory vignette to `broom` outlines, 
+
+> The broom package takes the messy output of built-in functions in R, such as `lm`, `nls`, or `t.test`, and turns them into tidy data frames.
+
+There are three distinct tidiers included with `broom`:
+
+* `tidy`: constructs a data frame that summarises the model estimates;
+
+* `augment`: add columns to the original data that was modeled;
+
+* `glance`: construct a concise one-row summary of the model. 
+
+These methods are specifically useful when plotting results of a joint model or when comparing several models (e.g. in terms of fit).
+
+# Example
+
+We use the sample example from the introductory vignette to `joineRML` using the heart valve data.
+
+```{r vignette, eval = FALSE}
+vignette("joineRML", package = "joineRML")
+help("heart.valve", package = "joineRML")
+```
+
+We analyse only the records with case-complete data for heart valve gradient (`grad`) and left ventricular mass index (`lvmi`):
+
+```{r hvd_data}
+data(heart.valve)
+hvd <- heart.valve[!is.na(heart.valve$grad) & !is.na(heart.valve$lvmi), ]
+```
+
+```{r hvd_model_fit, cache = TRUE}
+set.seed(12345)
+fit <- mjoint(
+  formLongFixed = list("grad" = log.grad ~ time + sex + hs, 
+                       "lvmi" = log.lvmi ~ time + sex),
+  formLongRandom = list("grad" = ~ 1 | num,
+                        "lvmi" = ~ time | num),
+  formSurv = Surv(fuyrs, status) ~ age,
+  data = list(hvd, hvd),
+  inits = list("gamma" = c(0.11, 1.51, 0.80), "beta" = c(2.51, -0.01, 0.14, 0.19, 5.09, -0.01, -0.20), "sigma2" = c(0.36, 0.04)),
+  timeVar = "time")
+```
+
+## `tidy` method
+
+The `tidy` method returns a tidy dataset with model estimates. 
+
+```{r tidy}
+library(broom)
+tidy(fit)
+```
+
+By default the `tidy` method returns the estimated coefficients for the survival component of the joint model; however, it is possible to extract each component by setting the `component` argument:
+
+```{r tidy-long}
+tidy(fit, component = "longitudinal")
+```
+
+It is also possible to require confidence intervals to be calculated by setting `conf.int = TRUE`, and modify the confidence level by setting the `conf.level` argument:
+
+```{r tidy-ci}
+tidy(fit, conf.int = TRUE)
+tidy(fit, conf.int = TRUE, conf.level = 0.99)
+```
+
+The standard errors reported by default are based on the empirical information matrix, as in `mjoint`. It is of course possible to use bootstrapped standard errors as follows:
+
+```{r tidy-boot, cache = TRUE}
+bSE <- bootSE(fit, nboot = 5, safe.boot = TRUE, progress = FALSE)
+tidy(fit, boot_se = bSE, conf.int = TRUE)
+```
+
+The `tidy` method is useful for custom plotting (e.g. forest plots) of results from `joineRML` models, all in a tidy framework:
+
+```{r tidy-plotting, fig.height = 5, fig.width = 5, fig.align = "center"}
+library(ggplot2)
+library(dplyr)
+fit %>% 
+  tidy(conf.int = TRUE) %>% 
+  ggplot(aes(x = term, y = estimate, ymin = conf.low, ymax = conf.high)) +
+    geom_point() +
+    geom_errorbar()
+```
+
+## `augment` method
+
+The `augment` method returns a dataset with added predictions from the joint model. In particular, population-level and individual-level fitted values and residuals are added to the data frame returned by the method:
+
+```{r augment-nd}
+preds = augment(fit)
+head(select(preds, num, log.grad, log.lvmi, starts_with(".fitted"), starts_with(".resid")))
+```
+
+We can plot the resulting predictions for four distinct individuals:
+
+```{r augment-plot}
+preds %>% 
+  filter(num %in% c(26, 36, 227, 244)) %>% 
+  ggplot(aes(x = time, colour = num)) +
+  geom_line(aes(y = log.grad, linetype = "Measured")) +
+  geom_line(aes(y = .fitted_grad_1, linetype = "Fitted")) +
+  labs(linetype = "Type", colour = "ID", y = "Aortic gradient")
+```
+
+## `glance` method
+
+The `glance` method allows extracting summary statistics from the joint model:
+
+```{r glance-fit}
+glance(fit)
+```
+
+This allows comparing competing models easily. Say for instance that we fit a second model with a random slope of time for the longitudinal submodel of aortic gradient (compared to random intercept only in the previous model):
+
+```{r glance-fit2, cache = TRUE}
+set.seed(67890)
+fit2 <- mjoint(
+  formLongFixed = list("grad" = log.grad ~ time + sex + hs, 
+                       "lvmi" = log.lvmi ~ time + sex),
+  formLongRandom = list("grad" = ~ time | num,
+                        "lvmi" = ~ time | num),
+  formSurv = Surv(fuyrs, status) ~ age,
+  data = list(hvd, hvd),
+  inits = list("gamma" = c(0.11, 1.51, 0.80), "beta" = c(2.51, -0.01, 0.14, 0.19, 5.09, -0.01, -0.20), "sigma2" = c(0.36, 0.04)),
+  timeVar = "time")
+```
+
+We can go ahead and compare the models in terms of AIC and BIC:
+
+```{r glance-comparison}
+bind_rows(
+  mutate(glance(fit), model = "fit"),
+  mutate(glance(fit2), model = "fit2")
+)
+```
+
+## Additional examples
+
+Several examples of how to use `broom` including more details are available on its introductory vignette:
+
+```{r vignette-broom, eval = FALSE}
+vignette(topic = "broom", package = "broom")
+```
