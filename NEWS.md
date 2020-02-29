@@ -1,3 +1,14 @@
+# joineRML 0.4.4
+
+## New features
+
+* Added `broom` compatability
+
+## Housekeeping
+
+* Added @ellessenne as package author
+* Updates to DESCRIPTION
+
 # joineRML 0.4.3
 
 ## Housekeeping
