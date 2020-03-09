@@ -51,6 +51,7 @@ Imports:
     cobs,
     doParallel,
     foreach,
+    generics,
     ggplot2,
     graphics,
     lme4 (>= 1.1-8),
@@ -68,7 +69,6 @@ LinkingTo:
 RoxygenNote: 7.0.2
 Suggests:
     bindrcpp,
-    broom (>= 0.5.0),
     dplyr,
     JM,
     joineR,
@@ -77,3 +77,4 @@ Suggests:
     testthat
 VignetteBuilder:
     knitr
+    
