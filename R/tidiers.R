@@ -14,21 +14,21 @@
 #' library(joineRML)
 #' data(heart.valve)
 #' hvd <- heart.valve[!is.na(heart.valve$log.grad) &
-#'                        !is.na(heart.valve$log.lvmi) &
-#'                        heart.valve$num <= 50, ]
+#'   !is.na(heart.valve$log.lvmi) &
+#'   heart.valve$num <= 50, ]
 #' fit <- mjoint(
-#'     formLongFixed = list(
-#'         "grad" = log.grad ~ time + sex + hs,
-#'         "lvmi" = log.lvmi ~ time + sex
-#'     ),
-#'     formLongRandom = list(
-#'         "grad" = ~ 1 | num,
-#'         "lvmi" = ~ time | num
-#'     ),
-#'     formSurv = Surv(fuyrs, status) ~ age,
-#'     data = hvd,
-#'     inits = list("gamma" = c(0.11, 1.51, 0.80)),
-#'     timeVar = "time"
+#'   formLongFixed = list(
+#'     "grad" = log.grad ~ time + sex + hs,
+#'     "lvmi" = log.lvmi ~ time + sex
+#'   ),
+#'   formLongRandom = list(
+#'     "grad" = ~ 1 | num,
+#'     "lvmi" = ~ time | num
+#'   ),
+#'   formSurv = Surv(fuyrs, status) ~ age,
+#'   data = hvd,
+#'   inits = list("gamma" = c(0.11, 1.51, 0.80)),
+#'   timeVar = "time"
 #' )
 #'
 #' # Extract the survival fixed effects
@@ -76,39 +76,39 @@ tidy.mjoint <- function(x, component = "survival", bootSE = NULL, ci = FALSE, le
   if (!is.null(bootSE)) {
     if (!inherits(x = bootSE, what = "bootSE")) stop("'bootSE' object not of class 'bootSE'")
   }
-  
+
   # make summary object
   if (is.null(bootSE)) {
     smr <- summary(x)
   } else {
     smr <- summary(x, bootSE = bootSE)
   }
-  
+
   # extract appropriate component
   if (component == "survival") {
     out <- data.frame(smr$coefs.surv)
   } else {
     out <- data.frame(smr$coefs.long)
   }
-  
+
   # fix names
   names(out) <- c("estimate", "std.error", "statistic", "p.value")
-  
+
   # turn rownames into a 'term' column
   out$term <- rownames(out)
   rownames(out) <- NULL
   out <- out[, c(5, 1:4)]
-  
+
   # make confidence intervals (if required)
   if (ci) {
     cv <- qnorm(1 - (1 - level) / 2)
     out$conf.low <- out$estimate - cv * out$std.error
     out$conf.high <- out$estimate + cv * out$std.error
   }
-  
+
   # turn out into a tibble object
   out <- tibble::as_tibble(out)
-  
+
   # return tidy object
   return(out)
 }
@@ -132,14 +132,14 @@ augment.mjoint <- function(x, data = x$data, ...) {
   if (is.null(data)) {
     stop("It was not possible to extract 'data' from 'x'. Please provide 'data' manually.")
   }
-  
+
   if (length(data) > 1) {
-    if (!do.call(all.equal, data)) {
-      stop("List of 'data' extracted from 'x' does not include equal data frames.")
+    if (!do.call(identical, data)) {
+      stop("List of 'data' extracted from 'x' does not include identical data frames.")
     }
     data <- data[[1]]
   }
-  
+
   # longitudinal fitted values
   fit0 <- fitted(x, level = 0)
   names(fit0) <- paste0(".fitted_", names(fit0), "_0")
@@ -147,7 +147,7 @@ augment.mjoint <- function(x, data = x$data, ...) {
   fit1 <- fitted(x, level = 1)
   names(fit1) <- paste0(".fitted_", names(fit1), "_1")
   fit1 <- do.call(cbind.data.frame, fit1)
-  
+
   # longitudinal residuals
   res0 <- residuals(x, level = 0)
   names(res0) <- paste0(".resid_", names(res0), "_0")
@@ -155,7 +155,7 @@ augment.mjoint <- function(x, data = x$data, ...) {
   res1 <- residuals(x, level = 1)
   names(res1) <- paste0(".resid_", names(res1), "_1")
   res1 <- do.call(cbind.data.frame, res1)
-  
+
   # return augmented 'data'
   out <- cbind(data, fit0, fit1, res0, res1)
   out <- tibble::as_tibble(out)
