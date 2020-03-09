@@ -1,5 +1,5 @@
 # test tidy, augment, glance methods for mjoint object (joineRML package)
-context("mjoint tidiers")
+context("Tidiers")
 library(joineRML)
 
 # Data
