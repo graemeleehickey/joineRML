@@ -103,3 +103,28 @@ test_that("glance works on mjoint models with more than one longitudinal process
   expect_equal(ncol(glnc), 5)
   expect_equal(names(glnc), c("sigma2_1", "sigma2_2", "AIC", "BIC", "logLik"))
 })
+
+test_that("tidy fails if passing a bootSE object that is not a bootSE object", {
+  expect_error(tidy(fit1, bootSE = list()))
+  expect_error(tidy(fit2, bootSE = list()))
+})
+
+test_that("tidy returns confidence intervals if required", {
+  expect_true(all(c("conf.low", "conf.high") %in% names(tidy(fit1, ci = TRUE))))
+  expect_true(all(c("conf.low", "conf.high") %in% names(tidy(fit1, ci = TRUE, bootSE = bSE1))))
+  expect_true(all(c("conf.low", "conf.high") %in% names(tidy(fit2, ci = TRUE))))
+  expect_true(all(c("conf.low", "conf.high") %in% names(tidy(fit2, ci = TRUE, bootSE = bSE2))))
+})
+
+test_that("augment fails if cannot extract data from x", {
+  fit1_broken <- fit1
+  fit1_broken$data <- NULL
+  expect_error(augment(fit1_broken))
+  nd <- list(fit1$data[[1]], fit1$data[[1]][sample(x = seq(nrow(fit1$data[[1]])), size = nrow(fit1$data[[1]])), ])
+  expect_error(augment(fit1_broken))
+  fit2_broken <- fit2
+  fit2_broken$data <- NULL
+  expect_error(augment(fit2_broken))
+  nd <- list(fit2$data[[1]], fit2$data[[1]][sample(x = seq(nrow(fit2$data[[1]])), size = nrow(fit2$data[[1]])), ])
+  expect_error(augment(fit2_broken))
+})
