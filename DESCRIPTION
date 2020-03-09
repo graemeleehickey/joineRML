@@ -62,6 +62,7 @@ Imports:
     randtoolbox,
     Rcpp (>= 0.12.7),
     stats,
+    tibble,
     utils
 LinkingTo:
     Rcpp,
