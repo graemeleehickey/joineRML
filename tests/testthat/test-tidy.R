@@ -110,10 +110,10 @@ test_that("tidy fails if passing a bootSE object that is not a bootSE object", {
 })
 
 test_that("tidy returns confidence intervals if required", {
-  expect_true(all(c("conf.low", "conf.high") %in% names(tidy(fit1, ci = TRUE))))
-  expect_true(all(c("conf.low", "conf.high") %in% names(tidy(fit1, ci = TRUE, bootSE = bSE1))))
-  expect_true(all(c("conf.low", "conf.high") %in% names(tidy(fit2, ci = TRUE))))
-  expect_true(all(c("conf.low", "conf.high") %in% names(tidy(fit2, ci = TRUE, bootSE = bSE2))))
+  expect_true(all(c("conf.low", "conf.high") %in% names(tidy(fit1, conf.int = TRUE))))
+  expect_true(all(c("conf.low", "conf.high") %in% names(tidy(fit1, conf.int = TRUE, bootSE = bSE1))))
+  expect_true(all(c("conf.low", "conf.high") %in% names(tidy(fit2, conf.int = TRUE))))
+  expect_true(all(c("conf.low", "conf.high") %in% names(tidy(fit2, conf.int = TRUE, bootSE = bSE2))))
 })
 
 test_that("augment fails if cannot extract data from x", {

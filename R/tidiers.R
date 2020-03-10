@@ -57,9 +57,9 @@
 #'
 #' @param bootSE An object of class \code{bootSE} for the corresponding model. If \code{bootSE = NULL} (the default), the function will use approximate standard error estimates calculated from the empirical information matrix.
 #'
-#' @param ci Include (\code{1 - level})\% confidence intervals? Defaults to \code{FALSE}.
+#' @param conf.int Include (1 - \code{conf.level})\% confidence intervals? Defaults to \code{FALSE}.
 #'
-#' @param level The confidence level required.
+#' @param conf.level The confidence level required.
 #'
 #' @return \code{tidy} returns one row for each estimated fixed effect depending on the \code{component} parameter. It contains the following  columns:
 #'   \item{term}{The term being estimated}
@@ -67,11 +67,11 @@
 #'   \item{std.error}{Standard error}
 #'   \item{statistic}{Z-statistic}
 #'   \item{p.value}{P-value computed from Z-statistic}
-#'   \item{conf.low}{The low end of a confidence interval on \code{estimate}, if required}
-#'   \item{conf.high}{The high end of a confidence interval on \code{estimate}, if required}
+#'   \item{conf.low}{The lower bound of a confidence interval on \code{estimate}, if required}
+#'   \item{conf.high}{The upper bound of a confidence interval on \code{estimate}, if required}
 #'
 #' @export
-tidy.mjoint <- function(x, component = "survival", bootSE = NULL, ci = FALSE, level = 0.95, ...) {
+tidy.mjoint <- function(x, component = "survival", bootSE = NULL, conf.int = FALSE, conf.level = 0.95, ...) {
   component <- match.arg(component, c("survival", "longitudinal"))
   if (!is.null(bootSE)) {
     if (!inherits(x = bootSE, what = "bootSE")) stop("'bootSE' object not of class 'bootSE'")
@@ -100,8 +100,8 @@ tidy.mjoint <- function(x, component = "survival", bootSE = NULL, ci = FALSE, le
   out <- out[, c(5, 1:4)]
 
   # make confidence intervals (if required)
-  if (ci) {
-    cv <- qnorm(1 - (1 - level) / 2)
+  if (conf.int) {
+    cv <- stats::qnorm(1 - (1 - conf.level) / 2)
     out$conf.low <- out$estimate - cv * out$std.error
     out$conf.high <- out$estimate + cv * out$std.error
   }

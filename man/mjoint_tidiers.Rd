@@ -7,7 +7,14 @@
 \alias{glance.mjoint}
 \title{Tidying methods for joint models for time-to-event data and multivariate longitudinal data}
 \usage{
-\method{tidy}{mjoint}(x, component = "survival", bootSE = NULL, ci = FALSE, level = 0.95, ...)
+\method{tidy}{mjoint}(
+  x,
+  component = "survival",
+  bootSE = NULL,
+  conf.int = FALSE,
+  conf.level = 0.95,
+  ...
+)
 
 \method{augment}{mjoint}(x, data = x$data, ...)
 
@@ -20,9 +27,9 @@
 
 \item{bootSE}{An object of class \code{bootSE} for the corresponding model. If \code{bootSE = NULL} (the default), the function will use approximate standard error estimates calculated from the empirical information matrix.}
 
-\item{ci}{Include (\code{1 - level})\% confidence intervals? Defaults to \code{FALSE}.}
+\item{conf.int}{Include (1 - \code{conf.level})\% confidence intervals? Defaults to \code{FALSE}.}
 
-\item{level}{The confidence level required.}
+\item{conf.level}{The confidence level required.}
 
 \item{...}{extra arguments (not used)}
 
@@ -37,8 +44,8 @@ All tidying methods return a \code{data.frame} without rownames. The structure d
   \item{std.error}{Standard error}
   \item{statistic}{Z-statistic}
   \item{p.value}{P-value computed from Z-statistic}
-  \item{conf.low}{The low end of a confidence interval on \code{estimate}, if required}
-  \item{conf.high}{The high end of a confidence interval on \code{estimate}, if required}
+  \item{conf.low}{The lower bound of a confidence interval on \code{estimate}, if required}
+  \item{conf.high}{The upper bound of a confidence interval on \code{estimate}, if required}
 
 \code{augment} returns one row for each original observation, with columns (each prepended by a .) added. Included are the columns:
   \item{.fitted_j_0}{population-level fitted values for the j-th longitudinal process}
