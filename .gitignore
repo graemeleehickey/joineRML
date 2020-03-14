@@ -44,3 +44,5 @@ docs/*.
 .DS_Store
 doc
 Meta
+vignettes/joineRML_cache/
+vignettes/joineRML-tidy_cache/
