@@ -4,7 +4,8 @@
 \name{heart.valve}
 \alias{heart.valve}
 \title{Aortic valve replacement surgery data}
-\format{This is a data frame in the unbalanced format, that is, with one row
+\format{
+This is a data frame in the unbalanced format, that is, with one row
   per observation. The data consists in columns for patient identification,
   time of measurements, longitudinal multiple longitudinal measurements,
   baseline covariates, and survival data. The column names are identified as
@@ -70,7 +71,8 @@
   \item{\code{hs}}{implanted aortic prosthesis type (\code{1=}homograft and
   \code{0=}stentless porcine tissue).}
 
-  }}
+  }
+}
 \source{
 Mr Eric Lim (\url{http://www.drericlim.com})
 }

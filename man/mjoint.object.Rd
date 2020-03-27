@@ -4,7 +4,9 @@
 \name{mjoint.object}
 \alias{mjoint.object}
 \title{Fitted \code{mjoint} object}
-\format{An object of class \code{NULL} of length 0.}
+\format{
+An object of class \code{NULL} of length 0.
+}
 \usage{
 mjoint.object
 }
