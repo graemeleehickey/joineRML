@@ -13,3 +13,4 @@ inst/image
 ^CRAN-RELEASE$
 ^vignettes/joineRML-tidy_cache$
 ^vignettes/joineRML_cache$
+^testing\.R$
