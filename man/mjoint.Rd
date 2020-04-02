@@ -359,7 +359,7 @@ measured with error. \emph{Biometrics.} 1997; \strong{53(1)}: 330-339.
   \code{\link{getVarCov.mjoint}}, \code{\link{simData}}.
 }
 \author{
-Graeme L. Hickey (\email{graeme.hickey@liverpool.ac.uk})
+Graeme L. Hickey (\email{graemeleehickey@gmail.com})
 }
 \keyword{methods}
 \keyword{multivariate}

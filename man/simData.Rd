@@ -134,8 +134,8 @@ measurements and event time data. \emph{Biostatistics.} 2000; \strong{1(4)}:
 465-480.
 }
 \author{
-Pete Philipson (\email{pete.philipson@northumbria.ac.uk}) and Graeme
-  L. Hickey (\email{graeme.hickey@liverpool.ac.uk})
+Pete Philipson (\email{peter.philipson1@newcastle.ac.uk}) and Graeme
+  L. Hickey (\email{graemeleehickey@gmail.com})
 }
 \keyword{datagen}
 \keyword{multivariate}

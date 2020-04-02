@@ -152,7 +152,7 @@ An object returned by the \code{mjoint} function, inheriting
 \code{\link{mjoint}}.
 }
 \author{
-Graeme L. Hickey (\email{graeme.hickey@liverpool.ac.uk})
+Graeme L. Hickey (\email{graemeleehickey@gmail.com})
 }
 \keyword{multivariate}
 \keyword{survival}

@@ -63,6 +63,6 @@ Med.} 2002; \strong{21}: 2369-2382.
   \code{\link[base]{summary}} for the generic method description.
 }
 \author{
-Graeme L. Hickey (\email{graeme.hickey@liverpool.ac.uk})
+Graeme L. Hickey (\email{graemeleehickey@gmail.com})
 }
 \keyword{methods}

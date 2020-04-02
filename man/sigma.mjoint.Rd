@@ -28,6 +28,6 @@ Springer Verlag; 2000.
 \code{\link[lme4]{sigma}} in the \strong{lme4} package.
 }
 \author{
-Graeme L. Hickey (\email{graeme.hickey@liverpool.ac.uk})
+Graeme L. Hickey (\email{graemeleehickey@gmail.com})
 }
 \keyword{methods}

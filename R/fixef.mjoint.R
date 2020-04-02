@@ -8,7 +8,7 @@
 #'   returned. Else, if \code{process='Event'}, the coefficients from the
 #'   time-to-event sub-model are returned.
 #'
-#' @author Graeme L. Hickey (\email{graeme.hickey@@liverpool.ac.uk})
+#' @author Graeme L. Hickey (\email{graemeleehickey@@gmail.com})
 #' @keywords methods
 #' @seealso \code{\link[nlme]{fixef}} for the generic method description, and
 #'   \code{\link{ranef.mjoint}}.

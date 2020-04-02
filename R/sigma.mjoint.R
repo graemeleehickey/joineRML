@@ -5,7 +5,7 @@
 #'
 #' @inheritParams confint.mjoint
 #'
-#' @author Graeme L. Hickey (\email{graeme.hickey@@liverpool.ac.uk})
+#' @author Graeme L. Hickey (\email{graemeleehickey@@gmail.com})
 #' @keywords methods
 #' @seealso \code{\link[lme4]{sigma}} in the \strong{lme4} package.
 #'

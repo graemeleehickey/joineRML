@@ -55,7 +55,7 @@
 #'   Metropolis-Hastings sampler. This simulation algorithm is iterated \code{M}
 #'   times, at each time calculating the conditional survival probability.
 #'
-#' @author Graeme L. Hickey (\email{graeme.hickey@@liverpool.ac.uk})
+#' @author Graeme L. Hickey (\email{graemeleehickey@@gmail.com})
 #' @keywords multivariate
 #' @seealso \code{\link{mjoint}}, \code{\link{dynSurv}}.
 #'

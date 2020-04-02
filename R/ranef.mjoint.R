@@ -6,7 +6,7 @@
 #' @param postVar logical: if \code{TRUE} the variance of the posterior
 #'   distribution is also returned.
 #'
-#' @author Graeme L. Hickey (\email{graeme.hickey@@liverpool.ac.uk})
+#' @author Graeme L. Hickey (\email{graemeleehickey@@gmail.com})
 #' @keywords methods
 #' @seealso \code{\link[nlme]{ranef}} for the generic method description, and
 #'   \code{\link{fixef.mjoint}}. To plot \code{ranef.mjoint} objects, see

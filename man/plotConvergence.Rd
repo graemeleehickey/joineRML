@@ -37,7 +37,7 @@ poor man's data augmentation algorithms. \emph{J Am Stat Assoc.} 1990;
   \code{\link[graphics]{par}}, \code{\link[graphics]{abline}}.
 }
 \author{
-Graeme L. Hickey (\email{graeme.hickey@liverpool.ac.uk})
+Graeme L. Hickey (\email{graemeleehickey@gmail.com})
 }
 \keyword{dplot}
 \keyword{methods}

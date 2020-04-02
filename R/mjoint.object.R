@@ -8,7 +8,7 @@
 #'   \code{AIC}, \code{getVarCov}, \code{vcov}, \code{confint}, \code{sigma},
 #'   \code{fitted}, \code{residuals}, and \code{formula}.
 #'
-#' @author Graeme L. Hickey (\email{graeme.hickey@@liverpool.ac.uk})
+#' @author Graeme L. Hickey (\email{graemeleehickey@@gmail.com})
 #' @keywords multivariate survival
 #' @seealso \code{\link{mjoint}}.
 #' @return A list with the following components. \describe{

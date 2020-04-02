@@ -10,7 +10,7 @@
 #'   residuals and level 1 corresponding to subject-specific residuals. Defaults
 #'   to \code{level=0}.
 #'
-#' @author Graeme L. Hickey (\email{graeme.hickey@@liverpool.ac.uk})
+#' @author Graeme L. Hickey (\email{graemeleehickey@@gmail.com})
 #' @keywords methods
 #' @seealso \code{\link{mjoint}}, \code{\link{fitted.mjoint}}
 #'

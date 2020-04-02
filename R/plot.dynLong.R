@@ -9,7 +9,7 @@
 #' @param ylab a character vector of the titles for the \emph{K} longitudinal
 #'   outcomes y-axes: see \code{\link[graphics]{title}}.
 #'
-#' @author Graeme L. Hickey (\email{graeme.hickey@@liverpool.ac.uk})
+#' @author Graeme L. Hickey (\email{graemeleehickey@@gmail.com})
 #' @keywords hplot
 #' @seealso \code{\link{dynLong}}
 #'

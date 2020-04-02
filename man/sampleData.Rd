@@ -55,7 +55,7 @@ sampleData(fit2, size = 10)
 \code{\link{mjoint}}.
 }
 \author{
-Graeme L. Hickey (\email{graeme.hickey@liverpool.ac.uk})
+Graeme L. Hickey (\email{graemeleehickey@gmail.com})
 }
 \keyword{datagen}
 \keyword{methods}

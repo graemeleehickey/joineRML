@@ -8,7 +8,7 @@
 #'   graphical examination of convergence over MCEM iteration.
 #' @param ... other parameters passed to \code{\link{plotConvergence}}.
 #'
-#' @author Graeme L. Hickey (\email{graeme.hickey@@liverpool.ac.uk})
+#' @author Graeme L. Hickey (\email{graemeleehickey@@gmail.com})
 #' @keywords methods dplot
 #' @seealso \code{\link[graphics]{plot.default}}, \code{\link[graphics]{par}},
 #'   \code{\link[graphics]{abline}}.

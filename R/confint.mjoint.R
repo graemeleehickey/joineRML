@@ -18,7 +18,7 @@
 #'   the empirical information matrix.
 #' @param ... additional arguments; currently none are used.
 #'
-#' @author Graeme L. Hickey (\email{graeme.hickey@@liverpool.ac.uk})
+#' @author Graeme L. Hickey (\email{graemeleehickey@@gmail.com})
 #' @keywords methods
 #' @seealso \code{\link{mjoint}}, \code{\link{bootSE}}, and
 #'   \code{\link[stats]{confint}} for the generic method description.

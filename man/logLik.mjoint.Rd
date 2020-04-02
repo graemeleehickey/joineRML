@@ -50,6 +50,6 @@ measurements and event time data. \emph{Biostatistics.} 2000; \strong{1(4)}:
 \code{\link[stats]{logLik}} for the generic method description.
 }
 \author{
-Graeme L. Hickey (\email{graeme.hickey@liverpool.ac.uk})
+Graeme L. Hickey (\email{graemeleehickey@gmail.com})
 }
 \keyword{methods}

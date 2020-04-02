@@ -19,7 +19,7 @@
 #'   returns the extracted variance-covariance matrix for the random effects
 #'   distribution.
 #'
-#' @author Graeme L. Hickey (\email{graeme.hickey@@liverpool.ac.uk})
+#' @author Graeme L. Hickey (\email{graemeleehickey@@gmail.com})
 #' @keywords methods
 #' @seealso \code{\link[stats]{vcov}} for the generic method description, and
 #'   \code{\link[stats]{cov2cor}} for details of efficient scaling of a

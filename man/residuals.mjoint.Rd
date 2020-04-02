@@ -34,6 +34,6 @@ Springer Verlag; 2000.
 \code{\link{mjoint}}, \code{\link{fitted.mjoint}}
 }
 \author{
-Graeme L. Hickey (\email{graeme.hickey@liverpool.ac.uk})
+Graeme L. Hickey (\email{graemeleehickey@gmail.com})
 }
 \keyword{methods}

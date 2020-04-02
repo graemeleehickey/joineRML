@@ -1,10 +1,14 @@
-#' Tidying methods for joint models for time-to-event data and multivariate longitudinal data
+#' Tidying methods for joint models for time-to-event data and multivariate
+#' longitudinal data
 #'
-#' These methods tidy the coefficients of joint models for time-to-event data and multivariate longitudinal data of the \code{mjoint} class from the \code{joineRML} package.
+#' These methods tidy the coefficients of joint models for time-to-event data
+#' and multivariate longitudinal data of the \code{mjoint} class from the
+#' \code{joineRML} package.
 #'
 #' @param x An object of class \code{mjoint}.
 #'
-#' @return All tidying methods return a \code{data.frame} without rownames. The structure depends on the method chosen.
+#' @return All tidying methods return a \code{data.frame} without rownames. The
+#'   structure depends on the method chosen.
 #'
 #' @name mjoint_tidiers
 #'
@@ -53,22 +57,28 @@
 #'
 #' @rdname mjoint_tidiers
 #'
-#' @param component Either \code{survival} (the survival component of the model, default) or \code{longitudinal} (the longitudinal component).
+#' @param component Either \code{survival} (the survival component of the model,
+#'   default) or \code{longitudinal} (the longitudinal component).
 #'
-#' @param bootSE An object of class \code{bootSE} for the corresponding model. If \code{bootSE = NULL} (the default), the function will use approximate standard error estimates calculated from the empirical information matrix.
+#' @param bootSE An object of class \code{bootSE} for the corresponding model.
+#'   If \code{bootSE = NULL} (the default), the function will use approximate
+#'   standard error estimates calculated from the empirical information matrix.
 #'
-#' @param conf.int Include (1 - \code{conf.level})\% confidence intervals? Defaults to \code{FALSE}.
+#' @param conf.int Include (1 - \code{conf.level})\% confidence intervals?
+#'   Defaults to \code{FALSE}.
 #'
 #' @param conf.level The confidence level required.
 #'
-#' @return \code{tidy} returns one row for each estimated fixed effect depending on the \code{component} parameter. It contains the following  columns:
-#'   \item{term}{The term being estimated}
-#'   \item{estimate}{Estimated value}
-#'   \item{std.error}{Standard error}
-#'   \item{statistic}{Z-statistic}
-#'   \item{p.value}{P-value computed from Z-statistic}
-#'   \item{conf.low}{The lower bound of a confidence interval on \code{estimate}, if required}
-#'   \item{conf.high}{The upper bound of a confidence interval on \code{estimate}, if required}
+#' @author Alessandro Gasparini (\email{alessandro.gasparini@@ki.se})
+#' 
+#' @return \code{tidy} returns one row for each estimated fixed effect depending
+#'   on the \code{component} parameter. It contains the following  columns:
+#'   \item{term}{The term being estimated} \item{estimate}{Estimated value}
+#'   \item{std.error}{Standard error} \item{statistic}{Z-statistic}
+#'   \item{p.value}{P-value computed from Z-statistic} \item{conf.low}{The lower
+#'   bound of a confidence interval on \code{estimate}, if required}
+#'   \item{conf.high}{The upper bound of a confidence interval on
+#'   \code{estimate}, if required}.
 #'
 #' @export
 tidy.mjoint <- function(x, component = "survival", bootSE = NULL, conf.int = FALSE, conf.level = 0.95, ...) {
@@ -113,18 +123,28 @@ tidy.mjoint <- function(x, component = "survival", bootSE = NULL, conf.int = FAL
   return(out)
 }
 
+
 #' @rdname mjoint_tidiers
 #'
-#' @param data Original data this was fitted on, in a list (e.g. \code{list(data)}). This will be extracted from \code{x} if not given.
+#' @param data Original data this was fitted on, in a list (e.g.
+#'   \code{list(data)}). This will be extracted from \code{x} if not given.
+#'   
+#' @author Alessandro Gasparini (\email{alessandro.gasparini@@ki.se})
+#' 
+#' @return \code{augment} returns one row for each original observation, with
+#'   columns (each prepended by a .) added. Included are the columns:
+#'   \item{.fitted_j_0}{population-level fitted values for the j-th longitudinal
+#'   process} \item{.fitted_j_1}{individuals-level fitted values for the j-th
+#'   longitudinal process} \item{.resid_j_0}{population-level residuals for the
+#'   j-th longitudinal process} \item{.resid_j_1}{individual-level residuals for
+#'   the j-th longitudinal process} See \code{\link[joineRML]{fitted.mjoint}}
+#'   and \code{\link[joineRML]{residuals.mjoint}} for more information on the
+#'   difference between population-level and individual-level fitted values and
+#'   residuals.
 #'
-#' @return \code{augment} returns one row for each original observation, with columns (each prepended by a .) added. Included are the columns:
-#'   \item{.fitted_j_0}{population-level fitted values for the j-th longitudinal process}
-#'   \item{.fitted_j_1}{individuals-level fitted values for the j-th longitudinal process}
-#'   \item{.resid_j_0}{population-level residuals for the j-th longitudinal process}
-#'   \item{.resid_j_1}{individual-level residuals for the j-th longitudinal process}
-#' See \code{\link[joineRML]{fitted.mjoint}} and \code{\link[joineRML]{residuals.mjoint}} for more information on the difference between population-level and individual-level fitted values and residuals.
-#'
-#' @note If fitting a joint model with a single longitudinal process, please make sure you are using a named \code{list} to define the formula for the fixed and random effects of the longitudinal submodel.
+#' @note If fitting a joint model with a single longitudinal process, please
+#'   make sure you are using a named \code{list} to define the formula for the
+#'   fixed and random effects of the longitudinal submodel.
 #'
 #' @export
 augment.mjoint <- function(x, data = x$data, ...) {
@@ -162,15 +182,18 @@ augment.mjoint <- function(x, data = x$data, ...) {
   return(out)
 }
 
+
 #' @rdname mjoint_tidiers
 #'
 #' @param ... extra arguments (not used)
 #'
-#' @return \code{glance} returns one row with the columns
-#'   \item{sigma2_j}{the square root of the estimated residual variance for the j-th longitudinal process}
-#'   \item{AIC}{the Akaike Information Criterion}
-#'   \item{BIC}{the Bayesian Information Criterion}
-#'   \item{logLik}{the data's log-likelihood under the model}
+#' @author Alessandro Gasparini (\email{alessandro.gasparini@@ki.se})
+#' 
+#' @return \code{glance} returns one row with the columns \item{sigma2_j}{the
+#'   square root of the estimated residual variance for the j-th longitudinal
+#'   process} \item{AIC}{the Akaike Information Criterion} \item{BIC}{the
+#'   Bayesian Information Criterion} \item{logLik}{the data's log-likelihood
+#'   under the model}.
 #'
 #' @export
 glance.mjoint <- function(x, ...) {

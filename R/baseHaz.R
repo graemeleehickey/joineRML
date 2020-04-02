@@ -30,7 +30,7 @@
 #'   where \eqn{\bar{w}} is a vector of the means from the time-to-event
 #'   sub-model design matrix.
 #'
-#' @author Graeme L. Hickey (\email{graeme.hickey@@liverpool.ac.uk})
+#' @author Graeme L. Hickey (\email{graemeleehickey@@gmail.com})
 #' @keywords methods survival
 #' @seealso \code{\link{mjoint}} and \code{\link[stats]{coef}}.
 #'

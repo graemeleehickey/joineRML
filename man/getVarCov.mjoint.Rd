@@ -49,6 +49,6 @@ Springer Verlag; 2000.
 \code{\link[nlme]{getVarCov}} for the generic method description.
 }
 \author{
-Graeme L. Hickey (\email{graeme.hickey@liverpool.ac.uk})
+Graeme L. Hickey (\email{graemeleehickey@gmail.com})
 }
 \keyword{methods}

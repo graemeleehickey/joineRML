@@ -195,7 +195,7 @@ Raton, FL: Chapman & Hall/CRC.
 \code{\link{mjoint}} for approximate standard errors.
 }
 \author{
-Graeme L. Hickey (\email{graeme.hickey@liverpool.ac.uk})
+Graeme L. Hickey (\email{graemeleehickey@gmail.com})
 }
 \keyword{methods}
 \keyword{multivariate}

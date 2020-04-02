@@ -223,7 +223,7 @@
 #'   \code{summary(fit_obj,boot_obj)}. For details, consult the
 #'   \code{\link{bootSE}} documentation.
 #'
-#' @author Graeme L. Hickey (\email{graeme.hickey@@liverpool.ac.uk})
+#' @author Graeme L. Hickey (\email{graemeleehickey@@gmail.com})
 #' @keywords multivariate survival methods
 #' @seealso \code{\link{mjoint.object}}, \code{\link{bootSE}},
 #'   \code{\link{plot.mjoint}}, \code{\link{summary.mjoint}},

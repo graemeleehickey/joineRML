@@ -87,6 +87,6 @@ Edition. Wiley-Interscience; 2008.
   covariance matrix into the corresponding correlation matrix.
 }
 \author{
-Graeme L. Hickey (\email{graeme.hickey@liverpool.ac.uk})
+Graeme L. Hickey (\email{graemeleehickey@gmail.com})
 }
 \keyword{methods}

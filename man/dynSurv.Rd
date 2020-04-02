@@ -173,6 +173,6 @@ models. \emph{Biometrics}. 2013; \strong{69}: 206–13.
   \code{\link{plot.dynSurv}}.
 }
 \author{
-Graeme L. Hickey (\email{graeme.hickey@liverpool.ac.uk})
+Graeme L. Hickey (\email{graemeleehickey@gmail.com})
 }
 \keyword{survival}

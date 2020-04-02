@@ -32,7 +32,7 @@
 #'   \code{\link[cobs]{cobs}}, with a penalty function of \eqn{\lambda=1}, and
 #'   subject to constraints of monotonicity and \eqn{S(t)=1}.
 #'
-#' @author Graeme L. Hickey (\email{graeme.hickey@@liverpool.ac.uk})
+#' @author Graeme L. Hickey (\email{graemeleehickey@@gmail.com})
 #' @keywords hplot
 #' @importFrom cobs cobs
 #' @seealso \code{\link{dynSurv}}

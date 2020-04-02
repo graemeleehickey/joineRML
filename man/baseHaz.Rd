@@ -79,7 +79,7 @@ Lin DY. On the Breslow estimator. \emph{Lifetime Data Anal.} 2007;
 \code{\link{mjoint}} and \code{\link[stats]{coef}}.
 }
 \author{
-Graeme L. Hickey (\email{graeme.hickey@liverpool.ac.uk})
+Graeme L. Hickey (\email{graemeleehickey@gmail.com})
 }
 \keyword{methods}
 \keyword{survival}

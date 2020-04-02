@@ -105,6 +105,6 @@ for longitudinal and time-to-event data. \emph{Biometrics}. 2011;
 \code{\link{dynSurv}}
 }
 \author{
-Graeme L. Hickey (\email{graeme.hickey@liverpool.ac.uk})
+Graeme L. Hickey (\email{graemeleehickey@gmail.com})
 }
 \keyword{hplot}

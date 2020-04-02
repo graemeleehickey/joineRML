@@ -1,3 +1,4 @@
+#' @keywords internal
 process_newdata <- function(object, newdata, newSurvData = NULL, tobs = NULL) {
 
   if (!inherits(object, "mjoint")) {

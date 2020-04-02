@@ -15,7 +15,7 @@
 #'   \code{\link{bootSE}} function in order to permit bootstrapping. However, it
 #'   can be used for other purposes given a fitted \code{mjoint} object.
 #'
-#' @author Graeme L. Hickey (\email{graeme.hickey@@liverpool.ac.uk})
+#' @author Graeme L. Hickey (\email{graemeleehickey@@gmail.com})
 #' @keywords methods datagen multivariate survival
 #' @seealso \code{\link{mjoint}}.
 #'

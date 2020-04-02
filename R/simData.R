@@ -68,8 +68,8 @@
 #'
 #'   }
 #'
-#' @author Pete Philipson (\email{pete.philipson@@northumbria.ac.uk}) and Graeme
-#'   L. Hickey (\email{graeme.hickey@@liverpool.ac.uk})
+#' @author Pete Philipson (\email{peter.philipson1@@newcastle.ac.uk}) and Graeme
+#'   L. Hickey (\email{graemeleehickey@@gmail.com})
 #' @keywords datagen multivariate survival
 #'
 #' @references

@@ -50,7 +50,7 @@
 #'   proportion of models have failed to converge, it is likely that it will
 #'   need to be refitted with changes to the \code{control} arguments.
 #'
-#' @author Graeme L. Hickey (\email{graeme.hickey@@liverpool.ac.uk})
+#' @author Graeme L. Hickey (\email{graemeleehickey@@gmail.com})
 #' @keywords multivariate survival methods
 #' @seealso \code{\link{mjoint}} for approximate standard errors.
 #'

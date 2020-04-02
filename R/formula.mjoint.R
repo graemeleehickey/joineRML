@@ -12,7 +12,7 @@
 #' @param k integer: a number between 1 and \emph{K} (the total number of
 #'   longitudinal outcomes) that specifies the longitudinal outcome of interest.
 #'
-#' @author Graeme L. Hickey (\email{graeme.hickey@@liverpool.ac.uk})
+#' @author Graeme L. Hickey (\email{graemeleehickey@@gmail.com})
 #' @keywords methods
 #' @seealso \code{\link[stats]{formula}} for the generic method description, and
 #'   \code{\link{ranef.mjoint}}.

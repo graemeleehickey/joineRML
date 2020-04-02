@@ -62,7 +62,7 @@ plot(fit2, type = "convergence", params = "gamma")
   \code{\link[graphics]{abline}}.
 }
 \author{
-Graeme L. Hickey (\email{graeme.hickey@liverpool.ac.uk})
+Graeme L. Hickey (\email{graemeleehickey@gmail.com})
 }
 \keyword{dplot}
 \keyword{methods}

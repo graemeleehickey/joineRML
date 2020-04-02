@@ -4,7 +4,7 @@
 #'
 #' @inheritParams confint.mjoint
 #'
-#' @author Graeme L. Hickey (\email{graeme.hickey@@liverpool.ac.uk})
+#' @author Graeme L. Hickey (\email{graemeleehickey@@gmail.com})
 #' @keywords methods
 #' @seealso \code{\link[stats]{logLik}} for the generic method description.
 #'
