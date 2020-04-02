@@ -78,3 +78,4 @@ Suggests:
     testthat
 VignetteBuilder:
     knitr
+    
