@@ -2,12 +2,17 @@
 
 ## New features
 
-* Added `broom` compatability
+* Added `broom` compatability.
+
+## Bug patches
+
+* Fixed issue that required subject IDs to be first column in dataset.
 
 ## Housekeeping
 
-* Added @ellessenne as package author
-* Updates to DESCRIPTION
+* Added @ellessenne as package author.
+* Updates to DESCRIPTION.
+* Documentation updates.
 
 # joineRML 0.4.3
 
