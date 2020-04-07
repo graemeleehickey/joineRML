@@ -4,7 +4,8 @@
 \name{renal}
 \alias{renal}
 \title{Renal transplantation data}
-\format{This is a list with 4 data frames: \enumerate{
+\format{
+This is a list with 4 data frames: \enumerate{
 
   \item{\code{prot}: repeated measurement data for proteinuria (binary) that
   measures whether the kidneys succeed in sustaining the proteins in the
@@ -62,7 +63,8 @@
 
   }}
 
-  }}
+  }
+}
 \source{
 Dr Dimitris Rizopoulos (\email{d.rizopoulos@erasmusmc.nl}).
 }

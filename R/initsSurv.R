@@ -10,7 +10,7 @@ initsSurv_balanced <- function(data, lfit, survdat2, formSurv, id, timeVar, K, q
   colnames(W) <- paste0("gamma_", 1:K)
 
   dataAG <- by(data[[1]], data[[1]][ , id], FUN = function(u) {
-    id.col <- u[ , 1]
+    id.col <- u[ , id]
     T <- survdat2[survdat2$id == id.col[1], "T"] + 1e-06
     start <- u[ , timeVar[k]]
     stop <- c(u[, timeVar[k]][-1], T)

@@ -4,7 +4,8 @@
 \name{epileptic.qol}
 \alias{epileptic.qol}
 \title{Quality of life data following epilepsy drug treatment}
-\format{A data frame with 1853 observations on the following 9 variables:
+\format{
+A data frame with 1853 observations on the following 9 variables:
   \describe{
 
   \item{\code{id}}{patients identifier; in total there are 544 patients.}
@@ -43,7 +44,8 @@
   failure (for any reason), coded \code{status2=1}, or right-censoring
   \code{status2=0}.}
 
-  }}
+  }
+}
 \source{
 SANAD Trial: University of Liverpool. See Jacoby et al. (2015).
 }

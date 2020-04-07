@@ -4,7 +4,8 @@
 \name{pbc2}
 \alias{pbc2}
 \title{Mayo Clinic primary biliary cirrhosis data}
-\format{A data frame with 1945 observations on the following 20 variables:
+\format{
+A data frame with 1945 observations on the following 20 variables:
   \describe{
 
   \item{\code{id}}{patients identifier; in total there are 312 patients.}
@@ -55,7 +56,8 @@
   \item{\code{status2}}{a numeric vector with the value 1 denoting if the
   patient was dead, and 0 if the patient was alive or transplanted.}
 
-  }}
+  }
+}
 \source{
 \code{\link[JM]{pbc2}} and \code{\link[survival]{pbc}}.
 }
