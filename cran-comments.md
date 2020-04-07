@@ -1,7 +1,6 @@
 ## Other notes
 
-Graeme Hickey has now taken over as package maintainer from Pete Philipson since
-the package has been orphaned. Graeme was the original package creator.
+Minor updates to the package.
 
 ## Test environments
 

@@ -44,7 +44,7 @@
 
 ## New features
 
-* Added smoothed predicted survival curves to the `plot.dynSuv()`. Smoothing is based on the contrainsed B-splines method.
+* Added smoothed predicted survival curves to the `plot.dynSuv()`. Smoothing is based on the constrained B-splines method.
 
 * `dynSurv()` now includes an argument to specify a horizon time from the last known observation time.
 
@@ -88,13 +88,13 @@
 
 ## New features
 
-* Added new functions `dynSurv()` and `dynLong()`, which generates survival probabilities and xpected longitudinal predictions, respectively, for a new subject conditional on their last measurement time and longitudial history. Prediction can be implemented using either a first order approximation or a Monte Carlo simulation approach.
+* Added new functions `dynSurv()` and `dynLong()`, which generates survival probabilities and expected longitudinal predictions, respectively, for a new subject conditional on their last measurement time and longitudinal history. Prediction can be implemented using either a first order approximation or a Monte Carlo simulation approach.
 
 * Added an associated `print()` method for `dynSurv` and `dynLong` objects.
 
 * Added an associated `plot()` method for `dynSurv` and `dynLong` objects.
 
-* Added a function `baseHaz()` for extracting the centered and uncetered estimates of the baseline hazard function.
+* Added a function `baseHaz()` for extracting the centered and uncentered estimates of the baseline hazard function.
 
 * `print()` and `summary()` now report the total computation time in addition to just the EM algorithm time. This was deemed useful after some examples showed that the time to get initial values was more expensive than the time for the MCEM algorithm to converge.
 
@@ -156,7 +156,7 @@
 
 * Added a check that dimensions of any `inits` given match the calculated dimensions from the model formulae.
 
-* Added a check that if multiple repeated longitudinal outcoems were given, that each subject contributes at least one measurement per outcome.
+* Added a check that if multiple repeated longitudinal outcomes were given, that each subject contributes at least one measurement per outcome.
 
 * Changed the API so that `postRE` and `approx.se` arguments are now replaced by a single `pfs` argument, which stands for post fit statistics. If `TRUE`, then *both* the approximate SEs and the BLUPs (and SEs) are calculated and returned. This change is to facilitate other post fit statistics, e.g. residuals.
 
