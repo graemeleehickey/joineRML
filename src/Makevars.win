@@ -1,8 +1,4 @@
 PKG_LIBS = $(LAPACK_LIBS) $(BLAS_LIBS) $(FLIBS)
-CC=/usr/local/clang4/bin/clang
-CXX=/usr/local/clang4/bin/clang++
-CXX11=$CXX
-CXX14=$CXX
-CXX17=$CXX
-CXX1X=$CXX
-LDFLAGS=-L/usr/local/clang4/lib
+CC=ccache clang -Qunused-arguments
+CXX=ccache clang++ -Qunused-arguments
+CCACHE_CPP2=yes

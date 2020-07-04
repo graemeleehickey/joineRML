@@ -1,3 +1,9 @@
+# joineRML 0.4.5-9000
+
+## Housekeeping
+
+* Updated Makevars and Makevars.win to remove clang4 dependency.
+
 # joineRML 0.4.4
 
 ## New features

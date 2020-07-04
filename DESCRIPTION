@@ -2,8 +2,8 @@ Package: joineRML
 Type: Package
 Title: Joint Modelling of Multivariate Longitudinal Data and Time-to-Event
     Outcomes
-Version: 0.4.4
-Date: 2020-04-07
+Version: 0.4.5
+Date: 2020-07-04
 Authors@R: c(
     person("Graeme L.", "Hickey", email = "graemeleehickey@gmail.com", 
         role = c("cre", "aut"),
