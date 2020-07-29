@@ -1,8 +1,14 @@
-# joineRML 0.4.5-9000
+# joineRML 0.4.5
+
+## Bug patches
+
+* Fixed issue where missing data in a longitudinal outcome would throw and error due to `nlme::lme()` default behaviour.
 
 ## Housekeeping
 
 * Updated Makevars and Makevars.win to remove clang4 dependency.
+* Updated URL in DESCRIPTION.
+* Fixed couple of typos.
 
 # joineRML 0.4.4
 

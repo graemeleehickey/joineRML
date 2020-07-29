@@ -377,7 +377,7 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
   id <- as.character(nlme::splitFormula(formLongRandom[[1]], "|")[[2]])[2]
   n <- length(unique(data[[1]][, id]))
 
-  # Incase timeVar not a vector when K>1
+  # In case timeVar not a vector when K>1
   if (length(timeVar) == 1 & (K > 1)) {
     timeVar <- rep(timeVar, K)
   }
@@ -457,7 +457,7 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
 
   for (k in 1:K) {
 
-    # List of K seperate longitudinal model fits
+    # List of K separate longitudinal model fits
     lfit[[k]] <- nlme::lme(fixed = formLongFixed[[k]], random = formLongRandom[[k]],
                            data = data[[k]], method = "ML",
                            control = nlme::lmeControl(opt = "optim"))
@@ -474,7 +474,7 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
     Xik[[k]] <- data.frame("id" = data[[k]][, id],
                            model.matrix(formLongFixed[[k]], data[[k]]))
 
-    # n_k (number of obs per each k)
+    # n_k (number of observations per each k)
     nk[k] <- nrow(Xik[[k]])
 
     # X design matrix (list)
