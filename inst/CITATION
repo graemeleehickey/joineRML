@@ -1,0 +1,14 @@
+citHeader("To cite joineRML in publications please use:")
+
+citEntry(
+	doi = "10.1186/s12874-018-0502-1",
+	url = "https://doi.org/10.1186%2Fs12874-018-0502-1",
+	year = "2018",
+	volume = "18",
+	number = "1",
+	author = "Graeme L. Hickey and Pete Philipson and Andrea Jorgensen and ",
+	title = "joineRML: a joint model and software package for time-to-event and multivariate longitudinal outcomes",
+	journal = "BMC Medical Research Methodology",
+  entry = "Article",
+  textVersion = "G.L. Hickey, P. Philipson, A. Jorgensen and R. Kolamunnage-Dona. joineRML: a joint model and software package for time-to-event and multivariate longitudinal outcomes. BMC Med Res Methodol 18, 50 (2018). https://doi.org/10.1186/s12874-018-0502-1"
+)
