@@ -23,7 +23,7 @@ test_that("bootstrap MV models", {
   set.seed(1)
   fit.boot1 <- bootSE(fit, nboot = 1, verbose = TRUE)
   set.seed(1)
-  fit.boot2 <- bootSE(fit, nboot = 1, ncores = 2)
+  fit.boot2 <- bootSE(fit, nboot = 1, ncores = 1)
   # tests
   expect_is(fit.boot1, "bootSE")
   expect_is(fit.boot2, "bootSE")
