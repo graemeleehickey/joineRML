@@ -41,6 +41,11 @@ jobs:
 
       - uses: r-lib/actions/setup-pandoc@v1
 
+      - name: Install setup-tinytex
+      - uses: actions/checkout@master
+      - uses: r-lib/actions/setup-tinytex@v1
+      - run: tlmgr --version
+
       - name: Query dependencies
         run: |
           install.packages('remotes')
