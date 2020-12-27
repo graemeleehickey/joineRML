@@ -6,7 +6,7 @@
 <!-- badges: start -->
 
 [![R build
-status](https://github.com/graemeleehickey/joineRML/workflows/check-standard/badge.svg)](https://github.com/graemeleehickey/joineRML/actions)
+status](https://github.com/graemeleehickey/joineRML/workflows/R-CMD-check/badge.svg)](https://github.com/graemeleehickey/joineRML/actions)
 [![AppVeyor Build
 Status](https://ci.appveyor.com/api/projects/status/github/graemeleehickey/joineRML?branch=master&svg=true)](https://ci.appveyor.com/project/graemeleehickey/joineRML)
 <!--[![License](https://img.shields.io/badge/License-GPL%20%28%3E=%203%29-brightgreen.svg)](http://www.gnu.org/licenses/gpl-3.0.html)-->

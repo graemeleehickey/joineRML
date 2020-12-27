@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 
 # joineRML <img src="man/figures/hex.png" width = "175" height = "200" align="right" />
 <!-- badges: start -->
-[![R build status](https://github.com/graemeleehickey/joineRML/workflows/check-standard/badge.svg)](https://github.com/graemeleehickey/joineRML/actions)
+[![R build status](https://github.com/graemeleehickey/joineRML/workflows/R-CMD-check/badge.svg)](https://github.com/graemeleehickey/joineRML/actions)
 [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/graemeleehickey/joineRML?branch=master&svg=true)](https://ci.appveyor.com/project/graemeleehickey/joineRML)
 <!--[![License](https://img.shields.io/badge/License-GPL%20%28%3E=%203%29-brightgreen.svg)](http://www.gnu.org/licenses/gpl-3.0.html)-->
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/joineRML)](https://CRAN.R-project.org/package=joineRML)
