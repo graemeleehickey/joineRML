@@ -4,10 +4,10 @@ Minor updates to the package.
 
 ## Test environments
 
-* local OS X (Catalina) install, R 3.6.2
-* ubuntu (via travis-ci)
+* local OS X (Catalina) install, R 4.0.2
+* ubuntu/macOS (via GitHub actions, release + devel)
 * windows (via appveyor)
-* win-builder (release, devel)
+* win-builder (release + devel)
 
 ## R CMD check results
 

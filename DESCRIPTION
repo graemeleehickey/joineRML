@@ -3,7 +3,7 @@ Type: Package
 Title: Joint Modelling of Multivariate Longitudinal Data and Time-to-Event
     Outcomes
 Version: 0.4.5
-Date: 2020-07-29
+Date: 2020-12-27
 Authors@R: c(
     person("Graeme L.", "Hickey", email = "graemeleehickey@gmail.com", 
         role = c("cre", "aut"),
@@ -67,7 +67,7 @@ Imports:
 LinkingTo:
     Rcpp,
     RcppArmadillo
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1
 Suggests:
     bindrcpp,
     dplyr,
