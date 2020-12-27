@@ -3,8 +3,10 @@
 
 # joineRML <img src="man/figures/hex.png" width = "175" height = "200" align="right" />
 
-[![Travis-CI Build
-Status](https://travis-ci.org/graemeleehickey/joineRML.svg?branch=master)](https://travis-ci.org/graemeleehickey/joineRML)
+<!-- badges: start -->
+
+[![R build
+status](https://github.com/graemeleehickey/joineRML/workflows/check-standard/badge.svg)](https://github.com/graemeleehickey/joineRML/actions)
 [![AppVeyor Build
 Status](https://ci.appveyor.com/api/projects/status/github/graemeleehickey/joineRML?branch=master&svg=true)](https://ci.appveyor.com/project/graemeleehickey/joineRML)
 <!--[![License](https://img.shields.io/badge/License-GPL%20%28%3E=%203%29-brightgreen.svg)](http://www.gnu.org/licenses/gpl-3.0.html)-->
@@ -15,20 +17,21 @@ Status](https://ci.appveyor.com/api/projects/status/github/graemeleehickey/joine
 [![Research software
 impact](http://depsy.org/api/package/cran/joineRML/badge.svg)](http://depsy.org/package/r/joineRML)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1158231.svg)](https://doi.org/10.5281/zenodo.1158231)
+<!-- badges: end -->
 
 `joineRML` is an extension of the joineR package for fitting joint
 models of time-to-event data and multivariate longitudinal data. The
 model fitted in joineRML is an extension of the Wulfsohn and Tsiatis
-(1997) and Henderson et al. (2000) models, which is comprised of
+(1997) and Henderson et al. (2000) models, which is comprised of
 \((K+1)\)-sub-models: a Cox proportional hazards regression model (Cox,
 1972) and a \(K\)-variate linear mixed-effects model - a direct
 extension of the Laird and Ware (1982) regression model. The model is
 fitted using a Monte Carlo Expectation-Maximization (MCEM) algorithm,
-which closely follows the methodology presented by Lin et al. (2002).
+which closely follows the methodology presented by Lin et al. (2002).
 
 ## Why use joineRML?
 
-As noted in Hickey et al. (2016), there is a lack of statistical
+As noted in Hickey et al. (2016), there is a lack of statistical
 software available for fitting joint models to multivariate longitudinal
 data. This is contrary to a growing methodology in the statistical
 literature. `joineRML` is intended to fill this void.
@@ -55,7 +58,7 @@ fit <- mjoint(
 ```
 
 The fitted model is assigned to `fit`. We can apply a number of
-functions to this object, e.g. `coef`, `logLik`, `plot`, `print`,
+functions to this object, e.g. `coef`, `logLik`, `plot`, `print`,
 `ranef`, `fixef`, `summary`, `AIC`, `getVarCov`, `vcov`, `confint`,
 `sigma`, `update`, `formula`, `resid`, and `fitted`. In addition,
 several special functions have been added, including `dynSurv`,
@@ -97,8 +100,7 @@ vignette('joineRML', package = 'joineRML')
 # Funding
 
 This project is funded by the [Medical Research
-Council](http://www.mrc.ac.uk) (Grant number
-MR/M013227/1).
+Council](http://www.mrc.ac.uk) (Grant number MR/M013227/1).
 
 ![](http://www.mrc.ac.uk/mrc/includes/themes/MRC/images/template/desktop/logo.png)
 
