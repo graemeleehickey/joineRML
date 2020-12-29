@@ -100,7 +100,7 @@ vignette('joineRML', package = 'joineRML')
 # Funding
 
 This project is funded by the [Medical Research
-Council](http://www.mrc.ac.uk) (Grant number MR/M013227/1).
+Council](https://mrc.ukri.org) (Grant number MR/M013227/1).
 
 ![](http://www.mrc.ac.uk/mrc/includes/themes/MRC/images/template/desktop/logo.png)
 

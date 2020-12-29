@@ -73,9 +73,6 @@ This is a data frame in the unbalanced format, that is, with one row
 
   }
 }
-\source{
-Mr Eric Lim (\url{http://www.drericlim.com})
-}
 \usage{
 data(heart.valve)
 }
