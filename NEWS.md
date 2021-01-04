@@ -5,6 +5,8 @@
 * Updated Makevars and Makevars.win to remove clang4 dependency.
 * Updated URL in DESCRIPTION.
 * Fixed couple of typos.
+* Moved to GitHub Actions CI.
+* Updated URLs.
 
 # joineRML 0.4.4
 
