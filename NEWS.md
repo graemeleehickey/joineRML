@@ -1,18 +1,30 @@
+# joineRML 0.4.6
+
+## Housekeeping
+
+* `mjoint()` now returns the input `inits` and the interim calculated initial values calculated for the EM algorithm step: `inits.long` and `inits.surv`. Requested by James Murray.
+
+* Updated Makevars and Makevars.win due to compilation issues.
+
 # joineRML 0.4.5
 
 ## Housekeeping
 
 * Updated Makevars and Makevars.win to remove clang4 dependency.
+
 * Updated URL in DESCRIPTION.
+
 * Fixed couple of typos.
+
 * Moved to GitHub Actions CI.
+
 * Updated URLs.
 
 # joineRML 0.4.4
 
 ## New features
 
-* Added `broom` compatability.
+* Added `broom` compatibility.
 
 ## Bug patches
 
@@ -21,7 +33,9 @@
 ## Housekeeping
 
 * Added @ellessenne as package author.
+
 * Updates to DESCRIPTION.
+
 * Documentation updates.
 
 # joineRML 0.4.3
@@ -29,9 +43,13 @@
 ## Housekeeping
 
 * Graeme Hickey taken over the package as creator and maintainer.
+
 * Updates to DESCRIPTION
+
 * Updates to Makevars and Makevars.win
+
 * Updates to appveyor.yml and .travis.yml settings
+
 * Updates to .gitignore
 
 # joineRML 0.4.2

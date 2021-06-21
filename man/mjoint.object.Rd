@@ -16,20 +16,20 @@ A list with the following components. \describe{
   \item{\code{coefficients}}{a list with the estimated coefficients. The
   components of this list are: \describe{
 
-  \item{\code{beta}}{the vector of fixed effects for the linear mixed effects
-  sub-model.}
+    \item{\code{beta}}{the vector of fixed effects for the linear mixed
+    effects sub-model.}
 
-  \item{\code{D}}{the variance-covariance matrix of the random effects.}
+    \item{\code{D}}{the variance-covariance matrix of the random effects.}
 
-  \item{\code{sigma2}}{the measurement error standard deviations for the
-  linear mixed effects sub-model.}
+    \item{\code{sigma2}}{the measurement error standard deviations for the
+    linear mixed effects sub-model.}
 
-  \item{\code{haz}}{the estimated baseline hazard values for each unique
-  failure time. Note that this is the \emph{centered} hazard, equivalent to
-  that returned by \code{\link[survival]{coxph.detail}}.}
+    \item{\code{haz}}{the estimated baseline hazard values for each unique
+    failure time. Note that this is the \emph{centered} hazard, equivalent to
+    that returned by \code{\link[survival]{coxph.detail}}.}
 
-  \item{\code{gamma}}{the vector of baseline covariates for the survival
-  model and the latent association coefficient parameter estimates.}
+    \item{\code{gamma}}{the vector of baseline covariates for the survival
+    model and the latent association coefficient parameter estimates.}
 
   }}
 
@@ -62,22 +62,22 @@ A list with the following components. \describe{
   \item{\code{dims}}{a list giving the dimensions of model parameters with
   components: \describe{
 
-  \item{\code{p}}{a vector of the number of fixed effects for each
-  longitudinal outcome.}
+    \item{\code{p}}{a vector of the number of fixed effects for each
+    longitudinal outcome.}
 
-  \item{\code{r}}{a vector of the number of random effects for each
-  longitudinal outcome.}
+    \item{\code{r}}{a vector of the number of random effects for each
+    longitudinal outcome.}
 
-  \item{\code{K}}{an integer of the number of different longitudinal outcome
-  types.}
+    \item{\code{K}}{an integer of the number of different longitudinal
+    outcome types.}
 
-  \item{\code{q}}{an integer of the number of baseline covariates in the
-  time-to-event sub-model.}
+    \item{\code{q}}{an integer of the number of baseline covariates in the
+    time-to-event sub-model.}
 
-  \item{\code{n}}{an integer of the total number of subjects in the study.}
+    \item{\code{n}}{an integer of the total number of subjects in the study.}
 
-  \item{\code{nk}}{a vector of the number of measurements for each
-  longitudinal outcome.}
+    \item{\code{nk}}{a vector of the number of measurements for each
+    longitudinal outcome.}
 
   }}
 
@@ -103,6 +103,16 @@ A list with the following components. \describe{
   prior to convergence.}
 
   \item{\code{call}}{the matched call.}
+  
+  \item{\code{inits}}{the initial values passed as an argument in the
+  \code{mjoint} function.}
+  
+  \item{\code{inits.long}}{the computed initial values from fitting a
+  multivariate longitudinal model.}
+
+  \item{\code{inits.surv}}{the computed initial values from fitting a Cox
+  proportional hazards model with time-dependent covariates calculated from
+  the fitted multivariate LME model.}
 
   \item{\code{conv}}{logical: did the MCEM algorithm converge within the
   specified maximum number of iterations?}
@@ -129,25 +139,27 @@ An object returned by the \code{mjoint} function, inheriting
   If \code{pfs=TRUE}, indicating that post-fit statistics are to be returned,
   then the output also includes the following objects. \describe{
 
-  \item{\code{vcov}}{the variance-covariance matrix of model parameters, as
-  approximated by the empirical information matrix, is reported. See
-  \code{\link{mjoint}} for details.}
+    \item{\code{vcov}}{the variance-covariance matrix of model parameters, as
+    approximated by the empirical information matrix, is reported. See
+    \code{\link{mjoint}} for details.}
 
-  \item{\code{SE.approx}}{the square-root of the diagonal of \code{vcov} is
-  returned, which are estimates of the standard errors for the parameters.}
+    \item{\code{SE.approx}}{the square-root of the diagonal of \code{vcov} is
+    returned, which are estimates of the standard errors for the parameters.}
 
-  \item{\code{Eb}}{a matrix with the estimated random effects values for each
-  subject.}
+    \item{\code{Eb}}{a matrix with the estimated random effects values for
+    each subject.}
 
-  \item{\code{Vb}}{an array with the estimated variance-covariance matrices
-  for the random effects values for each subject.}
+    \item{\code{Vb}}{an array with the estimated variance-covariance matrices
+    for the random effects values for each subject.}
 
-  \item{\code{dmats}}{a list of length 3 containing the design matrices, data
-  frames, and vectors used in the MCEM algorithm. These are required for
-  prediction and to calculate the residuals and . The 3 items in the list are
-  \code{l} (longitudinal data), \code{t} (time-to-event data), and \code{z}
-  (design matrices expanded over unique failure times). These are not
-  intended to be extracted by the user.}}
+    \item{\code{dmats}}{a list of length 3 containing the design matrices,
+    data frames, and vectors used in the MCEM algorithm. These are required
+    for prediction and to calculate the residuals and . The 3 items in the
+    list are \code{l} (longitudinal data), \code{t} (time-to-event data), and
+    \code{z} (design matrices expanded over unique failure times). These are
+    not intended to be extracted by the user.}
+    
+ }
 }
 
 \seealso{

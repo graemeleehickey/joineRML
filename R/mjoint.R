@@ -843,6 +843,9 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
     out$dmats <- list(l = l, t = t, z = z)
   }
   out$call <- Call
+  out$inits <- inits
+  out$inits.long <- inits.long
+  out$inits.surv <- inits.surv
   out$conv <- conv
 
   # Time
