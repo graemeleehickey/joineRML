@@ -10,10 +10,10 @@ status](https://github.com/graemeleehickey/joineRML/workflows/R-CMD-check/badge.
 [![AppVeyor Build
 Status](https://ci.appveyor.com/api/projects/status/github/graemeleehickey/joineRML?branch=master&svg=true)](https://ci.appveyor.com/project/graemeleehickey/joineRML)
 <!--[![License](https://img.shields.io/badge/License-GPL%20%28%3E=%203%29-brightgreen.svg)](http://www.gnu.org/licenses/gpl-3.0.html)-->
-[![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/joineRML)](https://CRAN.R-project.org/package=joineRML)
+[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/joineRML)](https://CRAN.R-project.org/package=joineRML)
 [![](http://cranlogs.r-pkg.org/badges/joineRML)](https://CRAN.R-project.org/package=joineRML)
 [![](https://cranlogs.r-pkg.org/badges/grand-total/joineRML)](https://CRAN.R-project.org/package=joineRML)
-[![codecov](https://codecov.io/gh/graemeleehickey/joineRML/branch/master/graph/badge.svg)](https://codecov.io/gh/graemeleehickey/joineRML)
+[![codecov](https://codecov.io/gh/graemeleehickey/joineRML/branch/master/graph/badge.svg)](https://app.codecov.io/gh/graemeleehickey/joineRML)
 [![Research software
 impact](http://depsy.org/api/package/cran/joineRML/badge.svg)](http://depsy.org/package/r/joineRML)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1158231.svg)](https://doi.org/10.5281/zenodo.1158231)
@@ -23,11 +23,11 @@ impact](http://depsy.org/api/package/cran/joineRML/badge.svg)](http://depsy.org/
 models of time-to-event data and multivariate longitudinal data. The
 model fitted in joineRML is an extension of the Wulfsohn and Tsiatis
 (1997) and Henderson et al. (2000) models, which is comprised of
-\((K+1)\)-sub-models: a Cox proportional hazards regression model (Cox,
-1972) and a \(K\)-variate linear mixed-effects model - a direct
-extension of the Laird and Ware (1982) regression model. The model is
-fitted using a Monte Carlo Expectation-Maximization (MCEM) algorithm,
-which closely follows the methodology presented by Lin et al. (2002).
+(*K*+1)-sub-models: a Cox proportional hazards regression model (Cox,
+1972) and a *K*-variate linear mixed-effects model - a direct extension
+of the Laird and Ware (1982) regression model. The model is fitted using
+a Monte Carlo Expectation-Maximization (MCEM) algorithm, which closely
+follows the methodology presented by Lin et al. (2002).
 
 ## Why use joineRML?
 
