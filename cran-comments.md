@@ -1,10 +1,10 @@
 ## Other notes
 
-Minor updates to the package.
+Packages SUGGESTS are now conditionally used per CRAN requirements.
 
 ## Test environments
 
-* local macOS (Catalina) install, R 4.0.2
+* local macOS (Catalina) install, R 4.1.2
 * ubuntu (via GitHub actions, release + devel)
 * macOS (via GitHub actions, release)
 * windows (via appveyor CI, release)

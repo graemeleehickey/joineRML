@@ -14,8 +14,13 @@ vignette: >
 library(Matrix)
 library(nlme)
 library(survival)
-library(joineR)
 library(joineRML)
+
+if (requireNamespace('joineR', quietly = TRUE)) {
+  library('joineR')
+} else {
+  message("'joineR' not available")
+}
 ```
 
 # Introduction
@@ -138,7 +143,7 @@ summary(fit, bootSE = fit.se)
 
 # Univariate joint models: `joineRML` versus `joineR`
 
-There are a growing number of software options for fitting joint models of a single longitudinal outcome and a single time-to-event outcome; what we call here *univariate* joint models. `joineR` (version 1.1.0) is one package available in R for fitting such models, however `joineRML` can fit these models too, since the univariate model is simply a special case of the multivariate model. It is useful to contrast these two packages. There are theoretical and practical implementation differences between the packages beyond just univariate versus multivariate capability:
+There are a growing number of software options for fitting joint models of a single longitudinal outcome and a single time-to-event outcome; what we call here *univariate* joint models. `joineR` (version 1.2.7) is one package available in R for fitting such models, however `joineRML` can fit these models too, since the univariate model is simply a special case of the multivariate model. It is useful to contrast these two packages. There are theoretical and practical implementation differences between the packages beyond just univariate versus multivariate capability:
 
 * `joineR` uses Gauss-Hermite quadrature (with 3 nodes) for numerical integration, whereas `joineRML` uses Monte Carlo integration with an automated selection of sample size.
 
@@ -152,7 +157,11 @@ There are a growing number of software options for fitting joint models of a sin
 
 To fit a univariate model in `joineR` we run the following code for the `hvd` data
 
-```{r joineR, cache=TRUE}
+```{r joineR_require, echo=FALSE, message=FALSE}
+joineR_available <- require(joineR)
+```
+
+```{r joineR, cache=TRUE, eval=joineR_available}
 library(joineR, quietly = TRUE)
 
 hvd.surv <- UniqueVariables(hvd, var.col = c("fuyrs", "status"), id.col = "num")
@@ -188,7 +197,7 @@ summary(fit.joinerml)
 
 In addition to just comparing model parameter estimates, we can also extract the predicted (or posterior) random effects from each model and plot them.
 
-```{r re_comp_plot, fig.width=7.25, fig.height=4}
+```{r re_comp_plot, fig.width=7.25, fig.height=4, joineR_available}
 id <- as.numeric(row.names(fit.joiner$coefficients$random))
 id.ord <- order(id) # joineR rearranges patient ordering during EM fit
 par(mfrow = c(1, 2))
