@@ -6,6 +6,11 @@
 
 using namespace Rcpp;
 
+#ifdef RCPP_USE_GLOBAL_ROSTREAM
+Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
+Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
+#endif
+
 // expWArma
 List expWArma(const Rcpp::List& iz_, const Rcpp::List& b_, const arma::mat& gam, const Rcpp::List& h_);
 RcppExport SEXP _joineRML_expWArma(SEXP iz_SEXP, SEXP b_SEXP, SEXP gamSEXP, SEXP h_SEXP) {

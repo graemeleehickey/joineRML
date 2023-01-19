@@ -197,7 +197,7 @@ summary(fit.joinerml)
 
 In addition to just comparing model parameter estimates, we can also extract the predicted (or posterior) random effects from each model and plot them.
 
-```{r re_comp_plot, fig.width=7.25, fig.height=4, joineR_available}
+```{r re_comp_plot, fig.width=7.25, fig.height=4, eval=joineR_available}
 id <- as.numeric(row.names(fit.joiner$coefficients$random))
 id.ord <- order(id) # joineR rearranges patient ordering during EM fit
 par(mfrow = c(1, 2))
