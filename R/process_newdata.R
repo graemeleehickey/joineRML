@@ -10,7 +10,7 @@ process_newdata <- function(object, newdata, newSurvData = NULL, tobs = NULL) {
   p <- object$dims$p
   q <- object$dims$q
 
-  if (class(newdata) != "list") {
+  if (!isa(newdata, "list")) {
     balanced <- TRUE
     newdata <- list(newdata)
     if (K > 1) {

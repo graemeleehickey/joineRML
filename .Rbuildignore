@@ -15,3 +15,4 @@ inst/image
 ^vignettes/joineRML_cache$
 ^testing\.R$
 ^\.github$
+^CRAN-SUBMISSION$

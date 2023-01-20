@@ -31,7 +31,7 @@
 #' @export
 plotConvergence <- function(object, params = "gamma", discard = FALSE) {
 
-  if (class(object) != "mjoint") {
+  if (!isa(object, "mjoint")) {
     stop("Use only with 'mjoint' model objects.\n")
   }
 

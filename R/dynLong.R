@@ -109,7 +109,7 @@ dynLong <- function(object, newdata, newSurvData = NULL, u = NULL,
   b.inds <- cumsum(c(0, r))
   beta <- object$coefficients$beta
 
-  if (class(newdata) != "list") {
+  if (!isa(newdata, "list")) {
     balanced <- TRUE
     newdata <- list(newdata)
     if (K > 1) {
