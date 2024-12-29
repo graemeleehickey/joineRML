@@ -1,3 +1,17 @@
+# joineRML 0.4.7
+
+## Housekeeping
+
+-   Updated README: badges and MRC logo.
+
+-   Removed CXX11 requirement from Makevars files.
+
+-   Update `plot.ranef.mjoint()` function due to deprecated `aes_string()` call.
+
+-   Fixed deprecated documentation for `joineRML.R`.
+
+-   Updated broken links in `plot.ranef.mjoint.R` and `vcov.mjoint.R`.
+
 # joineRML 0.4.6
 
 ## Housekeeping

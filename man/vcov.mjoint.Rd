@@ -32,9 +32,9 @@ This is a generic function that extracts the variance-covariance
   and Krishnan 2008 for details), so is only approximate.
 }
 \note{
-This function is not to be confused with \code{\link{getVarCov}}, which
-  returns the extracted variance-covariance matrix for the random effects
-  distribution.
+This function is not to be confused with \code{\link[nlme]{getVarCov}},
+  which returns the extracted variance-covariance matrix for the random
+  effects distribution.
 }
 \examples{
 # Fit a classical univariate joint model with a single longitudinal outcome

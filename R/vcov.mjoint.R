@@ -15,9 +15,9 @@
 #'   on the empirical information matrix (see Lin et al. 2002, and McLachlan
 #'   and Krishnan 2008 for details), so is only approximate.
 #'
-#' @note This function is not to be confused with \code{\link{getVarCov}}, which
-#'   returns the extracted variance-covariance matrix for the random effects
-#'   distribution.
+#' @note This function is not to be confused with \code{\link[nlme]{getVarCov}},
+#'   which returns the extracted variance-covariance matrix for the random
+#'   effects distribution.
 #'
 #' @author Graeme L. Hickey (\email{graemeleehickey@@gmail.com})
 #' @keywords methods

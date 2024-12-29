@@ -129,7 +129,7 @@ processes at the current time.}
 \code{\link[base]{tryCatch}} statement to catch errors (e.g. during the
 optimisation progress)? When model fitting throws errors, a new bootstrap
 sample is drawn for the current iteration and the model is re-fit; this
-process continuex until a model fits successfully. Default is \code{FALSE}.}
+process continues until a model fits successfully. Default is \code{FALSE}.}
 
 \item{...}{options passed to the \code{control} argument.}
 }

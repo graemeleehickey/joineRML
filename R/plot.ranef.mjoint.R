@@ -20,8 +20,8 @@
 #' @return an object inheriting from class \code{ggplot}, which displays a
 #'   trellis plot with a separate panel for each effect, showing a dotplot (with
 #'   optional error bars indicating approximate 95\% prediction intervals if the
-#'   argument \code{postVar=TRUE} is set in the call to \code{\link{ranef}}) for
-#'   each subject (by row).
+#'   argument \code{postVar=TRUE} is set in the call to
+#'   \code{\link[nlme]{ranef}}) for each subject (by row).
 #' @import ggplot2
 #' @importFrom utils stack
 #' @export
@@ -64,12 +64,12 @@ plot.ranef.mjoint <- function(x, ...) {
     xstk$xmax <- with(xstk, values + 1.96 * se)
   }
 
-  p <- ggplot(aes_string(x = 'values', y = 'subject'), data = xstk) +
+  p <- ggplot(aes(x = .data$values, y = .data$subject), data = xstk) +
     geom_point() +
     facet_grid(~ ind, scales = "free_x")
 
   if (!is.null(xstk$se)) {
-    p <- p + geom_errorbarh(aes_string(xmin = 'xmin', xmax = 'xmax'),
+    p <- p + geom_errorbarh(aes(xmin = .data$xmin, xmax = .data$xmax),
                             height = 0)
   }
 

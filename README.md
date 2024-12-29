@@ -5,8 +5,7 @@
 
 <!-- badges: start -->
 
-[![R build
-status](https://github.com/graemeleehickey/joineRML/workflows/R-CMD-check/badge.svg)](https://github.com/graemeleehickey/joineRML/actions)
+[![CRAN_Status_Badge](https://www.r-pkg.org/badges/version-last-release/joineRML)](https://cran.r-project.org/package=joineRML)
 [![AppVeyor Build
 Status](https://ci.appveyor.com/api/projects/status/github/graemeleehickey/joineRML?branch=master&svg=true)](https://ci.appveyor.com/project/graemeleehickey/joineRML)
 <!--[![License](https://img.shields.io/badge/License-GPL%20%28%3E=%203%29-brightgreen.svg)](http://www.gnu.org/licenses/gpl-3.0.html)-->
@@ -23,8 +22,8 @@ impact](http://depsy.org/api/package/cran/joineRML/badge.svg)](http://depsy.org/
 models of time-to-event data and multivariate longitudinal data. The
 model fitted in joineRML is an extension of the Wulfsohn and Tsiatis
 (1997) and Henderson et al. (2000) models, which is comprised of
-(*K*+1)-sub-models: a Cox proportional hazards regression model (Cox,
-1972) and a *K*-variate linear mixed-effects model - a direct extension
+$(K+1)$-sub-models: a Cox proportional hazards regression model (Cox,
+1972) and a $K$-variate linear mixed-effects model - a direct extension
 of the Laird and Ware (1982) regression model. The model is fitted using
 a Monte Carlo Expectation-Maximization (MCEM) algorithm, which closely
 follows the methodology presented by Lin et al. (2002).
@@ -102,7 +101,7 @@ vignette('joineRML', package = 'joineRML')
 This project is funded by the [Medical Research
 Council](https://mrc.ukri.org) (Grant number MR/M013227/1).
 
-![](http://www.mrc.ac.uk/mrc/includes/themes/MRC/images/template/desktop/logo.png)
+![](https://www.ukri.org/wp-content/uploads/2022/03/ukri-mrc-square-logo.png)
 
 # Using the latest developmental version
 

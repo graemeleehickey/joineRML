@@ -4,7 +4,7 @@ Packages SUGGESTS are now conditionally used per CRAN requirements.
 
 ## Test environments
 
-* local macOS (Catalina) install, R 4.1.2
+* local macOS (Sonoma 14.6.1) install, R 4.4.2
 * ubuntu (via GitHub actions, release + devel)
 * macOS (via GitHub actions, release)
 * windows (via appveyor CI, release)

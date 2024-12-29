@@ -127,8 +127,4 @@ glance(fit)
 }
 \author{
 Alessandro Gasparini (\email{alessandro.gasparini@ki.se})
-
-Alessandro Gasparini (\email{alessandro.gasparini@ki.se})
-
-Alessandro Gasparini (\email{alessandro.gasparini@ki.se})
 }
