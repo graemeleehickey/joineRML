@@ -1,6 +1,6 @@
 ## Other notes
 
-Packages SUGGESTS are now conditionally used per CRAN requirements.
+Addresses all NOTES from CRAN Package Check Results.
 
 ## Test environments
 
