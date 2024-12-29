@@ -11,10 +11,12 @@ Status](https://ci.appveyor.com/api/projects/status/github/graemeleehickey/joine
 <!--[![License](https://img.shields.io/badge/License-GPL%20%28%3E=%203%29-brightgreen.svg)](http://www.gnu.org/licenses/gpl-3.0.html)-->
 [![](http://cranlogs.r-pkg.org/badges/joineRML)](https://CRAN.R-project.org/package=joineRML)
 [![](https://cranlogs.r-pkg.org/badges/grand-total/joineRML)](https://CRAN.R-project.org/package=joineRML)
-[![codecov](https://codecov.io/gh/graemeleehickey/joineRML/branch/master/graph/badge.svg)](https://app.codecov.io/gh/graemeleehickey/joineRML)
 [![Research software
 impact](http://depsy.org/api/package/cran/joineRML/badge.svg)](http://depsy.org/package/r/joineRML)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1158231.svg)](https://doi.org/10.5281/zenodo.1158231)
+[![R-CMD-check](https://github.com/graemeleehickey/joineRML/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/graemeleehickey/joineRML/actions/workflows/R-CMD-check.yaml)
+[![Codecov test
+coverage](https://codecov.io/gh/graemeleehickey/joineRML/graph/badge.svg)](https://app.codecov.io/gh/graemeleehickey/joineRML)
 <!-- badges: end -->
 
 `joineRML` is an extension of the joineR package for fitting joint
