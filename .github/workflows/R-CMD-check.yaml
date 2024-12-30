@@ -30,17 +30,7 @@ jobs:
       R_KEEP_PKG_SOURCE: yes
 
     steps:
-      - uses: r-lib/actions/checkout@v4
-      - uses: r-lib/actions/setup-tinytex@v2
-      - run: tlmgr --version
-      
-      - name: Install LaTeX packages
-      - run: |
-          tlmgr update --self
-          tlmgr install ae amsmath amsfonts grfext setspace enumitem hyperref biblatex
-          tlmgr list --only-installed
-    
-      - uses: r-lib/actions/checkout@v4
+      - uses: actions/checkout@v4
           
       - uses: r-lib/actions/setup-pandoc@v2
 
@@ -55,6 +45,15 @@ jobs:
           extra-packages: any::rcmdcheck
           needs: check
 
+      - uses: r-lib/actions/setup-tinytex@v2
+      - run: tlmgr --version
+      
+      - name: Install LaTeX packages
+      - run: |
+          tlmgr update --self
+          tlmgr install ae amsmath amsfonts grfext setspace enumitem hyperref biblatex
+          tlmgr list --only-installed
+          
       - uses: r-lib/actions/check-r-package@v2
         with:
           upload-snapshots: true
