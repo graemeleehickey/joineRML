@@ -30,7 +30,7 @@ jobs:
       R_KEEP_PKG_SOURCE: yes
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: r-lib/actions/checkout@v4
       - uses: r-lib/actions/setup-tinytex@v2
       - run: tlmgr --version
       
