@@ -39,7 +39,7 @@ jobs:
       - name: Install additional LaTeX packages
         run: |
           tlmgr update --self
-          tlmgr install titlesec
+          tlmgr install ae amsmath amsfonts grfext setspace enumitem hyperref biblatex
           tlmgr list --only-installed
 
       - uses: r-lib/actions/setup-pandoc@v2
