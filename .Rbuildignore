@@ -16,3 +16,4 @@ inst/image
 ^testing\.R$
 ^\.github$
 ^CRAN-SUBMISSION$
+revdep

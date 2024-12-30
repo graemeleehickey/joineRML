@@ -82,7 +82,7 @@ vignette('joineRML', package = 'joineRML')
 
 This project is funded by the [Medical Research Council](https://mrc.ukri.org) (Grant number MR/M013227/1).
 
-![](https://www.ukri.org/wp-content/uploads/2022/03/ukri-mrc-square-logo.png)
+![](https://www.ukri.org/wp-content/themes/ukri/assets/img/ukri-mrc-standard-logo.png)
 
 # Using the latest developmental version
 

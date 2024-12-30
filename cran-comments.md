@@ -9,14 +9,17 @@ Addresses all NOTES from CRAN Package Check Results.
 * macOS (via GitHub actions, release)
 * windows (via appveyor CI, release)
 * windows (via GitHub actions, release)
-* windows (via win-builder, release + devel)
+* windows (via win-builder, old + release + devel)
 
 ## R CMD check results
 
 0 errors | 0 warnings | 1 notes
 
-NOTE: "checking CRAN incoming feasibility ... NOTE"
+Win-Builder NOTE: "checking CRAN incoming feasibility ... NOTE"
 
 ## Reverse dependencies
 
-There are no reverse dependencies.
+We checked 3 reverse dependencies, comparing R CMD check results across CRAN and dev versions of this package.
+
+ * We saw 0 new problems
+ * We failed to check 0 packages

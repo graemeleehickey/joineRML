@@ -12,6 +12,10 @@
 
 -   Updated broken links in `plot.ranef.mjoint.R` and `vcov.mjoint.R`.
 
+-   Updated GitHub actions workflows.
+
+-   Ran reverse dependency checks using `revdepcheck` package.
+
 # joineRML 0.4.6
 
 ## Housekeeping
