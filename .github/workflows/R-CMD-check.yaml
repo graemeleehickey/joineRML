@@ -31,7 +31,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-
       - uses: r-lib/actions/setup-tinytex@v2
       - run: tlmgr --version
       - name: Install additional LaTeX packages
@@ -39,6 +38,9 @@ jobs:
           tlmgr update --self
           tlmgr install ae amsmath amsfonts grfext setspace enumitem hyperref biblatex
           tlmgr list --only-installed
+    
+    steps:
+      - uses: actions/checkout@v4
           
       - uses: r-lib/actions/setup-pandoc@v2
 
