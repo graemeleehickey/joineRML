@@ -16,6 +16,8 @@
 
 -   Ran reverse dependency checks using `revdepcheck` package.
 
+-   Updated CITATION file due to deprecated function and typo.
+
 # joineRML 0.4.6
 
 ## Housekeeping
