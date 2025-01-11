@@ -19,6 +19,7 @@ graphical examination of convergence over MCEM iteration.}
 Plot diagnostics from an \code{mjoint} object.
 }
 \examples{
+\dontrun{
 # Fit a classical univariate joint model with a single longitudinal outcome
 # and a single time-to-event outcome
 
@@ -35,6 +36,7 @@ fit1 <- mjoint(formLongFixed = log.lvmi ~ time + age,
 
 plot(fit1, param = "beta")  # LMM fixed effect parameters
 plot(fit1, param = "gamma") # event model parameters
+}
 
 \dontrun{
 # Fit a joint model with bivariate longitudinal outcomes

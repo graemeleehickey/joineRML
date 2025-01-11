@@ -25,6 +25,7 @@ A named vector of length equal to the number of sub-model
 Extract fixed effects estimates from an \code{mjoint} object.
 }
 \examples{
+\dontrun{
 # Fit a classical univariate joint model with a single longitudinal outcome
 # and a single time-to-event outcome
 
@@ -41,6 +42,7 @@ fit1 <- mjoint(formLongFixed = log.lvmi ~ time + age,
 
 fixef(fit1, process = "Longitudinal")
 fixef(fit1, process = "Event")
+}
 
 \dontrun{
 # Fit a joint model with bivariate longitudinal outcomes

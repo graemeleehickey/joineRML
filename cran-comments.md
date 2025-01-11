@@ -1,6 +1,7 @@
 ## Other notes
 
-Addresses all NOTES from CRAN Package Check Results.
+* Addresses all NOTES from CRAN Package Check Results.
+* I have stopped several examples from running in order to avoid the NOTE on the Debian system. I cannot reproduce these, but am happy to wrap in `\dontrun{}` blocks.
 
 ## Test environments
 
@@ -13,9 +14,11 @@ Addresses all NOTES from CRAN Package Check Results.
 
 ## R CMD check results
 
-0 errors | 0 warnings | 1 notes
+0 errors | 0 warnings | 2 notes
 
 Win-Builder NOTE: "checking CRAN incoming feasibility ... NOTE"
+
+Debian NOTE: "Re-building vignettes had CPU time 5.5 times elapsed time" -- I cannot reproduce this. It passes every other platform. I suspect the qpdf compression tool is the cause, but that was requested by CMD tests.
 
 ## Reverse dependencies
 

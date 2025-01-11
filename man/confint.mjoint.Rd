@@ -41,6 +41,7 @@ This function computes confidence intervals for one or more
   parameters in a fitted \code{mjoint} object.
 }
 \examples{
+\dontrun{
 # Fit a classical univariate joint model with a single longitudinal outcome
 # and a single time-to-event outcome
 
@@ -63,6 +64,7 @@ fit1 <- mjoint(formLongFixed = log.lvmi ~ time + age,
     control = list(nMCscale = 2, burnin = 5)) # controls for illustration only
 
 confint(fit1, parm = "Longitudinal")
+}
 
 \dontrun{
 # Fit a joint model with bivariate longitudinal outcomes

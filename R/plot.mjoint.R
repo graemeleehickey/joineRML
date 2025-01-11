@@ -16,6 +16,7 @@
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' # Fit a classical univariate joint model with a single longitudinal outcome
 #' # and a single time-to-event outcome
 #'
@@ -32,6 +33,7 @@
 #'
 #' plot(fit1, param = "beta")  # LMM fixed effect parameters
 #' plot(fit1, param = "gamma") # event model parameters
+#' }
 #'
 #' \dontrun{
 #' # Fit a joint model with bivariate longitudinal outcomes

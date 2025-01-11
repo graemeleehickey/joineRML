@@ -18,6 +18,8 @@
 
 -   Updated CITATION file due to deprecated function and typo.
 
+-   Wrapped a bunch of examples from being run on CRAN submission to avoid Debian system NOTE.
+
 # joineRML 0.4.6
 
 ## Housekeeping
