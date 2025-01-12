@@ -20,6 +20,8 @@
 
 -   Wrapped a bunch of examples from being run on CRAN submission to avoid Debian system NOTE.
 
+-   Reduced computational time for vignettes to to avoid Debian system NOTE on CRAN submission.
+
 # joineRML 0.4.6
 
 ## Housekeeping

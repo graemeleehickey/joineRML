@@ -55,7 +55,7 @@ Further to that, we only select the first 50 individuals to speed up these examp
 hvd <- hvd[hvd$num <= 50, ]
 ```
 
-```{r hvd_model_fit}
+```{r hvd_model_fit, cache = TRUE}
 set.seed(12345)
 fit <- mjoint(
   formLongFixed = list(
