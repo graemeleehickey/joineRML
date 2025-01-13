@@ -20,7 +20,9 @@
 
 -   Wrapped a bunch of examples from being run on CRAN submission to avoid Debian system NOTE.
 
--   Reduced computational time for vignettes to to avoid Debian system NOTE on CRAN submission.
+-   Reduced computational time for vignettes to to try and avoid Debian system NOTE on CRAN submission.
+
+-   Add R-hub workflow to enable checks for platforms not covered already.
 
 # joineRML 0.4.6
 
