@@ -24,6 +24,8 @@
 
 -   Add R-hub workflow to enable checks for platforms not covered already.
 
+-   Vignettes now force `Sys.setenv("OMP_THREAD_LIMIT" = 2)` to get around CRAN CMD changes.
+
 # joineRML 0.4.6
 
 ## Housekeeping

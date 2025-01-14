@@ -12,7 +12,7 @@ bootSE(
   verbose = FALSE,
   control = list(),
   progress = TRUE,
-  ncores = 1,
+  ncores = 1L,
   safe.boot = FALSE,
   ...
 )

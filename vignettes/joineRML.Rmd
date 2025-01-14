@@ -9,7 +9,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r, echo = FALSE, message = FALSE}
+```{r, echo=FALSE, message=FALSE}
 #knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
 library(Matrix)
 library(nlme)
@@ -21,6 +21,8 @@ if (requireNamespace('joineR', quietly = TRUE)) {
 } else {
   message("'joineR' not available")
 }
+
+Sys.setenv("OMP_THREAD_LIMIT" = 2)
 ```
 
 # Introduction

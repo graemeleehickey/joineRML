@@ -11,14 +11,16 @@ editor_options:
   chunk_output_type: console
 ---
 
-```{r load-joineRML, include = FALSE}
+```{r load-joineRML, include=FALSE}
 library(joineRML)
 library(knitr)
+Sys.setenv("OMP_THREAD_LIMIT" = 2)
 ```
 
 # Introduction
 
 Tidiers for objects of class `mjoint` have been included in latest release of `joineRML` package (0.4.5).
+
 The purpose of these tidiers are described in the introductory vignette to `broom`:
 
 > The broom package takes the messy output of built-in functions in R, such as `lm`, `nls`, or `t.test`, and turns them into tidy data frames.
@@ -37,7 +39,7 @@ These methods are specifically useful when plotting results of a joint model or 
 
 We use the sample example from the introductory vignette to `joineRML` using the heart valve data.
 
-```{r vignette, eval = FALSE}
+```{r vignette, eval=FALSE}
 vignette("joineRML", package = "joineRML")
 help("heart.valve", package = "joineRML")
 ```
@@ -55,7 +57,7 @@ Further to that, we only select the first 50 individuals to speed up these examp
 hvd <- hvd[hvd$num <= 50, ]
 ```
 
-```{r hvd_model_fit, cache = TRUE}
+```{r hvd_model_fit, cache=TRUE}
 set.seed(12345)
 fit <- mjoint(
   formLongFixed = list(
@@ -95,7 +97,7 @@ tidy(fit, ci = TRUE, conf.level = 0.99)
 
 The standard errors reported by default are based on the empirical information matrix, as in `mjoint`. It is of course possible to use bootstrapped standard errors as follows:
 
-```{r tidy-boot, eval = FALSE}
+```{r tidy-boot, eval=FALSE}
 bSE <- bootSE(fit, nboot = 100, safe.boot = TRUE, progress = FALSE)
 tidy(fit, boot_se = bSE, conf.int = TRUE)
 ```
@@ -104,7 +106,7 @@ The results of this example are not included as it would take too long to run fo
 
 The `tidy` method is useful for custom plotting (e.g. forest plots) of results from `joineRML` models, all in a tidy framework:
 
-```{r tidy-plotting, fig.height = 5, fig.width = 5, fig.align = "center"}
+```{r tidy-plotting, fig.height=5, fig.width=5, fig.align="center"}
 library(ggplot2)
 out <- tidy(fit, conf.int = TRUE)
 ggplot(out, aes(x = term, y = estimate, ymin = conf.low, ymax = conf.high)) +

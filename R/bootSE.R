@@ -89,7 +89,7 @@
 #' }
 bootSE <- function(object, nboot = 100, ci = 0.95, use.mle = TRUE,
                    verbose = FALSE, control = list(), progress = TRUE,
-                   ncores = 1, safe.boot = FALSE, ...) {
+                   ncores = 1L, safe.boot = FALSE, ...) {
 
   if (!inherits(object, "mjoint")) {
     stop("Use only with 'mjoint' model objects.\n")
@@ -168,7 +168,7 @@ bootSE <- function(object, nboot = 100, ci = 0.95, use.mle = TRUE,
       }
     }
 
-  if (ncores > 1) {
+  if (ncores >= 1L) {
     ncores.max <- parallel::detectCores()
     if (ncores > ncores.max) {
       ncores <- ncores.max
@@ -185,6 +185,7 @@ bootSE <- function(object, nboot = 100, ci = 0.95, use.mle = TRUE,
     }
     registerDoSEQ()
   } else {
+    doParallel::registerDoParallel(cores = ncores)
     # *** Serial version (incl. progress bar) ***
     out <- list()
     conv.status <- vector(length = nboot)

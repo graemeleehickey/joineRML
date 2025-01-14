@@ -44,7 +44,8 @@
 #' # Extract the survival fixed effects with confidence intervals
 #' tidy(fit, ci = TRUE)
 #'
-#' # Extract the survival fixed effects with confidence intervals based on bootstrapped standard errors
+#' # Extract the survival fixed effects with confidence intervals based on 
+#' # bootstrapped standard errors
 #' bSE <- bootSE(fit, nboot = 5, safe.boot = TRUE)
 #' tidy(fit, bootSE = bSE, ci = TRUE)
 #'
@@ -81,8 +82,15 @@
 #'   \code{estimate}, if required}.
 #'
 #' @export
-tidy.mjoint <- function(x, component = "survival", bootSE = NULL, conf.int = FALSE, conf.level = 0.95, ...) {
+tidy.mjoint <- function(x, 
+                        component = "survival", 
+                        bootSE = NULL, 
+                        conf.int = FALSE, 
+                        conf.level = 0.95, 
+                        ...) {
+  
   component <- match.arg(component, c("survival", "longitudinal"))
+  
   if (!is.null(bootSE)) {
     if (!inherits(x = bootSE, what = "bootSE")) stop("'bootSE' object not of class 'bootSE'")
   }
@@ -121,6 +129,7 @@ tidy.mjoint <- function(x, component = "survival", bootSE = NULL, conf.int = FAL
 
   # return tidy object
   return(out)
+  
 }
 
 
@@ -148,6 +157,7 @@ tidy.mjoint <- function(x, component = "survival", bootSE = NULL, conf.int = FAL
 #'
 #' @export
 augment.mjoint <- function(x, data = x$data, ...) {
+ 
   # checks on 'data'
   if (is.null(data)) {
     stop("It was not possible to extract 'data' from 'x'. Please provide 'data' manually.")
@@ -164,6 +174,7 @@ augment.mjoint <- function(x, data = x$data, ...) {
   fit0 <- fitted(x, level = 0)
   names(fit0) <- paste0(".fitted_", names(fit0), "_0")
   fit0 <- do.call(cbind.data.frame, fit0)
+  
   fit1 <- fitted(x, level = 1)
   names(fit1) <- paste0(".fitted_", names(fit1), "_1")
   fit1 <- do.call(cbind.data.frame, fit1)
@@ -180,6 +191,7 @@ augment.mjoint <- function(x, data = x$data, ...) {
   out <- cbind(data, fit0, fit1, res0, res1)
   out <- tibble::as_tibble(out)
   return(out)
+  
 }
 
 
@@ -197,6 +209,7 @@ augment.mjoint <- function(x, data = x$data, ...) {
 #'
 #' @export
 glance.mjoint <- function(x, ...) {
+  
   smr <- summary(x)
   out <- data.frame(t(smr$sigma))
   out$AIC <- smr$AIC
@@ -205,4 +218,5 @@ glance.mjoint <- function(x, ...) {
   rownames(out) <- NULL
   out <- tibble::as_tibble(out)
   return(out)
+  
 }
