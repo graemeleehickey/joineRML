@@ -61,7 +61,7 @@
 #'
 #' @return An object of class \code{bootSE}.
 #' @import foreach
-#' @importFrom parallel detectCores
+#' @importFrom parallel detectCores makeCluster
 #' @importFrom doParallel registerDoParallel
 #' @export
 #'
@@ -177,7 +177,8 @@ bootSE <- function(object, nboot = 100, ci = 0.95, use.mle = TRUE,
         ncores.max))
     }
     # *** Parallel version ***
-    doParallel::registerDoParallel(cores = ncores)
+    cl <- parallel::makeCluster(ncores)
+    doParallel::registerDoParallel(cl)
     out <- foreach(b = 1:nboot, .packages = 'joineRML') %dopar% {
       fit.boot <- bootfun()
       return(list("coefs" = fit.boot$coefficient,
@@ -185,7 +186,6 @@ bootSE <- function(object, nboot = 100, ci = 0.95, use.mle = TRUE,
     }
     registerDoSEQ()
   } else {
-    doParallel::registerDoParallel(cores = ncores)
     # *** Serial version (incl. progress bar) ***
     out <- list()
     conv.status <- vector(length = nboot)
