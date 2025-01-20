@@ -13,7 +13,7 @@
 
 ## R CMD check results
 
-0 errors | 0 warnings | 2 notes
+0 errors | 0 warnings | 1 notes
 
 Win-Builder NOTE: "checking CRAN incoming feasibility ... NOTE"
 

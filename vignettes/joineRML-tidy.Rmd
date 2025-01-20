@@ -17,6 +17,7 @@ library(knitr)
 Sys.setenv("OMP_THREAD_LIMIT" = 1)
 Sys.setenv("OMP_NUM_THREADS" = 1)
 options(Ncpus = 1)
+options(cores = 2)
 ```
 
 # Introduction
@@ -41,7 +42,7 @@ These methods are specifically useful when plotting results of a joint model or 
 
 We use the sample example from the introductory vignette to `joineRML` using the heart valve data.
 
-```{r vignette, eval=FALSE}
+```{r vignette, eval=FALSE, purl=FALSE}
 vignette("joineRML", package = "joineRML")
 help("heart.valve", package = "joineRML")
 ```
@@ -99,7 +100,7 @@ tidy(fit, ci = TRUE, conf.level = 0.99)
 
 The standard errors reported by default are based on the empirical information matrix, as in `mjoint`. It is of course possible to use bootstrapped standard errors as follows:
 
-```{r tidy-boot, eval=FALSE}
+```{r tidy-boot, eval=FALSE, purl=FALSE}
 bSE <- bootSE(fit, nboot = 100, safe.boot = TRUE, progress = FALSE)
 tidy(fit, boot_se = bSE, conf.int = TRUE)
 ```
@@ -177,6 +178,6 @@ glance(fit2)
 
 Several examples of how to use `broom` including more details are available on its introductory vignette:
 
-```{r vignette-broom, eval = FALSE}
+```{r vignette-broom, eval=FALSE, purl=FALSE}
 vignette(topic = "broom", package = "broom")
 ```

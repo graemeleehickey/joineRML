@@ -25,13 +25,14 @@ if (requireNamespace('joineR', quietly = TRUE)) {
 Sys.setenv("OMP_THREAD_LIMIT" = 1)
 Sys.setenv("OMP_NUM_THREADS" = 1)
 options(Ncpus = 1)
+options(cores = 2)
 ```
 
 # Introduction
 
 The `joineRML` package implements methods for analyzing data from *multiple* longitudinal studies in which the responses from each subject consists of time-sequences of repeated measurements and a possibly censored time-to-event outcome. The modelling framework for the repeated measurements is the multivariate linear mixed effects model. The model for the time-to-event outcome is a Cox proportional hazards model with log-Gaussian frailty. Stochastic dependence is captured by allowing the Gaussian random effects of the linear model to be correlated with the frailty term of the Cox proportional hazards model. For full details of the model, please consult the technical vignette by running
 
-```{r vignette, eval=FALSE}
+```{r vignette, eval=FALSE, purl=FALSE}
 vignette("technical", package = "joineRML")
 ```
 
@@ -41,7 +42,7 @@ vignette("technical", package = "joineRML")
 
 The simplest way to explain the concepts of the package is through an example. `joineRML` comes with the data set `heart.valve`. Details of this data can be found in the help file by running the command
 
-```{r heart.valve_help, eval=FALSE}
+```{r heart.valve_help, eval=FALSE, purl=FALSE}
 help("heart.valve", package = "joineRML")
 ```
 
@@ -133,7 +134,7 @@ plot(fit, params = "beta")
 
 Once an `mjoint` model has converged, and assuming the `pfs` argument is `TRUE` (default), then approximated standard errors are calculated based on the empirical information matrix of the profile likelihood at the maximizer. Theoretically, these standard errors will be underestimated (see the technical vignette). In principle, residual Monte Carlo error will oppose this through an increase in uncertainty.
 
-```{r hvd_model_boot, eval=FALSE}
+```{r hvd_model_boot, eval=FALSE, purl=FALSE}
 fit.se <- bootSE(fit, nboot = 100)
 ```
 
@@ -141,13 +142,13 @@ Bootstrapping is a computationally intensive method, possibly taking many hours 
 
 We can call the `bootSE` object to interrogate it
 
-```{r hvd_model_boot_print, eval=FALSE}
+```{r hvd_model_boot_print, eval=FALSE, purl=FALSE}
 fit.se
 ```
 
 or alternatively re-run the `summary` command, passing the additional argument of `bootSE = fit.se`
 
-```{r hvd_model_boot_summary, eval=FALSE}
+```{r hvd_model_boot_summary, eval=FALSE, purl=FALSE}
 summary(fit, bootSE = fit.se)
 ```
 
@@ -171,7 +172,7 @@ To fit a univariate model in `joineR` we run the following code for the `hvd` da
 joineR_available <- require(joineR)
 ```
 
-```{r joineR, cache=TRUE, eval=joineR_available}
+```{r joineR, cache=TRUE, eval=joineR_available, purl=joineR_available}
 library(joineR, quietly = TRUE)
 
 hvd.surv <- UniqueVariables(hvd, var.col = c("fuyrs", "status"), id.col = "num")
@@ -207,7 +208,7 @@ summary(fit.joinerml)
 
 In addition to just comparing model parameter estimates, we can also extract the predicted (or posterior) random effects from each model and plot them.
 
-```{r re_comp_plot, fig.width=7.25, fig.height=4, eval=joineR_available}
+```{r re_comp_plot, fig.width=7.25, fig.height=4, eval=joineR_available, purl=joineR_available}
 id <- as.numeric(row.names(fit.joiner$coefficients$random))
 id.ord <- order(id) # joineR rearranges patient ordering during EM fit
 par(mfrow = c(1, 2))
