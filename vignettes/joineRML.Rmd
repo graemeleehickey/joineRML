@@ -10,7 +10,7 @@ vignette: >
 ---
 
 ```{r, echo=FALSE, message=FALSE}
-#knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
 library(Matrix)
 library(nlme)
 library(survival)
@@ -24,8 +24,9 @@ if (requireNamespace('joineR', quietly = TRUE)) {
 
 Sys.setenv("OMP_THREAD_LIMIT" = 1)
 Sys.setenv("OMP_NUM_THREADS" = 1)
+Sys.setenv("OPENBLAS_NUM_THREADS" = 1)
+Sys.setenv("ARMA_OPENMP_THREADS" = 1)
 options(Ncpus = 1)
-options(cores = 2)
 ```
 
 # Introduction
@@ -135,7 +136,9 @@ plot(fit, params = "beta")
 Once an `mjoint` model has converged, and assuming the `pfs` argument is `TRUE` (default), then approximated standard errors are calculated based on the empirical information matrix of the profile likelihood at the maximizer. Theoretically, these standard errors will be underestimated (see the technical vignette). In principle, residual Monte Carlo error will oppose this through an increase in uncertainty.
 
 ```{r hvd_model_boot, eval=FALSE, purl=FALSE}
-fit.se <- bootSE(fit, nboot = 100)
+fit.se <- bootSE(fit,
+                 nboot = 100,
+                 ncores = 1L)
 ```
 
 Bootstrapping is a computationally intensive method, possibly taking many hours to fit. For this reason, one can relax the control parameter constraints on the optimization algorithm for each bootstrap model; however, this will be at the possible expense of inflated standard errors due to Monte Carlo error.

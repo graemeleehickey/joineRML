@@ -7,17 +7,17 @@ vignette: >
   %\VignetteIndexEntry{joineRML and the broom package}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
-editor_options: 
-  chunk_output_type: console
 ---
 
 ```{r load-joineRML, include=FALSE}
 library(joineRML)
 library(knitr)
+
 Sys.setenv("OMP_THREAD_LIMIT" = 1)
 Sys.setenv("OMP_NUM_THREADS" = 1)
+Sys.setenv("OPENBLAS_NUM_THREADS" = 1)
+Sys.setenv("ARMA_OPENMP_THREADS" = 1)
 options(Ncpus = 1)
-options(cores = 2)
 ```
 
 # Introduction
@@ -101,7 +101,11 @@ tidy(fit, ci = TRUE, conf.level = 0.99)
 The standard errors reported by default are based on the empirical information matrix, as in `mjoint`. It is of course possible to use bootstrapped standard errors as follows:
 
 ```{r tidy-boot, eval=FALSE, purl=FALSE}
-bSE <- bootSE(fit, nboot = 100, safe.boot = TRUE, progress = FALSE)
+bSE <- bootSE(fit, 
+              nboot = 100, 
+              safe.boot = TRUE, 
+              progress = FALSE,
+              ncores = 1L)
 tidy(fit, boot_se = bSE, conf.int = TRUE)
 ```
 
