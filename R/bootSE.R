@@ -61,7 +61,7 @@
 #'
 #' @return An object of class \code{bootSE}.
 #' @import foreach
-#' @importFrom parallel detectCores makeCluster
+#' @importFrom parallel detectCores makeCluster stopCluster
 #' @importFrom doParallel registerDoParallel
 #' @export
 #'
@@ -184,7 +184,7 @@ bootSE <- function(object, nboot = 100, ci = 0.95, use.mle = TRUE,
       return(list("coefs" = fit.boot$coefficient,
                   "conv" = fit.boot$conv))
     }
-    registerDoSEQ()
+    stopCluster()
   } else {
     # *** Serial version (incl. progress bar) ***
     out <- list()
