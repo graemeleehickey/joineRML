@@ -184,7 +184,7 @@ bootSE <- function(object, nboot = 100, ci = 0.95, use.mle = TRUE,
       return(list("coefs" = fit.boot$coefficient,
                   "conv" = fit.boot$conv))
     }
-    stopCluster()
+    parallel::stopCluster(cl)
   } else {
     # *** Serial version (incl. progress bar) ***
     out <- list()
