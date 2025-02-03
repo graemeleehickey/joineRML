@@ -15,6 +15,7 @@
 #'   
 #' @useDynLib joineRML, .registration = TRUE
 #' @importFrom Rcpp evalCpp
+#' @importFrom RcppArmadillo armadillo_throttle_cores armadillo_reset_cores
 #'
 #' @references
 #' Wulfsohn MS, Tsiatis AA. A joint model for survival and longitudinal data

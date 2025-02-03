@@ -24,6 +24,10 @@
 
 -   Add R-hub workflow to enable checks for platforms not covered already.
 
+-   Imported `RcppArmadillo` functions `armadillo_throttle_cores` and `armadillo_reset_cores` to try and prevent CRAN R CMD checks using multiple threads.
+
+-   Updated Makevars (now Makevars.in) and Makevars.win as part of previous update.
+
 # joineRML 0.4.6
 
 ## Housekeeping

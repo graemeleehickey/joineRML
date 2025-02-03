@@ -125,3 +125,19 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+
+static const R_CallMethodDef CallEntries[] = {
+    {"_joineRML_expWArma", (DL_FUNC) &_joineRML_expWArma, 4},
+    {"_joineRML_gammaUpdate", (DL_FUNC) &_joineRML_gammaUpdate, 11},
+    {"_joineRML_hazHat", (DL_FUNC) &_joineRML_hazHat, 3},
+    {"_joineRML_gammaUpdate_approx", (DL_FUNC) &_joineRML_gammaUpdate_approx, 10},
+    {"_joineRML_lambdaUpdate", (DL_FUNC) &_joineRML_lambdaUpdate, 10},
+    {"_joineRML_mvrnormArma", (DL_FUNC) &_joineRML_mvrnormArma, 3},
+    {"_joineRML_bSim", (DL_FUNC) &_joineRML_bSim, 3},
+    {NULL, NULL, 0}
+};
+
+RcppExport void R_init_joineRML(DllInfo *dll) {
+    R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
+    R_useDynamicSymbols(dll, FALSE);
+}

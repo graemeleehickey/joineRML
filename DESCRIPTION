@@ -60,6 +60,7 @@ Imports:
     parallel,
     randtoolbox,
     Rcpp (>= 0.12.7),
+    RcppArmadillo,
     stats,
     tibble,
     utils

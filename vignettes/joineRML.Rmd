@@ -10,6 +10,16 @@ vignette: >
 ---
 
 ```{r, echo=FALSE, message=FALSE}
+library(RcppArmadillo)
+RcppArmadillo::armadillo_throttle_cores(n = 2)
+
+Sys.setenv(OMP_THREAD_LIMIT = 1)
+Sys.setenv(OMP_NUM_THREADS = 1)
+Sys.setenv(OPENBLAS_NUM_THREADS = 1)
+Sys.setenv(ARMA_OPENMP_THREADS = 1)
+Sys.setenv(R_INSTALL_NCPUS = 1)
+options(Ncpus = 1)
+
 knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
 library(Matrix)
 library(nlme)
@@ -21,12 +31,6 @@ if (requireNamespace('joineR', quietly = TRUE)) {
 } else {
   message("'joineR' not available")
 }
-
-Sys.setenv("OMP_THREAD_LIMIT" = 1)
-Sys.setenv("OMP_NUM_THREADS" = 1)
-Sys.setenv("OPENBLAS_NUM_THREADS" = 1)
-Sys.setenv("ARMA_OPENMP_THREADS" = 1)
-options(Ncpus = 1)
 ```
 
 # Introduction
@@ -92,7 +96,7 @@ The main function in the `joineRML` package is the `mjoint()` function. Its main
 
 We can fit a bivariate joint model to the log-transformed valve gradient and LVMI indices in the `hvd` subset using
 
-```{r hvd_model_fit, cache=TRUE}
+```{r hvd_model_fit}
 set.seed(12345)
 fit <- mjoint(
   formLongFixed = list("grad" = log.grad ~ time + sex + hs, 
@@ -175,7 +179,7 @@ To fit a univariate model in `joineR` we run the following code for the `hvd` da
 joineR_available <- require(joineR)
 ```
 
-```{r joineR, cache=TRUE, eval=joineR_available, purl=joineR_available}
+```{r joineR, eval=joineR_available, purl=joineR_available}
 library(joineR, quietly = TRUE)
 
 hvd.surv <- UniqueVariables(hvd, var.col = c("fuyrs", "status"), id.col = "num")
@@ -198,7 +202,7 @@ summary(fit.joiner)
 
 To fit a univariate model in `joineRML` we run the following code for the `hvd` data
 
-```{r joineRML, cache=TRUE}
+```{r joineRML}
 set.seed(123)
 fit.joinerml <- mjoint(formLongFixed = log.lvmi ~ time + age,
                        formLongRandom = ~ time | num,
@@ -225,4 +229,8 @@ plot(fit.joiner$coefficients$random[id.ord, 2], ranef(fit.joinerml)[, 2],
      xlab = "joineR", ylab = "joineRML")
 grid()
 abline(a = 0, b = 1, col = 2, lty = "dashed")
+```
+
+```{r, echo=FALSE, message=FALSE}
+RcppArmadillo::armadillo_reset_cores()
 ```
