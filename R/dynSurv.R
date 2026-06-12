@@ -87,7 +87,7 @@
 #'   non-central \emph{t}-distribution proposal distributions with
 #'   non-centrality parameter \eqn{\hat{b}} from the first-order prediction and
 #'   variance-covariance matrix equal to \code{scale} \eqn{\times} the inverse
-#'   of the negative Hessian of the posterior distribution. The choice os
+#'   of the negative Hessian of the posterior distribution. The choice of
 #'   \code{scale} can be used to tune the acceptance rate of the
 #'   Metropolis-Hastings sampler. This simulation algorithm is iterated \code{M}
 #'   times, at each time calculating the conditional survival probability.
@@ -201,7 +201,7 @@ dynSurv <- function(object, newdata, newSurvData = NULL, u = NULL, horizon = NUL
 
     # Predicted survival at times u
     S.u <- vector(length = length(u))
-    for (i in 1:length(u)) {
+    for (i in seq_along(u)) {
       data.u <- process_newdata(newdata = newdata,
                                 object = object,
                                 tobs = u[i],
@@ -238,7 +238,7 @@ dynSurv <- function(object, newdata, newSurvData = NULL, u = NULL, horizon = NUL
     sigma.prop <- -solve(b.hat$hessian) * scale
     accept <- 0
     surv <- matrix(nrow = length(u), ncol = M)
-    for (m in 1:M) {
+    for (m in seq_len(M)) {
       # Step 1: draw theta
       theta.samp <- thetaDraw(object)
       # Step 2: Metropolis-Hastings simulation
@@ -248,7 +248,7 @@ dynSurv <- function(object, newdata, newSurvData = NULL, u = NULL, horizon = NUL
       # Step 3: predicted survival
       S.t <- S(b = b.curr, data = data.t, theta = theta.samp)
       S.u <- vector(length = length(u))
-      for (i in 1:length(u)) {
+      for (i in seq_along(u)) {
         data.u <- process_newdata(newdata = newdata,
                                   object = object,
                                   tobs = u[i],

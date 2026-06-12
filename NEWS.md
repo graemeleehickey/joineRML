@@ -1,3 +1,41 @@
+# joineRML 0.4.7.9000
+
+## Bug fixes
+
+-   `bootSE()` parallel branch condition was `ncores >= 1L` (always `TRUE`), making the serial code path with the progress bar unreachable. Corrected to `ncores > 1L`.
+
+-   `mjoint()` now throttles the number of threads used by `RcppArmadillo` during the MCEM algorithm (restored on exit), so the previously imported `armadillo_throttle_cores()` and `armadillo_reset_cores()` functions are actually invoked.
+
+-   `simData()` now uses `drop = FALSE` when subsetting the random effects matrices in the Gompertz (`model = "intslope"`) survival-time calculation, preventing a latent dimension-dropping error when only a single subject remains in the branch.
+
+-   Internal initial-value calculation for the survival sub-model (`initsSurv()`) no longer relies on a leaked loop variable when indexing `timeVar`; it now uses the (outcome-invariant) first time variable explicitly in the balanced-data case.
+
+## Housekeeping
+
+-   Bumped the minimum R version to 4.1.0.
+
+-   Added `.posit` to `.Rbuildignore` so local Positron metadata is not included in package builds.
+
+-   Migrated the test suite to the testthat 3rd edition (added `Config/testthat/edition: 3` and `testthat (>= 3.0.0)`), removing deprecated `context()` calls, replacing `expect_is()` and `is.ggplot()` with `expect_s3_class()`, `expect_type()`, and base class checks, and narrowing the unmatched-`inits` warning test to assert the intended warning only.
+
+-   `plot.ranef.mjoint()` now uses `geom_errorbar(orientation = "y")` instead of deprecated `geom_errorbarh()`, eliminating ggplot2 4.0 deprecation warnings.
+
+-   Removed obsolete `bindrcpp` from `Suggests` in `DESCRIPTION`; the package has been superseded and is not used anywhere in the codebase.
+
+-   Replaced `1:n`-style sequences with `seq_len()` and `seq_along()` in iteration paths that could otherwise iterate incorrectly over a zero-length object.
+
+-   Bumped `RoxygenNote` to 7.3.3 to match the installed version.
+
+-   `simData()` now reports the simulated event rate via `message()` rather than `cat()`, so the output can be suppressed.
+
+-   `summary()` documentation in `mjoint()` now refers to the `bootSE` argument by name (`summary(fit_obj, bootSE = boot_obj)`).
+
+-   `vcov.mjoint()` now warns when it falls back to the Moore-Penrose pseudo-inverse, as the approximate standard errors may be unreliable in that case.
+
+-   Fixed documentation typos: "left hand-hand side" in `mjoint()`, "comprised on" in the package description, and "The choice os" in `dynSurv()` and `dynLong()`.
+
+-   Removed empty test body for `"argument not a summary.mjoint object"` in `test-inputs.R`.
+
 # joineRML 0.4.7
 
 ## Housekeeping

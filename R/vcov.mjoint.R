@@ -34,7 +34,7 @@
 #' McLachlan GJ, Krishnan T. \emph{The EM Algorithm and Extensions}. Second
 #' Edition. Wiley-Interscience; 2008.
 #'
-#' @import stats
+#' @importFrom stats cov2cor
 #' @importFrom MASS ginv
 #'
 #' @return A variance-covariance matrix.
@@ -93,6 +93,9 @@ vcov.mjoint <- function(object, correlation = FALSE, ...) {
   if (!inherits(out, "try-error")) {
     vmat <- structure(out, dimnames = dimnames(object$Hessian))
   } else {
+    warning(paste("The empirical information matrix could not be inverted",
+                  "directly; falling back to the Moore-Penrose pseudo-inverse.",
+                  "The approximate standard errors may be unreliable."))
     vmat <- structure(MASS::ginv(object$Hessian), dimnames = dimnames(object$Hessian))
   }
   vmat <- (vmat + t(vmat)) / 2

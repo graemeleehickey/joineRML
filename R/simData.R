@@ -159,7 +159,7 @@ simData <- function(n = 100, ntms = 5, beta = rbind(c(1, 1, 1, 1), c(1, 1, 1, 1)
   } else {
     b <- mvtnorm::rmvt(n, sigma = D, df = df)
   }
-  bl <- b[rep(1:n, each = ntms), ]
+  bl <- b[rep(seq_len(n), each = ntms), ]
   Z <- matrix(0, nrow =  rk, ncol =  length(time))
   for(i in 1:rk) {
     Z[i, ] <- time^(i-1)
@@ -187,8 +187,8 @@ simData <- function(n = 100, ntms = 5, beta = rbind(c(1, 1, 1, 1), c(1, 1, 1, 1)
     survtime <- rep(0, n)
     survtime[ii] <- Inf
     survtime[!ii] <- log(
-      1 - (theta1 + b1k[!ii, ] %*% gamma.y) * log(U[!ii]) / exp(
-        theta0 + Vgam[!ii] + b0k[!ii, ] %*% gamma.y)) / (theta1 + b1k[!ii, ] %*% gamma.y)
+      1 - (theta1 + b1k[!ii, , drop = FALSE] %*% gamma.y) * log(U[!ii]) / exp(
+        theta0 + Vgam[!ii] + b0k[!ii, , drop = FALSE] %*% gamma.y)) / (theta1 + b1k[!ii, , drop = FALSE] %*% gamma.y)
   }
 
   if (censoring) {
@@ -210,7 +210,7 @@ simData <- function(n = 100, ntms = 5, beta = rbind(c(1, 1, 1, 1), c(1, 1, 1, 1)
   X <- X[ls > time, ]
   idl <- idl[ls > time]
   time <- time[ls > time]
-  cat(paste0(round(100 * sum(cens) / n, 1), "% experienced event\n"))
+  message(paste0(round(100 * sum(cens) / n, 1), "% experienced event"))
 
   list(longdat = data.frame(id = idl, Y = Y, time, X),
        survdat = data.frame(id, survtime, cens, V))

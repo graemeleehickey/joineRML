@@ -1,5 +1,4 @@
 library(joineRML)
-context("Ancillary functions")
 
 test_that("simulated data: intslope", {
   # simulate data
@@ -12,7 +11,7 @@ test_that("simulated data: intslope", {
   sim <- simData(n = 250, beta = beta, D = D, sigma2 = c(0.25, 0.25),
                  censlam = exp(-0.2), gamma.y = c(-0.2, 1), ntms = 8)
   # tests
-  expect_is(sim, "list")
+  expect_type(sim, "list")
   expect_output(str(sim), "List of 2")
   expect_equal(names(sim), c("longdat", "survdat"))
   expect_equal(ncol(sim$longdat), 8)
@@ -28,7 +27,7 @@ test_that("simulated data: int", {
                  censlam = exp(-0.2), gamma.y = c(-0.2, 1), ntms = 8,
                  model = "int")
   # tests
-  expect_is(sim, "list")
+  expect_type(sim, "list")
   expect_output(str(sim), "List of 2")
   expect_equal(names(sim), c("longdat", "survdat"))
   expect_equal(ncol(sim$longdat), 8)
@@ -72,7 +71,7 @@ test_that("ranef plots + sampling", {
                  control = list(burnin = 6, tol0 = 5e-01))
   p <- plot(ranef(fit1, postVar = TRUE))
   # tests
-  expect_true(is.ggplot(p))
+  expect_s3_class(p, "ggplot")
   expect_error(sampleData(fit1, size = 1000, replace = FALSE), "Cannot select more subjects than in data without replacement")
 })
 
@@ -103,18 +102,18 @@ test_that("dynamic predictions, residuals, fitted values, baseline hazard", {
   test5 <- dynLong(fit2, hvd2, type = "simulated", M = 3)
   test6 <- dynSurv(fit2, hvd2, type = "simulated", M = 3)
   # tests: dynamic predictions
-  expect_is(test1, "dynLong")
+  expect_s3_class(test1, "dynLong")
   expect_output(str(test1$pred), "List of 2")
   expect_silent(plot(test1))
   expect_output(print(test1))
-  expect_is(test2, "dynLong")
-  expect_is(test3, "dynSurv")
+  expect_s3_class(test2, "dynLong")
+  expect_s3_class(test3, "dynSurv")
   expect_output(str(test3$pred), "data.frame")
   expect_silent(plot(test3))
   expect_output(print(test3))
-  expect_is(test4, "dynSurv")
-  expect_is(test5, "dynLong")
-  expect_is(test6, "dynSurv")
+  expect_s3_class(test4, "dynSurv")
+  expect_s3_class(test5, "dynLong")
+  expect_s3_class(test6, "dynSurv")
   # tests: residuals + fitted values
   expect_output(str(resid(fit2, level = 0)), "List of 2")
   expect_output(str(resid(fit2, level = 1)), "List of 2")
@@ -123,8 +122,8 @@ test_that("dynamic predictions, residuals, fitted values, baseline hazard", {
   expect_error(fitted(fit2, level = 3))
   expect_equal(names(resid(fit2)), c("grad", "lvmi"))
   # tests: baseline hazard
-  expect_is(baseHaz(fit2, se = TRUE), "data.frame")
-  expect_is(baseHaz(fit2, centered = FALSE), "data.frame")
+  expect_s3_class(baseHaz(fit2, se = TRUE), "data.frame")
+  expect_s3_class(baseHaz(fit2, centered = FALSE), "data.frame")
   # tests: missingg damts
   fit2$dmats <- NULL
   expect_error(fitted(fit2))

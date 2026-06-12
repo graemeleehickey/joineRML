@@ -68,7 +68,7 @@ hessian <- function(theta, l, t, z, m) {
   D.inds <- which(lower.tri(D, diag = TRUE), arr.ind = TRUE)
   dimnames(D.inds) <- NULL
 
-  delta.D <- lapply(1:nrow(D.inds), function(x, ind) {
+  delta.D <- lapply(seq_len(nrow(D.inds)), function(x, ind) {
     mat <- matrix(0, nrow = nrow(D), ncol = ncol(D))
     ii <- ind[x, , drop = FALSE]
     mat[ii[1], ii[2]] <- mat[ii[2], ii[1]] <- 1
@@ -88,7 +88,7 @@ hessian <- function(theta, l, t, z, m) {
     SIMPLIFY = TRUE)
   }
 
-  sD <- sapply(1:nrow(D.inds), sDi)
+  sD <- sapply(seq_len(nrow(D.inds)), sDi)
   sD <- t(sD)
   rownames(sD) <- paste0("D", D.inds[, 1], ",", D.inds[, 2])
 
@@ -128,7 +128,7 @@ hessian <- function(theta, l, t, z, m) {
   si <- rbind(sD, sbeta, ssigma2, sgamma)
 
   H <- matrix(0, nrow(si), nrow(si))
-  for (j in 1:ncol(si)) {
+  for (j in seq_len(ncol(si))) {
     H <- H + tcrossprod(si[, j])
   }
   # Although RHS term = 0 in theory, in practice with MC integration

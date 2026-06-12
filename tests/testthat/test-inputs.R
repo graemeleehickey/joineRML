@@ -1,5 +1,4 @@
 library(joineRML)
-context("Inputs")
 
 
 test_that("too many datasets throws error", {
@@ -122,7 +121,7 @@ test_that("unmatched inits throws warning", {
       data = hvd,
       timeVar = "time",
       control = list(convCrit = "abs", tol0 = 0.1, burnin = 3,
-                     mcmaxIter = 4, fake_param = 5),
+                     mcmaxIter = 4),
       verbose = FALSE)
   }
   # test
@@ -225,6 +224,8 @@ test_that("argument not correct object class", {
 
 
 test_that("argument not a summary.mjoint object", {
+  expect_error(print.summary.mjoint(structure(list(), class = "mjoint")),
+               "Use only with 'summary.mjoint' objects.")
 })
 
 

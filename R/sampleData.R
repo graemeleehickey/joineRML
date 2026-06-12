@@ -76,7 +76,7 @@ sampleData <- function(object, size = NULL, replace = TRUE) {
     m <- do.call("c", lapply(out, nrow))
     longData.boot[[k]] <- do.call("rbind", out)
     if (replace) {
-      id.new <- rep(1:size, m)
+      id.new <- rep(seq_len(size), m)
       longData.boot[[k]][, id] <- id.new
     }
   }
@@ -84,7 +84,7 @@ sampleData <- function(object, size = NULL, replace = TRUE) {
   # Time-to-event data
   survData.boot <- survData[match(i, survData[ , id]), ]
   if (replace) {
-    survData.boot[, id] <- 1:size
+    survData.boot[, id] <- seq_len(size)
   }
   survData.boot[, surv.time.lab] <- survData.boot[, surv.time.lab]
 

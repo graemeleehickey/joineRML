@@ -12,8 +12,8 @@ initsSurv_balanced <- function(data, lfit, survdat2, formSurv, id, timeVar, K, q
   dataAG <- by(data[[1]], data[[1]][ , id], FUN = function(u) {
     id.col <- u[ , id]
     T <- survdat2[survdat2$id == id.col[1], "T"] + 1e-06
-    start <- u[ , timeVar[k]]
-    stop <- c(u[, timeVar[k]][-1], T)
+    start <- u[ , timeVar[1]]
+    stop <- c(u[, timeVar[1]][-1], T)
     status <- rep(0, length(id.col))
     status[length(id.col)] <- survdat2[survdat2$id == id.col[1], "delta"]
     if (q > 0) {

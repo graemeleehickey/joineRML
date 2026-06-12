@@ -10,7 +10,7 @@
 #'   (quasi-) Monte Carlo Expectation Maximization (MCEM) algorithm.
 #'
 #' @param formLongFixed a list of formulae for the fixed effects component of
-#'   each longitudinal outcome. The left hand-hand side defines the response,
+#'   each longitudinal outcome. The left-hand side defines the response,
 #'   and the right-hand side specifies the fixed effect terms. If a single
 #'   formula is given (either as a list of length 1 or a formula), then it is
 #'   assumed that a standard univariate joint model is being fitted.
@@ -220,7 +220,7 @@
 #'   model as its main argument. Given a fitted joint model (of class
 #'   \code{mjoint}) and a bootstrap fit object (of class \code{bootSE}), the SEs
 #'   reported in the model can be updated by running
-#'   \code{summary(fit_obj,boot_obj)}. For details, consult the
+#'   \code{summary(fit_obj, bootSE = boot_obj)}. For details, consult the
 #'   \code{\link{bootSE}} documentation.
 #'
 #' @author Graeme L. Hickey (\email{graemeleehickey@@gmail.com})
@@ -339,6 +339,11 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
   time.start <- Sys.time()
   Call <- match.call()
   balanced <- FALSE # assume unless proven o/w
+
+  # Limit the number of threads used by RcppArmadillo (restored on exit) to
+  # respect CRAN's 2-core policy and avoid oversubscription
+  RcppArmadillo::armadillo_throttle_cores()
+  on.exit(RcppArmadillo::armadillo_reset_cores(), add = TRUE)
 
   # Formulas do not need to be given as lists if K=1
   if (!is.list(formLongFixed)) {
@@ -576,7 +581,7 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
                                  center = xcenter, scale = FALSE)
   }
   colnames(survdat2)[c(1, (q + 2):(q + 3))] <- c("id", "T", "delta")
-  survdat2$tj.ind <- sapply(1:n, function(i) {
+  survdat2$tj.ind <- sapply(seq_len(n), function(i) {
     sum(tj <= survdat2$T[i])
   })
   survdat2.list <- by(survdat2, survdat2$id, list)
@@ -619,7 +624,7 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
   # non-empty lists, but effectively discount this data in the EM-algorithm
   Zdat.fail <- data.frame(
     "id" = rep(unique(survdat2$id), pmax(survdat2$tj.ind, 1)),
-    "time" = unlist(sapply(1:n, function(i) {
+    "time" = unlist(sapply(seq_len(n), function(i) {
       tj[1:max(survdat2$tj.ind[i], 1)]
     },
     simplify = FALSE))
@@ -709,7 +714,7 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
   nMC <- con$nMC
   nmc.iters <- c()
 
-  for (it in 1:(con$mcmaxIter)) {
+  for (it in seq_len(con$mcmaxIter)) {
 
     if (verbose) {
       cat("-------------------------------------------------------------\n\n")
@@ -804,7 +809,7 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
   rownames(hx.D) <- paste0("D_", row = row(theta$D)[ltri], ",",
                            col = col(theta$D)[ltri])
   hx.haz <- sapply(all.iters, function(x) x$haz)
-  rownames(hx.haz) <- paste0("haz_", 1:nrow(hx.haz))
+  rownames(hx.haz) <- paste0("haz_", seq_len(nrow(hx.haz)))
   hx.sigma2 <- sapply(all.iters, function(x) x$sigma2)
   if (K == 1) {
     hx.sigma2 <- matrix(hx.sigma2, nrow = 1)

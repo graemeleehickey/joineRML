@@ -50,7 +50,7 @@
 #'   non-central \emph{t}-distribution proposal distributions with
 #'   non-centrality parameter \eqn{\hat{b}} from the first-order prediction and
 #'   variance-covariance matrix equal to \code{scale} \eqn{\times} the inverse
-#'   of the negative Hessian of the posterior distribution. The choice os
+#'   of the negative Hessian of the posterior distribution. The choice of
 #'   \code{scale} can be used to tune the acceptance rate of the
 #'   Metropolis-Hastings sampler. This simulation algorithm is iterated \code{M}
 #'   times, at each time calculating the conditional survival probability.
@@ -220,7 +220,7 @@ dynLong <- function(object, newdata, newSurvData = NULL, u = NULL,
     for (k in 1:K) {
       y.pred[[k]] <- matrix(nrow = ntimes, ncol = M)
     }
-    for (m in 1:M) {
+    for (m in seq_len(M)) {
       # Step 1: draw theta
       theta.samp <- thetaDraw(object)
       # Step 2: Metropolis-Hastings simulation

@@ -20,7 +20,7 @@ mjoint(
 }
 \arguments{
 \item{formLongFixed}{a list of formulae for the fixed effects component of
-each longitudinal outcome. The left hand-hand side defines the response,
+each longitudinal outcome. The left-hand side defines the response,
 and the right-hand side specifies the fixed effect terms. If a single
 formula is given (either as a list of length 1 or a formula), then it is
 assumed that a standard univariate joint model is being fitted.}
@@ -258,7 +258,7 @@ Function \code{mjoint} fits joint models for time-to-event and
   model as its main argument. Given a fitted joint model (of class
   \code{mjoint}) and a bootstrap fit object (of class \code{bootSE}), the SEs
   reported in the model can be updated by running
-  \code{summary(fit_obj,boot_obj)}. For details, consult the
+  \code{summary(fit_obj, bootSE = boot_obj)}. For details, consult the
   \code{\link{bootSE}} documentation.
 }
 

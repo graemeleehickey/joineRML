@@ -1,5 +1,4 @@
 library(joineRML)
-context("Bootstrap")
 
 test_that("bootstrap MV models", {
   skip_on_cran()
@@ -25,11 +24,11 @@ test_that("bootstrap MV models", {
   set.seed(1)
   fit.boot2 <- bootSE(fit, nboot = 1, ncores = 1)
   # tests
-  expect_is(fit.boot1, "bootSE")
-  expect_is(fit.boot2, "bootSE")
+  expect_s3_class(fit.boot1, "bootSE")
+  expect_s3_class(fit.boot2, "bootSE")
   expect_output(str(fit.boot1), "List of 11")
   expect_output(print(fit.boot1))
-  expect_is(summary(fit, bootSE = fit.boot1), "summary.mjoint")
+  expect_s3_class(summary(fit, bootSE = fit.boot1), "summary.mjoint")
   expect_output(print(summary(fit.boot1, bootSE = fit.boot)))
   expect_output(str(summary(fit, bootSE = fit.boot1)), "List of 22")
   expect_equal(summary(fit, bootSE = fit.boot1)$se.type, "boot")
@@ -82,7 +81,7 @@ test_that("univariate intercept only + non-MLE inits", {
                      use.mle = FALSE,
                      control = list(convCrit = "abs", tol0 = 0.05, gammaOpt = "GN"))
   # tests
-  expect_is(fit.boot, "bootSE")
+  expect_s3_class(fit.boot, "bootSE")
   expect_warning(bootSE(fit, control = list("fake" = TRUE), nboot = 1),
                  "Unknown arguments passed to 'control': fake")
 })

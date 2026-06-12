@@ -168,7 +168,7 @@ bootSE <- function(object, nboot = 100, ci = 0.95, use.mle = TRUE,
       }
     }
 
-  if (ncores >= 1L) {
+  if (ncores > 1L) {
     ncores.max <- parallel::detectCores()
     if (ncores > ncores.max) {
       ncores <- ncores.max
@@ -179,7 +179,7 @@ bootSE <- function(object, nboot = 100, ci = 0.95, use.mle = TRUE,
     # *** Parallel version ***
     cl <- parallel::makeCluster(ncores)
     doParallel::registerDoParallel(cl)
-    out <- foreach(b = 1:nboot, .packages = 'joineRML') %dopar% {
+    out <- foreach(b = seq_len(nboot), .packages = 'joineRML') %dopar% {
       fit.boot <- bootfun()
       return(list("coefs" = fit.boot$coefficient,
                   "conv" = fit.boot$conv))
@@ -193,7 +193,7 @@ bootSE <- function(object, nboot = 100, ci = 0.95, use.mle = TRUE,
       cat("\n\n") # start progress bar
       pb <- utils::txtProgressBar(min = 0, max = nboot, style = 3)
     }
-    for (b in 1:nboot) {
+    for (b in seq_len(nboot)) {
       fit.boot <- bootfun()
       out[[b]] <- list("coefs" = fit.boot$coefficient,
                        "conv" = fit.boot$conv)

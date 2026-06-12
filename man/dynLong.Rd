@@ -125,7 +125,7 @@ Dynamic predictions for the longitudinal data sub-model based on an
   non-central \emph{t}-distribution proposal distributions with
   non-centrality parameter \eqn{\hat{b}} from the first-order prediction and
   variance-covariance matrix equal to \code{scale} \eqn{\times} the inverse
-  of the negative Hessian of the posterior distribution. The choice os
+  of the negative Hessian of the posterior distribution. The choice of
   \code{scale} can be used to tune the acceptance rate of the
   Metropolis-Hastings sampler. This simulation algorithm is iterated \code{M}
   times, at each time calculating the conditional survival probability.

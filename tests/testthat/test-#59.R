@@ -1,5 +1,4 @@
 # test tidy, augment, glance methods for mjoint object (joineRML package)
-context("Issue #59")
 library(joineRML)
 
 test_that("Example that was broken in #59 is not broken anymore", {

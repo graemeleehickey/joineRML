@@ -27,7 +27,7 @@ sigma.mjoint <- function(object, ...) {
   sig <- sqrt(object$coef$sigma2)
   sig.names <- names(object$formLongFixed)
   if (is.null(sig.names)) {
-    names(sig) <- paste0("sigma_", 1:length(sig))
+    names(sig) <- paste0("sigma_", seq_along(sig))
   } else {
     names(sig) <- sig.names
   }

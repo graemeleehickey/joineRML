@@ -1,5 +1,4 @@
 library(joineRML)
-context("Models fit")
 
 
 test_that("univariate random-intercept model works + no formula labels", {
@@ -16,7 +15,7 @@ test_that("univariate random-intercept model works + no formula labels", {
     control = list(convCrit = "abs", tol0 = 0.5, burnin = 20),
     verbose = FALSE)
   # tests
-  expect_is(fit, "mjoint")
+  expect_s3_class(fit, "mjoint")
   expect_true(fit$conv)
   expect_equal(length(fixef(fit)), 2)
   expect_equal(nrow(ranef(fit)), fit$dims$n)
@@ -46,7 +45,7 @@ test_that("multivariate model", {
     verbose = TRUE)
   fit.summ <- summary(fit)
   # tests
-  expect_is(fit, "mjoint")
+  expect_s3_class(fit, "mjoint")
   expect_true(fit$conv)
   expect_equal(length(fixef(fit)), 7)
   expect_equal(length(fixef(fit, process = "Event")), 3)
@@ -59,18 +58,19 @@ test_that("multivariate model", {
   expect_output(str(sigma(fit)), "Named num")
   expect_output(str(confint(fit)), "num")
   expect_equal(dim(confint(fit)), c(10, 2))
-  expect_is(getVarCov(fit), c("random.effects", "VarCov"))
+  expect_s3_class(getVarCov(fit), "random.effects")
+  expect_s3_class(getVarCov(fit), "VarCov")
   expect_output(str(AIC(fit)), "num")
   expect_output(str(logLik(fit)), "Class 'logLik'")
-  expect_is(fit.summ, "summary.mjoint")
+  expect_s3_class(fit.summ, "summary.mjoint")
   expect_output(str(fit.summ), "List of 20")
   expect_output(print(fit.summ))
-  expect_is(vcov(fit), "matrix")
+  expect_true(is.matrix(vcov(fit)))
   expect_equal(dim(vcov(fit)), c(18, 18))
-  expect_is(vcov(fit, correlation = TRUE), "matrix")
+  expect_true(is.matrix(vcov(fit, correlation = TRUE)))
   expect_equal(dim(vcov(fit, correlation = TRUE)), c(18, 18))
-  expect_is(formula(fit, process = "Longitudinal"), "formula")
-  expect_is(formula(fit, process = "Event"), "formula")
+  expect_s3_class(formula(fit, process = "Longitudinal"), "formula")
+  expect_s3_class(formula(fit, process = "Event"), "formula")
   expect_equal(formula(fit, process = "Longitudinal"),
                formula(log.grad ~ time + sex + hs))
 })
@@ -100,16 +100,16 @@ test_that("different convergence criteria", {
                                       mcmaxIter = 6))
   # tests
   # SAS
-  expect_is(fit1, "mjoint")
+  expect_s3_class(fit1, "mjoint")
   expect_equal(fit1$control$convCrit, "sas")
   # rel
-  expect_is(fit2, "mjoint")
+  expect_s3_class(fit2, "mjoint")
   expect_equal(fit2$control$convCrit, "rel")
   # abs
-  expect_is(fit3, "mjoint")
+  expect_s3_class(fit3, "mjoint")
   expect_equal(fit3$control$convCrit, "abs")
   # either
-  expect_is(fit4, "mjoint")
+  expect_s3_class(fit4, "mjoint")
   expect_equal(fit4$control$convCrit, "either")
 })
 
@@ -133,7 +133,7 @@ test_that("models fit to unbalanced data", {
     control = list(convCrit = "abs", burnin = 4, mcmaxIter = 6, tol0 = 0.1),
     verbose = FALSE)
   expect_false(nrow(hvd1) == nrow(hvd2))
-  expect_is(fit, "mjoint")
+  expect_s3_class(fit, "mjoint")
 })
 
 
@@ -156,8 +156,8 @@ test_that("Gauss-Newton updates", {
                    burnin = 5, mcmaxIter = 7, gammaOpt = "GN"),
     verbose = FALSE)
   # tests
-  expect_is(fit, "mjoint")
-  expect_is(update(fit,
+  expect_s3_class(fit, "mjoint")
+  expect_s3_class(update(fit,
                    formSurv = Surv(fuyrs, status) ~ 1,
                    inits = list("gamma" = c(1.4, 0.8))),
             "mjoint")
@@ -178,6 +178,6 @@ test_that("no covariates in survival model", {
     control = list(convCrit = "abs", tol0 = 0.1, burnin = 3),
     verbose = FALSE)
   # tests
-  expect_is(fit, "mjoint")
+  expect_s3_class(fit, "mjoint")
   expect_warning(baseHaz(fit), "No covariates in model to centre.")
 })

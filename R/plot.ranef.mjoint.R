@@ -69,8 +69,9 @@ plot.ranef.mjoint <- function(x, ...) {
     facet_grid(~ ind, scales = "free_x")
 
   if (!is.null(xstk$se)) {
-    p <- p + geom_errorbarh(aes(xmin = .data$xmin, xmax = .data$xmax),
-                            height = 0)
+    p <- p + geom_errorbar(aes(xmin = .data$xmin, xmax = .data$xmax),
+                           width = 0,
+                           orientation = "y")
   }
 
   return(p)
