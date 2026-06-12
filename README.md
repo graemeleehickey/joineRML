@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# joineRML <img src="man/figures/hex.png" width = "175" height = "200" align="right" />
+# joineRML <img src="man/figures/hex.png" width = "175" height = "200" align="right" alt="joineRML hex logo" />
 
 <!-- badges: start -->
 
@@ -9,8 +9,10 @@
 [![AppVeyor Build
 Status](https://ci.appveyor.com/api/projects/status/github/graemeleehickey/joineRML?branch=master&svg=true)](https://ci.appveyor.com/project/graemeleehickey/joineRML)
 <!--[![License](https://img.shields.io/badge/License-GPL%20%28%3E=%203%29-brightgreen.svg)](http://www.gnu.org/licenses/gpl-3.0.html)-->
-[![](http://cranlogs.r-pkg.org/badges/joineRML)](https://CRAN.R-project.org/package=joineRML)
-[![](https://cranlogs.r-pkg.org/badges/grand-total/joineRML)](https://CRAN.R-project.org/package=joineRML)
+[![Monthly CRAN
+downloads](http://cranlogs.r-pkg.org/badges/joineRML)](https://CRAN.R-project.org/package=joineRML)
+[![Total CRAN
+downloads](https://cranlogs.r-pkg.org/badges/grand-total/joineRML)](https://CRAN.R-project.org/package=joineRML)
 [![Research software
 impact](http://depsy.org/api/package/cran/joineRML/badge.svg)](http://depsy.org/package/r/joineRML)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1158231.svg)](https://doi.org/10.5281/zenodo.1158231)
@@ -102,7 +104,13 @@ vignette('joineRML', package = 'joineRML')
 This project is funded by the [Medical Research
 Council](https://mrc.ukri.org) (Grant number MR/M013227/1).
 
-![](https://www.ukri.org/wp-content/themes/ukri/assets/img/ukri-mrc-standard-logo.png)
+<figure>
+<img
+src="https://www.ukri.org/wp-content/themes/ukri/assets/img/ukri-mrc-standard-logo.png"
+alt="Medical Research Council logo" />
+<figcaption aria-hidden="true">Medical Research Council
+logo</figcaption>
+</figure>
 
 # Using the latest developmental version
 

@@ -2,7 +2,9 @@
 ^\.Rproj\.user$
 ^\.posit$
 ^README\.Rmd$
+^README\.html$
 ^README-.*\.png$
+^_pkgdown\.yml$
 ^\.travis\.yml$
 ^cran-comments\.md$
 ^appveyor\.yml$

@@ -12,6 +12,12 @@
 
 ## Housekeeping
 
+-   Added a pkgdown site configuration, GitHub Actions workflow for publishing the site to GitHub Pages, and the pkgdown site URL to `DESCRIPTION`.
+
+-   Added `pkgdown` to `Suggests`.
+
+-   Added alt text to README images and download badges so the pkgdown home page passes accessibility checks while retaining the MRC logo.
+
 -   Bumped the minimum R version to 4.1.0.
 
 -   Added `.posit` to `.Rbuildignore` so local Positron metadata is not included in package builds.

@@ -1,0 +1,68 @@
+url: https://graemeleehickey.github.io/joineRML/
+
+template:
+  bootstrap: 5
+
+home:
+  title: Joint modelling of multivariate longitudinal and time-to-event data
+  description: >
+    Fit joint models for multivariate longitudinal outcomes and time-to-event
+    data using a Monte Carlo expectation-maximization algorithm.
+
+navbar:
+  structure:
+    left: [intro, reference, articles, news]
+    right: [search, github]
+  components:
+    github:
+      icon: fa-github
+      href: https://github.com/graemeleehickey/joineRML
+      aria-label: GitHub repository
+
+reference:
+  - title: Model fitting
+    contents:
+      - mjoint
+      - mjoint.object
+      - joineRML-package
+      - joineRML
+  - title: Model summaries and inference
+    contents:
+      - summary.mjoint
+      - fixef.mjoint
+      - ranef.mjoint
+      - vcov.mjoint
+      - confint.mjoint
+      - getVarCov.mjoint
+      - sigma.mjoint
+      - logLik.mjoint
+      - formula.mjoint
+  - title: Prediction and dynamic prediction
+    contents:
+      - fitted.mjoint
+      - residuals.mjoint
+      - dynSurv
+      - dynLong
+      - baseHaz
+  - title: Plotting and diagnostics
+    contents:
+      - plot.mjoint
+      - plot.ranef.mjoint
+      - plot.dynSurv
+      - plot.dynLong
+      - plotConvergence
+  - title: Simulation, resampling, and uncertainty
+    contents:
+      - simData
+      - sampleData
+      - bootSE
+  - title: Tidiers
+    contents:
+      - mjoint_tidiers
+      - reexports
+  - title: Data
+    contents:
+      - heart.valve
+      - epileptic.qol
+      - pbc2
+      - renal

@@ -27,6 +27,7 @@ inst/doc
 # Temporary files created by R markdown
 *.utf8.md
 *.knit.md
+README.html
 # Silence build of pkgdown update
 docs/*.
 # macOS files
