@@ -12,7 +12,7 @@
 
 ## Housekeeping
 
--   Added test coverage for the dynamic prediction functions (`dynSurv()` and `dynLong()`, including first-order and simulated prediction, `u`/`horizon` arguments, input validation, and print methods), `baseHaz()`, `confint()`, and several accessor methods.
+-   Added test coverage for the dynamic prediction functions (`dynSurv()` and `dynLong()`, including first-order and simulated prediction, `u`/`horizon` arguments, input validation, and print methods), their plot methods (`plot.dynSurv()` and `plot.dynLong()`), `print.summary.mjoint()`, `baseHaz()`, `confint()`, and several accessor methods.
 
 -   Added a pkgdown site configuration, GitHub Actions workflow for publishing the site to GitHub Pages, and the pkgdown site URL to `DESCRIPTION`.
 

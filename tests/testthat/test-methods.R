@@ -64,3 +64,17 @@ test_that("accessor and print methods run", {
   expect_output(print(fit))
   expect_output(print(summary(fit)))
 })
+
+test_that("print.summary.mjoint covers univariate branch and input check", {
+  skip_on_cran()
+  skip_on_os("mac")
+  fit <- uni_fit()
+  fit.summ <- summary(fit)
+
+  expect_s3_class(fit.summ, "summary.mjoint")
+  expect_output(print(fit.summ), "Univariate linear mixed-effects model")
+  expect_output(print(fit.summ), "Cox proportional hazards model")
+  expect_output(print(fit.summ), "method: approx")
+  expect_error(print.summary.mjoint(1), "Use only with 'summary.mjoint' objects")
+})
+
