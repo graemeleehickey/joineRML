@@ -36,3 +36,4 @@ Meta
 vignettes/joineRML_cache/
 vignettes/joineRML-tidy_cache/
 .gitconfig
+.posit/assistant/settings.json
