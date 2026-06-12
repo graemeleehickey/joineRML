@@ -248,7 +248,7 @@ summary(fit)
 #> gamma_2 3.6940  3.3674  1.0970  0.2726
 #> 
 #> Algorithm Summary:
-#>     Total computational time: 4.4 secs 
+#>     Total computational time: 4.5 secs 
 #>     EM algorithm computational time: 3.9 secs 
 #>     Convergence status: converged
 #>     Convergence criterion: sas 
@@ -508,7 +508,7 @@ summary(fit.joinerml)
 #> gamma_1 3.4878  1.6511  2.1124  0.0347
 #> 
 #> Algorithm Summary:
-#>     Total computational time: 1.3 secs 
+#>     Total computational time: 1.4 secs 
 #>     EM algorithm computational time: 1.2 secs 
 #>     Convergence status: converged
 #>     Convergence criterion: sas 
