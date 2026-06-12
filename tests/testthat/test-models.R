@@ -53,7 +53,7 @@ test_that("multivariate model", {
   expect_equal(dim(attr(ranef(fit, postVar = TRUE), "postVar")), c(3, 3, fit$dims$n))
   expect_output(str(coef(fit)), "List of 5")
   expect_equal(coef(fit)$gamma, c(0.1088112, 1.5183319, 0.7971334),
-               tolerance = 0.05, check.attributes = FALSE)
+               tolerance = 0.05, ignore_attr = TRUE)
   expect_output(print(fit))
   expect_output(str(sigma(fit)), "Named num")
   expect_output(str(confint(fit)), "num")

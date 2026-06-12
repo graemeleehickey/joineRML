@@ -81,6 +81,13 @@ test_that("univariate intercept only + non-MLE inits", {
                      control = list(convCrit = "abs", tol0 = 0.05, gammaOpt = "GN"))
   # tests
   expect_s3_class(fit.boot, "bootSE")
-  expect_warning(bootSE(fit, control = list("fake" = TRUE), nboot = 1),
-                 "Unknown arguments passed to 'control': fake")
+  # bootSE emits the warning twice: once validating its own 'control' and
+  # again when forwarding 'control' to the internal mjoint refit
+  expect_warning(
+    expect_warning(
+      bootSE(fit, control = list("fake" = TRUE), nboot = 1),
+      "Unknown arguments passed to 'control': fake"
+    ),
+    "Unknown arguments passed to 'control': fake"
+  )
 })

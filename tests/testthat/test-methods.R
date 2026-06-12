@@ -1,22 +1,9 @@
 library(joineRML)
 
-uni_fit <- function() {
-  data(pbc2)
-  set.seed(4821)
-  mjoint(
-    formLongFixed = list("serBilir" = log(serBilir) ~ year),
-    formLongRandom = list("serBilir" = ~ 1 | id),
-    formSurv = Surv(years, status2) ~ age,
-    data = pbc2,
-    timeVar = "year",
-    control = list(convCrit = "abs", tol0 = 0.5, burnin = 20, mcmaxIter = 100),
-    verbose = FALSE)
-}
-
 test_that("baseHaz returns centered and uncentered estimates", {
   skip_on_cran()
   skip_on_os("mac")
-  fit <- uni_fit()
+  fit <- fit_pbc_uni()
 
   bh <- baseHaz(fit)
   expect_named(bh, c("time", "haz"))
@@ -34,7 +21,7 @@ test_that("baseHaz returns centered and uncentered estimates", {
 test_that("baseHaz input checks", {
   skip_on_cran()
   skip_on_os("mac")
-  fit <- uni_fit()
+  fit <- fit_pbc_uni()
   expect_error(baseHaz(1), "Use only with 'mjoint' model objects")
   expect_error(baseHaz(fit, centered = FALSE, se = TRUE),
                "Can only estimate standard errors for the centered case")
@@ -43,7 +30,7 @@ test_that("baseHaz input checks", {
 test_that("confint returns expected dimensions per parameter set", {
   skip_on_cran()
   skip_on_os("mac")
-  fit <- uni_fit()
+  fit <- fit_pbc_uni()
 
   expect_equal(ncol(confint(fit)), 2)
   expect_equal(nrow(confint(fit, parm = "Longitudinal")), fit$dims$p)
@@ -54,7 +41,7 @@ test_that("confint returns expected dimensions per parameter set", {
 test_that("accessor and print methods run", {
   skip_on_cran()
   skip_on_os("mac")
-  fit <- uni_fit()
+  fit <- fit_pbc_uni()
 
   expect_type(sigma(fit), "double")
   expect_length(fixef(fit, process = "Longitudinal"), fit$dims$p)
@@ -67,7 +54,7 @@ test_that("accessor and print methods run", {
 test_that("print.summary.mjoint covers univariate branch and input check", {
   skip_on_cran()
   skip_on_os("mac")
-  fit <- uni_fit()
+  fit <- fit_pbc_uni()
   fit.summ <- summary(fit)
 
   expect_s3_class(fit.summ, "summary.mjoint")

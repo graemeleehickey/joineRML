@@ -1,23 +1,10 @@
 library(joineRML)
 
-quick_fit <- function() {
-  data(pbc2)
-  set.seed(4821)
-  mjoint(
-    formLongFixed = list("serBilir" = log(serBilir) ~ year),
-    formLongRandom = list("serBilir" = ~ 1 | id),
-    formSurv = Surv(years, status2) ~ age,
-    data = pbc2,
-    timeVar = "year",
-    control = list(convCrit = "abs", tol0 = 0.5, burnin = 20, mcmaxIter = 100),
-    verbose = FALSE)
-}
-
 test_that("dynSurv first-order prediction", {
   skip_on_cran()
   skip_on_os("mac")
-  fit <- quick_fit()
-  nd <- droplevels(subset(pbc2, id == 1))
+  fit <- fit_pbc_uni()
+  nd <- pbc_newdata()
 
   ds <- dynSurv(fit, nd, progress = FALSE)
   expect_s3_class(ds, "dynSurv")
@@ -37,8 +24,8 @@ test_that("dynSurv first-order prediction", {
 test_that("dynSurv simulated prediction", {
   skip_on_cran()
   skip_on_os("mac")
-  fit <- quick_fit()
-  nd <- droplevels(subset(pbc2, id == 1))
+  fit <- fit_pbc_uni()
+  nd <- pbc_newdata()
 
   set.seed(11)
   ds <- dynSurv(fit, nd, type = "simulated", M = 5, progress = FALSE)
@@ -53,8 +40,8 @@ test_that("dynSurv simulated prediction", {
 test_that("dynSurv input checks", {
   skip_on_cran()
   skip_on_os("mac")
-  fit <- quick_fit()
-  nd <- droplevels(subset(pbc2, id == 1))
+  fit <- fit_pbc_uni()
+  nd <- pbc_newdata()
 
   expect_error(dynSurv(fit, nd, u = 4, horizon = 2, progress = FALSE),
                "Cannot specify 'u' and 'horizon'")
@@ -69,8 +56,8 @@ test_that("dynSurv input checks", {
 test_that("dynLong first-order and simulated prediction", {
   skip_on_cran()
   skip_on_os("mac")
-  fit <- quick_fit()
-  nd <- droplevels(subset(pbc2, id == 1))
+  fit <- fit_pbc_uni()
+  nd <- pbc_newdata()
 
   dl <- dynLong(fit, nd, progress = FALSE)
   expect_s3_class(dl, "dynLong")
