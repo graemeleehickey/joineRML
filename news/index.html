@@ -19,7 +19,10 @@
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/joineRML-tidy.html">joineRML and the broom package</a></li>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/joineRML.html">joineRML</a></li>
+    <li><a class="dropdown-item" href="../articles/joineRML-tidy.html">joineRML and the broom package</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><a class="dropdown-item" href="../technical.pdf">Technical details (PDF)</a></li>
   </ul></li>
 <li class="active nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
@@ -49,7 +52,7 @@
 <div class="section level3">
 <h3 id="housekeeping-0-4-7-9000">Housekeeping<a class="anchor" aria-label="anchor" href="#housekeeping-0-4-7-9000"></a></h3>
 <ul><li><p>Added test coverage for the dynamic prediction functions (<code><a href="../reference/dynSurv.html">dynSurv()</a></code> and <code><a href="../reference/dynLong.html">dynLong()</a></code>, including first-order and simulated prediction, <code>u</code>/<code>horizon</code> arguments, input validation, and print methods), their plot methods (<code><a href="../reference/plot.dynSurv.html">plot.dynSurv()</a></code> and <code><a href="../reference/plot.dynLong.html">plot.dynLong()</a></code>), <code>print.summary.mjoint()</code>, <code><a href="../reference/baseHaz.html">baseHaz()</a></code>, <code><a href="https://rdrr.io/r/stats/confint.html" class="external-link">confint()</a></code>, and several accessor methods.</p></li>
-<li><p>Added a pkgdown site configuration, GitHub Actions workflow for publishing the site to GitHub Pages, and the pkgdown site URL to <code>DESCRIPTION</code>.</p></li>
+<li><p>Added a pkgdown site configuration, GitHub Actions workflow for publishing the site to GitHub Pages, and the pkgdown site URL to <code>DESCRIPTION</code>. The Articles menu links to the technical details vignette PDF.</p></li>
 <li><p>Added <code>pkgdown</code> to <code>Suggests</code>.</p></li>
 <li><p>Updated GitHub Actions workflows to use <code>actions/checkout@v5</code> (Node.js 24) and modernised the test-coverage workflow to the current r-lib template.</p></li>
 <li><p>Added alt text to README images and download badges so the pkgdown home page passes accessibility checks while retaining the MRC logo.</p></li>

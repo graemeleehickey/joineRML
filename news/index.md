@@ -44,7 +44,8 @@
 
 - Added a pkgdown site configuration, GitHub Actions workflow for
   publishing the site to GitHub Pages, and the pkgdown site URL to
-  `DESCRIPTION`.
+  `DESCRIPTION`. The Articles menu links to the technical details
+  vignette PDF.
 
 - Added `pkgdown` to `Suggests`.
 
