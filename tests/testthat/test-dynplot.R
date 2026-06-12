@@ -1,12 +1,11 @@
 library(joineRML)
 
-quick_fit <- function() {
+plot_fit <- function() {
   data(pbc2)
-  pbc2$log.b <- log(pbc2$serBilir)
   set.seed(4821)
   mjoint(
-    formLongFixed = list("log.b" = log.b ~ year),
-    formLongRandom = list("log.b" = ~ 1 | id),
+    formLongFixed = list("serBilir" = log(serBilir) ~ year),
+    formLongRandom = list("serBilir" = ~ 1 | id),
     formSurv = Surv(years, status2) ~ age,
     data = pbc2,
     timeVar = "year",
@@ -17,7 +16,7 @@ quick_fit <- function() {
 test_that("plot.dynSurv runs for first-order and simulated predictions", {
   skip_on_cran()
   skip_on_os("mac")
-  fit <- quick_fit()
+  fit <- plot_fit()
   nd <- droplevels(subset(pbc2, id == 1))
   ds <- dynSurv(fit, nd, progress = FALSE)
   set.seed(11)
@@ -39,7 +38,7 @@ test_that("plot.dynSurv runs for first-order and simulated predictions", {
 test_that("plot.dynLong runs for first-order and simulated predictions", {
   skip_on_cran()
   skip_on_os("mac")
-  fit <- quick_fit()
+  fit <- plot_fit()
   nd <- droplevels(subset(pbc2, id == 1))
   dl <- dynLong(fit, nd, progress = FALSE)
   set.seed(11)
