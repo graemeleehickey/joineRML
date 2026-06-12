@@ -6,6 +6,10 @@
 <!-- badges: start -->
 
 [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version-last-release/joineRML)](https://cran.r-project.org/package=joineRML)
+[![pkgdown
+site](https://img.shields.io/badge/pkgdown-joineRML-blue.svg)](https://graemeleehickey.github.io/joineRML/)
+[![GitHub
+repo](https://img.shields.io/badge/GitHub-graemeleehickey%2FjoineRML-181717.svg?logo=github)](https://github.com/graemeleehickey/joineRML)
 <!--[![License](https://img.shields.io/badge/License-GPL%20%28%3E=%203%29-brightgreen.svg)](http://www.gnu.org/licenses/gpl-3.0.html)-->
 [![Monthly CRAN
 downloads](http://cranlogs.r-pkg.org/badges/joineRML)](https://CRAN.R-project.org/package=joineRML)
@@ -28,13 +32,6 @@ $(K+1)$-sub-models: a Cox proportional hazards regression model (Cox,
 of the Laird and Ware (1982) regression model. The model is fitted using
 a Monte Carlo Expectation-Maximization (MCEM) algorithm, which closely
 follows the methodology presented by Lin et al. (2002).
-
-## Links
-
-- Package website (pkgdown):
-  <https://graemeleehickey.github.io/joineRML/>
-- CRAN release: <https://CRAN.R-project.org/package=joineRML>
-- Source code (GitHub): <https://github.com/graemeleehickey/joineRML>
 
 ## Why use joineRML?
 
