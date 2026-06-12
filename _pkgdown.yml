@@ -14,6 +14,16 @@ navbar:
     left: [intro, reference, articles, news]
     right: [search, github]
   components:
+    articles:
+      text: Articles
+      menu:
+        - text: joineRML
+          href: articles/joineRML.html
+        - text: joineRML and the broom package
+          href: articles/joineRML-tidy.html
+        - text: -------
+        - text: Technical details (PDF)
+          href: technical.pdf
     github:
       icon: fa-github
       href: https://github.com/graemeleehickey/joineRML
