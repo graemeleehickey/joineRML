@@ -16,6 +16,8 @@
 
 -   Added `pkgdown` to `Suggests`.
 
+-   Updated GitHub Actions workflows to use `actions/checkout@v5` (Node.js 24) and modernised the test-coverage workflow to the current r-lib template.
+
 -   Added alt text to README images and download badges so the pkgdown home page passes accessibility checks while retaining the MRC logo.
 
 -   Bumped the minimum R version to 4.1.0.
