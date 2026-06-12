@@ -29,6 +29,13 @@ of the Laird and Ware (1982) regression model. The model is fitted using
 a Monte Carlo Expectation-Maximization (MCEM) algorithm, which closely
 follows the methodology presented by Lin et al. (2002).
 
+## Links
+
+- Package website (pkgdown):
+  <https://graemeleehickey.github.io/joineRML/>
+- CRAN release: <https://CRAN.R-project.org/package=joineRML>
+- Source code (GitHub): <https://github.com/graemeleehickey/joineRML>
+
 ## Why use joineRML?
 
 As noted in Hickey et al. (2016), there is a lack of statistical

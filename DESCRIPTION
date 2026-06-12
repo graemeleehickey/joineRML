@@ -40,7 +40,8 @@ Description: Fits the joint model proposed by Henderson and colleagues (2000)
     (Grant number MR/M013227/1).
 License: GPL-3 | file LICENSE
 URL: https://graemeleehickey.github.io/joineRML/,
-    https://github.com/graemeleehickey/joineRML
+    https://github.com/graemeleehickey/joineRML,
+    https://CRAN.R-project.org/package=joineRML
 BugReports: https://github.com/graemeleehickey/joineRML/issues
 LazyData: true
 Depends:
