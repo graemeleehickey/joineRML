@@ -6,8 +6,6 @@
 <!-- badges: start -->
 
 [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version-last-release/joineRML)](https://cran.r-project.org/package=joineRML)
-[![AppVeyor Build
-Status](https://ci.appveyor.com/api/projects/status/github/graemeleehickey/joineRML?branch=master&svg=true)](https://ci.appveyor.com/project/graemeleehickey/joineRML)
 <!--[![License](https://img.shields.io/badge/License-GPL%20%28%3E=%203%29-brightgreen.svg)](http://www.gnu.org/licenses/gpl-3.0.html)-->
 [![Monthly CRAN
 downloads](http://cranlogs.r-pkg.org/badges/joineRML)](https://CRAN.R-project.org/package=joineRML)

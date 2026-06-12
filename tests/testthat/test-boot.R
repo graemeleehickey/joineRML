@@ -62,7 +62,6 @@ test_that("non-convergence", {
 
 test_that("univariate intercept only + non-MLE inits", {
   skip_on_cran()
-  skip_on_appveyor()
   skip_on_os("mac")
   # load data + fit model
   data(pbc2)

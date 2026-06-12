@@ -7,7 +7,6 @@
 * local macOS (Sonoma 14.6.1) install, R 4.4.2
 * ubuntu (via GitHub actions, release + devel)
 * macOS (via GitHub actions, release)
-* windows (via appveyor CI, release)
 * windows (via GitHub actions, release)
 * windows (via win-builder, old + release + devel)
 

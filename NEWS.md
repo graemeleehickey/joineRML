@@ -20,6 +20,8 @@
 
 -   Added alt text to README images and download badges so the pkgdown home page passes accessibility checks while retaining the MRC logo.
 
+-   Removed the AppVeyor CI badge and references (`appveyor.yml` `.Rbuildignore` entry, `skip_on_appveyor()` in tests, and the cran-comments test environment), as the project now relies on GitHub Actions.
+
 -   Bumped the minimum R version to 4.1.0.
 
 -   Added `.posit` to `.Rbuildignore` so local Positron metadata is not included in package builds.

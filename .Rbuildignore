@@ -7,7 +7,6 @@
 ^_pkgdown\.yml$
 ^\.travis\.yml$
 ^cran-comments\.md$
-^appveyor\.yml$
 ^codecov\.yml$
 inst/image
 ^data-raw$
