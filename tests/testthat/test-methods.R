@@ -2,11 +2,10 @@ library(joineRML)
 
 uni_fit <- function() {
   data(pbc2)
-  pbc2$log.b <- log(pbc2$serBilir)
   set.seed(4821)
   mjoint(
-    formLongFixed = list("log.b" = log.b ~ year),
-    formLongRandom = list("log.b" = ~ 1 | id),
+    formLongFixed = list("serBilir" = log(serBilir) ~ year),
+    formLongRandom = list("serBilir" = ~ 1 | id),
     formSurv = Surv(years, status2) ~ age,
     data = pbc2,
     timeVar = "year",
