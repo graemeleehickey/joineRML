@@ -45,6 +45,9 @@ jobs:
           files: ./cobertura.xml
           plugins: noop
           disable_search: true
+          # Skip GPG signature verification of the uploader CLI: the runner
+          # cannot reliably fetch Codecov's public key ("no valid OpenPGP data")
+          skip_validation: true
           token: ${{ secrets.CODECOV_TOKEN }}
 
       - name: Show testthat output
