@@ -1,6 +1,6 @@
 # Changelog
 
-## joineRML 0.4.7.9000
+## joineRML 0.4.8
 
 ### Bug fixes
 
@@ -10,10 +10,9 @@
   `ncores > 1L`.
 
 - [`mjoint()`](https://graemeleehickey.github.io/joineRML/reference/mjoint.md)
-  now throttles the number of threads used by `RcppArmadillo` during the
-  MCEM algorithm (restored on exit), so the previously imported
-  `armadillo_throttle_cores()` and `armadillo_reset_cores()` functions
-  are actually invoked.
+  now correctly throttles the number of threads used by `RcppArmadillo`
+  during the MCEM algorithm via `armadillo_throttle_cores()` (restored
+  on exit).
 
 - [`simData()`](https://graemeleehickey.github.io/joineRML/reference/simData.md)
   now uses `drop = FALSE` when subsetting the random effects matrices in
@@ -26,79 +25,19 @@
   indexing `timeVar`; it now uses the (outcome-invariant) first time
   variable explicitly in the balanced-data case.
 
-### Housekeeping
-
-- Added test coverage for the dynamic prediction functions
-  ([`dynSurv()`](https://graemeleehickey.github.io/joineRML/reference/dynSurv.md)
-  and
-  [`dynLong()`](https://graemeleehickey.github.io/joineRML/reference/dynLong.md),
-  including first-order and simulated prediction, `u`/`horizon`
-  arguments, input validation, and print methods), their plot methods
-  ([`plot.dynSurv()`](https://graemeleehickey.github.io/joineRML/reference/plot.dynSurv.md)
-  and
-  [`plot.dynLong()`](https://graemeleehickey.github.io/joineRML/reference/plot.dynLong.md)),
-  `print.summary.mjoint()`,
-  [`baseHaz()`](https://graemeleehickey.github.io/joineRML/reference/baseHaz.md),
-  [`confint()`](https://rdrr.io/r/stats/confint.html), and several
-  accessor methods.
-
-- Added a pkgdown site configuration, GitHub Actions workflow for
-  publishing the site to GitHub Pages, and the pkgdown site URL to
-  `DESCRIPTION`. The Articles menu links to the technical details
-  vignette PDF.
-
-- Added `pkgdown` to `Suggests`.
-
-- Updated GitHub Actions workflows to use `actions/checkout@v5`
-  (Node.js 24) and modernised the test-coverage workflow to the current
-  r-lib template.
-
-- Added alt text to README images and download badges so the pkgdown
-  home page passes accessibility checks while retaining the MRC logo.
-
-- Removed the AppVeyor CI badge and references (`appveyor.yml`
-  `.Rbuildignore` entry, `skip_on_appveyor()` in tests, and the
-  cran-comments test environment), as the project now relies on GitHub
-  Actions.
-
-- Bumped the minimum R version to 4.1.0.
-
-- Added `.posit` to `.Rbuildignore` so local Positron metadata is not
-  included in package builds.
-
-- Migrated the test suite to the testthat 3rd edition (added
-  `Config/testthat/edition: 3` and `testthat (>= 3.0.0)`), removing
-  deprecated `context()` calls, replacing `expect_is()` and
-  [`is.ggplot()`](https://ggplot2.tidyverse.org/reference/is_tests.html)
-  with `expect_s3_class()`, `expect_type()`, and base class checks, and
-  narrowing the unmatched-`inits` warning test to assert the intended
-  warning only.
+### Minor improvements
 
 - [`plot.ranef.mjoint()`](https://graemeleehickey.github.io/joineRML/reference/plot.ranef.mjoint.md)
-  now uses `geom_errorbar(orientation = "y")` instead of deprecated
+  now uses `geom_errorbar(orientation = "y")` instead of the deprecated
   [`geom_errorbarh()`](https://ggplot2.tidyverse.org/reference/geom_linerange.html),
   eliminating ggplot2 4.0 deprecation warnings.
-
-- Removed obsolete `bindrcpp` from `Suggests` in `DESCRIPTION`; the
-  package has been superseded and is not used anywhere in the codebase.
-
-- Replaced `1:n`-style sequences with
-  [`seq_len()`](https://rdrr.io/r/base/seq.html) and
-  [`seq_along()`](https://rdrr.io/r/base/seq.html) in iteration paths
-  that could otherwise iterate incorrectly over a zero-length object.
-
-- Bumped `RoxygenNote` to 7.3.3 to match the installed version.
 
 - [`simData()`](https://graemeleehickey.github.io/joineRML/reference/simData.md)
   now reports the simulated event rate via
   [`message()`](https://rdrr.io/r/base/message.html) rather than
-  [`cat()`](https://rdrr.io/r/base/cat.html), so the output can be
-  suppressed.
-
-- [`summary()`](https://rdrr.io/r/base/summary.html) documentation in
-  [`mjoint()`](https://graemeleehickey.github.io/joineRML/reference/mjoint.md)
-  now refers to the `bootSE` argument by name
-  (`summary(fit_obj, bootSE = boot_obj)`).
+  [`cat()`](https://rdrr.io/r/base/cat.html), so output can be
+  suppressed with
+  [`suppressMessages()`](https://rdrr.io/r/base/message.html).
 
 - [`vcov.mjoint()`](https://graemeleehickey.github.io/joineRML/reference/vcov.mjoint.md)
   now warns when it falls back to the Moore-Penrose pseudo-inverse, as
@@ -111,8 +50,9 @@
   and
   [`dynLong()`](https://graemeleehickey.github.io/joineRML/reference/dynLong.md).
 
-- Removed empty test body for `"argument not a summary.mjoint object"`
-  in `test-inputs.R`.
+### Dependency changes
+
+- Minimum R version raised to 4.1.0.
 
 ## joineRML 0.4.7
 
