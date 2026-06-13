@@ -1,52 +1,28 @@
-# joineRML 0.4.7.9000
+# joineRML 0.4.8
 
 ## Bug fixes
 
 -   `bootSE()` parallel branch condition was `ncores >= 1L` (always `TRUE`), making the serial code path with the progress bar unreachable. Corrected to `ncores > 1L`.
 
--   `mjoint()` now throttles the number of threads used by `RcppArmadillo` during the MCEM algorithm (restored on exit), so the previously imported `armadillo_throttle_cores()` and `armadillo_reset_cores()` functions are actually invoked.
+-   `mjoint()` now correctly throttles the number of threads used by `RcppArmadillo` during the MCEM algorithm via `armadillo_throttle_cores()` (restored on exit).
 
 -   `simData()` now uses `drop = FALSE` when subsetting the random effects matrices in the Gompertz (`model = "intslope"`) survival-time calculation, preventing a latent dimension-dropping error when only a single subject remains in the branch.
 
 -   Internal initial-value calculation for the survival sub-model (`initsSurv()`) no longer relies on a leaked loop variable when indexing `timeVar`; it now uses the (outcome-invariant) first time variable explicitly in the balanced-data case.
 
-## Housekeeping
+## Minor improvements
 
--   Added test coverage for the dynamic prediction functions (`dynSurv()` and `dynLong()`, including first-order and simulated prediction, `u`/`horizon` arguments, input validation, and print methods), their plot methods (`plot.dynSurv()` and `plot.dynLong()`), `print.summary.mjoint()`, `baseHaz()`, `confint()`, and several accessor methods.
+-   `plot.ranef.mjoint()` now uses `geom_errorbar(orientation = "y")` instead of the deprecated `geom_errorbarh()`, eliminating ggplot2 4.0 deprecation warnings.
 
--   Added a pkgdown site configuration, GitHub Actions workflow for publishing the site to GitHub Pages, and the pkgdown site URL to `DESCRIPTION`. The Articles menu links to the technical details vignette PDF.
-
--   Added `pkgdown` to `Suggests`.
-
--   Updated GitHub Actions workflows to use `actions/checkout@v5` (Node.js 24) and modernised the test-coverage workflow to the current r-lib template.
-
--   Added alt text to README images and download badges so the pkgdown home page passes accessibility checks while retaining the MRC logo.
-
--   Removed the AppVeyor CI badge and references (`appveyor.yml` `.Rbuildignore` entry, `skip_on_appveyor()` in tests, and the cran-comments test environment), as the project now relies on GitHub Actions.
-
--   Bumped the minimum R version to 4.1.0.
-
--   Added `.posit` to `.Rbuildignore` so local Positron metadata is not included in package builds.
-
--   Migrated the test suite to the testthat 3rd edition (added `Config/testthat/edition: 3` and `testthat (>= 3.0.0)`), removing deprecated `context()` calls, replacing `expect_is()` and `is.ggplot()` with `expect_s3_class()`, `expect_type()`, and base class checks, and narrowing the unmatched-`inits` warning test to assert the intended warning only.
-
--   `plot.ranef.mjoint()` now uses `geom_errorbar(orientation = "y")` instead of deprecated `geom_errorbarh()`, eliminating ggplot2 4.0 deprecation warnings.
-
--   Removed obsolete `bindrcpp` from `Suggests` in `DESCRIPTION`; the package has been superseded and is not used anywhere in the codebase.
-
--   Replaced `1:n`-style sequences with `seq_len()` and `seq_along()` in iteration paths that could otherwise iterate incorrectly over a zero-length object.
-
--   Bumped `RoxygenNote` to 7.3.3 to match the installed version.
-
--   `simData()` now reports the simulated event rate via `message()` rather than `cat()`, so the output can be suppressed.
-
--   `summary()` documentation in `mjoint()` now refers to the `bootSE` argument by name (`summary(fit_obj, bootSE = boot_obj)`).
+-   `simData()` now reports the simulated event rate via `message()` rather than `cat()`, so output can be suppressed with `suppressMessages()`.
 
 -   `vcov.mjoint()` now warns when it falls back to the Moore-Penrose pseudo-inverse, as the approximate standard errors may be unreliable in that case.
 
 -   Fixed documentation typos: "left hand-hand side" in `mjoint()`, "comprised on" in the package description, and "The choice os" in `dynSurv()` and `dynLong()`.
 
--   Removed empty test body for `"argument not a summary.mjoint object"` in `test-inputs.R`.
+## Dependency changes
+
+-   Minimum R version raised to 4.1.0.
 
 # joineRML 0.4.7
 
