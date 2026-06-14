@@ -2,6 +2,8 @@
 
 ## joineRML 0.4.8
 
+CRAN release: 2026-06-14
+
 ### Bug fixes
 
 - [`bootSE()`](https://graemeleehickey.github.io/joineRML/reference/bootSE.md)

@@ -28,7 +28,7 @@
 ## Citation
 
 Source:
-[`inst/CITATION`](https://github.com/graemeleehickey/joineRML/blob/master/inst/CITATION)
+[`inst/CITATION`](https://github.com/graemeleehickey/joineRML/blob/v0.4.8/inst/CITATION)
 
 G.L. Hickey, P. Philipson, A. Jorgensen and R. Kolamunnage-Dona.
 joineRML: a joint model and software package for time-to-event and
