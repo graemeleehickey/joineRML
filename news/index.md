@@ -45,6 +45,15 @@
 - Dynamic survival predictions now reject non-positive or non-finite
   horizons and non-finite explicit prediction times.
 
+### Website improvements
+
+- The package website now offers light, dark, and automatic colour modes
+  through a navigation-bar selector, with matching colours for R code
+  ([\#78](https://github.com/graemeleehickey/joineRML/issues/78)).
+- The README now displays a GPL-3 licence badge alongside its existing
+  DOI, CRAN, download, package-check, and coverage badges
+  ([\#79](https://github.com/graemeleehickey/joineRML/issues/79)).
+
 ### Documentation fixes
 
 - Corrected the
