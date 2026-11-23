@@ -101,6 +101,8 @@ A list with the following components. \describe{
   \item{\code{finalnMC}}{the number of Monte Carlo samples requested for the final likelihood evaluation and, when available, the post-fit statistics.}
 
   \item{\code{call}}{the matched call.}
+
+  \item{\code{seed}}{the supplied random seed, or \code{NULL} if the existing R random-number state was used.}
   
   \item{\code{inits}}{the initial values passed as an argument in the
   \code{mjoint} function.}

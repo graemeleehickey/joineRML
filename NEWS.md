@@ -1,5 +1,9 @@
 # joineRML 0.4.9
 
+## New features
+
+- `mjoint()` now accepts an optional `seed` argument for reproducible model fitting, including Monte Carlo integration and post-fit calculations. The previous R random-number state is restored when a seed is supplied. The default `seed = NULL` retains the existing behaviour (#5).
+
 ## Bug fixes
 
 - Longitudinal and survival records are now matched explicitly by subject ID, independently of row order or factor-level order. Missing IDs, unmatched subject sets, duplicate survival records, and missing survival-model values are rejected before fitting.

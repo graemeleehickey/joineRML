@@ -131,6 +131,18 @@
 #'   }}
 #'
 #'   }
+#' @param seed an optional non-negative integer used to initialise random-number
+#'   generation once for the whole fit, including post-fit calculations. The
+#'   default, \code{NULL}, uses the current R random-number state as before.
+#'   When a seed is supplied, the previous state is restored on exit, including
+#'   after an error. Repeated fits with the same seed, data, settings, R
+#'   random-number generator, and software versions give the same results.
+#'   Halton integration is deterministic; the seed is also passed to Sobol
+#'   scrambling, where supported by \pkg{randtoolbox}. This argument does not
+#'   control subsequent calls to \code{\link{bootSE}}, \code{\link{dynLong}},
+#'   or \code{\link{dynSurv}}. Restoration uses \code{.Random.seed}; the cached
+#'   normal variate used by \code{normal.kind = "Box-Muller"} is not restored
+#'   (see \code{\link{Random}}).
 #' @param ... options passed to the \code{control} argument.
 #'
 #' @details Function \code{mjoint} fits joint models for time-to-event and
@@ -332,7 +344,7 @@
 #' }
 mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NULL,
                    timeVar, inits = NULL, verbose = FALSE, pfs = TRUE,
-                   control = list(), ...) {
+                   control = list(), seed = NULL, ...) {
 
   #*****************************************************
   # Preamble
@@ -341,10 +353,35 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
   time.start <- Sys.time()
   Call <- match.call()
 
+  if (!is.null(seed)) {
+    if (!is.numeric(seed) || is.complex(seed) || length(seed) != 1L ||
+        !is.finite(seed) || seed < 0 || seed > .Machine$integer.max ||
+        seed != trunc(seed)) {
+      stop("'seed' must be NULL or a single non-negative integer no greater than .Machine$integer.max")
+    }
+    seed <- as.integer(seed)
+    Call$seed <- seed
+    had.seed <- exists(".Random.seed", envir = .GlobalEnv, inherits = FALSE)
+    if (had.seed) {
+      old.seed <- get(".Random.seed", envir = .GlobalEnv, inherits = FALSE)
+    }
+    on.exit({
+      if (had.seed) {
+        assign(".Random.seed", old.seed, envir = .GlobalEnv)
+      } else {
+        rm(".Random.seed", envir = .GlobalEnv)
+      }
+    }, add = TRUE)
+    # Seed once so successive EM iterations use successive random draws.
+    # RcppArmadillo's antithetic sampler uses R's random-number generator too.
+    set.seed(seed)
+  }
+
   # Limit the number of threads used by RcppArmadillo (restored on exit) to
   # respect CRAN's 2-core policy and avoid oversubscription
   RcppArmadillo::armadillo_throttle_cores()
-  on.exit(RcppArmadillo::armadillo_reset_cores(), add = TRUE)
+  # Reset threads before restoring the seed: its Rcpp wrapper enters R's RNG.
+  on.exit(RcppArmadillo::armadillo_reset_cores(), add = TRUE, after = FALSE)
 
   # Formulas do not need to be given as lists if K=1
   if (!is.list(formLongFixed)) {
@@ -758,7 +795,7 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
 
     stepUpdate <- stepEM(theta = theta, l = l, t = t, z = z,
                          nMC = nMC, verbose = verbose, gammaOpt = con$gammaOpt,
-                         pfs = FALSE, type = con$type)
+                         pfs = FALSE, type = con$type, seed = seed)
     theta.new <- stepUpdate$theta.new
     log.lik.new <- stepUpdate$ll
     ll.hx[it] <- log.lik.new
@@ -813,7 +850,7 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
         message("Calculating post model fit statistics...\n")
         postFitCalcs <- stepEM(theta = theta, l = l, t = t, z = z,
                                nMC = nMC, verbose = FALSE, gammaOpt = "NR",
-                               pfs = TRUE, type = con$type)
+                               pfs = TRUE, type = con$type, seed = seed)
       }
       break
     } else {
@@ -832,7 +869,8 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
   } else {
     log.lik <- stepEM(theta = theta, l = l, t = t, z = z,
                       nMC = nMC, verbose = FALSE, gammaOpt = con$gammaOpt,
-                      pfs = FALSE, type = con$type, likelihood.only = TRUE)$ll
+                      pfs = FALSE, type = con$type, likelihood.only = TRUE,
+                      seed = seed)$ll
   }
 
   # History
@@ -892,6 +930,7 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
     out$dmats <- list(l = l, t = t, z = z)
   }
   out$call <- Call
+  out["seed"] <- list(seed)
   out$inits <- inits
   out$inits.long <- inits.long
   out$inits.surv <- inits.surv

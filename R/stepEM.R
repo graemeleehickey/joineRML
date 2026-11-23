@@ -2,7 +2,7 @@
 #' @importFrom randtoolbox sobol halton
 #' @importFrom MASS mvrnorm
 stepEM <- function(theta, l, t, z, nMC, verbose, gammaOpt, pfs, type,
-                   likelihood.only = FALSE) {
+                   likelihood.only = FALSE, seed = NULL) {
 
   # Input parameter estimates
   D <- theta$D
@@ -84,7 +84,8 @@ stepEM <- function(theta, l, t, z, nMC, verbose, gammaOpt, pfs, type,
     bi.y <- bSim(floor(nMC / 2),  Mi, Ai)
   } else if (type %in% c("sobol", "halton")) {
     if (type == "sobol") {
-      Zq <- randtoolbox::sobol(nMC, dim = sum(r), normal = TRUE, scrambling = 1)
+      Zq <- randtoolbox::sobol(nMC, dim = sum(r), normal = TRUE, scrambling = 1,
+                              seed = seed)
     } else if (type == "halton") {
       Zq <- randtoolbox::halton(nMC, dim = sum(r), normal = TRUE)
     }
