@@ -138,6 +138,13 @@ models using the following methodologies:
   (linear) time-varying process, and the methodology of Austin (2012) is
   used to simulate the failure time.
 
+Observed times are the minimum of the generated event and censoring
+times, including administrative censoring when requested. A finite event
+at or before the censoring time is recorded as an event; an infinite
+event time is not. Datasets with no observed events are returned without
+altering any subject's status, although they cannot be fitted with
+[`mjoint`](https://graemeleehickey.github.io/joineRML/reference/mjoint.md).
+
 ## References
 
 Austin PC. Generating survival times to simulate Cox proportional
@@ -168,5 +175,5 @@ D[1, 3] <- D[3, 1] <- 0.01
 
 sim <- simData(n = 250, beta = beta, D = D, sigma2 = c(0.25, 0.25),
                censlam = exp(-0.2), gamma.y = c(-.2, 1), ntms = 8)
-#> 24.4% experienced event
+#> 24% experienced event
 ```

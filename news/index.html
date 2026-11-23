@@ -43,6 +43,21 @@
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.4.9" id="joinerml-049">joineRML 0.4.9<a class="anchor" aria-label="anchor" href="#joinerml-049"></a></h2>
 <div class="section level3">
+<h3 id="bug-fixes-0-4-9">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-4-9"></a></h3>
+<ul><li>Longitudinal and survival records are now matched explicitly by subject ID, independently of row order or factor-level order. Missing IDs, unmatched subject sets, duplicate survival records, and missing survival-model values are rejected before fitting.</li>
+<li>Simulated dynamic predictions now use the correct Metropolis-Hastings proposal-density correction, evaluated on the log scale. This changes the distribution of the sampled random effects and can change predicted values and intervals.</li>
+<li>The default <code>"sas"</code> convergence criterion now uses absolute parameter changes consistently. Models can require additional iterations and return different estimates when the previous rule stopped prematurely.</li>
+<li>Simulated event indicators now preserve censoring for every subject, including the first subject and subjects with infinite event times. Datasets with no events are retained, and <code><a href="../reference/mjoint.html">mjoint()</a></code> reports clearly that at least one observed event is required.</li>
+<li>Fitted values and residuals now retain the correct lengths and observation order when subjects have equal numbers of measurements.</li>
+<li>Bootstrap standard errors and confidence intervals now support models with a single longitudinal fixed-effect coefficient or a single survival association coefficient.</li>
+<li>Intercept-only longitudinal fixed-effects models now retain the dimensions needed for estimation, coefficient histories, and approximate standard errors.</li>
+<li>Gompertz survival-time simulation now handles zero subject-specific time slopes using the exponential limit and improves numerical accuracy near zero.</li>
+<li>The reported joint log-likelihood is now evaluated at the returned coefficients, including when post-fit statistics are omitted or the model has not converged. This also corrects the likelihood used in AIC and BIC. The iteration history continues to record likelihoods before each parameter update.</li>
+<li>
+<code><a href="https://rdrr.io/r/stats/AIC.html" class="external-link">BIC()</a></code>, <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code>, and <code><a href="https://generics.r-lib.org/reference/glance.html" class="external-link">glance()</a></code> now consistently use the number of subjects for the BIC penalty. The <code>nobs</code> attribute of <code><a href="https://rdrr.io/r/stats/logLik.html" class="external-link">logLik()</a></code> therefore reports subjects rather than longitudinal measurements.</li>
+<li>Dynamic survival predictions now reject non-positive or non-finite horizons and non-finite explicit prediction times.</li>
+</ul></div>
+<div class="section level3">
 <h3 id="documentation-fixes-0-4-9">Documentation fixes<a class="anchor" aria-label="anchor" href="#documentation-fixes-0-4-9"></a></h3>
 <ul><li>Corrected the <code><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy()</a></code> examples in the broom vignette and help page to use <code>conf.int = TRUE</code>, so the returned tables include confidence intervals. Also corrected the vignette’s bootstrap example to use <code>bootSE</code>. Thanks to <a href="https://github.com/eribul" class="external-link">@eribul</a> for reporting the confidence-interval issue (<a href="https://github.com/graemeleehickey/joineRML/issues/80" class="external-link">#80</a>).</li>
 </ul></div>

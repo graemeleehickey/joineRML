@@ -104,7 +104,7 @@ list must be equal to <code>formLongFixed</code>.</p></dd>
 <dt id="arg-formsurv">formSurv<a class="anchor" aria-label="anchor" href="#arg-formsurv"></a></dt>
 <dd><p>a formula specifying the proportional hazards regression
 model (not including the latent association structure). See
-<code><a href="https://rdrr.io/pkg/survival/man/coxph.html" class="external-link">coxph</a></code> for examples.</p></dd>
+<code><a href="https://rdrr.io/pkg/survival/man/coxph.html" class="external-link">coxph</a></code> for examples. The response must be right-censored survival data with at least one observed event.</p></dd>
 
 
 <dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
@@ -115,13 +115,15 @@ multiple longitudinal outcomes with different measurement protocols. If the
 multiple longitudinal outcomes are measured at the same time points for
 each patient, then a <code>data.frame</code> object can be given instead of a
 <code>list</code>. It is assumed that each data frame is in long format. <code>tibble</code>
-objects are automatically converted to plain <code>data.frame</code> objects.</p></dd>
+objects are automatically converted to plain <code>data.frame</code> objects.
+Subject IDs must be non-missing and identify the same subjects in every dataset. Subjects are matched by their ID labels, independently of row order or factor-level order.</p></dd>
 
 
 <dt id="arg-survdata">survData<a class="anchor" aria-label="anchor" href="#arg-survdata"></a></dt>
 <dd><p>a <code>data.frame</code> in which to interpret the variables named
 in the <code>formSurv</code>. This is optional, and if not given, the required
-data is searched for in <code>data</code>. Default is <code>survData=NULL</code>.</p></dd>
+data is searched for in <code>data</code>. Default is <code>survData=NULL</code>.
+If supplied, it must contain exactly one record per subject and the same subject IDs as the longitudinal data. Missing values in variables used by the survival model are not supported.</p></dd>
 
 
 <dt id="arg-timevar">timeVar<a class="anchor" aria-label="anchor" href="#arg-timevar"></a></dt>

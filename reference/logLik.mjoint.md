@@ -24,7 +24,9 @@ logLik(object, ...)
 
 Returns an object of class `logLik`. This is a number with two
 attributes: `df` (degrees of freedom), giving the number of parameters
-in the model, and `nobs`, the number of observations used in estimation.
+in the model, and `nobs`, the number of subjects used in estimation.
+Consequently, `BIC` uses the number of subjects in its penalty, rather
+than the total number of longitudinal measurements.
 
 ## References
 

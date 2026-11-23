@@ -68,8 +68,9 @@ of time-to-event and multivariate longitudinal data.</p></dd>
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>Returns an object of class <code>logLik</code>. This is a number with two
   attributes: <code>df</code> (degrees of freedom), giving the number of parameters
-  in the model, and <code>nobs</code>, the number of observations used in
-  estimation.</p>
+  in the model, and <code>nobs</code>, the number of subjects used in estimation.
+  Consequently, <code>BIC</code> uses the number of subjects in its penalty, rather
+  than the total number of longitudinal measurements.</p>
     </div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>

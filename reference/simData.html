@@ -182,7 +182,8 @@ maximum event time.</p></dd>
 
 
 
-</dl></div>
+</dl><p>Observed times are the minimum of the generated event and censoring times, including administrative censoring when requested. A finite event at or before the censoring time is recorded as an event; an infinite event time is not. Datasets with no observed events are returned without altering any subject's status, although they cannot be fitted with <code><a href="mjoint.html">mjoint</a></code>.</p>
+    </div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
     <p>Austin PC. Generating survival times to simulate Cox proportional hazards
@@ -211,7 +212,7 @@ measurements and event time data. <em>Biostatistics.</em> 2000; <strong>1(4)</st
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">sim</span> <span class="op">&lt;-</span> <span class="fu">simData</span><span class="op">(</span>n <span class="op">=</span> <span class="fl">250</span>, beta <span class="op">=</span> <span class="va">beta</span>, D <span class="op">=</span> <span class="va">D</span>, sigma2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.25</span>, <span class="fl">0.25</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>               censlam <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="op">-</span><span class="fl">0.2</span><span class="op">)</span>, gamma.y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">.2</span>, <span class="fl">1</span><span class="op">)</span>, ntms <span class="op">=</span> <span class="fl">8</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 24.4% experienced event</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 24% experienced event</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

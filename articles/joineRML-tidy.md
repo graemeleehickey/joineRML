@@ -89,9 +89,9 @@ tidy(fit)
     ## # A tibble: 3 × 5
     ##   term    estimate std.error statistic p.value
     ##   <chr>      <dbl>     <dbl>     <dbl>   <dbl>
-    ## 1 age        0.137    0.0661     2.07   0.0382
-    ## 2 gamma_1    2.90     3.74       0.776  0.438 
-    ## 3 gamma_2    3.69     3.37       1.10   0.273
+    ## 1 age        0.137    0.0665     2.05   0.0401
+    ## 2 gamma_1    2.85     3.73       0.763  0.446 
+    ## 3 gamma_2    3.68     3.45       1.07   0.286
 
 By default the `tidy` method returns the estimated coefficients for the
 survival component of the joint model; however, it is possible to
@@ -105,13 +105,13 @@ tidy(fit, component = "longitudinal")
     ## # A tibble: 7 × 5
     ##   term                estimate std.error statistic  p.value
     ##   <chr>                  <dbl>     <dbl>     <dbl>    <dbl>
-    ## 1 (Intercept)_1        2.52       0.163     15.4   1.07e-53
-    ## 2 time_1               0.00959    0.0310     0.309 7.57e- 1
-    ## 3 sex_1                0.0336     0.230      0.146 8.84e- 1
-    ## 4 hsStentless valve_1  0.0823     0.198      0.416 6.77e- 1
-    ## 5 (Intercept)_2        4.99       0.0829    60.2   0       
-    ## 6 time_2               0.0260     0.0129     2.02  4.36e- 2
-    ## 7 sex_2               -0.197      0.209     -0.941 3.47e- 1
+    ## 1 (Intercept)_1        2.52       0.165     15.2   1.70e-52
+    ## 2 time_1               0.00951    0.0307     0.310 7.56e- 1
+    ## 3 sex_1                0.0344     0.231      0.149 8.82e- 1
+    ## 4 hsStentless valve_1  0.0825     0.199      0.415 6.78e- 1
+    ## 5 (Intercept)_2        4.99       0.0818    61.1   0       
+    ## 6 time_2               0.0258     0.0129     2.00  4.58e- 2
+    ## 7 sex_2               -0.197      0.211     -0.934 3.50e- 1
 
 It is also possible to require confidence intervals to be calculated by
 setting `conf.int = TRUE`, and modify the confidence level by setting
@@ -125,9 +125,9 @@ tidy(fit, conf.int = TRUE)
     ## # A tibble: 3 × 7
     ##   term    estimate std.error statistic p.value conf.low conf.high
     ##   <chr>      <dbl>     <dbl>     <dbl>   <dbl>    <dbl>     <dbl>
-    ## 1 age        0.137    0.0661     2.07   0.0382  0.00742     0.267
-    ## 2 gamma_1    2.90     3.74       0.776  0.438  -4.42       10.2  
-    ## 3 gamma_2    3.69     3.37       1.10   0.273  -2.91       10.3
+    ## 1 age        0.137    0.0665     2.05   0.0401  0.00617     0.267
+    ## 2 gamma_1    2.85     3.73       0.763  0.446  -4.47       10.2  
+    ## 3 gamma_2    3.68     3.45       1.07   0.286  -3.08       10.4
 
 ``` r
 
@@ -137,9 +137,9 @@ tidy(fit, conf.int = TRUE, conf.level = 0.99)
     ## # A tibble: 3 × 7
     ##   term    estimate std.error statistic p.value conf.low conf.high
     ##   <chr>      <dbl>     <dbl>     <dbl>   <dbl>    <dbl>     <dbl>
-    ## 1 age        0.137    0.0661     2.07   0.0382  -0.0333     0.307
-    ## 2 gamma_1    2.90     3.74       0.776  0.438   -6.73      12.5  
-    ## 3 gamma_2    3.69     3.37       1.10   0.273   -4.98      12.4
+    ## 1 age        0.137    0.0665     2.05   0.0401  -0.0348     0.308
+    ## 2 gamma_1    2.85     3.73       0.763  0.446   -6.77      12.5  
+    ## 3 gamma_2    3.68     3.45       1.07   0.286   -5.20      12.6
 
 The standard errors reported by default are based on the empirical
 information matrix, as in `mjoint`. It is of course possible to use
@@ -187,12 +187,12 @@ head(preds[, c("num", "log.grad", ".fitted_grad_0", ".fitted_grad_1", ".resid_gr
     ## # A tibble: 6 × 6
     ##   num   log.grad .fitted_grad_0 .fitted_grad_1 .resid_grad_0 .resid_grad_1
     ##   <fct>    <dbl>          <dbl>          <dbl>         <dbl>         <dbl>
-    ## 1 1         2.30           2.60           2.42       -0.301        -0.114 
-    ## 2 1         2.30           2.64           2.45       -0.337        -0.149 
-    ## 3 1         2.30           2.65           2.46       -0.346        -0.158 
-    ## 4 2         2.64           2.58           2.45        0.0563        0.188 
-    ## 5 2         2.20           2.59           2.46       -0.394        -0.263 
-    ## 6 2         2.48           2.60           2.47       -0.116         0.0152
+    ## 1 1         2.30           2.60           2.42        -0.302        -0.113
+    ## 2 1         2.30           2.64           2.45        -0.337        -0.148
+    ## 3 1         2.30           2.65           2.46        -0.346        -0.158
+    ## 4 10        2.20           2.56           2.40        -0.364        -0.201
+    ## 5 10        2.20           2.60           2.43        -0.398        -0.236
+    ## 6 11        3.69           2.61           2.65         1.08          1.04
 
 ``` r
 
@@ -202,12 +202,12 @@ head(preds[, c("num", "log.lvmi", ".fitted_lvmi_0", ".fitted_lvmi_1", ".resid_lv
     ## # A tibble: 6 × 6
     ##   num   log.lvmi .fitted_lvmi_0 .fitted_lvmi_1 .resid_lvmi_0 .resid_lvmi_1
     ##   <fct>    <dbl>          <dbl>          <dbl>         <dbl>         <dbl>
-    ## 1 1         4.78           4.99           4.75        -0.213        0.0298
-    ## 2 1         4.78           5.09           4.87        -0.308       -0.0869
-    ## 3 1         4.92           5.11           4.90        -0.189        0.0265
-    ## 4 2         4.74           5.16           4.83        -0.413       -0.0827
-    ## 5 2         4.70           5.18           4.86        -0.483       -0.157 
-    ## 6 2         5.06           5.21           4.89        -0.149        0.174
+    ## 1 1         4.78           4.99           4.75       -0.214         0.0292
+    ## 2 1         4.78           5.09           4.87       -0.309        -0.0867
+    ## 3 1         4.92           5.11           4.90       -0.190         0.0267
+    ## 4 10        5.14           5.10           5.06        0.0377        0.0723
+    ## 5 10        5.13           5.19           5.17       -0.0635       -0.0397
+    ## 6 11        5.03           5.00           5.05        0.0303       -0.0263
 
 We can plot the resulting predictions for four distinct individuals:
 
@@ -286,7 +286,7 @@ glance(fit2)
     ## # A tibble: 1 × 5
     ##   sigma2_1 sigma2_2   AIC   BIC logLik
     ##      <dbl>    <dbl> <dbl> <dbl>  <dbl>
-    ## 1    0.516    0.173  342.  369.  -156.
+    ## 1    0.515    0.173  342.  369.  -156.
 
 ### Additional examples
 

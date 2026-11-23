@@ -214,45 +214,45 @@ summary(fit)
 #>      Surv(fuyrs, status) ~ age
 #> Model fit statistics:
 #>    log.Lik      AIC      BIC
-#>  -153.2199 342.4398 374.1414
+#>  -153.2218 342.4435 374.1451
 #> 
 #> Variance Components:
 #> 
 #> Random effects variance covariance matrix
 #>               (Intercept)_1 (Intercept)_2     time_2
-#> (Intercept)_1      0.095334     0.0597210 -0.0051610
-#> (Intercept)_2      0.059721     0.1474500 -0.0049903
-#> time_2            -0.005161    -0.0049903  0.0011149
-#>   Standard Deviations: 0.30876 0.38399 0.03339 
+#> (Intercept)_1     0.0958880     0.0596100 -0.0051222
+#> (Intercept)_2     0.0596100     0.1471500 -0.0049885
+#> time_2           -0.0051222    -0.0049885  0.0011174
+#>   Standard Deviations: 0.30966 0.3836 0.033427 
 #> 
 #> Residual standard errors(s):
 #>  sigma2_1  sigma2_2 
-#> 0.5172559 0.1584235 
+#> 0.5171520 0.1581865 
 #> 
 #> Coefficient Estimates:
 #> 
 #> Longitudinal sub-model:
 #>                       Value Std.Err z-value p-value
-#> (Intercept)_1        2.5217  0.1635 15.4273 <0.0001
-#> time_1               0.0096  0.0310  0.3095  0.7569
-#> sex_1                0.0336  0.2297  0.1463  0.8837
-#> hsStentless valve_1  0.0823  0.1977  0.4160  0.6774
-#> (Intercept)_2        4.9918  0.0829 60.1780 <0.0001
-#> time_2               0.0260  0.0129  2.0183  0.0436
-#> sex_2               -0.1971  0.2095 -0.9406  0.3469
+#> (Intercept)_1        2.5219  0.1654 15.2481 <0.0001
+#> time_1               0.0095  0.0307  0.3102  0.7564
+#> sex_1                0.0344  0.2312  0.1489  0.8817
+#> hsStentless valve_1  0.0825  0.1990  0.4146  0.6784
+#> (Intercept)_2        4.9929  0.0818 61.0612 <0.0001
+#> time_2               0.0258  0.0129  1.9974  0.0458
+#> sex_2               -0.1967  0.2105 -0.9344  0.3501
 #> 
 #> Time-to-event sub-model:
 #>          Value Std.Err z-value p-value
-#> age     0.1370  0.0661  2.0722  0.0382
-#> gamma_1 2.9002  3.7374  0.7760  0.4377
-#> gamma_2 3.6940  3.3674  1.0970  0.2726
+#> age     0.1366  0.0665  2.0527  0.0401
+#> gamma_1 2.8472  3.7330  0.7627  0.4456
+#> gamma_2 3.6801  3.4488  1.0671  0.2859
 #> 
 #> Algorithm Summary:
-#>     Total computational time: 3.8 secs 
-#>     EM algorithm computational time: 3.3 secs 
+#>     Total computational time: 3.3 secs 
+#>     EM algorithm computational time: 2.8 secs 
 #>     Convergence status: converged
 #>     Convergence criterion: sas 
-#>     Final Monte Carlo sample size: 4408 
+#>     Final Monte Carlo sample size: 3674 
 #>     Standard errors calculated using method: approx
 ```
 
@@ -264,43 +264,43 @@ using standard generic functions:
 coef(fit)
 #> $D
 #>               (Intercept)_1 (Intercept)_2       time_2
-#> (Intercept)_1   0.095333626   0.059720959 -0.005160983
-#> (Intercept)_2   0.059720959   0.147450251 -0.004990315
-#> time_2         -0.005160983  -0.004990315  0.001114912
+#> (Intercept)_1    0.09588800   0.059610212 -0.005122220
+#> (Intercept)_2    0.05961021   0.147152034 -0.004988491
+#> time_2          -0.00512222  -0.004988491  0.001117369
 #> 
 #> $beta
 #>       (Intercept)_1              time_1               sex_1 hsStentless valve_1 
-#>         2.521655581         0.009593041         0.033610327         0.082256454 
+#>         2.521878812         0.009511296         0.034415375         0.082506057 
 #>       (Intercept)_2              time_2               sex_2 
-#>         4.991764149         0.026006098        -0.197051981 
+#>         4.992936048         0.025845910        -0.196713101 
 #> 
 #> $sigma2
 #>   sigma2_1   sigma2_2 
-#> 0.26755367 0.02509799 
+#> 0.26744623 0.02502296 
 #> 
 #> $haz
-#> [1] 0.002182250 0.002400415 0.005555151 0.006438931 0.008838809 0.011623950
-#> [7] 0.020378233 0.266977829
+#> [1] 0.002239315 0.002463859 0.005677867 0.006542868 0.008955061 0.011749720
+#> [7] 0.020522447 0.266416490
 #> 
 #> $gamma
 #>       age   gamma_1   gamma_2 
-#> 0.1370243 2.9002188 3.6939946
+#> 0.1365893 2.8471790 3.6800986
 fixef(fit, process = "Longitudinal")
 #>       (Intercept)_1              time_1               sex_1 hsStentless valve_1 
-#>         2.521655581         0.009593041         0.033610327         0.082256454 
+#>         2.521878812         0.009511296         0.034415375         0.082506057 
 #>       (Intercept)_2              time_2               sex_2 
-#>         4.991764149         0.026006098        -0.197051981
+#>         4.992936048         0.025845910        -0.196713101
 fixef(fit, process = "Event")
 #>       age   gamma_1   gamma_2 
-#> 0.1370243 2.9002188 3.6939946
+#> 0.1365893 2.8471790 3.6800986
 head(ranef(fit))
-#>   (Intercept)_1 (Intercept)_2        time_2
-#> 1   -0.18788750   -0.24292275  0.0057824694
-#> 2   -0.13156664   -0.35590447  0.0040375172
-#> 3   -0.04659229    0.02164751  0.0005236704
-#> 4   -0.52437327   -0.63702377  0.0348580781
-#> 5   -0.11962215    0.07643294  0.0093956201
-#> 6    0.24698798    0.34830255 -0.0072942045
+#>    (Intercept)_1 (Intercept)_2       time_2
+#> 1    -0.18893011   -0.24357531  0.005770637
+#> 10   -0.16257082   -0.04703603  0.003013689
+#> 11    0.04615938    0.05514878  0.009264502
+#> 12    0.49281848    0.36760602 -0.028566714
+#> 13    0.36964501    0.32790364 -0.035443210
+#> 14   -0.15438221   -0.56119773  0.018966600
 ```
 
 Although a model fit may indicate convergence, it is generally a good
@@ -480,39 +480,39 @@ summary(fit.joinerml)
 #>      Surv(fuyrs, status) ~ age
 #> Model fit statistics:
 #>    log.Lik      AIC      BIC
-#>  -30.44339 78.88678 94.73758
+#>  -30.42324 78.84648 94.69729
 #> 
 #> Variance Components:
 #> 
 #> Random effects variance covariance matrix
 #>               (Intercept)_1      time_1
-#> (Intercept)_1     0.1357300 -0.00361840
-#> time_1           -0.0036184  0.00085597
-#>   Standard Deviations: 0.36842 0.029257 
+#> (Intercept)_1     0.1357700 -0.00364490
+#> time_1           -0.0036449  0.00087096
+#>   Standard Deviations: 0.36847 0.029512 
 #> 
 #> Residual standard errors(s):
 #>  sigma2_1 
-#> 0.1601212 
+#> 0.1598896 
 #> 
 #> Coefficient Estimates:
 #> 
 #> Longitudinal sub-model:
 #>                Value Std.Err z-value p-value
-#> (Intercept)_1 4.6004  0.4206 10.9375 <0.0001
-#> time_1        0.0271  0.0105  2.5796  0.0099
-#> age_1         0.0059  0.0066  0.8989  0.3687
+#> (Intercept)_1 4.6021  0.4178 11.0163 <0.0001
+#> time_1        0.0271  0.0105  2.5743  0.0100
+#> age_1         0.0059  0.0066  0.8982  0.3691
 #> 
 #> Time-to-event sub-model:
 #>          Value Std.Err z-value p-value
-#> age     0.1190  0.0461  2.5791  0.0099
-#> gamma_1 3.4878  1.6511  2.1124  0.0347
+#> age     0.1190  0.0462  2.5761  0.0100
+#> gamma_1 3.4823  1.6559  2.1030  0.0355
 #> 
 #> Algorithm Summary:
-#>     Total computational time: 1.5 secs 
-#>     EM algorithm computational time: 1.3 secs 
+#>     Total computational time: 1.6 secs 
+#>     EM algorithm computational time: 1.5 secs 
 #>     Convergence status: converged
 #>     Convergence criterion: sas 
-#>     Final Monte Carlo sample size: 2191 
+#>     Final Monte Carlo sample size: 3784 
 #>     Standard errors calculated using method: approx
 ```
 

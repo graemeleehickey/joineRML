@@ -48,6 +48,8 @@ mjoint(
   a formula specifying the proportional hazards regression model (not
   including the latent association structure). See
   [`coxph`](https://rdrr.io/pkg/survival/man/coxph.html) for examples.
+  The response must be right-censored survival data with at least one
+  observed event.
 
 - data:
 
@@ -59,12 +61,18 @@ mjoint(
   for each patient, then a `data.frame` object can be given instead of a
   `list`. It is assumed that each data frame is in long format. `tibble`
   objects are automatically converted to plain `data.frame` objects.
+  Subject IDs must be non-missing and identify the same subjects in
+  every dataset. Subjects are matched by their ID labels, independently
+  of row order or factor-level order.
 
 - survData:
 
   a `data.frame` in which to interpret the variables named in the
   `formSurv`. This is optional, and if not given, the required data is
-  searched for in `data`. Default is `survData=NULL`.
+  searched for in `data`. Default is `survData=NULL`. If supplied, it
+  must contain exactly one record per subject and the same subject IDs
+  as the longitudinal data. Missing values in variables used by the
+  survival model are not supported.
 
 - timeVar:
 

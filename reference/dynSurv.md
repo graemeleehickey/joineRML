@@ -65,7 +65,8 @@ dynSurv(
   is the last known follow-up time where the patient had not yet
   experienced the event. Default is `horizon=NULL`. If `horizon` is
   non-`NULL`, then the output will be reported still in terms of
-  absolute time (from origin), `u`.
+  absolute time (from origin), `u`. Supplied horizons must be numeric,
+  finite, and strictly positive.
 
 - type:
 

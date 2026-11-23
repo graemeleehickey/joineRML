@@ -146,12 +146,14 @@ A list with the following components.
 
 - `log.lik`:
 
-  the log-likelihood from the joint model fit.
+  the estimated log-likelihood evaluated at the returned joint model
+  coefficients, including when convergence was not achieved.
 
 - `ll.hx`:
 
-  a vector of the log-likelihood values for each MCEM algorithm
-  interaction.
+  a vector of the estimated log-likelihood values before each MCEM
+  parameter update. The separate `log.lik` component is evaluated after
+  the final update.
 
 - `control`:
 
@@ -162,7 +164,8 @@ A list with the following components.
 
 - `finalnMC`:
 
-  the final number of Monte Carlo samples required prior to convergence.
+  the number of Monte Carlo samples requested for the final likelihood
+  evaluation and, when available, the post-fit statistics.
 
 - `call`:
 

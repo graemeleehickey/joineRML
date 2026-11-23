@@ -201,12 +201,11 @@
 
 
   <dt><code>log.lik</code></dt>
-<dd><p>the log-likelihood from the joint model fit.</p></dd>
+<dd><p>the estimated log-likelihood evaluated at the returned joint model coefficients, including when convergence was not achieved.</p></dd>
 
 
   <dt><code>ll.hx</code></dt>
-<dd><p>a vector of the log-likelihood values for each MCEM
-  algorithm interaction.</p></dd>
+<dd><p>a vector of the estimated log-likelihood values before each MCEM parameter update. The separate <code>log.lik</code> component is evaluated after the final update.</p></dd>
 
 
   <dt><code>control</code></dt>
@@ -215,8 +214,7 @@
 
 
   <dt><code>finalnMC</code></dt>
-<dd><p>the final number of Monte Carlo samples required
-  prior to convergence.</p></dd>
+<dd><p>the number of Monte Carlo samples requested for the final likelihood evaluation and, when available, the post-fit statistics.</p></dd>
 
 
   <dt><code>call</code></dt>
