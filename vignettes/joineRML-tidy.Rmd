@@ -98,8 +98,8 @@ tidy(fit, component = "longitudinal")
 It is also possible to require confidence intervals to be calculated by setting `conf.int = TRUE`, and modify the confidence level by setting the `conf.level` argument:
 
 ```{r tidy-ci}
-tidy(fit, ci = TRUE)
-tidy(fit, ci = TRUE, conf.level = 0.99)
+tidy(fit, conf.int = TRUE)
+tidy(fit, conf.int = TRUE, conf.level = 0.99)
 ```
 
 The standard errors reported by default are based on the empirical information matrix, as in `mjoint`. It is of course possible to use bootstrapped standard errors as follows:
@@ -110,7 +110,7 @@ bSE <- bootSE(fit,
               safe.boot = TRUE, 
               progress = FALSE,
               ncores = 1L)
-tidy(fit, boot_se = bSE, conf.int = TRUE)
+tidy(fit, bootSE = bSE, conf.int = TRUE)
 ```
 
 The results of this example are not included as it would take too long to run for CRAN.

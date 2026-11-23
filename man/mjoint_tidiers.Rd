@@ -111,12 +111,12 @@ tidy(fit)
 tidy(fit, component = "longitudinal")
 
 # Extract the survival fixed effects with confidence intervals
-tidy(fit, ci = TRUE)
+tidy(fit, conf.int = TRUE)
 
 # Extract the survival fixed effects with confidence intervals based on 
 # bootstrapped standard errors
 bSE <- bootSE(fit, nboot = 5, safe.boot = TRUE)
-tidy(fit, bootSE = bSE, ci = TRUE)
+tidy(fit, bootSE = bSE, conf.int = TRUE)
 
 # Augment original data with fitted longitudinal values and residuals
 hvd2 <- augment(fit)
