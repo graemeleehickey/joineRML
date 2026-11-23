@@ -1,3 +1,15 @@
+# joineRML (development version)
+
+## Bug fixes
+
+- Fitted values and residuals now retain the correct lengths and observation order when subjects have equal numbers of measurements.
+- Bootstrap standard errors and confidence intervals now support models with a single longitudinal fixed-effect coefficient or a single survival association coefficient.
+- Intercept-only longitudinal fixed-effects models now retain the dimensions needed for estimation, coefficient histories, and approximate standard errors.
+- Gompertz survival-time simulation now handles zero subject-specific time slopes using the exponential limit and improves numerical accuracy near zero.
+- The reported joint log-likelihood is now evaluated at the returned coefficients, including when post-fit statistics are omitted or the model has not converged. This also corrects the likelihood used in AIC and BIC. The iteration history continues to record likelihoods before each parameter update.
+- `BIC()`, `summary()`, and `glance()` now consistently use the number of subjects for the BIC penalty. The `nobs` attribute of `logLik()` therefore reports subjects rather than longitudinal measurements.
+- Dynamic survival predictions now reject non-positive or non-finite horizons and non-finite explicit prediction times.
+
 # joineRML 0.4.8
 
 ## Bug fixes

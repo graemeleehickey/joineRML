@@ -1,5 +1,27 @@
 library(joineRML)
 
+test_that("prediction horizons are finite, positive, and equivalent to u", {
+  fit <- fit_small_joint()
+  nd <- subset(fit$data[[1]], id == 1)
+  for (horizon in list(-1, 0, Inf, -Inf, NA_real_, NaN, "1", numeric(), c(1, -1))) {
+    expect_error(dynSurv(fit, nd, horizon = horizon, progress = FALSE),
+                 "finite, strictly positive numeric")
+  }
+  for (u in list(Inf, NA_real_, NaN, "5", numeric())) {
+    expect_error(dynSurv(fit, nd, u = u, progress = FALSE), "finite numeric")
+  }
+  tobs <- max(nd$time)
+  horizon <- (max(fit$dmats$t$tj) - tobs) / 2
+  h <- c(horizon / 2, horizon)
+  by.horizon <- dynSurv(fit, nd, horizon = h, progress = FALSE)
+  by.time <- dynSurv(fit, nd, u = tobs + h, progress = FALSE)
+  expect_equal(by.horizon$pred, by.time$pred)
+  expect_true(all(by.horizon$pred$surv >= 0 & by.horizon$pred$surv <= 1))
+  default <- dynSurv(fit, nd, progress = FALSE)
+  expect_equal(default$pred$u[1], tobs)
+  expect_equal(default$pred$surv[1], 1)
+})
+
 test_that("dynSurv first-order prediction", {
   skip_on_cran()
   skip_on_os("mac")

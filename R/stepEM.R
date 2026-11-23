@@ -1,7 +1,8 @@
 #' @keywords internal
 #' @importFrom randtoolbox sobol halton
 #' @importFrom MASS mvrnorm
-stepEM <- function(theta, l, t, z, nMC, verbose, gammaOpt, pfs, type) {
+stepEM <- function(theta, l, t, z, nMC, verbose, gammaOpt, pfs, type,
+                   likelihood.only = FALSE) {
 
   # Input parameter estimates
   D <- theta$D
@@ -140,6 +141,22 @@ stepEM <- function(theta, l, t, z, nMC, verbose, gammaOpt, pfs, type) {
   # Expectation denominator
   den <- lapply(fti, mean)
 
+  # Observed log-likelihood at the input parameter values.
+  fy <- mapply(function(y, x, z, zt, s, nik) {
+    r <- y - (x %*% beta)
+    v <- s + z %*% D %*% zt
+    vinv <- solve(v)
+    -0.5 * (sum(nik) * log(2*pi) +
+              as.numeric(determinant(v, logarithm = TRUE)$modulus) +
+              colSums(t(r) %*% vinv %*% r))
+  },
+  y = yi, x = Xi, z = Zi, zt = Zit, s = Sigmai, nik = nik)
+  ll <- sum(fy + log(unlist(den)))
+
+  if (likelihood.only) {
+    return(list(ll = ll))
+  }
+
   # f(T, delta | b) / den
   pb.yt <- mapply(function(f, d) {
     f / d
@@ -200,11 +217,11 @@ stepEM <- function(theta, l, t, z, nMC, verbose, gammaOpt, pfs, type) {
   #-----------------------------------------------------
 
   # beta
-  rr <- mapply(function(x1, x2, b) {
+  rr <- Map(function(x1, x2, b) {
     x1 - (x2 %*% b)
   },
   x1 = Xtyi, x2 = XtZi, b = Eb)
-  rr.sum <- rowSums(rr)
+  rr.sum <- Reduce("+", rr)
 
   beta.new <- as.vector(XtX.inv %*% rr.sum)
   names(beta.new) <- names(beta)
@@ -272,24 +289,9 @@ stepEM <- function(theta, l, t, z, nMC, verbose, gammaOpt, pfs, type) {
   }
 
   #*********************************************************
-  # Post model fit processing: log-likehood + posterior REs
+  # Post model fit processing: posterior REs
   #*********************************************************
 
-  ## Observed log-likelihood (for iteration t-1)
-
-  fy <- mapply(function(y, x, z, zt, s, nik) {
-    # marginal (observed data) likelihood for long. data
-    r <- y - (x %*% beta)
-    v <- s + z %*% D %*% zt
-    vinv <- solve(v)
-    -0.5 * (sum(nik) * log(2*pi) +
-              as.numeric(determinant(v, logarithm = TRUE)$modulus) +
-              colSums(t(r) %*% vinv %*% r))
-
-  },
-  y = yi, x = Xi, z = Zi, zt = Zit, s = Sigmai, nik = nik)
-
-  ll <- sum(fy + log(unlist(den)))
   out <- list("theta.new" = theta.new, "ll" = ll)
 
   #-----------------------------------------------------

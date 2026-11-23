@@ -472,7 +472,7 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
 
     # Model frames
     mf.fixed[[k]] <- model.frame(lfit[[k]]$terms,
-                                 data[[k]][, all.vars(formLongFixed[[k]])])
+                                 data[[k]][, all.vars(formLongFixed[[k]]), drop = FALSE])
 
     # Longitudinal outcomes
     yik[[k]] <- by(model.response(mf.fixed[[k]], "numeric"), data[[k]][, id], as.vector)
@@ -486,7 +486,7 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
 
     # X design matrix (list)
     Xik.list[[k]] <- by(Xik[[k]], Xik[[k]]$id, function(u) {
-      as.matrix(u[, -1])
+      as.matrix(u[, -1, drop = FALSE])
     })
 
     # Sample size for each subject
@@ -498,7 +498,7 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
 
     # Z design matrix (list)
     Zik.list[[k]] <- by(Zik[[k]], Zik[[k]]$id, function(u) {
-      as.matrix(u[, -1])
+      as.matrix(u[, -1, drop = FALSE])
     })
 
   }
@@ -793,8 +793,17 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
 
   }
 
+  # Evaluate the likelihood at the coefficients that are returned.
+  if (conv && pfs) {
+    log.lik <- postFitCalcs$ll
+  } else {
+    log.lik <- stepEM(theta = theta, l = l, t = t, z = z,
+                      nMC = nMC, verbose = FALSE, gammaOpt = con$gammaOpt,
+                      pfs = FALSE, type = con$type, likelihood.only = TRUE)$ll
+  }
+
   # History
-  hx.beta <- sapply(all.iters, function(x) x$beta)
+  hx.beta <- do.call(cbind, lapply(all.iters, function(x) x$beta))
   rownames(hx.beta) <- paste0("long_", rownames(hx.beta))
   hx.gamma <- sapply(all.iters, function(x) x$gamma)
   if ((q + K) == 1) {

@@ -179,16 +179,18 @@ simData <- function(n = 100, ntms = 5, beta = rbind(c(1, 1, 1, 1), c(1, 1, 1, 1)
   cens <- rep(1, n)
 
   U <- runif(n)
+  rate <- exp(theta0 + Vgam + b0k %*% gamma.y)
+  exp.time <- as.vector(-log(U) / rate)
   if (model == "int") {
-    survtime <- -log(U) / exp(theta0 + Vgam + b0k %*% gamma.y)
+    survtime <- exp.time
   } else {
-    ii <- ((theta1 + b1k %*% gamma.y) < 0) &
-      (U < exp(exp(theta0 + Vgam + b0k %*% gamma.y) / (theta1 + b1k %*% gamma.y)))
-    survtime <- rep(0, n)
-    survtime[ii] <- Inf
-    survtime[!ii] <- log(
-      1 - (theta1 + b1k[!ii, , drop = FALSE] %*% gamma.y) * log(U[!ii]) / exp(
-        theta0 + Vgam[!ii] + b0k[!ii, , drop = FALSE] %*% gamma.y)) / (theta1 + b1k[!ii, , drop = FALSE] %*% gamma.y)
+    slope <- as.vector(theta1 + b1k %*% gamma.y)
+    survtime <- rep(Inf, n)
+    zero <- slope == 0
+    survtime[zero] <- exp.time[zero]
+    # Negative slopes can have finite total cumulative hazard and no event.
+    finite <- !zero & slope * exp.time > -1
+    survtime[finite] <- log1p(slope[finite] * exp.time[finite]) / slope[finite]
   }
 
   if (censoring) {

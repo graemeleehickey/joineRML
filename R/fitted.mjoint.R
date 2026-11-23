@@ -53,7 +53,7 @@ fitted.mjoint <- function(object, level = 0, ...) {
   Eb.list <- lapply(rownames(Eb), function(x) {
     Eb[x, ]
   })
-  Zb <- mapply(function(b, z) {
+  Zb <- Map(function(b, z) {
     z %*% t(b)
   },
   b = Eb.list, z = Z)
@@ -61,7 +61,7 @@ fitted.mjoint <- function(object, level = 0, ...) {
   if (level == 0) {
     ri <- Xbeta
   } else if (level == 1) {
-    ri <- mapply(function(y, yhat, z) {
+    ri <- Map(function(yhat, z) {
       yhat + z
     },
     yhat = Xbeta, z = Zb)
@@ -74,7 +74,7 @@ fitted.mjoint <- function(object, level = 0, ...) {
     c(0, cumsum(n))
   })
   for (k in 1:K) {
-    fvals[[k]] <- mapply(function(x, i) {
+    fvals[[k]] <- Map(function(x, i) {
       x[(i[k] + 1):(i[k + 1])]
     },
     x = ri, i = index)

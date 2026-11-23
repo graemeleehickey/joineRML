@@ -32,6 +32,7 @@
 #'   not yet experienced the event. Default is \code{horizon=NULL}. If
 #'   \code{horizon} is non-\code{NULL}, then the output will be reported still
 #'   in terms of absolute time (from origin), \code{u}.
+#'   Supplied horizons must be numeric, finite, and strictly positive.
 #' @param type a character string for whether a first-order
 #'   (\code{type="first-order"}) or Monte Carlo simulation approach
 #'   (\code{type="simulated"}) should be used for the dynamic prediction.
@@ -164,6 +165,12 @@ dynSurv <- function(object, newdata, newSurvData = NULL, u = NULL, horizon = NUL
     stop("Cannot specify 'u' and 'horizon' times simultaneously")
   }
 
+  if (!is.null(horizon) &&
+      (!is.numeric(horizon) || length(horizon) == 0L ||
+       any(!is.finite(horizon)) || any(horizon <= 0))) {
+    stop("'horizon' must contain finite, strictly positive numeric values")
+  }
+
   # Construct u (if needed) + check valid
   if (is.null(u)) {
     if (is.null(horizon)) {
@@ -176,6 +183,9 @@ dynSurv <- function(object, newdata, newSurvData = NULL, u = NULL, horizon = NUL
       u <- horizon + data.t$tobs
     }
   } else { # if u is specified
+    if (!is.numeric(u) || length(u) == 0L || any(!is.finite(u))) {
+      stop("'u' must contain finite numeric values")
+    }
     if (any(u <= data.t$tobs)) {
       stop("Landmark time(s) must be greater than last observation time")
     }
