@@ -248,8 +248,8 @@ summary(fit)
 #> gamma_2 3.6940  3.3674  1.0970  0.2726
 #> 
 #> Algorithm Summary:
-#>     Total computational time: 3.6 secs 
-#>     EM algorithm computational time: 3.2 secs 
+#>     Total computational time: 3.8 secs 
+#>     EM algorithm computational time: 3.4 secs 
 #>     Convergence status: converged
 #>     Convergence criterion: sas 
 #>     Final Monte Carlo sample size: 4408 
@@ -418,24 +418,24 @@ summary(fit.joiner)
 #> 
 #> Random effects joint model
 #>  Data: hvd.jd 
-#>  Log-likelihood: -31.82204 
+#>  Log-likelihood: -30.44117 
 #> 
 #> Longitudinal sub-model fixed effects: log.lvmi ~ time + age                       
-#> (Intercept) 4.608632012
-#> time        0.024900586
-#> age         0.005859118
+#> (Intercept) 4.601687012
+#> time        0.027065527
+#> age         0.005898348
 #> 
-#> Survival sub-model fixed effects: Surv(fuyrs, status) ~ age              
-#> age 0.08714535
+#> Survival sub-model fixed effects: Surv(fuyrs, status) ~ age             
+#> age 0.1192532
 #> 
 #> Latent association:                
-#> gamma_0 2.370214
+#> gamma_0 3.496122
 #> 
 #> Variance components:
-#>         U_0         U_1    Residual 
-#> 0.137706718 0.001018912 0.025353870 
+#>          U_0          U_1     Residual 
+#> 0.1358091795 0.0008925357 0.0254863247 
 #> 
-#> Convergence at iteration: 8 
+#> Convergence at iteration: 43 
 #> 
 #> Number of observations: 144 
 #> Number of groups: 43
@@ -508,8 +508,8 @@ summary(fit.joinerml)
 #> gamma_1 3.4878  1.6511  2.1124  0.0347
 #> 
 #> Algorithm Summary:
-#>     Total computational time: 1 secs 
-#>     EM algorithm computational time: 0.9 secs 
+#>     Total computational time: 1.5 secs 
+#>     EM algorithm computational time: 1.3 secs 
 #>     Convergence status: converged
 #>     Convergence criterion: sas 
 #>     Final Monte Carlo sample size: 2191 

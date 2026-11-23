@@ -1,5 +1,18 @@
 # Changelog
 
+## joineRML (development version)
+
+### Documentation fixes
+
+- Corrected the
+  [`tidy()`](https://generics.r-lib.org/reference/tidy.html) examples in
+  the broom vignette and help page to use `conf.int = TRUE`, so the
+  returned tables include confidence intervals. Also corrected the
+  vignette’s bootstrap example to use `bootSE`. Thanks to
+  [@eribul](https://github.com/eribul) for reporting the
+  confidence-interval issue
+  ([\#80](https://github.com/graemeleehickey/joineRML/issues/80)).
+
 ## joineRML 0.4.8
 
 CRAN release: 2026-06-14

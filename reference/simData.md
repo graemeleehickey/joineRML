@@ -73,8 +73,8 @@ simData(
 - model:
 
   follows the model definition in the
-  [`joint`](https://rdrr.io/pkg/joineR/man/joint.html) function. See
-  **Details** for choices.
+  [`joint`](https://graemeleehickey.github.io/joineR/reference/joint.html)
+  function. See **Details** for choices.
 
 - theta0, theta1:
 

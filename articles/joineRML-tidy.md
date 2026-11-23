@@ -119,27 +119,27 @@ the `conf.level` argument:
 
 ``` r
 
-tidy(fit, ci = TRUE)
+tidy(fit, conf.int = TRUE)
 ```
 
-    ## # A tibble: 3 × 5
-    ##   term    estimate std.error statistic p.value
-    ##   <chr>      <dbl>     <dbl>     <dbl>   <dbl>
-    ## 1 age        0.137    0.0661     2.07   0.0382
-    ## 2 gamma_1    2.90     3.74       0.776  0.438 
-    ## 3 gamma_2    3.69     3.37       1.10   0.273
+    ## # A tibble: 3 × 7
+    ##   term    estimate std.error statistic p.value conf.low conf.high
+    ##   <chr>      <dbl>     <dbl>     <dbl>   <dbl>    <dbl>     <dbl>
+    ## 1 age        0.137    0.0661     2.07   0.0382  0.00742     0.267
+    ## 2 gamma_1    2.90     3.74       0.776  0.438  -4.42       10.2  
+    ## 3 gamma_2    3.69     3.37       1.10   0.273  -2.91       10.3
 
 ``` r
 
-tidy(fit, ci = TRUE, conf.level = 0.99)
+tidy(fit, conf.int = TRUE, conf.level = 0.99)
 ```
 
-    ## # A tibble: 3 × 5
-    ##   term    estimate std.error statistic p.value
-    ##   <chr>      <dbl>     <dbl>     <dbl>   <dbl>
-    ## 1 age        0.137    0.0661     2.07   0.0382
-    ## 2 gamma_1    2.90     3.74       0.776  0.438 
-    ## 3 gamma_2    3.69     3.37       1.10   0.273
+    ## # A tibble: 3 × 7
+    ##   term    estimate std.error statistic p.value conf.low conf.high
+    ##   <chr>      <dbl>     <dbl>     <dbl>   <dbl>    <dbl>     <dbl>
+    ## 1 age        0.137    0.0661     2.07   0.0382  -0.0333     0.307
+    ## 2 gamma_1    2.90     3.74       0.776  0.438   -6.73      12.5  
+    ## 3 gamma_2    3.69     3.37       1.10   0.273   -4.98      12.4
 
 The standard errors reported by default are based on the empirical
 information matrix, as in `mjoint`. It is of course possible to use
@@ -152,7 +152,7 @@ bSE <- bootSE(fit,
               safe.boot = TRUE, 
               progress = FALSE,
               ncores = 1L)
-tidy(fit, boot_se = bSE, conf.int = TRUE)
+tidy(fit, bootSE = bSE, conf.int = TRUE)
 ```
 
 The results of this example are not included as it would take too long
