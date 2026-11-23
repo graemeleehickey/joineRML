@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# joineRML <img src="man/figures/hex.png" width = "175" height = "200" align="right" alt="joineRML hex logo" />
+# joineRML 0.4.9 <img src="man/figures/hex.png" width = "175" height = "200" align="right" alt="joineRML hex logo" />
 
 <!-- badges: start -->
 

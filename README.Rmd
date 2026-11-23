@@ -12,7 +12,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# joineRML <img src="man/figures/hex.png" width = "175" height = "200" align="right" alt="joineRML hex logo" />
+# joineRML 0.4.9 <img src="man/figures/hex.png" width = "175" height = "200" align="right" alt="joineRML hex logo" />
 <!-- badges: start -->
 [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version-last-release/joineRML)](https://cran.r-project.org/package=joineRML)
 [![pkgdown site](https://img.shields.io/badge/pkgdown-joineRML-blue.svg)](https://graemeleehickey.github.io/joineRML/)

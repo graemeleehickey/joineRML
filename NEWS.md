@@ -1,4 +1,4 @@
-# joineRML (development version)
+# joineRML 0.4.9
 
 ## Documentation fixes
 
