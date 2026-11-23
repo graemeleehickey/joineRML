@@ -249,7 +249,7 @@ summary(fit)
 #> 
 #> Algorithm Summary:
 #>     Total computational time: 3.8 secs 
-#>     EM algorithm computational time: 3.4 secs 
+#>     EM algorithm computational time: 3.3 secs 
 #>     Convergence status: converged
 #>     Convergence criterion: sas 
 #>     Final Monte Carlo sample size: 4408 

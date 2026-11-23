@@ -1,4 +1,4 @@
-# joineRML ![joineRML hex logo](reference/figures/hex.png)
+# joineRML 0.4.9 ![joineRML hex logo](reference/figures/hex.png)
 
 `joineRML` is an extension of the joineR package for fitting joint
 models of time-to-event data and multivariate longitudinal data. The
