@@ -1,15 +1,17 @@
 #' @keywords internal
 convMonitor <- function(theta, theta.new, log.lik, log.lik.new, con, verbose) {
 
+  pars <- c("D", "beta", "sigma2", "gamma")
+
   # Absolute parameter change
-  absdelta.pars <- sapply(c("D", "beta", "sigma2", "gamma"), function(i) {
-    theta[[i]] - theta.new[[i]]
+  absdelta.pars <- sapply(pars, function(i) {
+    abs(theta[[i]] - theta.new[[i]])
   })
   max.absdelta.pars <- max(abs(unlist(absdelta.pars)))
   cond1 <- (max.absdelta.pars < con$tol0)
 
   # Relative parameter change
-  reldelta.pars <- sapply(c("D", "beta", "sigma2", "gamma"), function(i) {
+  reldelta.pars <- sapply(pars, function(i) {
     abs(theta[[i]] - theta.new[[i]]) / (abs(theta[[i]]) + con$tol1)
   })
   max.reldelta.pars <- max(unlist(reldelta.pars))
@@ -19,7 +21,7 @@ convMonitor <- function(theta, theta.new, log.lik, log.lik.new, con, verbose) {
   cond3 <- (cond1 || cond2)
 
   # SAS criteria
-  mag <- (abs(unlist(theta[-which(names(theta) == "haz")])) > con$rav)
+  mag <- (abs(unlist(theta[pars])) > con$rav)
   sasdelta <- function() {
     d1 <- unlist(absdelta.pars) < con$tol0 # abs
     d2 <- unlist(reldelta.pars) < con$tol2 # rel

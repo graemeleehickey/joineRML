@@ -52,18 +52,18 @@ residuals.mjoint <- function(object, level = 0, ...) {
   Eb.list <- lapply(rownames(Eb), function(x) {
     Eb[x, ]
   })
-  Zb <- mapply(function(b, z) {
+  Zb <- Map(function(b, z) {
     z %*% t(b)
   },
   b = Eb.list, z = Z)
 
   if (level == 0) {
-    ri <- mapply(function(y, yhat) {
+    ri <- Map(function(y, yhat) {
       y - yhat
     },
     y = Y, yhat = Xbeta)
   } else if (level == 1) {
-    ri <- mapply(function(y, yhat, z) {
+    ri <- Map(function(y, yhat, z) {
       y - yhat - z
     },
     y = Y, yhat = Xbeta, z = Zb)
@@ -76,7 +76,7 @@ residuals.mjoint <- function(object, level = 0, ...) {
     c(0, cumsum(n))
   })
   for (k in 1:K) {
-    resids[[k]] <- mapply(function(x, i) {
+    resids[[k]] <- Map(function(x, i) {
       x[(i[k] + 1):(i[k + 1])]
     },
     x = ri, i = index)

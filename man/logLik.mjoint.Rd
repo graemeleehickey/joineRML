@@ -15,8 +15,9 @@ of time-to-event and multivariate longitudinal data.}
 \value{
 Returns an object of class \code{logLik}. This is a number with two
   attributes: \code{df} (degrees of freedom), giving the number of parameters
-  in the model, and \code{nobs}, the number of observations used in
-  estimation.
+  in the model, and \code{nobs}, the number of subjects used in estimation.
+  Consequently, \code{BIC} uses the number of subjects in its penalty, rather
+  than the total number of longitudinal measurements.
 }
 \description{
 Extract log-likelihood from an \code{mjoint} object.

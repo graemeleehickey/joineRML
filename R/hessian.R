@@ -51,11 +51,11 @@ hessian <- function(theta, l, t, z, m) {
 
   # beta
 
-  sbeta <- mapply(function(x, sinv, y, z, b) {
+  sbeta <- Map(function(x, sinv, y, z, b) {
     (t(x) %*% sinv) %*% (y - x %*% beta - z %*% b)
   },
-  x = Xi, sinv = Sigmai.inv, y = yi, z = Zi, b = Eb,
-  SIMPLIFY = TRUE)
+  x = Xi, sinv = Sigmai.inv, y = yi, z = Zi, b = Eb)
+  sbeta <- do.call(cbind, sbeta)
 
   rownames(sbeta) <- names(beta)
 

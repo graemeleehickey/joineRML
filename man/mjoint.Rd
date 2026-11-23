@@ -31,7 +31,7 @@ list must be equal to \code{formLongFixed}.}
 
 \item{formSurv}{a formula specifying the proportional hazards regression
 model (not including the latent association structure). See
-\code{\link[survival]{coxph}} for examples.}
+\code{\link[survival]{coxph}} for examples. The response must be right-censored survival data with at least one observed event.}
 
 \item{data}{a list of \code{data.frame} objects for each longitudinal outcome
 in which to interpret the variables named in the \code{formLongFixed} and
@@ -40,11 +40,13 @@ multiple longitudinal outcomes with different measurement protocols. If the
 multiple longitudinal outcomes are measured at the same time points for
 each patient, then a \code{data.frame} object can be given instead of a
 \code{list}. It is assumed that each data frame is in long format. \code{tibble}
-objects are automatically converted to plain \code{data.frame} objects.}
+objects are automatically converted to plain \code{data.frame} objects.
+Subject IDs must be non-missing and identify the same subjects in every dataset. Subjects are matched by their ID labels, independently of row order or factor-level order.}
 
 \item{survData}{a \code{data.frame} in which to interpret the variables named
 in the \code{formSurv}. This is optional, and if not given, the required
-data is searched for in \code{data}. Default is \code{survData=NULL}.}
+data is searched for in \code{data}. Default is \code{survData=NULL}.
+If supplied, it must contain exactly one record per subject and the same subject IDs as the longitudinal data. Missing values in variables used by the survival model are not supported.}
 
 \item{timeVar}{a character string indicating the time variable in the linear
 mixed effects model. If there are multiple longitudinal outcomes and the

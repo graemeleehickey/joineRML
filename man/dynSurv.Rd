@@ -50,7 +50,8 @@ essentially equivalent to \code{horizon} + \eqn{t_{obs}}, where
 \eqn{t_{obs}} is the last known follow-up time where the patient had
 not yet experienced the event. Default is \code{horizon=NULL}. If
 \code{horizon} is non-\code{NULL}, then the output will be reported still
-in terms of absolute time (from origin), \code{u}.}
+in terms of absolute time (from origin), \code{u}.
+Supplied horizons must be numeric, finite, and strictly positive.}
 
 \item{type}{a character string for whether a first-order
 (\code{type="first-order"}) or Monte Carlo simulation approach

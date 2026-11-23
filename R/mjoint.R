@@ -19,7 +19,7 @@
 #'   list must be equal to \code{formLongFixed}.
 #' @param formSurv a formula specifying the proportional hazards regression
 #'   model (not including the latent association structure). See
-#'   \code{\link[survival]{coxph}} for examples.
+#'   \code{\link[survival]{coxph}} for examples. The response must be right-censored survival data with at least one observed event.
 #' @param data a list of \code{data.frame} objects for each longitudinal outcome
 #'   in which to interpret the variables named in the \code{formLongFixed} and
 #'   \code{formLongRandom}. The \code{list} structure enables one to include
@@ -28,9 +28,11 @@
 #'   each patient, then a \code{data.frame} object can be given instead of a
 #'   \code{list}. It is assumed that each data frame is in long format. \code{tibble}
 #'   objects are automatically converted to plain \code{data.frame} objects.
+#'   Subject IDs must be non-missing and identify the same subjects in every dataset. Subjects are matched by their ID labels, independently of row order or factor-level order.
 #' @param survData a \code{data.frame} in which to interpret the variables named
 #'   in the \code{formSurv}. This is optional, and if not given, the required
 #'   data is searched for in \code{data}. Default is \code{survData=NULL}.
+#'   If supplied, it must contain exactly one record per subject and the same subject IDs as the longitudinal data. Missing values in variables used by the survival model are not supported.
 #' @param timeVar a character string indicating the time variable in the linear
 #'   mixed effects model. If there are multiple longitudinal outcomes and the
 #'   time variable is labelled differently in each model, then a character
@@ -338,7 +340,6 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
 
   time.start <- Sys.time()
   Call <- match.call()
-  balanced <- FALSE # assume unless proven o/w
 
   # Limit the number of threads used by RcppArmadillo (restored on exit) to
   # respect CRAN's 2-core policy and avoid oversubscription
@@ -347,7 +348,6 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
 
   # Formulas do not need to be given as lists if K=1
   if (!is.list(formLongFixed)) {
-    balanced <- TRUE
     formLongFixed <- list(formLongFixed)
     formLongRandom <- list(formLongRandom)
     K <- 1
@@ -358,15 +358,12 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
   # Data does not need to a list if K=1
   # if K>1 and not a list, assume data balanced
   if (!("list" %in% class(data))) {
-    balanced <- TRUE
     data <- list(data)
     if (K > 1) {
       for (k in 2:K) {
         data[[k]] <- data[[1]]
       }
     }
-  } else {
-    balanced <- (length(unique(data)) == 1)
   }
   if (length(data) != K) {
     stop(paste("The number of datasets expected is K =", K))
@@ -382,7 +379,13 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
   })
 
   id <- as.character(nlme::splitFormula(formLongRandom[[1]], "|")[[2]])[2]
-  n <- length(unique(data[[1]][, id]))
+  for (k in seq_len(K)) {
+    if (!(id %in% names(data[[k]])) || anyNA(data[[k]][[id]])) {
+      stop("Subject IDs must be present and non-missing in every longitudinal dataset")
+    }
+  }
+  subject.ids <- sort(unique(as.character(data[[1]][[id]])))
+  n <- length(subject.ids)
 
   # In case timeVar not a vector when K>1
   if (length(timeVar) == 1 & (K > 1)) {
@@ -392,22 +395,46 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
     stop(paste("The length of timeVar must equal", K))
   }
 
-  # Order the data + id -> factor
+  # Match subjects by their labels, independently of input factor levels.
   for (k in 1:K) {
+    if (!setequal(as.character(data[[k]][[id]]), subject.ids)) {
+      stop("Every subject must have at least one measurement per each outcome")
+    }
+    data[[k]][, id] <- factor(as.character(data[[k]][[id]]), levels = subject.ids)
     data[[k]] <- data[[k]][order(xtfrm(data[[k]][, id]), data[[k]][, timeVar[k]]), ]
-    data[[k]][, id] <- as.factor(data[[k]][, id])
     data[[k]] <- droplevels(data[[k]])
   }
+  balanced <- (length(unique(data)) == 1)
 
-  # Check the same patients measured at least once for each marker
-  if (K > 1) {
-    uniq.ids <- list(sort(unique(data[[1]][, id])))
-    for (k in 2:K) {
-      uniq.ids[[k]] <- sort(unique(data[[k]][, id]))
-      if (!identical(uniq.ids[[k - 1]], uniq.ids[[k]])) {
-        stop("Every subject must have at least one measurement per each outcome")
-      }
-    }
+  if (is.null(survData)) {
+    survData <- data[[1]][!duplicated(data[[1]][, id]), ]
+  }
+  survData <- as.data.frame(survData)
+  if (!(id %in% names(survData)) || anyNA(survData[[id]])) {
+    stop("Subject IDs must be present and non-missing in survData")
+  }
+  surv.ids <- as.character(survData[[id]])
+  if (anyDuplicated(surv.ids)) {
+    stop("survData must contain exactly one record per subject")
+  }
+  if (!setequal(surv.ids, subject.ids)) {
+    stop("survData and the longitudinal data must contain the same subjects")
+  }
+  survData <- survData[match(subject.ids, surv.ids), , drop = FALSE]
+  survData[, id] <- factor(subject.ids, levels = subject.ids)
+
+  # Check the survival model before fitting either sub-model. Omitting rows
+  # here would break the correspondence with the longitudinal observations.
+  mf.surv <- model.frame(formSurv, data = survData, na.action = na.pass)
+  if (anyNA(mf.surv)) {
+    stop("Missing values in the survival model are not supported")
+  }
+  surv.response <- model.response(mf.surv)
+  if (!inherits(surv.response, "Surv") || attr(surv.response, "type") != "right") {
+    stop("The survival response must be a right-censored Surv object")
+  }
+  if (!any(surv.response[, "status"] == 1)) {
+    stop("The joint survival model requires at least one observed event")
   }
 
   #*****************************************************
@@ -472,7 +499,7 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
 
     # Model frames
     mf.fixed[[k]] <- model.frame(lfit[[k]]$terms,
-                                 data[[k]][, all.vars(formLongFixed[[k]])])
+                                 data[[k]][, all.vars(formLongFixed[[k]]), drop = FALSE])
 
     # Longitudinal outcomes
     yik[[k]] <- by(model.response(mf.fixed[[k]], "numeric"), data[[k]][, id], as.vector)
@@ -486,7 +513,7 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
 
     # X design matrix (list)
     Xik.list[[k]] <- by(Xik[[k]], Xik[[k]]$id, function(u) {
-      as.matrix(u[, -1])
+      as.matrix(u[, -1, drop = FALSE])
     })
 
     # Sample size for each subject
@@ -498,23 +525,23 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
 
     # Z design matrix (list)
     Zik.list[[k]] <- by(Zik[[k]], Zik[[k]]$id, function(u) {
-      as.matrix(u[, -1])
+      as.matrix(u[, -1, drop = FALSE])
     })
 
   }
 
   # Flatten lists to length = n
-  yi <- sapply(names(yik[[1]]), function(i) {
+  yi <- sapply(subject.ids, function(i) {
     unlist(lapply(yik, "[[", i))
   },
   USE.NAMES = TRUE, simplify = FALSE)
 
-  Xi <- sapply(names(Xik.list[[1]]), function(i) {
+  Xi <- sapply(subject.ids, function(i) {
     as.matrix(Matrix::bdiag(lapply(Xik.list, "[[", i)))
   },
   USE.NAMES = TRUE, simplify = FALSE)
 
-  Zi <- sapply(names(Zik.list[[1]]), function(i) {
+  Zi <- sapply(subject.ids, function(i) {
     as.matrix(Matrix::bdiag(lapply(Zik.list, "[[", i)))
   },
   USE.NAMES = TRUE, simplify = FALSE)
@@ -539,7 +566,7 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
   x = Xi, z = Zi,
   SIMPLIFY = FALSE)
 
-  nik <- sapply(names(nik.list[[1]]), function(i) {
+  nik <- sapply(subject.ids, function(i) {
     unlist(lapply(nik.list, "[[", i))
   },
   USE.NAMES = TRUE, simplify = FALSE)
@@ -561,12 +588,9 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
   # Time-to-event data
   #*****************************************************
 
-  if (is.null(survData)) {
-    survData <- data[[1]][!duplicated(data[[1]][, id]), ]
-  }
   survdat <- survData
 
-  sfit <- survival::coxph(formSurv, data = survdat, x = TRUE)
+  sfit <- survival::coxph(formSurv, data = survdat, x = TRUE, na.action = na.fail)
   q <- ncol(sfit$x)
   sfit.start <- survival::survfit(sfit)
   tj <- sfit.start$time[sfit.start$n.event > 0]
@@ -646,13 +670,13 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
 
     # Z design matrix (list)
     Zik.fail.list[[k]] <- by(Zik.fail[[k]], Zik.fail[[k]]$id, function(u) {
-      as.matrix(u[, -1])
+      as.matrix(u[, -1, drop = FALSE])
     })
 
   }
 
   # Flatten list to length = n
-  Zi.fail <- sapply(names(Zik.fail.list[[1]]), function(i) {
+  Zi.fail <- sapply(subject.ids, function(i) {
     as.matrix(Matrix::bdiag(lapply(Zik.fail.list, "[[", i)))
   },
   USE.NAMES = TRUE, simplify = FALSE)
@@ -665,6 +689,15 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
 
   # Collect together as inputs for EM algorithm
   z <- list(Zi.fail = Zi.fail, Zit.fail = Zit.fail, IW.fail = IW.fail)
+
+  # The R and C++ calculations combine these lists in subject order.
+  subject.lists <- c(l[c("yi", "Xi", "Zi", "Zit", "nik", "Xtyi", "XtZi")],
+                     yik, Xik.list, Zik.list, nik.list,
+                     t[c("V", "survdat2.list")], z)
+  if (!all(vapply(subject.lists, function(x) identical(names(x), subject.ids),
+                  logical(1)))) {
+    stop("Internal subject ordering does not match the supplied subject IDs")
+  }
 
   #*****************************************************
   # Initial values
@@ -793,8 +826,17 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
 
   }
 
+  # Evaluate the likelihood at the coefficients that are returned.
+  if (conv && pfs) {
+    log.lik <- postFitCalcs$ll
+  } else {
+    log.lik <- stepEM(theta = theta, l = l, t = t, z = z,
+                      nMC = nMC, verbose = FALSE, gammaOpt = con$gammaOpt,
+                      pfs = FALSE, type = con$type, likelihood.only = TRUE)$ll
+  }
+
   # History
-  hx.beta <- sapply(all.iters, function(x) x$beta)
+  hx.beta <- do.call(cbind, lapply(all.iters, function(x) x$beta))
   rownames(hx.beta) <- paste0("long_", rownames(hx.beta))
   hx.gamma <- sapply(all.iters, function(x) x$gamma)
   if ((q + K) == 1) {

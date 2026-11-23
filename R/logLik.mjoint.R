@@ -16,8 +16,9 @@
 #'
 #' @return Returns an object of class \code{logLik}. This is a number with two
 #'   attributes: \code{df} (degrees of freedom), giving the number of parameters
-#'   in the model, and \code{nobs}, the number of observations used in
-#'   estimation.
+#'   in the model, and \code{nobs}, the number of subjects used in estimation.
+#'   Consequently, \code{BIC} uses the number of subjects in its penalty, rather
+#'   than the total number of longitudinal measurements.
 #' @export
 #'
 #' @examples
@@ -47,7 +48,7 @@ logLik.mjoint <- function(object, ...) {
 
   out <- object$log.lik
   attr(out, "df") <- with(object$dims, sum(p) + q + 2*K + (sum(r) * (sum(r) + 1)) / 2)
-  attr(out, "nobs") <- sum(object$dims$nk)
+  attr(out, "nobs") <- object$dims$n
 
   class(out) <- "logLik"
   out

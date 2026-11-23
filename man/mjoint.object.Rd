@@ -91,16 +91,14 @@ A list with the following components. \describe{
   \item{\code{log.lik0}}{the combined log-likelihood from separate sub-model
   fits.}
 
-  \item{\code{log.lik}}{the log-likelihood from the joint model fit.}
+  \item{\code{log.lik}}{the estimated log-likelihood evaluated at the returned joint model coefficients, including when convergence was not achieved.}
 
-  \item{\code{ll.hx}}{a vector of the log-likelihood values for each MCEM
-  algorithm interaction.}
+  \item{\code{ll.hx}}{a vector of the estimated log-likelihood values before each MCEM parameter update. The separate \code{log.lik} component is evaluated after the final update.}
 
   \item{\code{control}}{a list of control parameters used in the estimation
   of the joint model. See \code{\link{mjoint}} for details.}
 
-  \item{\code{finalnMC}}{the final number of Monte Carlo samples required
-  prior to convergence.}
+  \item{\code{finalnMC}}{the number of Monte Carlo samples requested for the final likelihood evaluation and, when available, the post-fit statistics.}
 
   \item{\code{call}}{the matched call.}
   

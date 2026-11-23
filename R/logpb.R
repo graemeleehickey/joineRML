@@ -103,9 +103,8 @@ b_metropolis <- function(theta.samp, delta.prop, sigma.prop, b.curr, data.t) {
                              df = 4,
                              log = TRUE)
   log.a2 <- dens.curr - dens.prop
-  a <- min(exp(log.a1 - log.a2), 1)
-  randu <- runif(1)
-  if (randu <= a) {
+  log.alpha <- min(0, log.a1 + log.a2)
+  if (log(runif(1)) <= log.alpha) {
     b.curr <- b.prop
     accept <- 1
   }

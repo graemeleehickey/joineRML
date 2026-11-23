@@ -69,11 +69,11 @@ mvlme <- function(thetaLong, l, z, tol.em, verbose) {
     #-----------------------------------------------------
 
     # beta
-    rr <- mapply(function(x1, x2, b) {
+    rr <- Map(function(x1, x2, b) {
       x1 - (x2 %*% b)
     },
     x1 = Xtyi, x2 = XtZi, b = Eb)
-    rr.sum <- rowSums(rr)
+    rr.sum <- Reduce("+", rr)
 
     beta.new <- as.vector(XtX.inv %*% rr.sum)
     names(beta.new) <- names(beta)

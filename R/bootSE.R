@@ -215,20 +215,10 @@ bootSE <- function(object, nboot = 100, ci = 0.95, use.mle = TRUE,
   out <- out[conv.status]
 
   # Bootstrap estimates
-  beta.mat   <- sapply(out, function(u) u$coefs$beta)
-  gamma.mat  <- sapply(out, function(u) u$coefs$gamma)
-  sigma2.mat <- sapply(out, function(u) u$coefs$sigma2)
-
-  # If K = 1, sigma2 might be a vector, so need to coerce to matrix
-  vec2mat <- function(x) {
-    if (!is.matrix(x) && is.vector(x)) {
-      cnam <- names(x)[1]
-      x <- matrix(x, nrow = 1)
-      rownames(x) <- cnam
-    }
-    return(x)
-  }
-  sigma2.mat <- vec2mat(sigma2.mat)
+  # Rows are parameters and columns are converged bootstrap samples.
+  beta.mat   <- do.call(cbind, lapply(out, function(u) u$coefs$beta))
+  gamma.mat  <- do.call(cbind, lapply(out, function(u) u$coefs$gamma))
+  sigma2.mat <- do.call(cbind, lapply(out, function(u) u$coefs$sigma2))
 
   # CI function
   qFun <- function(x) {

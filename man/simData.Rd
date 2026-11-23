@@ -109,6 +109,8 @@ The function \code{simData} simulates data from a joint model,
   to simulate the failure time.}
 
   }
+
+  Observed times are the minimum of the generated event and censoring times, including administrative censoring when requested. A finite event at or before the censoring time is recorded as an event; an infinite event time is not. Datasets with no observed events are returned without altering any subject's status, although they cannot be fitted with \code{\link{mjoint}}.
 }
 \examples{
 beta <- rbind(c(0.5, 2, 1, 1),
