@@ -10,9 +10,9 @@
 site](https://img.shields.io/badge/pkgdown-joineRML-blue.svg)](https://graemeleehickey.github.io/joineRML/)
 [![GitHub
 repo](https://img.shields.io/badge/GitHub-graemeleehickey%2FjoineRML-181717.svg?logo=github)](https://github.com/graemeleehickey/joineRML)
-<!--[![License](https://img.shields.io/badge/License-GPL%20%28%3E=%203%29-brightgreen.svg)](http://www.gnu.org/licenses/gpl-3.0.html)-->
+[![License: GPL-3](https://img.shields.io/badge/License-GPL--3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.html)
 [![Monthly CRAN
-downloads](http://cranlogs.r-pkg.org/badges/joineRML)](https://CRAN.R-project.org/package=joineRML)
+downloads](https://cranlogs.r-pkg.org/badges/joineRML)](https://CRAN.R-project.org/package=joineRML)
 [![Total CRAN
 downloads](https://cranlogs.r-pkg.org/badges/grand-total/joineRML)](https://CRAN.R-project.org/package=joineRML)
 [![Research software

@@ -14,6 +14,11 @@
 - `BIC()`, `summary()`, and `glance()` now consistently use the number of subjects for the BIC penalty. The `nobs` attribute of `logLik()` therefore reports subjects rather than longitudinal measurements.
 - Dynamic survival predictions now reject non-positive or non-finite horizons and non-finite explicit prediction times.
 
+## Website improvements
+
+- The package website now offers light, dark, and automatic colour modes through a navigation-bar selector, with matching colours for R code (#78).
+- The README now displays a GPL-3 licence badge alongside its existing DOI, CRAN, download, package-check, and coverage badges (#79).
+
 ## Documentation fixes
 
 - Corrected the `tidy()` examples in the broom vignette and help page to use `conf.int = TRUE`, so the returned tables include confidence intervals. Also corrected the vignette's bootstrap example to use `bootSE`. Thanks to @eribul for reporting the confidence-interval issue (#80).

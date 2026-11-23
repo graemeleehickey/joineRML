@@ -2,6 +2,9 @@ url: https://graemeleehickey.github.io/joineRML/
 
 template:
   bootstrap: 5
+  light-switch: true
+  theme: github-light
+  theme-dark: github-dark
 
 home:
   title: Joint modelling of multivariate longitudinal and time-to-event data
@@ -12,7 +15,7 @@ home:
 navbar:
   structure:
     left: [intro, reference, articles, news]
-    right: [search, github]
+    right: [search, github, lightswitch]
   components:
     articles:
       text: Articles
