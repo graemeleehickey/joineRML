@@ -49,6 +49,11 @@
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.4.9" id="joinerml-049">joineRML 0.4.9<a class="anchor" aria-label="anchor" href="#joinerml-049"></a></h2>
 <div class="section level3">
+<h3 id="new-features-0-4-9">New features<a class="anchor" aria-label="anchor" href="#new-features-0-4-9"></a></h3>
+<ul><li>
+<code><a href="../reference/mjoint.html">mjoint()</a></code> now accepts an optional <code>seed</code> argument for reproducible model fitting, including Monte Carlo integration and post-fit calculations. The previous R random-number state is restored when a seed is supplied. The default <code>seed = NULL</code> retains the existing behaviour (<a href="https://github.com/graemeleehickey/joineRML/issues/5" class="external-link">#5</a>).</li>
+</ul></div>
+<div class="section level3">
 <h3 id="bug-fixes-0-4-9">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-4-9"></a></h3>
 <ul><li>Longitudinal and survival records are now matched explicitly by subject ID, independently of row order or factor-level order. Missing IDs, unmatched subject sets, duplicate survival records, and missing survival-model values are rejected before fitting.</li>
 <li>Simulated dynamic predictions now use the correct Metropolis-Hastings proposal-density correction, evaluated on the log scale. This changes the distribution of the sampled random effects and can change predicted values and intervals.</li>

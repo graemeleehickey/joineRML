@@ -23,6 +23,7 @@ mjoint(
   verbose = FALSE,
   pfs = TRUE,
   control = list(),
+  seed = NULL,
   ...
 )
 ```
@@ -215,6 +216,25 @@ mjoint(
       `type='halton'`
 
       :   Quasi-Monte Carlo with a low deterministic Halton sequence.
+
+- seed:
+
+  an optional non-negative integer used to initialise random-number
+  generation once for the whole fit, including post-fit calculations.
+  The default, `NULL`, uses the current R random-number state as before.
+  When a seed is supplied, the previous state is restored on exit,
+  including after an error. Repeated fits with the same seed, data,
+  settings, R random-number generator, and software versions give the
+  same results. Halton integration is deterministic; the seed is also
+  passed to Sobol scrambling, where supported by randtoolbox. This
+  argument does not control subsequent calls to
+  [`bootSE`](https://graemeleehickey.github.io/joineRML/reference/bootSE.md),
+  [`dynLong`](https://graemeleehickey.github.io/joineRML/reference/dynLong.md),
+  or
+  [`dynSurv`](https://graemeleehickey.github.io/joineRML/reference/dynSurv.md).
+  Restoration uses `.Random.seed`; the cached normal variate used by
+  `normal.kind = "Box-Muller"` is not restored (see
+  [`Random`](https://rdrr.io/r/base/Random.html)).
 
 - ...:
 

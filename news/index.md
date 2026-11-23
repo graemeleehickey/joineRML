@@ -2,6 +2,15 @@
 
 ## joineRML 0.4.9
 
+### New features
+
+- [`mjoint()`](https://graemeleehickey.github.io/joineRML/reference/mjoint.md)
+  now accepts an optional `seed` argument for reproducible model
+  fitting, including Monte Carlo integration and post-fit calculations.
+  The previous R random-number state is restored when a seed is
+  supplied. The default `seed = NULL` retains the existing behaviour
+  ([\#5](https://github.com/graemeleehickey/joineRML/issues/5)).
+
 ### Bug fixes
 
 - Longitudinal and survival records are now matched explicitly by

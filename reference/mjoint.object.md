@@ -171,6 +171,11 @@ A list with the following components.
 
   the matched call.
 
+- `seed`:
+
+  the supplied random seed, or `NULL` if the existing R random-number
+  state was used.
+
 - `inits`:
 
   the initial values passed as an argument in the `mjoint` function.

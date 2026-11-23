@@ -85,6 +85,7 @@
 <span>  verbose <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  pfs <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  seed <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -275,6 +276,21 @@ required.</p></dd>
 
 
 </dl></dd>
+
+
+<dt id="arg-seed">seed<a class="anchor" aria-label="anchor" href="#arg-seed"></a></dt>
+<dd><p>an optional non-negative integer used to initialise random-number
+generation once for the whole fit, including post-fit calculations. The
+default, <code>NULL</code>, uses the current R random-number state as before.
+When a seed is supplied, the previous state is restored on exit, including
+after an error. Repeated fits with the same seed, data, settings, R
+random-number generator, and software versions give the same results.
+Halton integration is deterministic; the seed is also passed to Sobol
+scrambling, where supported by <span class="pkg">randtoolbox</span>. This argument does not
+control subsequent calls to <code><a href="bootSE.html">bootSE</a></code>, <code><a href="dynLong.html">dynLong</a></code>,
+or <code><a href="dynSurv.html">dynSurv</a></code>. Restoration uses <code>.Random.seed</code>; the cached
+normal variate used by <code>normal.kind = "Box-Muller"</code> is not restored
+(see <code><a href="https://rdrr.io/r/base/Random.html" class="external-link">Random</a></code>).</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
