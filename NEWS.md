@@ -2,6 +2,10 @@
 
 ## Bug fixes
 
+- Longitudinal and survival records are now matched explicitly by subject ID, independently of row order or factor-level order. Missing IDs, unmatched subject sets, duplicate survival records, and missing survival-model values are rejected before fitting.
+- Simulated dynamic predictions now use the correct Metropolis-Hastings proposal-density correction, evaluated on the log scale. This changes the distribution of the sampled random effects and can change predicted values and intervals.
+- The default `"sas"` convergence criterion now uses absolute parameter changes consistently. Models can require additional iterations and return different estimates when the previous rule stopped prematurely.
+- Simulated event indicators now preserve censoring for every subject, including the first subject and subjects with infinite event times. Datasets with no events are retained, and `mjoint()` reports clearly that at least one observed event is required.
 - Fitted values and residuals now retain the correct lengths and observation order when subjects have equal numbers of measurements.
 - Bootstrap standard errors and confidence intervals now support models with a single longitudinal fixed-effect coefficient or a single survival association coefficient.
 - Intercept-only longitudinal fixed-effects models now retain the dimensions needed for estimation, coefficient histories, and approximate standard errors.

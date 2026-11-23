@@ -68,6 +68,8 @@
 #'
 #'   }
 #'
+#'   Observed times are the minimum of the generated event and censoring times, including administrative censoring when requested. A finite event at or before the censoring time is recorded as an event; an infinite event time is not. Datasets with no observed events are returned without altering any subject's status, although they cannot be fitted with \code{\link{mjoint}}.
+#'
 #' @author Pete Philipson (\email{peter.philipson1@@newcastle.ac.uk}) and Graeme
 #'   L. Hickey (\email{graemeleehickey@@gmail.com})
 #' @keywords datagen multivariate survival
@@ -176,7 +178,6 @@ simData <- function(n = 100, ntms = 5, beta = rbind(c(1, 1, 1, 1), c(1, 1, 1, 1)
     b1k <- matrix(0, nrow =  n, ncol =  K)
   }
   Vgam <- V %*% gamma.x
-  cens <- rep(1, n)
 
   U <- runif(n)
   rate <- exp(theta0 + Vgam + b0k %*% gamma.y)
@@ -203,10 +204,8 @@ simData <- function(n = 100, ntms = 5, beta = rbind(c(1, 1, 1, 1), c(1, 1, 1, 1)
     censtime <- pmin(censtime, trunctime)
   }
 
-  ii <- (censtime < survtime)
-  survtime[ii] <- censtime[ii]
-  cens[ii] <- 0
-  cens[1] <- 1 # EM algorithm currently only works with this
+  cens <- as.integer(is.finite(survtime) & survtime <= censtime)
+  survtime <- pmin(survtime, censtime)
   ls <- rep(survtime, each = ntms)
   Y <- Y[ls > time, ]
   X <- X[ls > time, ]
