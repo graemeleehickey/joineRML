@@ -113,22 +113,38 @@ Dynamic predictions for the longitudinal data sub-model based on an
 
   \strong{Monte Carlo simulation predictions}
 
-  For \code{type="simulated"}, \eqn{\theta} is drawn from a multivariate
-  normal distribution with means \eqn{\hat{\theta}} and variance-covariance
-  matrix both extracted from the fitted \code{mjoint} object via the
-  \code{coef()} and \code{vcov()} functions. \eqn{\hat{b}} is drawn from the
-  the posterior distribution of the random effects
+  For \code{type="simulated"}, the non-hazard parameters are drawn jointly
+  from a multivariate normal approximation with residual variances on the
+  log scale. Write \eqn{v_k = \sigma_k^2} and let \eqn{g(\theta)} replace
+  each \eqn{v_k} by \eqn{\log(v_k)}, leaving the other parameters unchanged.
+  The mean is \eqn{g(\hat{\theta})}, and the covariance matrix is
+  \eqn{J V J^T}, where \eqn{V} is returned by \code{vcov(object)} and
+  \eqn{J} is diagonal, with entries \eqn{1 / \hat{v}_k} for the residual
+  variances and 1 elsewhere. This delta-method transformation includes the
+  covariances with the other parameters. Exponentiating the log-variance
+  draws gives positive residual variances, with medians equal to their fitted
+  estimates. Their original-scale means and covariances are not preserved
+  exactly. Fitted estimates and reported standard errors retain their
+  original scales. Invalid fitted variances, unusable covariance matrices,
+  and numerical overflow or underflow in the draws produce an error.
+
+  This is an asymptotic approximation; positivity alone does not establish
+  its accuracy in small samples or near a variance boundary. Random-effects
+  covariance matrices and baseline-hazard increments retain their existing
+  adjustments to ensure positive definiteness and positivity, respectively.
+
+  The random effects are updated using the conditional posterior density
 
   \deqn{f(b | y, T \ge t; \theta)}
 
-  by means of a Metropolis-Hasting algorithm with independent multivariate
+  by means of a Metropolis-Hastings algorithm with independent multivariate
   non-central \emph{t}-distribution proposal distributions with
   non-centrality parameter \eqn{\hat{b}} from the first-order prediction and
   variance-covariance matrix equal to \code{scale} \eqn{\times} the inverse
   of the negative Hessian of the posterior distribution. The choice of
   \code{scale} can be used to tune the acceptance rate of the
   Metropolis-Hastings sampler. This simulation algorithm is iterated \code{M}
-  times, at each time calculating the conditional survival probability.
+  times, at each time calculating the conditional expected longitudinal value.
 }
 \examples{
 \dontrun{

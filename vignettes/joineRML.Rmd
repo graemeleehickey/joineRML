@@ -141,6 +141,12 @@ plot(fit, params = "gamma")
 plot(fit, params = "beta")
 ```
 
+## Dynamic predictions
+
+Use `dynLong()` for future longitudinal values and `dynSurv()` for conditional survival probabilities, given a subject's observed measurement history. Their default `type = "first-order"` uses the fitted parameters and the conditional random-effects mode. Setting `type = "simulated"` also samples parameters and updates the random effects; set the seed separately before each prediction call for reproducibility. See `help("dynLong")` and `help("dynSurv")` for examples and arguments.
+
+For simulated predictions, residual variances are sampled jointly with the other non-hazard parameters on the log-variance scale. The full covariance matrix is transformed using the delta method, including covariances between residual variances and other parameters, and the log-variance draws are then exponentiated. This gives positive residual variances with medians equal to the fitted estimates; it does not preserve their original-scale means or covariances exactly. Fitted estimates, `vcov()`, and reported standard errors retain their existing scales. Invalid fitted variances, unusable covariance matrices, and numerical overflow or underflow produce an error. The approximation remains asymptotic, so positive variance draws alone do not establish reliable prediction intervals in small samples or near a variance boundary.
+
 ## Comparing fitted models
 
 Use `anova()` to compare nested covariate models fitted to the same subjects, longitudinal responses and measurement times, and survival responses. The response transformations, random-effects structure, and association structure must also agree. Here, the reduced model omits `hs` from the valve-gradient fixed effects and retains all other terms. The existing `fit` is the full model. Setting `pfs = FALSE` skips the reduced model's post-fit standard errors and random-effect predictions, which are not needed for this comparison.
