@@ -4,6 +4,15 @@
 
 ### New features
 
+- Added [`anova()`](https://rdrr.io/r/stats/anova.html) comparisons for
+  fitted joint models. Likelihood-ratio tests require nested covariate
+  models fitted to the same observations, with unchanged random-effects
+  and association structures. Likelihoods are re-evaluated using common
+  Halton integration points, and p-values are withheld when the
+  statistic is negative or numerically unstable. Use `test = FALSE` for
+  a comparison table without a test
+  ([\#4](https://github.com/graemeleehickey/joineRML/issues/4)).
+
 - [`mjoint()`](https://graemeleehickey.github.io/joineRML/reference/mjoint.md)
   now accepts an optional `seed` argument for reproducible model
   fitting, including Monte Carlo integration and post-fit calculations.

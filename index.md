@@ -96,6 +96,13 @@ instead of calling [`set.seed()`](https://rdrr.io/r/base/Random.html)
 before the fit. A supplied seed applies to that fit and preserves the
 previous R random-number state.
 
+Use `anova(fit_reduced, fit_full)` to compare nested covariate models
+fitted to the same observations with the same random-effects structure.
+The [model-comparison
+help](https://graemeleehickey.github.io/joineRML/reference/anova.mjoint.html)
+explains the likelihood-ratio test and its numerical-precision checks.
+Use `test = FALSE` for a comparison table without a test.
+
 ## Documentation
 
 The [package website](https://graemeleehickey.github.io/joineRML/)

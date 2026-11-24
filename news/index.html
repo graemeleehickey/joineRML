@@ -50,8 +50,8 @@
 <h2 class="pkg-version" data-toc-text="0.4.9" id="joinerml-049">joineRML 0.4.9<a class="anchor" aria-label="anchor" href="#joinerml-049"></a></h2>
 <div class="section level3">
 <h3 id="new-features-0-4-9">New features<a class="anchor" aria-label="anchor" href="#new-features-0-4-9"></a></h3>
-<ul><li>
-<code><a href="../reference/mjoint.html">mjoint()</a></code> now accepts an optional <code>seed</code> argument for reproducible model fitting, including Monte Carlo integration and post-fit calculations. The previous R random-number state is restored when a seed is supplied. The default <code>seed = NULL</code> retains the existing behaviour (<a href="https://github.com/graemeleehickey/joineRML/issues/5" class="external-link">#5</a>).</li>
+<ul><li><p>Added <code><a href="https://rdrr.io/r/stats/anova.html" class="external-link">anova()</a></code> comparisons for fitted joint models. Likelihood-ratio tests require nested covariate models fitted to the same observations, with unchanged random-effects and association structures. Likelihoods are re-evaluated using common Halton integration points, and p-values are withheld when the statistic is negative or numerically unstable. Use <code>test = FALSE</code> for a comparison table without a test (<a href="https://github.com/graemeleehickey/joineRML/issues/4" class="external-link">#4</a>).</p></li>
+<li><p><code><a href="../reference/mjoint.html">mjoint()</a></code> now accepts an optional <code>seed</code> argument for reproducible model fitting, including Monte Carlo integration and post-fit calculations. The previous R random-number state is restored when a seed is supplied. The default <code>seed = NULL</code> retains the existing behaviour (<a href="https://github.com/graemeleehickey/joineRML/issues/5" class="external-link">#5</a>).</p></li>
 </ul></div>
 <div class="section level3">
 <h3 id="bug-fixes-0-4-9">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-4-9"></a></h3>

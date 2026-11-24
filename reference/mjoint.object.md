@@ -167,6 +167,12 @@ A list with the following components.
   the number of Monte Carlo samples requested for the final likelihood
   evaluation and, when available, the post-fit statistics.
 
+- `dmats`:
+
+  the longitudinal, survival, and random-effects design matrices and
+  responses used in fitting. These are retained for model comparisons
+  even when `pfs = FALSE`.
+
 - `call`:
 
   the matched call.

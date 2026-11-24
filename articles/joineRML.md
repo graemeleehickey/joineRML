@@ -508,8 +508,8 @@ summary(fit.joinerml)
 #> gamma_1 3.4823  1.6559  2.1030  0.0355
 #> 
 #> Algorithm Summary:
-#>     Total computational time: 1.4 secs 
-#>     EM algorithm computational time: 1.3 secs 
+#>     Total computational time: 1.5 secs 
+#>     EM algorithm computational time: 1.4 secs 
 #>     Convergence status: converged
 #>     Convergence criterion: sas 
 #>     Final Monte Carlo sample size: 3784 

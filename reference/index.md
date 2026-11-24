@@ -20,6 +20,9 @@
 
 ## Model summaries and inference
 
+- [`anova(`*`<mjoint>`*`)`](https://graemeleehickey.github.io/joineRML/reference/anova.mjoint.md)
+  : Compare fitted joint models
+
 - [`summary(`*`<mjoint>`*`)`](https://graemeleehickey.github.io/joineRML/reference/summary.mjoint.md)
   :
 
