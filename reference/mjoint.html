@@ -109,9 +109,7 @@ list must be equal to <code>formLongFixed</code>.</p></dd>
 
 
 <dt id="arg-formsurv">formSurv<a class="anchor" aria-label="anchor" href="#arg-formsurv"></a></dt>
-<dd><p>a formula specifying the proportional hazards regression
-model (not including the latent association structure). See
-<code><a href="https://rdrr.io/pkg/survival/man/coxph.html" class="external-link">coxph</a></code> for examples. The response must be right-censored survival data with at least one observed event.</p></dd>
+<dd><p>A formula specifying the proportional hazards regression model for baseline covariates, with one common baseline hazard. The latent association structure is added separately. The response must be right-censored survival data with at least one observed event. Ordinary covariate terms, including factors, interactions, and unpenalised transformations, are supported. Cox-specific terms <code><a href="https://rdrr.io/pkg/survival/man/strata.html" class="external-link">strata()</a></code>, <code><a href="https://rdrr.io/r/stats/offset.html" class="external-link">offset()</a></code>, <code><a href="https://rdrr.io/pkg/survival/man/cluster.html" class="external-link">cluster()</a></code>, <code>tt()</code>, <code><a href="https://rdrr.io/pkg/survival/man/frailty.html" class="external-link">frailty()</a></code>, <code><a href="https://rdrr.io/pkg/survival/man/pspline.html" class="external-link">pspline()</a></code>, and <code><a href="https://rdrr.io/pkg/survival/man/ridge.html" class="external-link">ridge()</a></code>, and other penalised terms, are not supported and are rejected before fitting. This also applies when these calls include a package prefix, such as <code><a href="https://rdrr.io/pkg/survival/man/strata.html" class="external-link">survival::strata()</a></code> or <code><a href="https://rdrr.io/r/stats/offset.html" class="external-link">stats::offset()</a></code>.</p></dd>
 
 
 <dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>

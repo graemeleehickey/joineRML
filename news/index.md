@@ -57,6 +57,17 @@
 
 ### Bug fixes
 
+- [`mjoint()`](https://graemeleehickey.github.io/joineRML/reference/mjoint.md)
+  now rejects unsupported survival formula terms before fitting,
+  including [`strata()`](https://rdrr.io/pkg/survival/man/strata.html),
+  [`offset()`](https://rdrr.io/r/stats/offset.html),
+  [`cluster()`](https://rdrr.io/pkg/survival/man/cluster.html), `tt()`,
+  frailty terms, and penalised terms. Previously, these could be
+  ignored, cause unclear errors, or produce a model that differed from
+  the specified formula. The survival model supports ordinary baseline
+  covariates with one common baseline hazard, together with the latent
+  association structure.
+
 - Models with a single distinct observed event time now retain the
   matrix dimensions needed for fitting and the baseline-hazard history.
 

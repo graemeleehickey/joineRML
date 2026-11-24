@@ -127,9 +127,19 @@ function. Its main (required) arguments are:
   one-sided formulae specifying the model for random effects in the
   linear mixed models.
 
-- `formSurv`: a formula specifying the proportional hazards regression
-  model for the time-to-event outcome in the same structure as for
-  [`survival::coxph`](https://rdrr.io/pkg/survival/man/coxph.html).
+- `formSurv`: a formula specifying baseline covariates in the
+  proportional hazards regression model for the time-to-event outcome,
+  with one common baseline hazard. The latent association structure is
+  added separately. Factors, interactions, and unpenalised
+  transformations are supported. Cox-specific terms such as
+  [`strata()`](https://rdrr.io/pkg/survival/man/strata.html),
+  [`offset()`](https://rdrr.io/r/stats/offset.html),
+  [`cluster()`](https://rdrr.io/pkg/survival/man/cluster.html), `tt()`,
+  [`frailty()`](https://rdrr.io/pkg/survival/man/frailty.html),
+  [`pspline()`](https://rdrr.io/pkg/survival/man/pspline.html), and
+  [`ridge()`](https://rdrr.io/pkg/survival/man/ridge.html) are not
+  supported and are rejected before fitting, including calls prefixed
+  with `survival::` or `stats::`.
 
 - `data`: a list (of same length as `formLongFixed`) of data.frames; one
   for each longitudinal outcome. It is assumed that the event time data
@@ -270,8 +280,8 @@ summary(fit)
 #> gamma_2 3.6801  3.4488  1.0671  0.2859
 #> 
 #> Algorithm Summary:
-#>     Total computational time: 2.8 secs 
-#>     EM algorithm computational time: 2.4 secs 
+#>     Total computational time: 3.8 secs 
+#>     EM algorithm computational time: 3.2 secs 
 #>     Convergence status: converged
 #>     Convergence criterion: sas 
 #>     Final Monte Carlo sample size: 3674 
@@ -630,8 +640,8 @@ summary(fit.joinerml)
 #> gamma_1 3.4823  1.6559  2.1030  0.0355
 #> 
 #> Algorithm Summary:
-#>     Total computational time: 1 secs 
-#>     EM algorithm computational time: 0.9 secs 
+#>     Total computational time: 1.8 secs 
+#>     EM algorithm computational time: 1.6 secs 
 #>     Convergence status: converged
 #>     Convergence criterion: sas 
 #>     Final Monte Carlo sample size: 3784 
