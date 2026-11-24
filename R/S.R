@@ -1,41 +1,39 @@
+# Hazard contributions for event times with indices after 'start' and up to
+# data$tj.ind. Subsetting first avoids subtracting large cumulative hazards.
+.mjoint_survival_terms <- function(theta, data, start = 0L) {
+  r <- sum(data$r)
+  j <- data$tj.ind
+  if (start > j) stop("Prediction time precedes the conditioning time.")
+  if (start == j) {
+    return(list(A = matrix(numeric(), 0L, r), logh = numeric()))
+  }
+  indices <- seq.int(start + 1L, j)
+  haz <- theta$haz[indices]
+  if (any(!is.finite(haz)) || any(haz < 0)) {
+    stop("Baseline-hazard increments must be finite and nonnegative.")
+  }
+  if (length(theta$gamma) != data$q + data$K || any(!is.finite(theta$gamma))) {
+    stop("Survival coefficients must be finite and match the fitted model.")
+  }
+  # Zero increments contribute nothing, even for extreme linear predictors.
+  indices <- indices[haz > 0]
+  logh <- log(haz[haz > 0])
+  A <- (data$IW.fail %*% data$Z.fail)[indices, , drop = FALSE]
+  A <- sweep(A, 2, rep(utils::tail(theta$gamma, data$K), data$r), "*")
+  if (data$q > 0) logh <- logh + sum(data$v * utils::head(theta$gamma, data$q))
+  if (any(!is.finite(c(A, logh)))) {
+    stop("Survival contributions are not finite.")
+  }
+  list(A = A, logh = logh)
+}
+
 #' @keywords internal
-S <- function(b, theta, data) {
-
-  # NB: landmarking time recorded in 'data'
-
-  r <- data$r
-  q <- data$q
-  v <- data$v
-  Z.fail <- data$Z.fail
-  IW.fail <- data$IW.fail
-  tj.ind <- data$tj.ind
-
-  gamma <- theta$gamma
-  haz <- theta$haz
-
-  if (length(b) != sum(r)) {
-    stop("Incorrect length of b")
+S <- function(b, theta, data, start = 0L) {
+  if (length(b) != sum(data$r) || any(!is.finite(b))) {
+    stop("Random effects must be finite and match the fitted model.")
   }
-
-  # Expanded gamma_y (repeated for each random effect term)
-  if (q > 0) {
-    gamma.scale <- diag(rep(gamma[-(1:q)], r), ncol = sum(r))
-  } else {
-    gamma.scale <- diag(rep(gamma, r), ncol = sum(r))
-  }
-
-  IZ <- t(IW.fail %*% Z.fail)
-  W2 <- t(b) %*% gamma.scale %*% IZ
-  if (q > 0) {
-    W2 <- W2 + as.numeric(t(v) %*% gamma[1:q])
-  }
-  W2 <- as.vector(W2)
-  if (tj.ind > 0) {
-    H <- sum(haz[1:tj.ind] * exp(W2))
-  } else {
-    H <- 0
-  }
-
-  return(exp(-H))
-
+  terms <- .mjoint_survival_terms(theta, data, start)
+  log.haz <- as.vector(terms$logh + terms$A %*% b)
+  if (anyNA(log.haz)) stop("The conditional survival probability is undefined.")
+  exp(-sum(exp(log.haz)))
 }

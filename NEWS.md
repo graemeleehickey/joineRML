@@ -16,6 +16,9 @@
 
 ## Bug fixes
 
+- Simulated dynamic predictions now sample random effects conditional on each new parameter draw using Gaussian rejection sampling. This replaces the single Metropolis-Hastings update that could retain random effects from the preceding parameter draw and distort predicted values and intervals. The `scale` argument is deprecated and ignored; `max.proposals` limits attempts for each draw, and returned `proposals` and `accept` values describe rejection-sampling efficiency. Failure stops the prediction without discarding parameter draws. The parameter-distribution approximation remains unchanged.
+- Dynamic survival predictions now accumulate hazards between the conditioning and prediction times, avoiding undefined ratios when both unconditional survival probabilities round to zero.
+
 - Random-effects polynomial, spline, and scaled time terms now use the same fitted basis at measurement, event, and prediction times. Older models fitted with inconsistent bases must be refitted; prediction checks now identify this incompatibility.
 - Dynamic predictions now retain the fitted factor levels, contrast matrices, and design-column order for both sub-models. Changing R's contrast options no longer changes predictions from an existing fit, and new factor levels are rejected.
 
@@ -32,7 +35,6 @@
 
 - Tidying methods now reject unsupported arguments instead of silently ignoring them. The joineRML methods are used consistently when broom is loaded before or after joineRML. `augment()` matches supplied original data by subject and measurement time, preserving the supplied row order, and rejects changed observations or incompatible observation schedules.
 - Longitudinal and survival records are now matched explicitly by subject ID, independently of row order or factor-level order. Missing IDs, unmatched subject sets, duplicate survival records, and missing survival-model values are rejected before fitting.
-- Simulated dynamic predictions now use the correct Metropolis-Hastings proposal-density correction, evaluated on the log scale. This changes the distribution of the sampled random effects and can change predicted values and intervals.
 - The default `"sas"` convergence criterion now uses absolute parameter changes consistently. Models can require additional iterations and return different estimates when the previous rule stopped prematurely.
 - Simulated event indicators now preserve censoring for every subject, including the first subject and subjects with infinite event times. Datasets with no events are retained, and `mjoint()` reports clearly that at least one observed event is required.
 - Fitted values and residuals now retain the correct lengths and observation order when subjects have equal numbers of measurements.

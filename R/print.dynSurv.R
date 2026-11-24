@@ -14,7 +14,12 @@ print.dynSurv <- function(x, digits = max(4, getOption("digits") - 4), ...) {
   print(round(x$pred, digits = digits))
 
   if (x$type == "simulated") {
-    cat(paste0("\nM-H acceptance rate: ", round(100 * x$accept, 1), "%"))
+    label <- if (identical(x$sampler, "conditional-rejection")) {
+      "Rejection-sampling acceptance rate: "
+    } else {
+      "M-H acceptance rate: "
+    }
+    cat(paste0("\n", label, round(100 * x$accept, 1), "%"))
   }
 
   cat("\n")

@@ -15,7 +15,8 @@ dynLong(
   ci,
   progress = TRUE,
   ntimes = 100,
-  level = 1
+  level = 1,
+  max.proposals = 10000
 )
 }
 \arguments{
@@ -40,7 +41,7 @@ required for dynamic prediction. Defaults to \code{newSurvData=NULL}.}
 
 \item{u}{an optional time that must be greater than the last observed
 measurement time. If omitted (default is \code{u=NULL}), then conditional
-failure probabilities are reported for \emph{all} observed failure times in
+survival probabilities are reported for \emph{all} observed failure times in
 the \code{mjoint} object data from the last known follow-up time of the
 subject.}
 
@@ -49,12 +50,11 @@ subject.}
 (\code{type="simulated"}) should be used for the dynamic prediction.
 Defaults to the computationally faster first-order prediction method.}
 
-\item{M}{for \code{type="simulated"}, the number of simulations to performs.
+\item{M}{for \code{type="simulated"}, the number of simulations. Must be a positive integer.
 Default is \code{M=200}.}
 
-\item{scale}{a numeric scalar that scales the variance parameter of the
-proposal distribution for the Metropolis-Hastings algorithm, which
-therefore controls the acceptance rate of the sampling algorithm.}
+\item{scale}{deprecated; ignored. Supplying it produces a warning. The
+conditional rejection sampler does not require a proposal scale.}
 
 \item{ci}{a numeric value with value in the interval \eqn{(0, 1)} specifying
 the confidence interval level for predictions of \code{type='simulated'}.
@@ -73,6 +73,10 @@ extracting the residuals from object. Level values increase from outermost
 to innermost grouping, with level 0 corresponding to the population model
 fit and level 1 corresponding to subject-specific model fit. Defaults to
 \code{level=1}.}
+
+\item{max.proposals}{maximum number of proposals per parameter draw for
+\code{type="simulated"}. Must be a positive integer; defaults to
+\code{10000}. The prediction stops if this limit is exhausted.}
 }
 \value{
 A list object inheriting from class \code{dynLong}. The list returns
@@ -81,6 +85,10 @@ A list object inheriting from class \code{dynLong}. The list returns
   \code{timeVar[k]}; see \code{\link{mjoint}}) denoting times and the second
   column (named \code{y.pred}) denoting the expected outcome at each time
   point.
+  For simulated predictions, \code{proposals} records the number of proposals
+  for each of the \code{M} accepted random-effects draws, \code{accept} is
+  \code{M / sum(proposals)}, and \code{sampler} is
+  \code{"conditional-rejection"}. The former \code{scale} setting is ignored.
 }
 \description{
 Calculates the conditional expected longitudinal values for a
@@ -91,7 +99,7 @@ Calculates the conditional expected longitudinal values for a
 Dynamic predictions for the longitudinal data sub-model based on an
   observed measurement history for the longitudinal outcomes of a new subject
   are based on either a first-order approximation or Monte Carlo simulation
-  approach, both of which are described in Rizopoulos (2011). Namely, given
+  approach. See Rizopoulos (2011) for the prediction framework. Given
   that the subject was last observed at time \emph{t}, we calculate the
   conditional expectation of each longitudinal outcome at time \emph{u} as
 
@@ -141,18 +149,27 @@ Dynamic predictions for the longitudinal data sub-model based on an
   covariance matrices and baseline-hazard increments retain their existing
   adjustments to ensure positive definiteness and positivity, respectively.
 
-  The random effects are updated using the conditional posterior density
+  For each parameter draw, random effects are sampled from
+  \eqn{f(b | y, T \ge t; \theta)} by Gaussian rejection sampling. The
+  longitudinal conditional distribution is \eqn{N(m,V)}. Its density is
+  multiplied by the survival contribution \eqn{\exp\{\ell(b)\}}, where
+  \eqn{\ell(b) = -\sum_j h_j \exp(a_j^T b)} is concave and \eqn{h_j \ge 0}.
+  At an approximate conditional mode \eqn{b_0}, put
+  \eqn{g_0 = \nabla\ell(b_0)}. A tangent bound gives the proposal
+  \eqn{N(m + V g_0,V)}, accepted with log probability
+  \eqn{\ell(b) - \ell(b_0) - g_0^T(b-b_0)}. This samples the conditional
+  distribution without burn-in; an approximate mode affects efficiency,
+  rather than the target distribution. Acceptance is evaluated on the log
+  scale to avoid cancellation and overflow.
 
-  \deqn{f(b | y, T \ge t; \theta)}
-
-  by means of a Metropolis-Hastings algorithm with independent multivariate
-  non-central \emph{t}-distribution proposal distributions with
-  non-centrality parameter \eqn{\hat{b}} from the first-order prediction and
-  variance-covariance matrix equal to \code{scale} \eqn{\times} the inverse
-  of the negative Hessian of the posterior distribution. The choice of
-  \code{scale} can be used to tune the acceptance rate of the
-  Metropolis-Hastings sampler. This simulation algorithm is iterated \code{M}
-  times, at each time calculating the conditional expected longitudinal value.
+  Each parameter draw is held fixed until a random-effects draw is accepted.
+  Exhausting \code{max.proposals} stops the prediction and identifies the
+  simulation and conditioning time; parameter draws are never discarded and
+  replaced. Strong survival conditioning, particularly in several independent
+  random-effects directions, can require many proposals. Increasing
+  \code{max.proposals} allows more attempts but does not improve the
+  approximation used to sample the model parameters. The conditional sampler
+  alone does not establish prediction-interval coverage.
 }
 \examples{
 \dontrun{

@@ -16,7 +16,7 @@
 #' @details Dynamic predictions for the longitudinal data sub-model based on an
 #'   observed measurement history for the longitudinal outcomes of a new subject
 #'   are based on either a first-order approximation or Monte Carlo simulation
-#'   approach, both of which are described in Rizopoulos (2011). Namely, given
+#'   approach. See Rizopoulos (2011) for the prediction framework. Given
 #'   that the subject was last observed at time \emph{t}, we calculate the
 #'   conditional expectation of each longitudinal outcome at time \emph{u} as
 #'
@@ -66,18 +66,27 @@
 #'   covariance matrices and baseline-hazard increments retain their existing
 #'   adjustments to ensure positive definiteness and positivity, respectively.
 #'
-#'   The random effects are updated using the conditional posterior density
+#'   For each parameter draw, random effects are sampled from
+#'   \eqn{f(b | y, T \ge t; \theta)} by Gaussian rejection sampling. The
+#'   longitudinal conditional distribution is \eqn{N(m,V)}. Its density is
+#'   multiplied by the survival contribution \eqn{\exp\{\ell(b)\}}, where
+#'   \eqn{\ell(b) = -\sum_j h_j \exp(a_j^T b)} is concave and \eqn{h_j \ge 0}.
+#'   At an approximate conditional mode \eqn{b_0}, put
+#'   \eqn{g_0 = \nabla\ell(b_0)}. A tangent bound gives the proposal
+#'   \eqn{N(m + V g_0,V)}, accepted with log probability
+#'   \eqn{\ell(b) - \ell(b_0) - g_0^T(b-b_0)}. This samples the conditional
+#'   distribution without burn-in; an approximate mode affects efficiency,
+#'   rather than the target distribution. Acceptance is evaluated on the log
+#'   scale to avoid cancellation and overflow.
 #'
-#'   \deqn{f(b | y, T \ge t; \theta)}
-#'
-#'   by means of a Metropolis-Hastings algorithm with independent multivariate
-#'   non-central \emph{t}-distribution proposal distributions with
-#'   non-centrality parameter \eqn{\hat{b}} from the first-order prediction and
-#'   variance-covariance matrix equal to \code{scale} \eqn{\times} the inverse
-#'   of the negative Hessian of the posterior distribution. The choice of
-#'   \code{scale} can be used to tune the acceptance rate of the
-#'   Metropolis-Hastings sampler. This simulation algorithm is iterated \code{M}
-#'   times, at each time calculating the conditional expected longitudinal value.
+#'   Each parameter draw is held fixed until a random-effects draw is accepted.
+#'   Exhausting \code{max.proposals} stops the prediction and identifies the
+#'   simulation and conditioning time; parameter draws are never discarded and
+#'   replaced. Strong survival conditioning, particularly in several independent
+#'   random-effects directions, can require many proposals. Increasing
+#'   \code{max.proposals} allows more attempts but does not improve the
+#'   approximation used to sample the model parameters. The conditional sampler
+#'   alone does not establish prediction-interval coverage.
 #'
 #' @author Graeme L. Hickey (\email{graemeleehickey@@gmail.com})
 #' @keywords multivariate
@@ -95,6 +104,10 @@
 #'   \code{timeVar[k]}; see \code{\link{mjoint}}) denoting times and the second
 #'   column (named \code{y.pred}) denoting the expected outcome at each time
 #'   point.
+#'   For simulated predictions, \code{proposals} records the number of proposals
+#'   for each of the \code{M} accepted random-effects draws, \code{accept} is
+#'   \code{M / sum(proposals)}, and \code{sampler} is
+#'   \code{"conditional-rejection"}. The former \code{scale} setting is ignored.
 #' @export
 #'
 #' @examples
@@ -124,7 +137,24 @@
 #' }
 dynLong <- function(object, newdata, newSurvData = NULL, u = NULL,
                     type = "first-order", M = 200, scale = 1.6, ci,
-                    progress = TRUE, ntimes = 100, level = 1) {
+                    progress = TRUE, ntimes = 100, level = 1,
+                    max.proposals = 10000) {
+
+  if (!inherits(object, "mjoint")) {
+    stop("Use only with 'mjoint' model objects.")
+  }
+  if (length(type) != 1L || is.na(type) || !type %in% c("first-order", "simulated")) {
+    stop("type must be specified as either 'first-order' or 'simulated'")
+  }
+
+  if (!missing(scale)) {
+    warning("'scale' is deprecated and ignored; simulated predictions use conditional rejection sampling.",
+            call. = FALSE)
+  }
+  if (type == "simulated") {
+    if (missing(ci)) ci <- 0.95
+    .mjoint_simulation_controls(M, max.proposals, ci)
+  }
 
   object$designs <- .mjoint_prediction_designs(object)
   K <- object$dims$K
@@ -168,11 +198,11 @@ dynLong <- function(object, newdata, newSurvData = NULL, u = NULL,
     ntimes <- 1
   }
 
-  # Get posterior mode of [b | data, theta]
-  b.hat <- b_mode(data = data.t, theta = object$coefficients)
-
-  if (b.hat$convergence != 0) {
-    stop("Optimisation failed")
+  # The conditional mode is needed only for first-order predictions.
+  b.hat <- NULL
+  if (type == "first-order") {
+    b.hat <- b_mode(data = data.t, theta = object$coefficients)
+    if (b.hat$convergence != 0) stop("Optimisation failed")
   }
 
   # Extrapolated data
@@ -227,31 +257,22 @@ dynLong <- function(object, newdata, newSurvData = NULL, u = NULL,
     if (progress) {
       cat("\n")
       pb <- utils::txtProgressBar(min = 0, max = M, style = 3)
+      on.exit(close(pb), add = TRUE)
     }
 
-    if (missing(ci)) {
-      ci <- 0.95
-    } else {
-      if (!is.numeric(ci) || (ci < 0) || (ci > 1)) {
-        stop("ci argument has been misspecified.\n")
-      }
-    }
     alpha <- (1 - ci) / 2
 
-    b.curr <- delta.prop <- b.hat$par
-    sigma.prop <- -solve(b.hat$hessian) * scale
-    accept <- 0
+    proposals <- integer(M)
     y.pred <- list()
     for (k in 1:K) {
       y.pred[[k]] <- matrix(nrow = ntimes, ncol = M)
     }
     for (m in seq_len(M)) {
-      # Step 1: draw theta
-      theta.samp <- thetaDraw(object)
-      # Step 2: Metropolis-Hastings simulation
-      mh_sim <- b_metropolis(theta.samp, delta.prop, sigma.prop, b.curr, data.t)
-      b.curr <- mh_sim$b.curr
-      accept <- accept + mh_sim$accept
+      # Draw parameters, then random effects conditional on those parameters.
+      draw <- .mjoint_prediction_draw(object, data.t, max.proposals, m, M)
+      theta.samp <- draw$theta
+      b.curr <- draw$b
+      proposals[m] <- draw$proposals
       # Step 3: predicted longitudinal value
       for (k in 1:K) {
         beta.k <- theta.samp$beta[(beta.inds[k] + 1):(beta.inds[k + 1])]
@@ -265,10 +286,6 @@ dynLong <- function(object, newdata, newSurvData = NULL, u = NULL,
       if (progress) {
         utils::setTxtProgressBar(pb, m)
       }
-    }
-
-    if (progress) {
-      close(pb)
     }
 
     pred <- lapply(y.pred, function(x) {
@@ -295,8 +312,11 @@ dynLong <- function(object, newdata, newSurvData = NULL, u = NULL,
               "type" = type)
 
   if (type == "simulated") {
-    out$M <- ifelse(type == "simulated", M, NULL)
-    out$accept <- ifelse(type == "simulated", accept / M, NULL)
+    out$M <- M
+    out$sampler <- "conditional-rejection"
+    out$proposals <- proposals
+    out$max.proposals <- max.proposals
+    out$accept <- M / sum(proposals)
   }
 
   class(out) <- "dynLong"
