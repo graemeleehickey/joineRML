@@ -280,8 +280,8 @@ summary(fit)
 #> gamma_2 3.6801  3.4488  1.0671  0.2859
 #> 
 #> Algorithm Summary:
-#>     Total computational time: 2.8 secs 
-#>     EM algorithm computational time: 2.4 secs 
+#>     Total computational time: 2.9 secs 
+#>     EM algorithm computational time: 2.5 secs 
 #>     Convergence status: converged
 #>     Convergence criterion: sas 
 #>     Final Monte Carlo sample size: 3674 
@@ -356,6 +356,37 @@ plot(fit, params = "beta")
 ```
 
 ![](joineRML_files/figure-html/hvd_model_conv-2.png)
+
+### Dynamic predictions
+
+Use
+[`dynLong()`](https://graemeleehickey.github.io/joineRML/reference/dynLong.md)
+for future longitudinal values and
+[`dynSurv()`](https://graemeleehickey.github.io/joineRML/reference/dynSurv.md)
+for conditional survival probabilities, given a subject’s observed
+measurement history. Their default `type = "first-order"` uses the
+fitted parameters and the conditional random-effects mode. Setting
+`type = "simulated"` also samples parameters and updates the random
+effects; set the seed separately before each prediction call for
+reproducibility. See
+[`help("dynLong")`](https://graemeleehickey.github.io/joineRML/reference/dynLong.md)
+and
+[`help("dynSurv")`](https://graemeleehickey.github.io/joineRML/reference/dynSurv.md)
+for examples and arguments.
+
+For simulated predictions, residual variances are sampled jointly with
+the other non-hazard parameters on the log-variance scale. The full
+covariance matrix is transformed using the delta method, including
+covariances between residual variances and other parameters, and the
+log-variance draws are then exponentiated. This gives positive residual
+variances with medians equal to the fitted estimates; it does not
+preserve their original-scale means or covariances exactly. Fitted
+estimates, [`vcov()`](https://rdrr.io/r/stats/vcov.html), and reported
+standard errors retain their existing scales. Invalid fitted variances,
+unusable covariance matrices, and numerical overflow or underflow
+produce an error. The approximation remains asymptotic, so positive
+variance draws alone do not establish reliable prediction intervals in
+small samples or near a variance boundary.
 
 ### Comparing fitted models
 
@@ -641,7 +672,7 @@ summary(fit.joinerml)
 #> 
 #> Algorithm Summary:
 #>     Total computational time: 1 secs 
-#>     EM algorithm computational time: 1 secs 
+#>     EM algorithm computational time: 0.9 secs 
 #>     Convergence status: converged
 #>     Convergence criterion: sas 
 #>     Final Monte Carlo sample size: 3784 

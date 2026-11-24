@@ -183,20 +183,34 @@ fit and level 1 corresponding to subject-specific model fit. Defaults to
 <p>The predictions are based on plugging in \(\theta = \hat{\theta}\), which
   is extracted from the <code>mjoint</code> object.</p>
 <p><strong>Monte Carlo simulation predictions</strong></p>
-<p>For <code>type="simulated"</code>, \(\theta\) is drawn from a multivariate
-  normal distribution with means \(\hat{\theta}\) and variance-covariance
-  matrix both extracted from the fitted <code>mjoint</code> object via the
-  <code><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef()</a></code> and <code><a href="https://rdrr.io/r/stats/vcov.html" class="external-link">vcov()</a></code> functions. \(\hat{b}\) is drawn from the
-  the posterior distribution of the random effects</p>
+<p>For <code>type="simulated"</code>, the non-hazard parameters are drawn jointly
+  from a multivariate normal approximation with residual variances on the
+  log scale. Write \(v_k = \sigma_k^2\) and let \(g(\theta)\) replace
+  each \(v_k\) by \(\log(v_k)\), leaving the other parameters unchanged.
+  The mean is \(g(\hat{\theta})\), and the covariance matrix is
+  \(J V J^T\), where \(V\) is returned by <code>vcov(object)</code> and
+  \(J\) is diagonal, with entries \(1 / \hat{v}_k\) for the residual
+  variances and 1 elsewhere. This delta-method transformation includes the
+  covariances with the other parameters. Exponentiating the log-variance
+  draws gives positive residual variances, with medians equal to their fitted
+  estimates. Their original-scale means and covariances are not preserved
+  exactly. Fitted estimates and reported standard errors retain their
+  original scales. Invalid fitted variances, unusable covariance matrices,
+  and numerical overflow or underflow in the draws produce an error.</p>
+<p>This is an asymptotic approximation; positivity alone does not establish
+  its accuracy in small samples or near a variance boundary. Random-effects
+  covariance matrices and baseline-hazard increments retain their existing
+  adjustments to ensure positive definiteness and positivity, respectively.</p>
+<p>The random effects are updated using the conditional posterior density</p>
 <p>$$f(b | y, T \ge t; \theta)$$</p>
-<p>by means of a Metropolis-Hasting algorithm with independent multivariate
+<p>by means of a Metropolis-Hastings algorithm with independent multivariate
   non-central <em>t</em>-distribution proposal distributions with
   non-centrality parameter \(\hat{b}\) from the first-order prediction and
   variance-covariance matrix equal to <code>scale</code> \(\times\) the inverse
   of the negative Hessian of the posterior distribution. The choice of
   <code>scale</code> can be used to tune the acceptance rate of the
   Metropolis-Hastings sampler. This simulation algorithm is iterated <code>M</code>
-  times, at each time calculating the conditional survival probability.</p>
+  times, at each time calculating the conditional expected longitudinal value.</p>
     </div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>

@@ -333,8 +333,8 @@ available from the <code>summary</code> function:</p>
 <span><span class="co">#&gt; gamma_2 3.6801  3.4488  1.0671  0.2859</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Algorithm Summary:</span></span>
-<span><span class="co">#&gt;     Total computational time: 2.8 secs </span></span>
-<span><span class="co">#&gt;     EM algorithm computational time: 2.4 secs </span></span>
+<span><span class="co">#&gt;     Total computational time: 2.9 secs </span></span>
+<span><span class="co">#&gt;     EM algorithm computational time: 2.5 secs </span></span>
 <span><span class="co">#&gt;     Convergence status: converged</span></span>
 <span><span class="co">#&gt;     Convergence criterion: sas </span></span>
 <span><span class="co">#&gt;     Final Monte Carlo sample size: 3674 </span></span>
@@ -394,6 +394,32 @@ idea to examine the convergence plots. These can be viewed using the
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">fit</span>, params <span class="op">=</span> <span class="st">"beta"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="joineRML_files/figure-html/hvd_model_conv-2.png" class="r-plt" alt="" width="696"></p>
+</div>
+<div class="section level3">
+<h3 id="dynamic-predictions">Dynamic predictions<a class="anchor" aria-label="anchor" href="#dynamic-predictions"></a>
+</h3>
+<p>Use <code><a href="../reference/dynLong.html">dynLong()</a></code> for future longitudinal values and
+<code><a href="../reference/dynSurv.html">dynSurv()</a></code> for conditional survival probabilities, given a
+subject’s observed measurement history. Their default
+<code>type = "first-order"</code> uses the fitted parameters and the
+conditional random-effects mode. Setting <code>type = "simulated"</code>
+also samples parameters and updates the random effects; set the seed
+separately before each prediction call for reproducibility. See
+<code><a href="../reference/dynLong.html">help("dynLong")</a></code> and <code><a href="../reference/dynSurv.html">help("dynSurv")</a></code> for
+examples and arguments.</p>
+<p>For simulated predictions, residual variances are sampled jointly
+with the other non-hazard parameters on the log-variance scale. The full
+covariance matrix is transformed using the delta method, including
+covariances between residual variances and other parameters, and the
+log-variance draws are then exponentiated. This gives positive residual
+variances with medians equal to the fitted estimates; it does not
+preserve their original-scale means or covariances exactly. Fitted
+estimates, <code><a href="https://rdrr.io/r/stats/vcov.html" class="external-link">vcov()</a></code>, and reported standard errors retain
+their existing scales. Invalid fitted variances, unusable covariance
+matrices, and numerical overflow or underflow produce an error. The
+approximation remains asymptotic, so positive variance draws alone do
+not establish reliable prediction intervals in small samples or near a
+variance boundary.</p>
 </div>
 <div class="section level3">
 <h3 id="comparing-fitted-models">Comparing fitted models<a class="anchor" aria-label="anchor" href="#comparing-fitted-models"></a>
@@ -691,7 +717,7 @@ following code for the <code>hvd</code> data</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Algorithm Summary:</span></span>
 <span><span class="co">#&gt;     Total computational time: 1 secs </span></span>
-<span><span class="co">#&gt;     EM algorithm computational time: 1 secs </span></span>
+<span><span class="co">#&gt;     EM algorithm computational time: 0.9 secs </span></span>
 <span><span class="co">#&gt;     Convergence status: converged</span></span>
 <span><span class="co">#&gt;     Convergence criterion: sas </span></span>
 <span><span class="co">#&gt;     Final Monte Carlo sample size: 3784 </span></span>

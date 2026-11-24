@@ -138,18 +138,34 @@ which is extracted from the `mjoint` object.
 
 **Monte Carlo simulation predictions**
 
-For `type="simulated"`, \\\theta\\ is drawn from a multivariate normal
-distribution with means \\\hat{\theta}\\ and variance-covariance matrix
-both extracted from the fitted `mjoint` object via the
-[`coef()`](https://rdrr.io/r/stats/coef.html) and
-[`vcov()`](https://rdrr.io/r/stats/vcov.html) functions. \\\hat{b}\\ is
-drawn from the the posterior distribution of the random effects
+For `type="simulated"`, the non-hazard parameters are drawn jointly from
+a multivariate normal approximation with residual variances on the log
+scale. Write \\v_k = \sigma_k^2\\ and let \\g(\theta)\\ replace each
+\\v_k\\ by \\\log(v_k)\\, leaving the other parameters unchanged. The
+mean is \\g(\hat{\theta})\\, and the covariance matrix is \\J V J^T\\,
+where \\V\\ is returned by `vcov(object)` and \\J\\ is diagonal, with
+entries \\1 / \hat{v}\_k\\ for the residual variances and 1 elsewhere.
+This delta-method transformation includes the covariances with the other
+parameters. Exponentiating the log-variance draws gives positive
+residual variances, with medians equal to their fitted estimates. Their
+original-scale means and covariances are not preserved exactly. Fitted
+estimates and reported standard errors retain their original scales.
+Invalid fitted variances, unusable covariance matrices, and numerical
+overflow or underflow in the draws produce an error.
+
+This is an asymptotic approximation; positivity alone does not establish
+its accuracy in small samples or near a variance boundary.
+Random-effects covariance matrices and baseline-hazard increments retain
+their existing adjustments to ensure positive definiteness and
+positivity, respectively.
+
+The random effects are updated using the conditional posterior density
 
 \$\$f(b \| y, T \ge t; \theta)\$\$
 
-by means of a Metropolis-Hasting algorithm with independent multivariate
-non-central *t*-distribution proposal distributions with non-centrality
-parameter \\\hat{b}\\ from the first-order prediction and
+by means of a Metropolis-Hastings algorithm with independent
+multivariate non-central *t*-distribution proposal distributions with
+non-centrality parameter \\\hat{b}\\ from the first-order prediction and
 variance-covariance matrix equal to `scale` \\\times\\ the inverse of
 the negative Hessian of the posterior distribution. The choice of
 `scale` can be used to tune the acceptance rate of the

@@ -57,6 +57,14 @@
 
 ### Bug fixes
 
+- Simulated dynamic predictions now draw residual variances on the log
+  scale, using the delta method to transform the full joint covariance
+  matrix. This prevents negative residual-variance draws and can change
+  predicted values and intervals. Fitted estimates and reported standard
+  errors are unchanged. Invalid fitted variances, unusable covariance
+  matrices, and numerical overflow or underflow now produce informative
+  errors.
+
 - [`mjoint()`](https://graemeleehickey.github.io/joineRML/reference/mjoint.md)
   now rejects unsupported survival formula terms before fitting,
   including [`strata()`](https://rdrr.io/pkg/survival/man/strata.html),
