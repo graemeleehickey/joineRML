@@ -131,13 +131,13 @@
 
 -   Graeme Hickey taken over the package as creator and maintainer.
 
--   Updates to DESCRIPTION
+-   Updates to DESCRIPTION.
 
--   Updates to Makevars and Makevars.win
+-   Updates to Makevars and Makevars.win.
 
--   Updates to appveyor.yml and .travis.yml settings
+-   Updates to appveyor.yml and .travis.yml settings.
 
--   Updates to .gitignore
+-   Updates to .gitignore.
 
 # joineRML 0.4.2
 
@@ -189,7 +189,7 @@
 
 -   Fixed situation where a tibble might be given as the dataset (#55 @ellessenne).
 
--   Catches errors in bootstrap due to "bad" data and automatically restarts the bootstrap (#57 @ellessenne)
+-   Catches errors in bootstrap due to "bad" data and automatically restarts the bootstrap (#57 @ellessenne).
 
 ## Housekeeping
 
