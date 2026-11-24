@@ -225,8 +225,8 @@ summary(fit)
 #> time_2           -0.0051222    -0.0049885  0.0011174
 #>   Standard Deviations: 0.30966 0.3836 0.033427 
 #> 
-#> Residual standard errors(s):
-#>  sigma2_1  sigma2_2 
+#> Residual standard deviations:
+#>      grad      lvmi 
 #> 0.5171520 0.1581865 
 #> 
 #> Coefficient Estimates:
@@ -248,8 +248,8 @@ summary(fit)
 #> gamma_2 3.6801  3.4488  1.0671  0.2859
 #> 
 #> Algorithm Summary:
-#>     Total computational time: 3 secs 
-#>     EM algorithm computational time: 2.6 secs 
+#>     Total computational time: 2.2 secs 
+#>     EM algorithm computational time: 2 secs 
 #>     Convergence status: converged
 #>     Convergence criterion: sas 
 #>     Final Monte Carlo sample size: 3674 
@@ -490,8 +490,8 @@ summary(fit.joinerml)
 #> time_1           -0.0036449  0.00087096
 #>   Standard Deviations: 0.36847 0.029512 
 #> 
-#> Residual standard errors(s):
-#>  sigma2_1 
+#> Residual standard deviations:
+#>   sigma_1 
 #> 0.1598896 
 #> 
 #> Coefficient Estimates:
@@ -508,8 +508,8 @@ summary(fit.joinerml)
 #> gamma_1 3.4823  1.6559  2.1030  0.0355
 #> 
 #> Algorithm Summary:
-#>     Total computational time: 1.1 secs 
-#>     EM algorithm computational time: 1 secs 
+#>     Total computational time: 0.8 secs 
+#>     EM algorithm computational time: 0.7 secs 
 #>     Convergence status: converged
 #>     Convergence criterion: sas 
 #>     Final Monte Carlo sample size: 3784 

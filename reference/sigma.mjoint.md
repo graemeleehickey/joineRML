@@ -25,6 +25,13 @@ sigma(object, ...)
 a number (standard deviation) if \\K = 1\\ (univariate model), or a
 vector if \\K\>1\\ (multivariate model).
 
+## Details
+
+These values are the square roots of the residual variances stored in
+`coef(object)$sigma2`; they are not standard errors of estimated
+parameters. Names identify the longitudinal outcomes, or use `sigma_1`,
+`sigma_2`, and so on when the formula list is unnamed.
+
 ## References
 
 Pinheiro JC, Bates DM. *Mixed-Effects Models in S and S-PLUS.* New York:

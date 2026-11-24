@@ -55,7 +55,8 @@ simData(
 
 - sigma2:
 
-  a vector of `length=K` specifying the residual standard errors.
+  a vector of `length=K` specifying the residual variances. For example,
+  `sigma2 = c(0.25, 4)` gives residual standard deviations of 0.5 and 2.
 
 - D:
 

@@ -44,7 +44,26 @@
   supplied. The default `seed = NULL` retains the existing behaviour
   ([\#5](https://github.com/graemeleehickey/joineRML/issues/5)).
 
+### Changes to returned names
+
+- [`glance()`](https://generics.r-lib.org/reference/glance.html) now
+  names its residual standard-deviation columns `sigma_1`, `sigma_2`,
+  and so on, replacing the misleading `sigma2_1`, `sigma2_2`, etc.
+  Update scripts that select these columns by name. `summary(fit)$sigma`
+  now uses the outcome names returned by `sigma(fit)`, or `sigma_j`
+  names for unnamed outcomes. The numerical values and stored residual
+  variances in `coef(fit)$sigma2` are unchanged
+  ([\#62](https://github.com/graemeleehickey/joineRML/issues/62)).
+
 ### Bug fixes
+
+- Corrected residual-scale terminology: summaries now print “Residual
+  standard deviations”, and bootstrap output prints “Residual
+  variances”. Corrected the documentation for stored variances,
+  simulation inputs, and bootstrap uncertainty. Thanks to
+  [@ellessenne](https://github.com/ellessenne) for reporting the
+  ambiguity
+  ([\#62](https://github.com/graemeleehickey/joineRML/issues/62)).
 
 - Tidying methods now reject unsupported arguments instead of silently
   ignoring them. The joineRML methods are used consistently when broom
@@ -53,44 +72,55 @@
   matches supplied original data by subject and measurement time,
   preserving the supplied row order, and rejects changed observations or
   incompatible observation schedules.
+
 - Longitudinal and survival records are now matched explicitly by
   subject ID, independently of row order or factor-level order. Missing
   IDs, unmatched subject sets, duplicate survival records, and missing
   survival-model values are rejected before fitting.
+
 - Simulated dynamic predictions now use the correct Metropolis-Hastings
   proposal-density correction, evaluated on the log scale. This changes
   the distribution of the sampled random effects and can change
   predicted values and intervals.
+
 - The default `"sas"` convergence criterion now uses absolute parameter
   changes consistently. Models can require additional iterations and
   return different estimates when the previous rule stopped prematurely.
+
 - Simulated event indicators now preserve censoring for every subject,
   including the first subject and subjects with infinite event times.
   Datasets with no events are retained, and
   [`mjoint()`](https://graemeleehickey.github.io/joineRML/reference/mjoint.md)
   reports clearly that at least one observed event is required.
+
 - Fitted values and residuals now retain the correct lengths and
   observation order when subjects have equal numbers of measurements.
+
 - Bootstrap standard errors and confidence intervals now support models
   with a single longitudinal fixed-effect coefficient or a single
   survival association coefficient.
+
 - Intercept-only longitudinal fixed-effects models now retain the
   dimensions needed for estimation, coefficient histories, and
   approximate standard errors.
+
 - Gompertz survival-time simulation now handles zero subject-specific
   time slopes using the exponential limit and improves numerical
   accuracy near zero.
+
 - The reported joint log-likelihood is now evaluated at the returned
   coefficients, including when post-fit statistics are omitted or the
   model has not converged. This also corrects the likelihood used in AIC
   and BIC. The iteration history continues to record likelihoods before
   each parameter update.
+
 - [`BIC()`](https://rdrr.io/r/stats/AIC.html),
   [`summary()`](https://rdrr.io/r/base/summary.html), and
   [`glance()`](https://generics.r-lib.org/reference/glance.html) now
   consistently use the number of subjects for the BIC penalty. The
   `nobs` attribute of [`logLik()`](https://rdrr.io/r/stats/logLik.html)
   therefore reports subjects rather than longitudinal measurements.
+
 - Dynamic survival predictions now reject non-positive or non-finite
   horizons and non-finite explicit prediction times.
 

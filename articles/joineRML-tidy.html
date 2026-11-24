@@ -312,9 +312,9 @@ from the joint model:</p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://generics.r-lib.org/reference/glance.html" class="external-link">glance</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 1 × 11</span></span></span>
-<span><span class="co">##   sigma2_1 sigma2_2   AIC   BIC logLik  nobs nevent  npar converged</span></span>
-<span><span class="co">##      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>    </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span>    0.517    0.158  342.  374.  -<span style="color: #BB0000;">153.</span>    43      8    18 TRUE     </span></span>
+<span><span class="co">##   sigma_1 sigma_2   AIC   BIC logLik  nobs nevent  npar converged</span></span>
+<span><span class="co">##     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>    </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span>   0.517   0.158  342.  374.  -<span style="color: #BB0000;">153.</span>    43      8    18 TRUE     </span></span>
 <span><span class="co">## <span style="color: #949494;"># ℹ 2 more variables: nobs_longitudinal_1 &lt;int&gt;, nobs_longitudinal_2 &lt;int&gt;</span></span></span></code></pre>
 <p><code>nobs</code> is the number of subjects, agreeing with
 <code>nobs(fit)</code> and the sample size used by BIC.
@@ -323,13 +323,27 @@ from the joint model:</p>
 so on count measurements for each outcome in formula order.
 <code>npar</code> is the parameter count used by AIC and BIC, excluding
 baseline hazard increments. <code>converged</code> records whether the
-fitting criterion was met. The existing <code>sigma2_j</code> columns
-contain residual standard deviations, despite their historical names.
-These summaries are available even when post-fit standard errors were
-not requested.</p>
+fitting criterion was met. These summaries are available even when
+post-fit standard errors were not requested.</p>
+<p>The <code>sigma_1</code>, <code>sigma_2</code>, and subsequent
+columns contain residual standard deviations, agreeing with
+<code>sigma(fit)</code> and <code>summary(fit)$sigma</code>. The stored
+<code>coef(fit)$sigma2</code> values are variances. For example, a
+residual variance of 0.25 corresponds to a residual standard deviation
+of 0.5. Bootstrap residual estimates and confidence intervals remain on
+the variance scale, and <code><a href="../reference/bootSE.html">bootSE()</a></code> reports standard errors of
+the variance estimates.</p>
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/sigma.html" class="external-link">sigma</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span>                  <span class="co"># Residual standard deviations, named by outcome</span></span></code></pre></div>
+<pre><code><span><span class="co">##      grad      lvmi </span></span>
+<span><span class="co">## 0.5171520 0.1581865</span></span></code></pre>
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span><span class="op">$</span><span class="va">sigma2</span>             <span class="co"># Residual variances</span></span></code></pre></div>
+<pre><code><span><span class="co">##   sigma2_1   sigma2_2 </span></span>
+<span><span class="co">## 0.26744623 0.02502296</span></span></code></pre>
 <p>This allows comparing competing models easily. Say for instance that
 we fit a second model with only random intercepts:</p>
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">67890</span><span class="op">)</span></span>
 <span><span class="va">fit2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mjoint.html">mjoint</a></span><span class="op">(</span></span>
 <span>  formLongFixed <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
@@ -349,19 +363,19 @@ we fit a second model with only random intercepts:</p>
 <pre><code><span><span class="co">## EM algorithm has converged!</span></span></code></pre>
 <pre><code><span><span class="co">## Calculating post model fit statistics...</span></span></code></pre>
 <p>We can go ahead and compare the models in terms of AIC and BIC:</p>
-<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://generics.r-lib.org/reference/glance.html" class="external-link">glance</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 1 × 11</span></span></span>
-<span><span class="co">##   sigma2_1 sigma2_2   AIC   BIC logLik  nobs nevent  npar converged</span></span>
-<span><span class="co">##      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>    </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span>    0.517    0.158  342.  374.  -<span style="color: #BB0000;">153.</span>    43      8    18 TRUE     </span></span>
+<span><span class="co">##   sigma_1 sigma_2   AIC   BIC logLik  nobs nevent  npar converged</span></span>
+<span><span class="co">##     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>    </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span>   0.517   0.158  342.  374.  -<span style="color: #BB0000;">153.</span>    43      8    18 TRUE     </span></span>
 <span><span class="co">## <span style="color: #949494;"># ℹ 2 more variables: nobs_longitudinal_1 &lt;int&gt;, nobs_longitudinal_2 &lt;int&gt;</span></span></span></code></pre>
-<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://generics.r-lib.org/reference/glance.html" class="external-link">glance</a></span><span class="op">(</span><span class="va">fit2</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 1 × 11</span></span></span>
-<span><span class="co">##   sigma2_1 sigma2_2   AIC   BIC logLik  nobs nevent  npar converged</span></span>
-<span><span class="co">##      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>    </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span>    0.515    0.173  342.  369.  -<span style="color: #BB0000;">156.</span>    43      8    15 TRUE     </span></span>
+<span><span class="co">##   sigma_1 sigma_2   AIC   BIC logLik  nobs nevent  npar converged</span></span>
+<span><span class="co">##     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>    </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span>   0.515   0.173  342.  369.  -<span style="color: #BB0000;">156.</span>    43      8    15 TRUE     </span></span>
 <span><span class="co">## <span style="color: #949494;"># ℹ 2 more variables: nobs_longitudinal_1 &lt;int&gt;, nobs_longitudinal_2 &lt;int&gt;</span></span></span></code></pre>
 <p>Compare AIC and BIC only for models fitted to the same observations,
 and check convergence before interpreting the comparison.</p>
@@ -372,10 +386,10 @@ and check convergence before interpreting the comparison.</p>
 <p>The following methods describe a selected longitudinal fixed-effects
 model. Coefficient names and covariance-matrix names agree with its
 design columns:</p>
-<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/nobs.html" class="external-link">nobs</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 43</span></span></code></pre>
-<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/terms.html" class="external-link">terms</a></span><span class="op">(</span><span class="va">fit</span>, process <span class="op">=</span> <span class="st">"Longitudinal"</span>, k <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## log.lvmi ~ time + sex</span></span>
 <span><span class="co">## attr(,"variables")</span></span>
@@ -400,7 +414,7 @@ design columns:</p>
 <span><span class="co">## attr(,"dataClasses")</span></span>
 <span><span class="co">##  log.lvmi      time       sex </span></span>
 <span><span class="co">## "numeric" "numeric" "numeric"</span></span></code></pre>
-<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/model.frame.html" class="external-link">model.frame</a></span><span class="op">(</span><span class="va">fit</span>, process <span class="op">=</span> <span class="st">"Longitudinal"</span>, k <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##    log.lvmi      time sex</span></span>
 <span><span class="co">## 1  4.778955 0.0109589   0</span></span>
@@ -409,7 +423,7 @@ design columns:</p>
 <span><span class="co">## 43 5.137150 4.1205480   0</span></span>
 <span><span class="co">## 44 5.129366 7.7342470   0</span></span>
 <span><span class="co">## 45 5.027165 0.1534247   0</span></span></code></pre>
-<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/model.matrix.html" class="external-link">model.matrix</a></span><span class="op">(</span><span class="va">fit</span>, process <span class="op">=</span> <span class="st">"Longitudinal"</span>, k <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##    (Intercept)      time sex</span></span>
 <span><span class="co">## 1            1 0.0109589   0</span></span>
@@ -418,11 +432,11 @@ design columns:</p>
 <span><span class="co">## 43           1 4.1205480   0</span></span>
 <span><span class="co">## 44           1 7.7342470   0</span></span>
 <span><span class="co">## 45           1 0.1534247   0</span></span></code></pre>
-<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef</a></span><span class="op">(</span><span class="va">fit</span>, process <span class="op">=</span> <span class="st">"Longitudinal"</span>, k <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## (Intercept)        time         sex </span></span>
 <span><span class="co">##  4.99293606  0.02584591 -0.19671311</span></span></code></pre>
-<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/vcov.html" class="external-link">vcov</a></span><span class="op">(</span><span class="va">fit</span>, process <span class="op">=</span> <span class="st">"Longitudinal"</span>, k <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##               (Intercept)          time           sex</span></span>
 <span><span class="co">## (Intercept)  0.0066862346 -0.0002348949 -0.0015748512</span></span>
@@ -436,7 +450,7 @@ extract the fitted observations and do not accept new data.</p>
 design matrix contains baseline covariates, without an intercept or
 latent association columns. Event coefficient and covariance selections
 include both baseline covariates and association coefficients:</p>
-<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb55"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/model.matrix.html" class="external-link">model.matrix</a></span><span class="op">(</span><span class="va">fit</span>, process <span class="op">=</span> <span class="st">"Event"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##         age</span></span>
 <span><span class="co">## 1  75.06027</span></span>
@@ -445,11 +459,11 @@ include both baseline covariates and association coefficients:</p>
 <span><span class="co">## 51 50.97534</span></span>
 <span><span class="co">## 56 69.94247</span></span>
 <span><span class="co">## 62 72.30685</span></span></code></pre>
-<div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb57"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef</a></span><span class="op">(</span><span class="va">fit</span>, process <span class="op">=</span> <span class="st">"Event"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##       age   gamma_1   gamma_2 </span></span>
 <span><span class="co">## 0.1365893 2.8471790 3.6800987</span></span></code></pre>
-<div class="sourceCode" id="cb55"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb59"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/vcov.html" class="external-link">vcov</a></span><span class="op">(</span><span class="va">fit</span>, process <span class="op">=</span> <span class="st">"Event"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##                  age     gamma_1     gamma_2</span></span>
 <span><span class="co">## age      0.004427543 -0.03287174 -0.03879102</span></span>
@@ -470,7 +484,7 @@ the tidied estimates explicitly makes the selected component and
 reported sample sizes clear.</p>
 <p>For modelsummary, combine <code><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy()</a></code> and
 <code><a href="https://generics.r-lib.org/reference/glance.html" class="external-link">glance()</a></code> in a <code>modelsummary_list</code> object:</p>
-<div class="sourceCode" id="cb57"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb61"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">table_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/structure.html" class="external-link">structure</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>tidy <span class="op">=</span> <span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">fit</span>, conf.int <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, glance <span class="op">=</span> <span class="fu"><a href="https://generics.r-lib.org/reference/glance.html" class="external-link">glance</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  class <span class="op">=</span> <span class="st">"modelsummary_list"</span></span>
@@ -539,7 +553,7 @@ reported sample sizes clear.</p>
 <p>For gtsummary, format the combined coefficient table directly. This
 retains all outcome labels and avoids treating the joint model as a
 single regression formula:</p>
-<div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb62"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">table_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">fit</span>, component <span class="op">=</span> <span class="st">"all"</span>, conf.int <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="va">table_data</span> <span class="op">&lt;-</span> <span class="va">table_data</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"component"</span>, <span class="st">"outcome"</span>, <span class="st">"term"</span>, <span class="st">"estimate"</span>,</span>
 <span>                           <span class="st">"conf.low"</span>, <span class="st">"conf.high"</span>, <span class="st">"p.value"</span><span class="op">)</span><span class="op">]</span></span>
@@ -1112,7 +1126,7 @@ single regression formula:</p>
 </h3>
 <p>Several examples of how to use <code>broom</code> including more
 details are available on its introductory vignette:</p>
-<div class="sourceCode" id="cb59"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb63"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/vignette.html" class="external-link">vignette</a></span><span class="op">(</span>topic <span class="op">=</span> <span class="st">"broom"</span>, package <span class="op">=</span> <span class="st">"broom"</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>

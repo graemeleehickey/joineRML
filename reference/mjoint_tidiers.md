@@ -150,10 +150,10 @@ individual-level fitted values and residuals.
 
 `glance` returns one row with the columns
 
-- sigma2_j:
+- sigma_j:
 
-  the square root of the estimated residual variance for the j-th
-  longitudinal process
+  the estimated residual standard deviation for the j-th longitudinal
+  process
 
 - AIC:
 

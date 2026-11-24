@@ -38,8 +38,11 @@ A list with the following components.
 
   `sigma2`
 
-  :   the measurement error standard deviations for the linear mixed
-      effects sub-model.
+  :   the residual (measurement error) variances for the linear mixed
+      effects sub-models. Their square roots are returned by
+      [`sigma()`](https://rdrr.io/r/stats/sigma.html) and reported by
+      [`summary()`](https://rdrr.io/r/base/summary.html) and
+      [`glance()`](https://generics.r-lib.org/reference/glance.html).
 
   `haz`
 

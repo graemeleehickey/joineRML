@@ -294,9 +294,9 @@ glance(fit)
 ```
 
     ## # A tibble: 1 × 11
-    ##   sigma2_1 sigma2_2   AIC   BIC logLik  nobs nevent  npar converged
-    ##      <dbl>    <dbl> <dbl> <dbl>  <dbl> <int>  <dbl> <dbl> <lgl>    
-    ## 1    0.517    0.158  342.  374.  -153.    43      8    18 TRUE     
+    ##   sigma_1 sigma_2   AIC   BIC logLik  nobs nevent  npar converged
+    ##     <dbl>   <dbl> <dbl> <dbl>  <dbl> <int>  <dbl> <dbl> <lgl>    
+    ## 1   0.517   0.158  342.  374.  -153.    43      8    18 TRUE     
     ## # ℹ 2 more variables: nobs_longitudinal_1 <int>, nobs_longitudinal_2 <int>
 
 `nobs` is the number of subjects, agreeing with `nobs(fit)` and the
@@ -304,10 +304,34 @@ sample size used by BIC. `nevent` counts observed events, and
 `nobs_longitudinal_1`, `nobs_longitudinal_2`, and so on count
 measurements for each outcome in formula order. `npar` is the parameter
 count used by AIC and BIC, excluding baseline hazard increments.
-`converged` records whether the fitting criterion was met. The existing
-`sigma2_j` columns contain residual standard deviations, despite their
-historical names. These summaries are available even when post-fit
-standard errors were not requested.
+`converged` records whether the fitting criterion was met. These
+summaries are available even when post-fit standard errors were not
+requested.
+
+The `sigma_1`, `sigma_2`, and subsequent columns contain residual
+standard deviations, agreeing with `sigma(fit)` and
+`summary(fit)$sigma`. The stored `coef(fit)$sigma2` values are
+variances. For example, a residual variance of 0.25 corresponds to a
+residual standard deviation of 0.5. Bootstrap residual estimates and
+confidence intervals remain on the variance scale, and
+[`bootSE()`](https://graemeleehickey.github.io/joineRML/reference/bootSE.md)
+reports standard errors of the variance estimates.
+
+``` r
+
+sigma(fit)                  # Residual standard deviations, named by outcome
+```
+
+    ##      grad      lvmi 
+    ## 0.5171520 0.1581865
+
+``` r
+
+coef(fit)$sigma2             # Residual variances
+```
+
+    ##   sigma2_1   sigma2_2 
+    ## 0.26744623 0.02502296
 
 This allows comparing competing models easily. Say for instance that we
 fit a second model with only random intercepts:
@@ -346,9 +370,9 @@ glance(fit)
 ```
 
     ## # A tibble: 1 × 11
-    ##   sigma2_1 sigma2_2   AIC   BIC logLik  nobs nevent  npar converged
-    ##      <dbl>    <dbl> <dbl> <dbl>  <dbl> <int>  <dbl> <dbl> <lgl>    
-    ## 1    0.517    0.158  342.  374.  -153.    43      8    18 TRUE     
+    ##   sigma_1 sigma_2   AIC   BIC logLik  nobs nevent  npar converged
+    ##     <dbl>   <dbl> <dbl> <dbl>  <dbl> <int>  <dbl> <dbl> <lgl>    
+    ## 1   0.517   0.158  342.  374.  -153.    43      8    18 TRUE     
     ## # ℹ 2 more variables: nobs_longitudinal_1 <int>, nobs_longitudinal_2 <int>
 
 ``` r
@@ -357,9 +381,9 @@ glance(fit2)
 ```
 
     ## # A tibble: 1 × 11
-    ##   sigma2_1 sigma2_2   AIC   BIC logLik  nobs nevent  npar converged
-    ##      <dbl>    <dbl> <dbl> <dbl>  <dbl> <int>  <dbl> <dbl> <lgl>    
-    ## 1    0.515    0.173  342.  369.  -156.    43      8    15 TRUE     
+    ##   sigma_1 sigma_2   AIC   BIC logLik  nobs nevent  npar converged
+    ##     <dbl>   <dbl> <dbl> <dbl>  <dbl> <int>  <dbl> <dbl> <lgl>    
+    ## 1   0.515   0.173  342.  369.  -156.    43      8    15 TRUE     
     ## # ℹ 2 more variables: nobs_longitudinal_1 <int>, nobs_longitudinal_2 <int>
 
 Compare AIC and BIC only for models fitted to the same observations, and

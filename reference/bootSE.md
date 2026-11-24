@@ -191,7 +191,10 @@ bootSE(
 
 ## Value
 
-An object of class `bootSE`.
+An object of class `bootSE`. The residual estimates in
+`coefficients$sigma2` and percentile confidence intervals in `sigma2.ci`
+are on the variance scale. The `sigma2.se` values are bootstrap standard
+errors of those variance estimates, not residual standard deviations.
 
 ## Details
 

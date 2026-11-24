@@ -31,8 +31,15 @@ summary(object, bootSE = NULL, ...)
 
 A list containing the coefficient matrices for the longitudinal and
 time-to-event sub-models; variance-covariance matrix for the random
-effects; residual error variances; log-likelihood of joint model; AIC
-and BIC statistics; and model fit objects.
+effects; residual standard deviations; log-likelihood of joint model;
+AIC and BIC statistics; and model fit objects.
+
+## Details
+
+The `sigma` component contains residual standard deviations, with the
+same values and outcome names as `sigma(object)`. For an unnamed
+longitudinal formula list, the names are `sigma_1`, `sigma_2`, and so
+on. The stored `coef(object)$sigma2` values are residual variances.
 
 ## References
 
