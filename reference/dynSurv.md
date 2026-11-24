@@ -126,6 +126,17 @@ where \\T\\ is the failure time for the new subject, \\y\\ is the
 stacked-vector of longitudinal measurements up to time *t* and \\S(u \|
 \hat{b}; \theta)\\ is the survival function.
 
+Prediction matrices use the transformations, factor levels, and
+contrasts retained when the model was fitted. Changing
+`options("contrasts")` does not change predictions from that fit. New
+factor levels are rejected. Older fits are checked against their stored
+random-effects matrices; inconsistent bases at measurement and event
+times require refitting with
+[`mjoint()`](https://graemeleehickey.github.io/joineRML/reference/mjoint.md).
+Transformations that depend on the data must support R's
+[`makepredictcall`](https://rdrr.io/r/stats/makepredictcall.html)
+mechanism or use fixed constants.
+
 **First order predictions**
 
 For `type="first-order"`, \\\hat{b}\\ is the mode of the posterior

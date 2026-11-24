@@ -98,6 +98,13 @@ A list with the following components.
   [`model.frame()`](https://rdrr.io/r/stats/model.frame.html), and
   [`model.matrix()`](https://rdrr.io/r/stats/model.matrix.html).
 
+- `designs`:
+
+  saved terms, factor levels, contrast matrices, and column names for
+  the longitudinal fixed-effects, random-effects, and event designs.
+  These preserve the fitted transformations and factor coding during
+  prediction.
+
 - `timeVar`:
 
   a character string vector of length K denoting the column name(s) for

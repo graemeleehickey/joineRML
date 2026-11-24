@@ -280,8 +280,8 @@ summary(fit)
 #> gamma_2 3.6801  3.4488  1.0671  0.2859
 #> 
 #> Algorithm Summary:
-#>     Total computational time: 2.9 secs 
-#>     EM algorithm computational time: 2.5 secs 
+#>     Total computational time: 3.6 secs 
+#>     EM algorithm computational time: 3.1 secs 
 #>     Convergence status: converged
 #>     Convergence criterion: sas 
 #>     Final Monte Carlo sample size: 3674 
@@ -373,6 +373,23 @@ reproducibility. See
 and
 [`help("dynSurv")`](https://graemeleehickey.github.io/joineRML/reference/dynSurv.md)
 for examples and arguments.
+
+Prediction uses the transformations and factor coding established during
+fitting. Random-effects time terms such as `poly(time, 2)`,
+`splines::ns(time, df = 2)`, and `scale(time)` retain their fitted
+coefficients, knots, or scaling constants at event and prediction times,
+including when predicting at a single time. Changing
+`options("contrasts")` after fitting does not change predictions, and
+new factor levels are rejected. Custom transformations that depend on
+the data must support R’s
+[`makepredictcall()`](https://rdrr.io/r/stats/makepredictcall.html)
+mechanism or use fixed constants; an expression such as
+`time - mean(time)` recalculates its centring whenever it is evaluated.
+Older fits are checked against their stored random-effects matrices. If
+measurement-time and event-time bases disagree, the model must be
+refitted with
+[`mjoint()`](https://graemeleehickey.github.io/joineRML/reference/mjoint.md);
+recalculating predictions alone cannot correct the fitted model.
 
 For simulated predictions, residual variances are sampled jointly with
 the other non-hazard parameters on the log-variance scale. The full
@@ -671,8 +688,8 @@ summary(fit.joinerml)
 #> gamma_1 3.4823  1.6559  2.1030  0.0355
 #> 
 #> Algorithm Summary:
-#>     Total computational time: 1 secs 
-#>     EM algorithm computational time: 0.9 secs 
+#>     Total computational time: 1.6 secs 
+#>     EM algorithm computational time: 1.5 secs 
 #>     Convergence status: converged
 #>     Convergence criterion: sas 
 #>     Final Monte Carlo sample size: 3784 

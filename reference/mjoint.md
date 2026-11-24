@@ -41,8 +41,16 @@ mjoint(
 - formLongRandom:
 
   a list of one-sided formulae specifying the model for the random
-  effects effects of each longitudinal outcome. The length of the list
-  must be equal to `formLongFixed`.
+  effects of each longitudinal outcome. The length of the list must be
+  equal to `formLongFixed`. Transformations of time such as
+  [`poly()`](https://rdrr.io/r/stats/poly.html),
+  [`splines::ns()`](https://rdrr.io/r/splines/ns.html),
+  [`splines::bs()`](https://rdrr.io/r/splines/bs.html), and
+  [`scale()`](https://rdrr.io/r/base/scale.html) retain their fitted
+  basis at event and prediction times. Other transformations that depend
+  on the data must support
+  [`makepredictcall`](https://rdrr.io/r/stats/makepredictcall.html) or
+  use fixed constants.
 
 - formSurv:
 

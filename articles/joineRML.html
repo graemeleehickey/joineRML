@@ -333,8 +333,8 @@ available from the <code>summary</code> function:</p>
 <span><span class="co">#&gt; gamma_2 3.6801  3.4488  1.0671  0.2859</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Algorithm Summary:</span></span>
-<span><span class="co">#&gt;     Total computational time: 2.9 secs </span></span>
-<span><span class="co">#&gt;     EM algorithm computational time: 2.5 secs </span></span>
+<span><span class="co">#&gt;     Total computational time: 3.6 secs </span></span>
+<span><span class="co">#&gt;     EM algorithm computational time: 3.1 secs </span></span>
 <span><span class="co">#&gt;     Convergence status: converged</span></span>
 <span><span class="co">#&gt;     Convergence criterion: sas </span></span>
 <span><span class="co">#&gt;     Final Monte Carlo sample size: 3674 </span></span>
@@ -407,6 +407,20 @@ also samples parameters and updates the random effects; set the seed
 separately before each prediction call for reproducibility. See
 <code><a href="../reference/dynLong.html">help("dynLong")</a></code> and <code><a href="../reference/dynSurv.html">help("dynSurv")</a></code> for
 examples and arguments.</p>
+<p>Prediction uses the transformations and factor coding established
+during fitting. Random-effects time terms such as
+<code>poly(time, 2)</code>, <code>splines::ns(time, df = 2)</code>, and
+<code>scale(time)</code> retain their fitted coefficients, knots, or
+scaling constants at event and prediction times, including when
+predicting at a single time. Changing <code>options("contrasts")</code>
+after fitting does not change predictions, and new factor levels are
+rejected. Custom transformations that depend on the data must support
+R’s <code><a href="https://rdrr.io/r/stats/makepredictcall.html" class="external-link">makepredictcall()</a></code> mechanism or use fixed constants; an
+expression such as <code>time - mean(time)</code> recalculates its
+centring whenever it is evaluated. Older fits are checked against their
+stored random-effects matrices. If measurement-time and event-time bases
+disagree, the model must be refitted with <code><a href="../reference/mjoint.html">mjoint()</a></code>;
+recalculating predictions alone cannot correct the fitted model.</p>
 <p>For simulated predictions, residual variances are sampled jointly
 with the other non-hazard parameters on the log-variance scale. The full
 covariance matrix is transformed using the delta method, including
@@ -716,8 +730,8 @@ following code for the <code>hvd</code> data</p>
 <span><span class="co">#&gt; gamma_1 3.4823  1.6559  2.1030  0.0355</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Algorithm Summary:</span></span>
-<span><span class="co">#&gt;     Total computational time: 1 secs </span></span>
-<span><span class="co">#&gt;     EM algorithm computational time: 0.9 secs </span></span>
+<span><span class="co">#&gt;     Total computational time: 1.6 secs </span></span>
+<span><span class="co">#&gt;     EM algorithm computational time: 1.5 secs </span></span>
 <span><span class="co">#&gt;     Convergence status: converged</span></span>
 <span><span class="co">#&gt;     Convergence criterion: sas </span></span>
 <span><span class="co">#&gt;     Final Monte Carlo sample size: 3784 </span></span>

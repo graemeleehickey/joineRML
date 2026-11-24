@@ -176,6 +176,13 @@ fit and level 1 corresponding to subject-specific model fit. Defaults to
   z^T(u)\hat{b}_k,$$</p>
 <p>where \(T\) is the failure time for the new subject, and \(y\) is the
   stacked-vector of longitudinal measurements up to time <em>t</em>.</p>
+<p>Prediction matrices use the transformations, factor levels, and contrasts
+  retained when the model was fitted. Changing <code>options("contrasts")</code>
+  does not change predictions from that fit. New factor levels are rejected.
+  Older fits are checked against their stored random-effects matrices;
+  inconsistent bases at measurement and event times require refitting with
+  <code><a href="mjoint.html">mjoint()</a></code>. Transformations that depend on the data must support R's
+  <code><a href="https://rdrr.io/r/stats/makepredictcall.html" class="external-link">makepredictcall</a></code> mechanism or use fixed constants.</p>
 <p><strong>First order predictions</strong></p>
 <p>For <code>type="first-order"</code>, \(\hat{b}\) is the mode of the posterior
   distribution of the random effects given by</p>

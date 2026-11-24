@@ -104,8 +104,12 @@ assumed that a standard univariate joint model is being fitted.</p></dd>
 
 <dt id="arg-formlongrandom">formLongRandom<a class="anchor" aria-label="anchor" href="#arg-formlongrandom"></a></dt>
 <dd><p>a list of one-sided formulae specifying the model for
-the random effects effects of each longitudinal outcome. The length of the
-list must be equal to <code>formLongFixed</code>.</p></dd>
+the random effects of each longitudinal outcome. The length of the
+list must be equal to <code>formLongFixed</code>. Transformations of time such as
+<code><a href="https://rdrr.io/r/stats/poly.html" class="external-link">poly()</a></code>, <code><a href="https://rdrr.io/r/splines/ns.html" class="external-link">splines::ns()</a></code>, <code><a href="https://rdrr.io/r/splines/bs.html" class="external-link">splines::bs()</a></code>, and <code><a href="https://rdrr.io/r/base/scale.html" class="external-link">scale()</a></code>
+retain their fitted basis at event and prediction times. Other transformations
+that depend on the data must support <code><a href="https://rdrr.io/r/stats/makepredictcall.html" class="external-link">makepredictcall</a></code>
+or use fixed constants.</p></dd>
 
 
 <dt id="arg-formsurv">formSurv<a class="anchor" aria-label="anchor" href="#arg-formsurv"></a></dt>
