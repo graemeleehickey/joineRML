@@ -54,6 +54,8 @@
 #'
 #'   \item{\code{model.frames}}{evaluated model frames for each longitudinal fixed-effects formula and the event formula. Longitudinal frames also retain the fitted factor contrasts. Used by \code{terms()}, \code{model.frame()}, and \code{model.matrix()}.}
 #'
+#'   \item{\code{designs}}{saved terms, factor levels, contrast matrices, and column names for the longitudinal fixed-effects, random-effects, and event designs. These preserve the fitted transformations and factor coding during prediction.}
+#'
 #'   \item{\code{timeVar}}{a character string vector of length K denoting the
 #'   column name(s) for time in \code{data}.}
 #'

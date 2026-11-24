@@ -27,8 +27,12 @@ formula is given (either as a list of length 1 or a formula), then it is
 assumed that a standard univariate joint model is being fitted.}
 
 \item{formLongRandom}{a list of one-sided formulae specifying the model for
-the random effects effects of each longitudinal outcome. The length of the
-list must be equal to \code{formLongFixed}.}
+the random effects of each longitudinal outcome. The length of the
+list must be equal to \code{formLongFixed}. Transformations of time such as
+\code{poly()}, \code{splines::ns()}, \code{splines::bs()}, and \code{scale()}
+retain their fitted basis at event and prediction times. Other transformations
+that depend on the data must support \code{\link[stats]{makepredictcall}}
+or use fixed constants.}
 
 \item{formSurv}{A formula specifying the proportional hazards regression model for baseline covariates, with one common baseline hazard. The latent association structure is added separately. The response must be right-censored survival data with at least one observed event. Ordinary covariate terms, including factors, interactions, and unpenalised transformations, are supported. Cox-specific terms \code{strata()}, \code{offset()}, \code{cluster()}, \code{tt()}, \code{frailty()}, \code{pspline()}, and \code{ridge()}, and other penalised terms, are not supported and are rejected before fitting. This also applies when these calls include a package prefix, such as \code{survival::strata()} or \code{stats::offset()}.}
 

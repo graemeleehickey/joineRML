@@ -16,6 +16,9 @@
 
 ## Bug fixes
 
+- Random-effects polynomial, spline, and scaled time terms now use the same fitted basis at measurement, event, and prediction times. Older models fitted with inconsistent bases must be refitted; prediction checks now identify this incompatibility.
+- Dynamic predictions now retain the fitted factor levels, contrast matrices, and design-column order for both sub-models. Changing R's contrast options no longer changes predictions from an existing fit, and new factor levels are rejected.
+
 - Simulated dynamic predictions now draw residual variances on the log scale, using the delta method to transform the full joint covariance matrix. This prevents negative residual-variance draws and can change predicted values and intervals. Fitted estimates and reported standard errors are unchanged. Invalid fitted variances, unusable covariance matrices, and numerical overflow or underflow now produce informative errors.
 
 - `mjoint()` now rejects unsupported survival formula terms before fitting, including `strata()`, `offset()`, `cluster()`, `tt()`, frailty terms, and penalised terms. Previously, these could be ignored, cause unclear errors, or produce a model that differed from the specified formula. The survival model supports ordinary baseline covariates with one common baseline hazard, together with the latent association structure.

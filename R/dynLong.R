@@ -26,6 +26,14 @@
 #'   where \eqn{T} is the failure time for the new subject, and \eqn{y} is the
 #'   stacked-vector of longitudinal measurements up to time \emph{t}.
 #'
+#'   Prediction matrices use the transformations, factor levels, and contrasts
+#'   retained when the model was fitted. Changing \code{options("contrasts")}
+#'   does not change predictions from that fit. New factor levels are rejected.
+#'   Older fits are checked against their stored random-effects matrices;
+#'   inconsistent bases at measurement and event times require refitting with
+#'   \code{mjoint()}. Transformations that depend on the data must support R's
+#'   \code{\link[stats]{makepredictcall}} mechanism or use fixed constants.
+#'
 #'   \strong{First order predictions}
 #'
 #'   For \code{type="first-order"}, \eqn{\hat{b}} is the mode of the posterior
@@ -118,6 +126,7 @@ dynLong <- function(object, newdata, newSurvData = NULL, u = NULL,
                     type = "first-order", M = 200, scale = 1.6, ci,
                     progress = TRUE, ntimes = 100, level = 1) {
 
+  object$designs <- .mjoint_prediction_designs(object)
   K <- object$dims$K
   p <- object$dims$p
   r <- object$dims$r

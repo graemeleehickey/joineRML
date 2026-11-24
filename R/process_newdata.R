@@ -9,6 +9,7 @@ process_newdata <- function(object, newdata, newSurvData = NULL, tobs = NULL) {
   r <- object$dims$r
   p <- object$dims$p
   q <- object$dims$q
+  designs <- .mjoint_prediction_designs(object)
 
   if (!isa(newdata, "list")) {
     balanced <- TRUE
@@ -33,20 +34,14 @@ process_newdata <- function(object, newdata, newSurvData = NULL, tobs = NULL) {
   tk.new <- list()
   Zk.new <- list()
   yk.new <- list()
-  ffk <- list()
   nk <- vector(length = K)
 
   for (k in 1:K) {
-    termsX <- object$lfit[[k]]$terms
-    origData <- model.frame(termsX, object$data[[k]])
-    xlev <- .getXlevels(termsX, origData)
-    mfX.new <- model.frame(termsX, newdata[[k]], xlev = xlev)
-    ffk[[k]] <- nlme::splitFormula(object$formLongRandom[[k]], "|")[[1]]
-
-    Xk.new[[k]] <- model.matrix(termsX, mfX.new)
+    fixed <- .mjoint_new_design(designs$fixed[[k]], newdata[[k]])
+    Xk.new[[k]] <- fixed$matrix
     tk.new[[k]] <- newdata[[k]][[object$timeVar[[k]]]]
-    yk.new[[k]] <- model.response(mfX.new, "numeric")
-    Zk.new[[k]] <- model.matrix(ffk[[k]], newdata[[k]])
+    yk.new[[k]] <- model.response(fixed$frame, "numeric")
+    Zk.new[[k]] <- .mjoint_new_design(designs$random[[k]], newdata[[k]])$matrix
     nk[k] <- nrow(Xk.new[[k]])
   }
 
@@ -59,15 +54,10 @@ process_newdata <- function(object, newdata, newSurvData = NULL, tobs = NULL) {
   #*****************************************************
 
   if (q > 0) {
-    termsT <- object$sfit$terms
-    if (is.null(newSurvData)) {
-      mfT.new <- model.frame(delete.response(termsT), newdata[[1]],
-                             xlev = object$sfit$xlevels)
-    } else {
-      mfT.new <- model.frame(delete.response(termsT), newSurvData,
-                             xlev = object$sfit$xlevels)
-    }
-    v.new <- model.matrix(delete.response(termsT), mfT.new)[1, -1]
+    event <- designs$event
+    event$terms <- delete.response(event$terms)
+    survdata <- if (is.null(newSurvData)) newdata[[1]] else newSurvData
+    v.new <- .mjoint_new_design(event, survdata)$matrix[1, ]
     v.new <- v.new - object$dmats$t$xcenter
   } else {
     v.new <- NULL
@@ -100,7 +90,7 @@ process_newdata <- function(object, newdata, newSurvData = NULL, tobs = NULL) {
 
   for (k in 1:K) {
     names(Zdat.fail) <- object$timeVar[[k]]
-    Zk.fail[[k]] <- model.matrix(ffk[[k]], Zdat.fail)
+    Zk.fail[[k]] <- .mjoint_new_design(designs$random[[k]], Zdat.fail)$matrix
   }
 
   Z.fail <- as.matrix(Matrix::bdiag(Zk.fail))

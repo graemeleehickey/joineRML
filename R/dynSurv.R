@@ -64,6 +64,14 @@
 #'   stacked-vector of longitudinal measurements up to time \emph{t} and
 #'   \eqn{S(u | \hat{b}; \theta)} is the survival function.
 #'
+#'   Prediction matrices use the transformations, factor levels, and contrasts
+#'   retained when the model was fitted. Changing \code{options("contrasts")}
+#'   does not change predictions from that fit. New factor levels are rejected.
+#'   Older fits are checked against their stored random-effects matrices;
+#'   inconsistent bases at measurement and event times require refitting with
+#'   \code{mjoint()}. Transformations that depend on the data must support R's
+#'   \code{\link[stats]{makepredictcall}} mechanism or use fixed constants.
+#'
 #'   \strong{First order predictions}
 #'
 #'   For \code{type="first-order"}, \eqn{\hat{b}} is the mode
@@ -172,6 +180,7 @@ dynSurv <- function(object, newdata, newSurvData = NULL, u = NULL, horizon = NUL
     stop("order must be specified as either 'first-order' or 'simulated")
   }
 
+  object$designs <- .mjoint_prediction_designs(object)
   data.t <- process_newdata(newdata = newdata,
                             object = object,
                             tobs = NULL,
