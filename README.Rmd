@@ -20,6 +20,7 @@ knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
 [![License: GPL-3](https://img.shields.io/badge/License-GPL--3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.html)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1158231.svg)](https://doi.org/10.5281/zenodo.1158231)
 [![Monthly CRAN downloads](https://cranlogs.r-pkg.org/badges/joineRML)](https://cran.r-project.org/package=joineRML)
+[![Total CRAN downloads](https://cranlogs.r-pkg.org/badges/grand-total/joineRML)](https://cran.r-project.org/package=joineRML)
 <!-- badges: end -->
 
 **joineRML** fits joint models for multiple continuous longitudinal outcomes and a time-to-event outcome. It combines multivariate linear mixed-effects models with a Cox proportional hazards model, estimated using Monte Carlo EM. The package also provides dynamic predictions, bootstrap inference, and model summaries in tidy tables.
