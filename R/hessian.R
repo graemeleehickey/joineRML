@@ -131,8 +131,8 @@ hessian <- function(theta, l, t, z, m) {
   for (j in seq_len(ncol(si))) {
     H <- H + tcrossprod(si[, j])
   }
-  # Although RHS term = 0 in theory, in practice with MC integration
-  # not all terms are vanishingly small, so we add it in
+  # Retain the total-score correction: Monte Carlo error and finite convergence
+  # tolerances can leave the total score nonzero at the fitted estimates.
   H <- H - (rowSums(si) %*% t(rowSums(si))) / ncol(si)
   rownames(H) <- colnames(H) <- rownames(si)
 

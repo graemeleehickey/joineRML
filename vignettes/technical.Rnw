@@ -278,13 +278,13 @@ We consider two standard error (SE) estimators:
 \begin{enumerate}
 			%
 	\item \textbf{Approximate SEs.}
-	        These are estimated by $I_e^{-1/2}(\hat{\theta})$, where $I_e(\theta)$ is the observed empirical information matrix \cite{McLachlan2008}, given by
+	        For parameter $\theta_j$, the approximate SE is $\widehat{\mathrm{SE}}(\hat{\theta}_j) = \sqrt{\left[I_e(\hat{\theta})^{-1}\right]_{jj}}$, where $I_e(\theta)$ is the observed empirical information matrix \cite{McLachlan2008}, given by
 	        %
 	        \begin{equation}\label{eqn:empirical_info}
 		        I_e(\theta) = \sum_{i=1}^n s_i(\theta) s_i^\top(\theta) - \frac{1}{n} S(\theta) S^\top(\theta),
 	        \end{equation}
 	        %
-	        $s_i(\theta)$ is the conditional expectation of the complete-data score function for subject $i$, and $S(\theta)$ is the score defined by $S(\theta) = \sum_{i=1}^n s_i(\theta)$. At the maximizer, $S(\hat{\theta}) = 0$, meaning that the right hand-side of \eqref{eqn:empirical_info} is zero. Due to the Monte Carlo error in the MCEM algorithm, this will not be exactly zero, and therefore we include it in the calculations.
+	        $s_i(\theta)$ is the conditional expectation of the complete-data score function for subject $i$, and $S(\theta)$ is the total score, defined by $S(\theta) = \sum_{i=1}^n s_i(\theta)$. At an exact interior maximum, $S(\hat{\theta}) = 0$, so the second term in \eqref{eqn:empirical_info} vanishes; the sum of the subject-specific score outer products generally does not. Monte Carlo error and finite convergence tolerances can leave $S(\hat{\theta})$ nonzero, so we retain the correction term.
 
 	        Owing to the estimation approach described in Appendix~\ref{app:score_eqns}, we calculate approximate SEs for $\theta_{-\lambda_0} = (\beta^\top, \text{vech}(D), \sigma_1^2, \dots, \sigma_K^2, \gamma^\top)$ using the profile score vectors
 	        %
