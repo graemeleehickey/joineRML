@@ -20,11 +20,14 @@ the empirical information matrix.}
 \value{
 A list containing the coefficient matrices for the longitudinal and
   time-to-event sub-models; variance-covariance matrix for the random
-  effects; residual error variances; log-likelihood of joint model; AIC and
+  effects; residual standard deviations; log-likelihood of joint model; AIC and
   BIC statistics; and model fit objects.
 }
 \description{
 This function provides a summary of an \code{mjoint} object.
+}
+\details{
+The \code{sigma} component contains residual standard deviations, with the same values and outcome names as \code{sigma(object)}. For an unnamed longitudinal formula list, the names are \code{sigma_1}, \code{sigma_2}, and so on. The stored \code{coef(object)$sigma2} values are residual variances.
 }
 \examples{
 \dontrun{

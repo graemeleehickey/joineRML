@@ -35,7 +35,7 @@ print.bootSE <- function(x, digits = max(4, getOption("digits") - 4), ...) {
   pars <- rownames(out)
   submodel <- rep("", nrow(out))
   submodel[1] <- "Longitudinal"
-  submodel[nrow(out) - nrow(coefs.sigma2) + 1] <- "Residual SE"
+  submodel[nrow(out) - nrow(coefs.sigma2) + 1] <- "Residual variances"
   submodel[nrow(coefs.beta) + 1] <- "Time-to-event"
   out <- cbind(submodel, pars, out)
   colnames(out) <- c("", "Coefficient", "Estimate", "SE",

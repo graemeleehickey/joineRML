@@ -21,8 +21,7 @@ A list with the following components. \describe{
 
     \item{\code{D}}{the variance-covariance matrix of the random effects.}
 
-    \item{\code{sigma2}}{the measurement error standard deviations for the
-    linear mixed effects sub-model.}
+    \item{\code{sigma2}}{the residual (measurement error) variances for the linear mixed effects sub-models. Their square roots are returned by \code{sigma()} and reported by \code{summary()} and \code{glance()}.}
 
     \item{\code{haz}}{the estimated baseline hazard values for each unique
     failure time. Note that this is the \emph{centered} hazard, equivalent to

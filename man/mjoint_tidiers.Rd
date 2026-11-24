@@ -69,8 +69,8 @@ All tidying methods return a \code{data.frame} without rownames. The
   difference between population-level and individual-level fitted values and
   residuals.
 
-\code{glance} returns one row with the columns \item{sigma2_j}{the
-  square root of the estimated residual variance for the j-th longitudinal
+\code{glance} returns one row with the columns \item{sigma_j}{the
+  estimated residual standard deviation for the j-th longitudinal
   process} \item{AIC}{the Akaike Information Criterion} \item{BIC}{the
   Bayesian Information Criterion} \item{logLik}{the data's log-likelihood
   under the model}. Additional columns are \code{nobs} (subjects), \code{nevent} (observed events), \code{npar} (the parameter count used by AIC and BIC, excluding baseline hazard increments), \code{converged}, and \code{nobs_longitudinal_j} (measurement counts for outcome \emph{j}). This summary is available without post-fit standard errors.

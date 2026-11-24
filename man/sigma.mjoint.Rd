@@ -20,6 +20,9 @@ a number (standard deviation) if \eqn{K = 1} (univariate model), or a
 Extract residual standard deviation(s) from an \code{mjoint}
   object.
 }
+\details{
+These values are the square roots of the residual variances stored in \code{coef(object)$sigma2}; they are not standard errors of estimated parameters. Names identify the longitudinal outcomes, or use \code{sigma_1}, \code{sigma_2}, and so on when the formula list is unnamed.
+}
 \references{
 Pinheiro JC, Bates DM. \emph{Mixed-Effects Models in S and S-PLUS.} New York:
 Springer Verlag; 2000.

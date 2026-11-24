@@ -10,7 +10,13 @@
 
 - `mjoint()` now accepts an optional `seed` argument for reproducible model fitting, including Monte Carlo integration and post-fit calculations. The previous R random-number state is restored when a seed is supplied. The default `seed = NULL` retains the existing behaviour (#5).
 
+## Changes to returned names
+
+- `glance()` now names its residual standard-deviation columns `sigma_1`, `sigma_2`, and so on, replacing the misleading `sigma2_1`, `sigma2_2`, etc. Update scripts that select these columns by name. `summary(fit)$sigma` now uses the outcome names returned by `sigma(fit)`, or `sigma_j` names for unnamed outcomes. The numerical values and stored residual variances in `coef(fit)$sigma2` are unchanged (#62).
+
 ## Bug fixes
+
+- Corrected residual-scale terminology: summaries now print "Residual standard deviations", and bootstrap output prints "Residual variances". Corrected the documentation for stored variances, simulation inputs, and bootstrap uncertainty. Thanks to @ellessenne for reporting the ambiguity (#62).
 
 - Tidying methods now reject unsupported arguments instead of silently ignoring them. The joineRML methods are used consistently when broom is loaded before or after joineRML. `augment()` matches supplied original data by subject and measurement time, preserving the supplied row order, and rejects changed observations or incompatible observation schedules.
 - Longitudinal and survival records are now matched explicitly by subject ID, independently of row order or factor-level order. Missing IDs, unmatched subject sets, duplicate survival records, and missing survival-model values are rejected before fitting.

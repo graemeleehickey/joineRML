@@ -271,8 +271,8 @@ augment.mjoint <- function(x, data = x$data, ...) {
 #'
 #' @author Alessandro Gasparini (\email{alessandro.gasparini@@ki.se})
 #' 
-#' @return \code{glance} returns one row with the columns \item{sigma2_j}{the
-#'   square root of the estimated residual variance for the j-th longitudinal
+#' @return \code{glance} returns one row with the columns \item{sigma_j}{the
+#'   estimated residual standard deviation for the j-th longitudinal
 #'   process} \item{AIC}{the Akaike Information Criterion} \item{BIC}{the
 #'   Bayesian Information Criterion} \item{logLik}{the data's log-likelihood
 #'   under the model}. Additional columns are \code{nobs} (subjects), \code{nevent} (observed events), \code{npar} (the parameter count used by AIC and BIC, excluding baseline hazard increments), \code{converged}, and \code{nobs_longitudinal_j} (measurement counts for outcome \emph{j}). This summary is available without post-fit standard errors.
@@ -282,8 +282,8 @@ augment.mjoint <- function(x, data = x$data, ...) {
 glance.mjoint <- function(x, ...) {
   .mjoint_check_dots(...)
   ll <- logLik(x)
-  out <- as.data.frame(as.list(setNames(sqrt(x$coefficients$sigma2),
-                                       paste0("sigma2_", seq_len(x$dims$K)))))
+  out <- as.data.frame(as.list(setNames(sigma(x),
+                                       paste0("sigma_", seq_len(x$dims$K)))))
   out$AIC <- AIC(x)
   out$BIC <- BIC(x)
   out$logLik <- as.numeric(ll)

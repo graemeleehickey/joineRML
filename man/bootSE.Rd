@@ -134,7 +134,7 @@ process continues until a model fits successfully. Default is \code{FALSE}.}
 \item{...}{options passed to the \code{control} argument.}
 }
 \value{
-An object of class \code{bootSE}.
+An object of class \code{bootSE}. The residual estimates in \code{coefficients$sigma2} and percentile confidence intervals in \code{sigma2.ci} are on the variance scale. The \code{sigma2.se} values are bootstrap standard errors of those variance estimates, not residual standard deviations.
 }
 \description{
 This function takes a model fit from an \code{mjoint} object and

@@ -59,7 +59,7 @@
 #' Efron B, Tibshirani R. \emph{An Introduction to the Bootstrap.} 2000; Boca
 #' Raton, FL: Chapman & Hall/CRC.
 #'
-#' @return An object of class \code{bootSE}.
+#' @return An object of class \code{bootSE}. The residual estimates in \code{coefficients$sigma2} and percentile confidence intervals in \code{sigma2.ci} are on the variance scale. The \code{sigma2.se} values are bootstrap standard errors of those variance estimates, not residual standard deviations.
 #' @import foreach
 #' @importFrom parallel detectCores makeCluster stopCluster
 #' @importFrom doParallel registerDoParallel

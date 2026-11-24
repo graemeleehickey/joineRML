@@ -14,8 +14,7 @@
 #'   covariate and a binary covariate.
 #' @param gamma.y a vector of \code{length=K} specifying the latent association
 #'   parameters for each longitudinal outcome.
-#' @param sigma2 a vector of \code{length=K} specifying the residual standard
-#'   errors.
+#' @param sigma2 a vector of \code{length=K} specifying the residual variances. For example, \code{sigma2 = c(0.25, 4)} gives residual standard deviations of 0.5 and 2.
 #' @param D a positive-definite matrix specifying the variance-covariance
 #'   matrix. If \code{model='int'}, the matrix has dimension \code{dim=c(K, K)},
 #'   else if \code{model='intslope'}, the matrix has dimension \code{dim =c(2K,

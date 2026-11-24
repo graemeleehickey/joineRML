@@ -24,8 +24,9 @@
 #'
 #' @return A list containing the coefficient matrices for the longitudinal and
 #'   time-to-event sub-models; variance-covariance matrix for the random
-#'   effects; residual error variances; log-likelihood of joint model; AIC and
+#'   effects; residual standard deviations; log-likelihood of joint model; AIC and
 #'   BIC statistics; and model fit objects.
+#' @details The \code{sigma} component contains residual standard deviations, with the same values and outcome names as \code{sigma(object)}. For an unnamed longitudinal formula list, the names are \code{sigma_1}, \code{sigma_2}, and so on. The stored \code{coef(object)$sigma2} values are residual variances.
 #' @export
 #'
 #' @examples
@@ -92,7 +93,7 @@ summary.mjoint <- function(object, bootSE = NULL, ...) {
   out <- list("coefs.long" = coefs.beta,
               "coefs.surv" = coefs.gamma,
               D = getVarCov(object),
-              sigma = sqrt(object$coefficients$sigma2),
+              sigma = sigma(object),
               logLik = as.vector(logLik(object)),
               AIC = AIC(object),
               BIC = BIC(object))
