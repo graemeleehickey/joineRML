@@ -26,6 +26,9 @@ A \code{list} of length \emph{K} with each element a vector of
 The residuals at level \emph{i} are obtained by subtracting the fitted
   levels at that level from the response vector.
 }
+\details{
+Subject-specific residuals (\code{level = 1}) require posterior random effects from a converged fit with \code{pfs = TRUE}. Population-level residuals (\code{level = 0}) do not require these post-fit calculations.
+}
 \references{
 Pinheiro JC, Bates DM. \emph{Mixed-Effects Models in S and S-PLUS.} New York:
 Springer Verlag; 2000.

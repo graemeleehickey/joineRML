@@ -118,12 +118,7 @@ algorithm. Default is \code{FALSE}.}
 indicate the percentage of bootstrap iterations completed? Default is
 \code{progress=TRUE}.}
 
-\item{ncores}{integer: if more than one core is available, then the \code{bootSE}
-function can run in parallel via the \code{\link[foreach]{foreach}}
-function. By default, \code{ncores=1}, which defaults to serial mode. Note
-that if \code{ncores}>1, then \code{progress} is set to \code{FALSE} by
-default, as it is not possible to display progress bars for parallel
-processes at the current time.}
+\item{ncores}{Integer: the number of parallel R processes used for bootstrap fitting. The default, \code{ncores = 1}, runs sequentially. Progress bars are not displayed when \code{ncores > 1}.}
 
 \item{safe.boot}{logical: should each bootstrap replication be wrapped in a
 \code{\link[base]{tryCatch}} statement to catch errors (e.g. during the
@@ -154,8 +149,10 @@ This function is computationally intensive. A dynamic progress bar is
   systems with more than one core available, computational time can be
   reduced by passing the argument \code{ncores} (with integer value >1) to
   \code{bootSE}, which implements parallel processing via the
-  \code{\link[foreach]{foreach}} package. \strong{Note:} if parallel
+  \code{parallel} package. \strong{Note:} if parallel
   processing is implemented, then the progress bar is not displayed.
+
+  Parallel R processes created by \code{bootSE()} are stopped when it finishes, including after an error. Existing parallel settings in the calling R session are preserved.
 
   Due to random sampling, an \code{mjoint} model fitted to some bootstrap
   samples may not converge within the specified control parameter settings.

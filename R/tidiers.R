@@ -189,7 +189,7 @@ tidy.mjoint <- function(x,
 #'   difference between population-level and individual-level fitted values and
 #'   residuals.
 #'
-#' @note Augmented column names use the longitudinal outcome labels. Repeated labels are made unique by adding numbered suffixes.
+#' @note Augmented column names use the longitudinal outcome labels. Repeated labels are made unique by adding numbered suffixes. Because \code{augment()} includes subject-specific fitted values and residuals, it requires posterior random effects from a converged fit with \code{pfs = TRUE}.
 #'
 #' @export
 #' @exportS3Method broom::augment

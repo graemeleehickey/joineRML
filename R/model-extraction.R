@@ -29,6 +29,12 @@ nobs.mjoint <- function(object, ...) {
   }
 }
 
+.mjoint_require_random_effects <- function(object, postVar = FALSE) {
+  if (is.null(object$Eb) || (postVar && is.null(object$Vb))) {
+    stop("Posterior random effects are unavailable; refit with 'pfs = TRUE' and check convergence.")
+  }
+}
+
 .mjoint_outcome_names <- function(object) {
   labels <- names(object$formLongFixed)
   if (is.null(labels)) labels <- rep("", object$dims$K)

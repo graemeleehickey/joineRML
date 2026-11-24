@@ -6,6 +6,8 @@
 #' @param postVar logical: if \code{TRUE} the variance of the posterior
 #'   distribution is also returned.
 #'
+#' @details Posterior random effects are available only from a converged fit with \code{pfs = TRUE}.
+#'
 #' @author Graeme L. Hickey (\email{graemeleehickey@@gmail.com})
 #' @keywords methods
 #' @seealso \code{\link[nlme]{ranef}} for the generic method description, and
@@ -53,6 +55,7 @@ ranef.mjoint <- function(object, postVar = FALSE, ...) {
     stop("Use only with 'mjoint' model objects.\n")
   }
 
+  .mjoint_require_random_effects(object, postVar = postVar)
   out <- object$Eb
   out <- as.data.frame(out)
 

@@ -11,6 +11,8 @@
 #'   fitted values and level 1 corresponding to subject-specific fitted values Defaults
 #'   to level 0.
 #'
+#' @details Subject-specific fitted values (\code{level = 1}) require posterior random effects from a converged fit with \code{pfs = TRUE}. Population-level fitted values (\code{level = 0}) do not require these post-fit calculations.
+#'
 #' @author Graeme L. Hickey (\email{graemeleehickey@@gmail.com})
 #' @keywords methods
 #' @seealso \code{\link{mjoint}}, \code{\link{residuals.mjoint}}
@@ -36,7 +38,6 @@ fitted.mjoint <- function(object, level = 0, ...) {
   }
 
   beta <- object$coefficients$beta
-  Eb <- as.data.frame(object$Eb)
 
   p <- object$dims$p
   r <- object$dims$r
@@ -50,17 +51,13 @@ fitted.mjoint <- function(object, level = 0, ...) {
   Xbeta <- lapply(X, function(x) {
     x %*% beta
   })
-  Eb.list <- lapply(rownames(Eb), function(x) {
-    Eb[x, ]
-  })
-  Zb <- Map(function(b, z) {
-    z %*% t(b)
-  },
-  b = Eb.list, z = Z)
-
   if (level == 0) {
     ri <- Xbeta
   } else if (level == 1) {
+    .mjoint_require_random_effects(object)
+    Eb <- as.data.frame(object$Eb)
+    Eb.list <- lapply(rownames(Eb), function(x) Eb[x, ])
+    Zb <- Map(function(b, z) z %*% t(b), b = Eb.list, z = Z)
     ri <- Map(function(yhat, z) {
       yhat + z
     },

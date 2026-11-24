@@ -24,6 +24,9 @@ A \code{data.frame} (also of class \code{ranef.mjoint}) with rows
 \description{
 Extract random effects estimates from an \code{mjoint} object.
 }
+\details{
+Posterior random effects are available only from a converged fit with \code{pfs = TRUE}.
+}
 \examples{
 \dontrun{
 # Fit a joint model with bivariate longitudinal outcomes

@@ -50,8 +50,6 @@ Depends:
     survival
 Imports:
     cobs,
-    doParallel,
-    foreach,
     generics,
     ggplot2,
     graphics,
@@ -62,17 +60,19 @@ Imports:
     parallel,
     randtoolbox,
     Rcpp (>= 0.12.7),
-    RcppArmadillo,
+    RcppArmadillo (>= 0.12.6.6.0),
     stats,
     tibble,
     utils
 LinkingTo:
     Rcpp,
-    RcppArmadillo
+    RcppArmadillo (>= 0.12.6.6.0)
 RoxygenNote: 7.3.3
 Suggests:
     broom,
+    doParallel,
     dplyr,
+    foreach,
     gtsummary,
     JM,
     joineR,

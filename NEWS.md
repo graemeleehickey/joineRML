@@ -16,6 +16,11 @@
 
 ## Bug fixes
 
+- Models with a single distinct observed event time now retain the matrix dimensions needed for fitting and the baseline-hazard history.
+- Subject-specific fitted values, residuals, `ranef()`, and `augment()` now explain when posterior random effects are unavailable and advise refitting with `pfs = TRUE` and checking convergence. Population-level fitted values and residuals remain available without post-fit calculations.
+- Parallel bootstrap fitting now stops its R processes on completion or error and preserves existing parallel settings in the calling R session. It uses the `parallel` package directly; `doParallel` and `foreach` are now optional packages used for testing.
+- Declared a minimum `RcppArmadillo` version of 0.12.6.6.0, which provides the thread-control functions used during fitting.
+
 - Corrected residual-scale terminology: summaries now print "Residual standard deviations", and bootstrap output prints "Residual variances". Corrected the documentation for stored variances, simulation inputs, and bootstrap uncertainty. Thanks to @ellessenne for reporting the ambiguity (#62).
 
 - Tidying methods now reject unsupported arguments instead of silently ignoring them. The joineRML methods are used consistently when broom is loaded before or after joineRML. `augment()` matches supplied original data by subject and measurement time, preserving the supplied row order, and rejects changed observations or incompatible observation schedules.

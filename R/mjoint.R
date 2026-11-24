@@ -724,7 +724,7 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
   # Side-stacked identity matrices for calculating Zb
   IW.fail <- by(survdat2, survdat2$id, function(u) {
     do.call("cbind", lapply(1:K, function(i) diag(max(u$tj.ind, 1))))
-  })
+  }, simplify = FALSE)
 
   # Collect together as inputs for EM algorithm
   z <- list(Zi.fail = Zi.fail, Zit.fail = Zit.fail, IW.fail = IW.fail)
@@ -890,7 +890,7 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
   ltri <- lower.tri(theta$D, diag = TRUE)
   rownames(hx.D) <- paste0("D_", row = row(theta$D)[ltri], ",",
                            col = col(theta$D)[ltri])
-  hx.haz <- sapply(all.iters, function(x) x$haz)
+  hx.haz <- do.call(cbind, lapply(all.iters, function(x) x$haz))
   rownames(hx.haz) <- paste0("haz_", seq_len(nrow(hx.haz)))
   hx.sigma2 <- sapply(all.iters, function(x) x$sigma2)
   if (K == 1) {

@@ -27,6 +27,9 @@ The fitted values at level \emph{i} are obtained by adding
   together the population fitted values (based only on the fixed effects
   estimates) and the estimated contributions of the random effects.
 }
+\details{
+Subject-specific fitted values (\code{level = 1}) require posterior random effects from a converged fit with \code{pfs = TRUE}. Population-level fitted values (\code{level = 0}) do not require these post-fit calculations.
+}
 \references{
 Pinheiro JC, Bates DM. \emph{Mixed-Effects Models in S and S-PLUS.} New York:
 Springer Verlag; 2000.

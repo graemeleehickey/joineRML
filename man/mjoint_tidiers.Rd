@@ -81,7 +81,7 @@ and multivariate longitudinal data of the \code{mjoint} class from the
 \code{joineRML} package.
 }
 \note{
-Augmented column names use the longitudinal outcome labels. Repeated labels are made unique by adding numbered suffixes.
+Augmented column names use the longitudinal outcome labels. Repeated labels are made unique by adding numbered suffixes. Because \code{augment()} includes subject-specific fitted values and residuals, it requires posterior random effects from a converged fit with \code{pfs = TRUE}.
 }
 \examples{
 \dontrun{
