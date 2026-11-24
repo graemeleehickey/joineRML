@@ -165,6 +165,9 @@
 
 ### Documentation fixes
 
+- Corrected the technical vignette’s empirical-information explanation
+  and standard-error formula, and clarified the corresponding code
+  comment. Numerical calculations are unchanged.
 - Updated the introductory and tidying vignettes with reproducible
   fitting, data requirements, residual-scale explanations, and worked
   model comparisons. Updated the technical vignette and website PDF to
