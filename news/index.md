@@ -135,6 +135,11 @@
 
 ### Documentation fixes
 
+- Updated the introductory and tidying vignettes with reproducible
+  fitting, data requirements, residual-scale explanations, and worked
+  model comparisons. Updated the technical vignette and website PDF to
+  describe the current convergence criteria, likelihood evaluation, and
+  numerical checks for likelihood-ratio tests.
 - Expanded the tidying vignette with model extraction and table examples
   using modelsummary and gtsummary. These packages remain optional.
 - Corrected the

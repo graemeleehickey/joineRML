@@ -119,8 +119,7 @@ these examples:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">hvd</span> <span class="op">&lt;-</span> <span class="va">hvd</span><span class="op">[</span><span class="va">hvd</span><span class="op">$</span><span class="va">num</span> <span class="op">&lt;=</span> <span class="fl">50</span>, <span class="op">]</span></span></code></pre></div>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">12345</span><span class="op">)</span></span>
-<span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mjoint.html">mjoint</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mjoint.html">mjoint</a></span><span class="op">(</span></span>
 <span>  formLongFixed <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>    <span class="st">"grad"</span> <span class="op">=</span> <span class="va">log.grad</span> <span class="op">~</span> <span class="va">time</span> <span class="op">+</span> <span class="va">sex</span> <span class="op">+</span> <span class="va">hs</span>,</span>
 <span>    <span class="st">"lvmi"</span> <span class="op">=</span> <span class="va">log.lvmi</span> <span class="op">~</span> <span class="va">time</span> <span class="op">+</span> <span class="va">sex</span></span>
@@ -131,12 +130,19 @@ these examples:</p>
 <span>  <span class="op">)</span>,</span>
 <span>  formSurv <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">fuyrs</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">age</span>,</span>
 <span>  data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">hvd</span>, <span class="va">hvd</span><span class="op">)</span>,</span>
-<span>  timeVar <span class="op">=</span> <span class="st">"time"</span></span>
+<span>  timeVar <span class="op">=</span> <span class="st">"time"</span>,</span>
+<span>  seed <span class="op">=</span> <span class="fl">12345</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Running multivariate LMM EM algorithm to establish initial parameters...</span></span></code></pre>
 <pre><code><span><span class="co">## Finished multivariate LMM EM algorithm...</span></span></code></pre>
 <pre><code><span><span class="co">## EM algorithm has converged!</span></span></code></pre>
 <pre><code><span><span class="co">## Calculating post model fit statistics...</span></span></code></pre>
+<p>Supplying <code>seed</code> makes the fit and its post-fit
+calculations reproducible for the same data, settings, random-number
+generator, and software versions, while restoring the previous R
+random-number state afterwards. It does not set the seed for later
+bootstrap or dynamic-prediction calls. See the <a href="joineRML.html#model-fitting">main vignette</a> for further
+details.</p>
 <div class="section level3">
 <h3 id="tidy-method">
 <code>tidy</code> method<a class="anchor" aria-label="anchor" href="#tidy-method"></a>
@@ -344,8 +350,7 @@ the variance estimates.</p>
 <p>This allows comparing competing models easily. Say for instance that
 we fit a second model with only random intercepts:</p>
 <div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">67890</span><span class="op">)</span></span>
-<span><span class="va">fit2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mjoint.html">mjoint</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">fit2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mjoint.html">mjoint</a></span><span class="op">(</span></span>
 <span>  formLongFixed <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>    <span class="st">"grad"</span> <span class="op">=</span> <span class="va">log.grad</span> <span class="op">~</span> <span class="va">time</span> <span class="op">+</span> <span class="va">sex</span> <span class="op">+</span> <span class="va">hs</span>,</span>
 <span>    <span class="st">"lvmi"</span> <span class="op">=</span> <span class="va">log.lvmi</span> <span class="op">~</span> <span class="va">time</span> <span class="op">+</span> <span class="va">sex</span></span>
@@ -356,7 +361,8 @@ we fit a second model with only random intercepts:</p>
 <span>  <span class="op">)</span>,</span>
 <span>  formSurv <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">fuyrs</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">age</span>,</span>
 <span>  data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">hvd</span>, <span class="va">hvd</span><span class="op">)</span>,</span>
-<span>  timeVar <span class="op">=</span> <span class="st">"time"</span></span>
+<span>  timeVar <span class="op">=</span> <span class="st">"time"</span>,</span>
+<span>  seed <span class="op">=</span> <span class="fl">67890</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Running multivariate LMM EM algorithm to establish initial parameters...</span></span></code></pre>
 <pre><code><span><span class="co">## Finished multivariate LMM EM algorithm...</span></span></code></pre>
@@ -379,6 +385,21 @@ we fit a second model with only random intercepts:</p>
 <span><span class="co">## <span style="color: #949494;"># ℹ 2 more variables: nobs_longitudinal_1 &lt;int&gt;, nobs_longitudinal_2 &lt;int&gt;</span></span></span></code></pre>
 <p>Compare AIC and BIC only for models fitted to the same observations,
 and check convergence before interpreting the comparison.</p>
+<p>The same stored fit statistics can be displayed together using:</p>
+<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/anova.html" class="external-link">anova</a></span><span class="op">(</span><span class="va">fit2</span>, <span class="va">fit</span>, test <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Joint model comparison (maximum likelihood)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Stored likelihoods; no likelihood-ratio tests.</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">##      df  logLik    AIC    BIC</span></span>
+<span><span class="co">## fit2 15 -156.22 342.45 368.86</span></span>
+<span><span class="co">## fit  18 -153.22 342.44 374.15</span></span></code></pre>
+<p>These two models have different random-effects structures, so a
+likelihood-ratio test with <code>test = TRUE</code> is not supported.
+The <a href="joineRML.html#comparing-fitted-models">main vignette</a>
+gives a worked likelihood-ratio test for nested covariate models with
+unchanged random-effects and association structures.</p>
 </div>
 <div class="section level3">
 <h3 id="extracting-a-model-component">Extracting a model component<a class="anchor" aria-label="anchor" href="#extracting-a-model-component"></a>
@@ -386,10 +407,10 @@ and check convergence before interpreting the comparison.</p>
 <p>The following methods describe a selected longitudinal fixed-effects
 model. Coefficient names and covariance-matrix names agree with its
 design columns:</p>
-<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/nobs.html" class="external-link">nobs</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 43</span></span></code></pre>
-<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/terms.html" class="external-link">terms</a></span><span class="op">(</span><span class="va">fit</span>, process <span class="op">=</span> <span class="st">"Longitudinal"</span>, k <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## log.lvmi ~ time + sex</span></span>
 <span><span class="co">## attr(,"variables")</span></span>
@@ -414,7 +435,7 @@ design columns:</p>
 <span><span class="co">## attr(,"dataClasses")</span></span>
 <span><span class="co">##  log.lvmi      time       sex </span></span>
 <span><span class="co">## "numeric" "numeric" "numeric"</span></span></code></pre>
-<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/model.frame.html" class="external-link">model.frame</a></span><span class="op">(</span><span class="va">fit</span>, process <span class="op">=</span> <span class="st">"Longitudinal"</span>, k <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##    log.lvmi      time sex</span></span>
 <span><span class="co">## 1  4.778955 0.0109589   0</span></span>
@@ -423,7 +444,7 @@ design columns:</p>
 <span><span class="co">## 43 5.137150 4.1205480   0</span></span>
 <span><span class="co">## 44 5.129366 7.7342470   0</span></span>
 <span><span class="co">## 45 5.027165 0.1534247   0</span></span></code></pre>
-<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/model.matrix.html" class="external-link">model.matrix</a></span><span class="op">(</span><span class="va">fit</span>, process <span class="op">=</span> <span class="st">"Longitudinal"</span>, k <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##    (Intercept)      time sex</span></span>
 <span><span class="co">## 1            1 0.0109589   0</span></span>
@@ -432,11 +453,11 @@ design columns:</p>
 <span><span class="co">## 43           1 4.1205480   0</span></span>
 <span><span class="co">## 44           1 7.7342470   0</span></span>
 <span><span class="co">## 45           1 0.1534247   0</span></span></code></pre>
-<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef</a></span><span class="op">(</span><span class="va">fit</span>, process <span class="op">=</span> <span class="st">"Longitudinal"</span>, k <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## (Intercept)        time         sex </span></span>
 <span><span class="co">##  4.99293606  0.02584591 -0.19671311</span></span></code></pre>
-<div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb55"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/vcov.html" class="external-link">vcov</a></span><span class="op">(</span><span class="va">fit</span>, process <span class="op">=</span> <span class="st">"Longitudinal"</span>, k <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##               (Intercept)          time           sex</span></span>
 <span><span class="co">## (Intercept)  0.0066862346 -0.0002348949 -0.0015748512</span></span>
@@ -450,7 +471,7 @@ extract the fitted observations and do not accept new data.</p>
 design matrix contains baseline covariates, without an intercept or
 latent association columns. Event coefficient and covariance selections
 include both baseline covariates and association coefficients:</p>
-<div class="sourceCode" id="cb55"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb57"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/model.matrix.html" class="external-link">model.matrix</a></span><span class="op">(</span><span class="va">fit</span>, process <span class="op">=</span> <span class="st">"Event"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##         age</span></span>
 <span><span class="co">## 1  75.06027</span></span>
@@ -459,11 +480,11 @@ include both baseline covariates and association coefficients:</p>
 <span><span class="co">## 51 50.97534</span></span>
 <span><span class="co">## 56 69.94247</span></span>
 <span><span class="co">## 62 72.30685</span></span></code></pre>
-<div class="sourceCode" id="cb57"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb59"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef</a></span><span class="op">(</span><span class="va">fit</span>, process <span class="op">=</span> <span class="st">"Event"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##       age   gamma_1   gamma_2 </span></span>
 <span><span class="co">## 0.1365893 2.8471790 3.6800987</span></span></code></pre>
-<div class="sourceCode" id="cb59"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb61"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/vcov.html" class="external-link">vcov</a></span><span class="op">(</span><span class="va">fit</span>, process <span class="op">=</span> <span class="st">"Event"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##                  age     gamma_1     gamma_2</span></span>
 <span><span class="co">## age      0.004427543 -0.03287174 -0.03879102</span></span>
@@ -484,7 +505,7 @@ the tidied estimates explicitly makes the selected component and
 reported sample sizes clear.</p>
 <p>For modelsummary, combine <code><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy()</a></code> and
 <code><a href="https://generics.r-lib.org/reference/glance.html" class="external-link">glance()</a></code> in a <code>modelsummary_list</code> object:</p>
-<div class="sourceCode" id="cb61"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb63"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">table_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/structure.html" class="external-link">structure</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>tidy <span class="op">=</span> <span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">fit</span>, conf.int <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, glance <span class="op">=</span> <span class="fu"><a href="https://generics.r-lib.org/reference/glance.html" class="external-link">glance</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  class <span class="op">=</span> <span class="st">"modelsummary_list"</span></span>
@@ -553,7 +574,7 @@ reported sample sizes clear.</p>
 <p>For gtsummary, format the combined coefficient table directly. This
 retains all outcome labels and avoids treating the joint model as a
 single regression formula:</p>
-<div class="sourceCode" id="cb62"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb64"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">table_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">fit</span>, component <span class="op">=</span> <span class="st">"all"</span>, conf.int <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="va">table_data</span> <span class="op">&lt;-</span> <span class="va">table_data</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"component"</span>, <span class="st">"outcome"</span>, <span class="st">"term"</span>, <span class="st">"estimate"</span>,</span>
 <span>                           <span class="st">"conf.low"</span>, <span class="st">"conf.high"</span>, <span class="st">"p.value"</span><span class="op">)</span><span class="op">]</span></span>
@@ -567,23 +588,23 @@ single regression formula:</p>
 <span>    <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">estimate</span>, <span class="va">conf.low</span>, <span class="va">conf.high</span><span class="op">)</span> <span class="op">~</span> <span class="fu">gtsummary</span><span class="fu">::</span><span class="fu"><a href="https://www.danieldsjoberg.com/gtsummary/reference/label_style.html" class="external-link">label_style_number</a></span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>,</span>
 <span>    <span class="va">p.value</span> <span class="op">~</span> <span class="fu">gtsummary</span><span class="fu">::</span><span class="fu"><a href="https://www.danieldsjoberg.com/gtsummary/reference/label_style.html" class="external-link">label_style_pvalue</a></span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-<div id="qoeowbvvsh" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#qoeowbvvsh table {
+<div id="mwlefoodfi" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#mwlefoodfi table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#qoeowbvvsh thead, #qoeowbvvsh tbody, #qoeowbvvsh tfoot, #qoeowbvvsh tr, #qoeowbvvsh td, #qoeowbvvsh th {
+#mwlefoodfi thead, #mwlefoodfi tbody, #mwlefoodfi tfoot, #mwlefoodfi tr, #mwlefoodfi td, #mwlefoodfi th {
   border-style: none;
 }
 
-#qoeowbvvsh p {
+#mwlefoodfi p {
   margin: 0;
   padding: 0;
 }
 
-#qoeowbvvsh .gt_table {
+#mwlefoodfi .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -609,12 +630,12 @@ single regression formula:</p>
   border-left-color: #D3D3D3;
 }
 
-#qoeowbvvsh .gt_caption {
+#mwlefoodfi .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#qoeowbvvsh .gt_title {
+#mwlefoodfi .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -626,7 +647,7 @@ single regression formula:</p>
   border-bottom-width: 0;
 }
 
-#qoeowbvvsh .gt_subtitle {
+#mwlefoodfi .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -638,7 +659,7 @@ single regression formula:</p>
   border-top-width: 0;
 }
 
-#qoeowbvvsh .gt_heading {
+#mwlefoodfi .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -650,13 +671,13 @@ single regression formula:</p>
   border-right-color: #D3D3D3;
 }
 
-#qoeowbvvsh .gt_bottom_border {
+#mwlefoodfi .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#qoeowbvvsh .gt_col_headings {
+#mwlefoodfi .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -671,7 +692,7 @@ single regression formula:</p>
   border-right-color: #D3D3D3;
 }
 
-#qoeowbvvsh .gt_col_heading {
+#mwlefoodfi .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -691,7 +712,7 @@ single regression formula:</p>
   overflow-x: hidden;
 }
 
-#qoeowbvvsh .gt_column_spanner_outer {
+#mwlefoodfi .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -703,15 +724,15 @@ single regression formula:</p>
   padding-right: 4px;
 }
 
-#qoeowbvvsh .gt_column_spanner_outer:first-child {
+#mwlefoodfi .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#qoeowbvvsh .gt_column_spanner_outer:last-child {
+#mwlefoodfi .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#qoeowbvvsh .gt_column_spanner {
+#mwlefoodfi .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -723,11 +744,11 @@ single regression formula:</p>
   width: 100%;
 }
 
-#qoeowbvvsh .gt_spanner_row {
+#mwlefoodfi .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#qoeowbvvsh .gt_group_heading {
+#mwlefoodfi .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -753,7 +774,7 @@ single regression formula:</p>
   text-align: left;
 }
 
-#qoeowbvvsh .gt_empty_group_heading {
+#mwlefoodfi .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -768,15 +789,15 @@ single regression formula:</p>
   vertical-align: middle;
 }
 
-#qoeowbvvsh .gt_from_md > :first-child {
+#mwlefoodfi .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#qoeowbvvsh .gt_from_md > :last-child {
+#mwlefoodfi .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#qoeowbvvsh .gt_row {
+#mwlefoodfi .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -795,7 +816,7 @@ single regression formula:</p>
   overflow-x: hidden;
 }
 
-#qoeowbvvsh .gt_stub {
+#mwlefoodfi .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -808,7 +829,7 @@ single regression formula:</p>
   padding-right: 5px;
 }
 
-#qoeowbvvsh .gt_stub_row_group {
+#mwlefoodfi .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -822,15 +843,15 @@ single regression formula:</p>
   vertical-align: top;
 }
 
-#qoeowbvvsh .gt_row_group_first td {
+#mwlefoodfi .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#qoeowbvvsh .gt_row_group_first th {
+#mwlefoodfi .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#qoeowbvvsh .gt_summary_row {
+#mwlefoodfi .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -840,16 +861,16 @@ single regression formula:</p>
   padding-right: 5px;
 }
 
-#qoeowbvvsh .gt_first_summary_row {
+#mwlefoodfi .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#qoeowbvvsh .gt_first_summary_row.thick {
+#mwlefoodfi .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#qoeowbvvsh .gt_last_summary_row {
+#mwlefoodfi .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -859,7 +880,7 @@ single regression formula:</p>
   border-bottom-color: #D3D3D3;
 }
 
-#qoeowbvvsh .gt_grand_summary_row {
+#mwlefoodfi .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -869,7 +890,7 @@ single regression formula:</p>
   padding-right: 5px;
 }
 
-#qoeowbvvsh .gt_first_grand_summary_row {
+#mwlefoodfi .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -879,7 +900,7 @@ single regression formula:</p>
   border-top-color: #D3D3D3;
 }
 
-#qoeowbvvsh .gt_last_grand_summary_row_top {
+#mwlefoodfi .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -889,11 +910,11 @@ single regression formula:</p>
   border-bottom-color: #D3D3D3;
 }
 
-#qoeowbvvsh .gt_striped {
+#mwlefoodfi .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#qoeowbvvsh .gt_table_body {
+#mwlefoodfi .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -902,7 +923,7 @@ single regression formula:</p>
   border-bottom-color: #D3D3D3;
 }
 
-#qoeowbvvsh .gt_footnotes {
+#mwlefoodfi .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -916,7 +937,7 @@ single regression formula:</p>
   border-right-color: #D3D3D3;
 }
 
-#qoeowbvvsh .gt_footnote {
+#mwlefoodfi .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -925,7 +946,7 @@ single regression formula:</p>
   padding-right: 5px;
 }
 
-#qoeowbvvsh .gt_sourcenotes {
+#mwlefoodfi .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -939,7 +960,7 @@ single regression formula:</p>
   border-right-color: #D3D3D3;
 }
 
-#qoeowbvvsh .gt_sourcenote {
+#mwlefoodfi .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -947,72 +968,72 @@ single regression formula:</p>
   padding-right: 5px;
 }
 
-#qoeowbvvsh .gt_left {
+#mwlefoodfi .gt_left {
   text-align: left;
 }
 
-#qoeowbvvsh .gt_center {
+#mwlefoodfi .gt_center {
   text-align: center;
 }
 
-#qoeowbvvsh .gt_right {
+#mwlefoodfi .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#qoeowbvvsh .gt_font_normal {
+#mwlefoodfi .gt_font_normal {
   font-weight: normal;
 }
 
-#qoeowbvvsh .gt_font_bold {
+#mwlefoodfi .gt_font_bold {
   font-weight: bold;
 }
 
-#qoeowbvvsh .gt_font_italic {
+#mwlefoodfi .gt_font_italic {
   font-style: italic;
 }
 
-#qoeowbvvsh .gt_super {
+#mwlefoodfi .gt_super {
   font-size: 65%;
 }
 
-#qoeowbvvsh .gt_footnote_marks {
+#mwlefoodfi .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#qoeowbvvsh .gt_asterisk {
+#mwlefoodfi .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#qoeowbvvsh .gt_indent_1 {
+#mwlefoodfi .gt_indent_1 {
   text-indent: 5px;
 }
 
-#qoeowbvvsh .gt_indent_2 {
+#mwlefoodfi .gt_indent_2 {
   text-indent: 10px;
 }
 
-#qoeowbvvsh .gt_indent_3 {
+#mwlefoodfi .gt_indent_3 {
   text-indent: 15px;
 }
 
-#qoeowbvvsh .gt_indent_4 {
+#mwlefoodfi .gt_indent_4 {
   text-indent: 20px;
 }
 
-#qoeowbvvsh .gt_indent_5 {
+#mwlefoodfi .gt_indent_5 {
   text-indent: 25px;
 }
 
-#qoeowbvvsh .katex-display {
+#mwlefoodfi .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#qoeowbvvsh div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#mwlefoodfi div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -1126,7 +1147,7 @@ single regression formula:</p>
 </h3>
 <p>Several examples of how to use <code>broom</code> including more
 details are available on its introductory vignette:</p>
-<div class="sourceCode" id="cb63"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb65"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/vignette.html" class="external-link">vignette</a></span><span class="op">(</span>topic <span class="op">=</span> <span class="st">"broom"</span>, package <span class="op">=</span> <span class="st">"broom"</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>

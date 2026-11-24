@@ -209,11 +209,19 @@ and the data frames have different column names for time, then
 strings of length
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>K</mi><annotation encoding="application/x-tex">K</annotation></semantics></math>.</p></li>
 </ul>
+<p>Subject IDs must be non-missing and identify the same subjects in
+every dataset. Records are matched by their ID labels, so row order and
+factor-level order can differ between datasets. Measurement schedules
+may differ between longitudinal outcomes, but each subject must
+contribute observations for every outcome. A separate
+<code>survData</code> must contain exactly one record per subject, with
+the same IDs as the longitudinal data and no missing values in the
+variables used by the survival model. At least one observed event is
+required.</p>
 <p>We can fit a bivariate joint model to the log-transformed valve
 gradient and LVMI indices in the <code>hvd</code> subset using</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">12345</span><span class="op">)</span></span>
-<span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mjoint.html">mjoint</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mjoint.html">mjoint</a></span><span class="op">(</span></span>
 <span>  formLongFixed <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"grad"</span> <span class="op">=</span> <span class="va">log.grad</span> <span class="op">~</span> <span class="va">time</span> <span class="op">+</span> <span class="va">sex</span> <span class="op">+</span> <span class="va">hs</span>, </span>
 <span>                       <span class="st">"lvmi"</span> <span class="op">=</span> <span class="va">log.lvmi</span> <span class="op">~</span> <span class="va">time</span> <span class="op">+</span> <span class="va">sex</span><span class="op">)</span>,</span>
 <span>  formLongRandom <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"grad"</span> <span class="op">=</span> <span class="op">~</span> <span class="fl">1</span> <span class="op">|</span> <span class="va">num</span>,</span>
@@ -221,11 +229,21 @@ gradient and LVMI indices in the <code>hvd</code> subset using</p>
 <span>  formSurv <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">fuyrs</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">age</span>,</span>
 <span>  data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">hvd</span>, <span class="va">hvd</span><span class="op">)</span>,</span>
 <span>  inits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"gamma"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.11</span>, <span class="fl">1.51</span>, <span class="fl">0.80</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>  timeVar <span class="op">=</span> <span class="st">"time"</span><span class="op">)</span></span>
+<span>  timeVar <span class="op">=</span> <span class="st">"time"</span>,</span>
+<span>  seed <span class="op">=</span> <span class="fl">12345</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Running multivariate LMM EM algorithm to establish initial parameters...</span></span>
 <span><span class="co">#&gt; Finished multivariate LMM EM algorithm...</span></span>
 <span><span class="co">#&gt; EM algorithm has converged!</span></span>
 <span><span class="co">#&gt; Calculating post model fit statistics...</span></span></code></pre></div>
+<p>The <code>seed</code> argument makes the whole fit reproducible,
+including post-fit calculations, for the same data, settings,
+random-number generator, and software versions. It restores the previous
+R random-number state when the fit finishes. The default
+<code>seed = NULL</code> uses the current state as usual. The supplied
+seed does not control subsequent calls to <code><a href="../reference/bootSE.html">bootSE()</a></code>,
+<code><a href="../reference/dynLong.html">dynLong()</a></code>, or <code><a href="../reference/dynSurv.html">dynSurv()</a></code>; set the seed
+separately before those calculations. See <code><a href="../reference/mjoint.html">help("mjoint")</a></code>
+for details of random-number generation.</p>
 <p>Details on the model estimation algorithm are provided in the
 technical details vignette. We note here that this is not necessarily
 the most appropriate model for the data, and is included only for the
@@ -251,7 +269,7 @@ available from the <code>summary</code> function:</p>
 <span><span class="co">#&gt;     lvmi = log.lvmi ~ time + sex), formLongRandom = list(grad = ~1 | </span></span>
 <span><span class="co">#&gt;     num, lvmi = ~time | num), formSurv = Surv(fuyrs, status) ~ </span></span>
 <span><span class="co">#&gt;     age, data = list(hvd, hvd), timeVar = "time", inits = list(gamma = c(0.11, </span></span>
-<span><span class="co">#&gt;     1.51, 0.8)))</span></span>
+<span><span class="co">#&gt;     1.51, 0.8)), seed = 12345L)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Data Descriptives:</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -308,12 +326,15 @@ available from the <code>summary</code> function:</p>
 <span><span class="co">#&gt; gamma_2 3.6801  3.4488  1.0671  0.2859</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Algorithm Summary:</span></span>
-<span><span class="co">#&gt;     Total computational time: 2.2 secs </span></span>
-<span><span class="co">#&gt;     EM algorithm computational time: 2 secs </span></span>
+<span><span class="co">#&gt;     Total computational time: 2.6 secs </span></span>
+<span><span class="co">#&gt;     EM algorithm computational time: 2.3 secs </span></span>
 <span><span class="co">#&gt;     Convergence status: converged</span></span>
 <span><span class="co">#&gt;     Convergence criterion: sas </span></span>
 <span><span class="co">#&gt;     Final Monte Carlo sample size: 3674 </span></span>
 <span><span class="co">#&gt;     Standard errors calculated using method: approx</span></span></code></pre></div>
+<p>The residual quantities printed by <code>summary(fit)</code> are
+standard deviations, also returned by <code>sigma(fit)</code>; the
+stored <code>coef(fit)$sigma2</code> values are variances.</p>
 <p>One can also extract the coefficients, fixed effects, and random
 effects using standard generic functions:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
@@ -368,6 +389,122 @@ idea to examine the convergence plots. These can be viewed using the
 <p><img src="joineRML_files/figure-html/hvd_model_conv-2.png" class="r-plt" alt="" width="696"></p>
 </div>
 <div class="section level3">
+<h3 id="comparing-fitted-models">Comparing fitted models<a class="anchor" aria-label="anchor" href="#comparing-fitted-models"></a>
+</h3>
+<p>Use <code><a href="https://rdrr.io/r/stats/anova.html" class="external-link">anova()</a></code> to compare nested covariate models fitted to
+the same subjects, longitudinal responses and measurement times, and
+survival responses. The response transformations, random-effects
+structure, and association structure must also agree. Here, the reduced
+model omits <code>hs</code> from the valve-gradient fixed effects and
+retains all other terms. The existing <code>fit</code> is the full
+model. Setting <code>pfs = FALSE</code> skips the reduced model’s
+post-fit standard errors and random-effect predictions, which are not
+needed for this comparison.</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">fit.reduced</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/update.html" class="external-link">update</a></span><span class="op">(</span><span class="va">fit</span>,</span>
+<span>  formLongFixed <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"grad"</span> <span class="op">=</span> <span class="va">log.grad</span> <span class="op">~</span> <span class="va">time</span> <span class="op">+</span> <span class="va">sex</span>,</span>
+<span>                       <span class="st">"lvmi"</span> <span class="op">=</span> <span class="va">log.lvmi</span> <span class="op">~</span> <span class="va">time</span> <span class="op">+</span> <span class="va">sex</span><span class="op">)</span>,</span>
+<span>  pfs <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  seed <span class="op">=</span> <span class="fl">23456</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Running multivariate LMM EM algorithm to establish initial parameters...</span></span>
+<span><span class="co">#&gt; Finished multivariate LMM EM algorithm...</span></span>
+<span><span class="co">#&gt; EM algorithm has converged!</span></span></code></pre></div>
+<p>Supply models from reduced to full. Both must have converged;
+<code><a href="https://rdrr.io/r/stats/anova.html" class="external-link">anova()</a></code> also checks that the observations and model
+structures permit the comparison.</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">comparison</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/anova.html" class="external-link">anova</a></span><span class="op">(</span><span class="va">fit.reduced</span>, <span class="va">fit</span><span class="op">)</span></span>
+<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">comparison</span>, digits <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span></code></pre></div>
+<table class="table">
+<colgroup>
+<col width="16%">
+<col width="4%">
+<col width="13%">
+<col width="12%">
+<col width="12%">
+<col width="10%">
+<col width="4%">
+<col width="14%">
+<col width="13%">
+</colgroup>
+<thead><tr class="header">
+<th align="left"></th>
+<th align="right">df</th>
+<th align="right">logLik</th>
+<th align="right">AIC</th>
+<th align="right">BIC</th>
+<th align="right">L.Ratio</th>
+<th align="right">Df</th>
+<th align="right">Pr(&gt;Chisq)</th>
+<th align="right">LR.change</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">fit.reduced</td>
+<td align="right">17</td>
+<td align="right">-153.4123</td>
+<td align="right">340.8246</td>
+<td align="right">370.7650</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+<tr class="even">
+<td align="left">fit</td>
+<td align="right">18</td>
+<td align="right">-153.2311</td>
+<td align="right">342.4622</td>
+<td align="right">374.1638</td>
+<td align="right">0.3624</td>
+<td align="right">1</td>
+<td align="right">0.5472</td>
+<td align="right">2e-04</td>
+</tr>
+</tbody>
+</table>
+<p>The test uses an approximate chi-squared reference distribution, with
+degrees of freedom equal to the number of additional identifiable
+coefficients. The joint likelihoods are re-evaluated at the fitted
+coefficients using common deterministic Halton integration points,
+without refitting either model. Consequently, the table’s
+log-likelihoods, AIC, and BIC may differ from the values stored in the
+fitted objects. BIC uses the number of subjects, not the number of
+longitudinal measurements.</p>
+<p><code>LR.change</code> is the absolute change in the likelihood-ratio
+statistic when the integration size increases from half of
+<code>nMC</code> to <code>nMC</code> (default 10,000). A negative
+statistic or a change exceeding <code>tol</code> (default 0.1) produces
+a warning and an <code>NA</code> p-value. To investigate integration
+error, increase <code>nMC</code>, for example:</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/anova.html" class="external-link">anova</a></span><span class="op">(</span><span class="va">fit.reduced</span>, <span class="va">fit</span>, nMC <span class="op">=</span> <span class="fl">20000</span><span class="op">)</span></span></code></pre></div>
+<p>The tolerance is a numerical diagnostic, not a significance threshold
+or a guaranteed error bound. A negative statistic can also indicate that
+the fits need tighter convergence settings or better initial values.
+Passing the diagnostic does not establish that the maximum was reached
+or that the asymptotic approximation is adequate. This small dataset is
+used to demonstrate the workflow, rather than to draw clinical
+conclusions.</p>
+<p>For a descriptive comparison using the stored likelihoods, without
+further integration or a likelihood-ratio test, use:</p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/anova.html" class="external-link">anova</a></span><span class="op">(</span><span class="va">fit.reduced</span>, <span class="va">fit</span>, test <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Joint model comparison (maximum likelihood)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Stored likelihoods; no likelihood-ratio tests.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;             df  logLik    AIC    BIC</span></span>
+<span><span class="co">#&gt; fit.reduced 17 -153.43 340.87 370.81</span></span>
+<span><span class="co">#&gt; fit         18 -153.22 342.44 374.15</span></span></code></pre></div>
+<p>This option also permits non-nested models or different
+random-effects structures, provided the models have converged and use
+the same observations and response transformations. Likelihood-ratio
+tests of changes to the random-effects structure, including zero
+variance components, are not supported. The <a href="joineRML-tidy.html">tidying vignette</a> shows how to extract
+model components and format coefficient and model-comparison tables.</p>
+</div>
+<div class="section level3">
 <h3 id="bootstrap-standard-errors">Bootstrap standard errors<a class="anchor" aria-label="anchor" href="#bootstrap-standard-errors"></a>
 </h3>
 <p>Once an <code>mjoint</code> model has converged, and assuming the
@@ -377,7 +514,7 @@ information matrix of the profile likelihood at the maximizer.
 Theoretically, these standard errors will be underestimated (see the
 technical vignette). In principle, residual Monte Carlo error will
 oppose this through an increase in uncertainty.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit.se</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bootSE.html">bootSE</a></span><span class="op">(</span><span class="va">fit</span>,</span>
 <span>                 nboot <span class="op">=</span> <span class="fl">100</span>,</span>
 <span>                 ncores <span class="op">=</span> <span class="fl">1L</span><span class="op">)</span></span></code></pre></div>
@@ -387,11 +524,16 @@ constraints on the optimization algorithm for each bootstrap model;
 however, this will be at the possible expense of inflated standard
 errors due to Monte Carlo error.</p>
 <p>We can call the <code>bootSE</code> object to interrogate it</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit.se</span></span></code></pre></div>
-<p>or alternatively re-run the <code>summary</code> command, passing the
-additional argument of <code>bootSE = fit.se</code></p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<p>The residual estimates and percentile confidence intervals printed by
+<code>fit.se</code> are on the variance scale; their <code>SE</code>
+column gives standard errors of the variance estimates. These are
+distinct from the residual standard deviations printed by
+<code>summary(fit)</code>.</p>
+<p>Alternatively, re-run the <code>summary</code> command, passing the
+additional argument of <code>bootSE = fit.se</code>:</p>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">fit</span>, bootSE <span class="op">=</span> <span class="va">fit.se</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
@@ -428,7 +570,7 @@ frame.</p></li>
 </ul>
 <p>To fit a univariate model in <code>joineR</code> we run the following
 code for the <code>hvd</code> data</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://graemeleehickey.github.io/joineR/" class="external-link">joineR</a></span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">hvd.surv</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://graemeleehickey.github.io/joineR/reference/UniqueVariables.html" class="external-link">UniqueVariables</a></span><span class="op">(</span><span class="va">hvd</span>, var.col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"fuyrs"</span>, <span class="st">"status"</span><span class="op">)</span>, id.col <span class="op">=</span> <span class="st">"num"</span><span class="op">)</span></span>
@@ -477,13 +619,13 @@ code for the <code>hvd</code> data</p>
 <span><span class="co">#&gt; Number of groups: 43</span></span></code></pre></div>
 <p>To fit a univariate model in <code>joineRML</code> we run the
 following code for the <code>hvd</code> data</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span>
-<span><span class="va">fit.joinerml</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mjoint.html">mjoint</a></span><span class="op">(</span>formLongFixed <span class="op">=</span> <span class="va">log.lvmi</span> <span class="op">~</span> <span class="va">time</span> <span class="op">+</span> <span class="va">age</span>,</span>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">fit.joinerml</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mjoint.html">mjoint</a></span><span class="op">(</span>formLongFixed <span class="op">=</span> <span class="va">log.lvmi</span> <span class="op">~</span> <span class="va">time</span> <span class="op">+</span> <span class="va">age</span>,</span>
 <span>                       formLongRandom <span class="op">=</span> <span class="op">~</span> <span class="va">time</span> <span class="op">|</span> <span class="va">num</span>,</span>
 <span>                       formSurv <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html" class="external-link">Surv</a></span><span class="op">(</span><span class="va">fuyrs</span>, <span class="va">status</span><span class="op">)</span> <span class="op">~</span> <span class="va">age</span>,</span>
 <span>                       data <span class="op">=</span> <span class="va">hvd</span>,</span>
-<span>                       timeVar <span class="op">=</span> <span class="st">"time"</span><span class="op">)</span></span>
+<span>                       timeVar <span class="op">=</span> <span class="st">"time"</span>,</span>
+<span>                       seed <span class="op">=</span> <span class="fl">123</span><span class="op">)</span></span>
 <span><span class="co">#&gt; EM algorithm has converged!</span></span>
 <span><span class="co">#&gt; Calculating post model fit statistics...</span></span>
 <span></span>
@@ -491,7 +633,8 @@ following code for the <code>hvd</code> data</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Call:</span></span>
 <span><span class="co">#&gt; mjoint(formLongFixed = log.lvmi ~ time + age, formLongRandom = ~time | </span></span>
-<span><span class="co">#&gt;     num, formSurv = Surv(fuyrs, status) ~ age, data = hvd, timeVar = "time")</span></span>
+<span><span class="co">#&gt;     num, formSurv = Surv(fuyrs, status) ~ age, data = hvd, timeVar = "time", </span></span>
+<span><span class="co">#&gt;     seed = 123L)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Data Descriptives:</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -540,8 +683,8 @@ following code for the <code>hvd</code> data</p>
 <span><span class="co">#&gt; gamma_1 3.4823  1.6559  2.1030  0.0355</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Algorithm Summary:</span></span>
-<span><span class="co">#&gt;     Total computational time: 0.8 secs </span></span>
-<span><span class="co">#&gt;     EM algorithm computational time: 0.7 secs </span></span>
+<span><span class="co">#&gt;     Total computational time: 1.3 secs </span></span>
+<span><span class="co">#&gt;     EM algorithm computational time: 1.2 secs </span></span>
 <span><span class="co">#&gt;     Convergence status: converged</span></span>
 <span><span class="co">#&gt;     Convergence criterion: sas </span></span>
 <span><span class="co">#&gt;     Final Monte Carlo sample size: 3784 </span></span>
@@ -549,7 +692,7 @@ following code for the <code>hvd</code> data</p>
 <p>In addition to just comparing model parameter estimates, we can also
 extract the predicted (or posterior) random effects from each model and
 plot them.</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">id</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/row.names.html" class="external-link">row.names</a></span><span class="op">(</span><span class="va">fit.joiner</span><span class="op">$</span><span class="va">coefficients</span><span class="op">$</span><span class="va">random</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">id.ord</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span> <span class="co"># joineR rearranges patient ordering during EM fit</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>

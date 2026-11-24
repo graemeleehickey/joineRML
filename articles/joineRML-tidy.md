@@ -48,7 +48,6 @@ hvd <- hvd[hvd$num <= 50, ]
 
 ``` r
 
-set.seed(12345)
 fit <- mjoint(
   formLongFixed = list(
     "grad" = log.grad ~ time + sex + hs,
@@ -60,7 +59,8 @@ fit <- mjoint(
   ),
   formSurv = Surv(fuyrs, status) ~ age,
   data = list(hvd, hvd),
-  timeVar = "time"
+  timeVar = "time",
+  seed = 12345
 )
 ```
 
@@ -71,6 +71,14 @@ fit <- mjoint(
     ## EM algorithm has converged!
 
     ## Calculating post model fit statistics...
+
+Supplying `seed` makes the fit and its post-fit calculations
+reproducible for the same data, settings, random-number generator, and
+software versions, while restoring the previous R random-number state
+afterwards. It does not set the seed for later bootstrap or
+dynamic-prediction calls. See the [main
+vignette](https://graemeleehickey.github.io/joineRML/articles/joineRML.html#model-fitting)
+for further details.
 
 ### `tidy` method
 
@@ -338,7 +346,6 @@ fit a second model with only random intercepts:
 
 ``` r
 
-set.seed(67890)
 fit2 <- mjoint(
   formLongFixed = list(
     "grad" = log.grad ~ time + sex + hs,
@@ -350,7 +357,8 @@ fit2 <- mjoint(
   ),
   formSurv = Surv(fuyrs, status) ~ age,
   data = list(hvd, hvd),
-  timeVar = "time"
+  timeVar = "time",
+  seed = 67890
 )
 ```
 
@@ -388,6 +396,27 @@ glance(fit2)
 
 Compare AIC and BIC only for models fitted to the same observations, and
 check convergence before interpreting the comparison.
+
+The same stored fit statistics can be displayed together using:
+
+``` r
+
+anova(fit2, fit, test = FALSE)
+```
+
+    ## Joint model comparison (maximum likelihood)
+    ## 
+    ## Stored likelihoods; no likelihood-ratio tests.
+    ## 
+    ##      df  logLik    AIC    BIC
+    ## fit2 15 -156.22 342.45 368.86
+    ## fit  18 -153.22 342.44 374.15
+
+These two models have different random-effects structures, so a
+likelihood-ratio test with `test = TRUE` is not supported. The [main
+vignette](https://graemeleehickey.github.io/joineRML/articles/joineRML.html#comparing-fitted-models)
+gives a worked likelihood-ratio test for nested covariate models with
+unchanged random-effects and association structures.
 
 ### Extracting a model component
 

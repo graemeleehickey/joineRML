@@ -144,12 +144,20 @@ function. Its main (required) arguments are:
   column names for time, then `timeVar` can alternatively be specified
   as a vector of strings of length $`K`$.
 
+Subject IDs must be non-missing and identify the same subjects in every
+dataset. Records are matched by their ID labels, so row order and
+factor-level order can differ between datasets. Measurement schedules
+may differ between longitudinal outcomes, but each subject must
+contribute observations for every outcome. A separate `survData` must
+contain exactly one record per subject, with the same IDs as the
+longitudinal data and no missing values in the variables used by the
+survival model. At least one observed event is required.
+
 We can fit a bivariate joint model to the log-transformed valve gradient
 and LVMI indices in the `hvd` subset using
 
 ``` r
 
-set.seed(12345)
 fit <- mjoint(
   formLongFixed = list("grad" = log.grad ~ time + sex + hs, 
                        "lvmi" = log.lvmi ~ time + sex),
@@ -158,12 +166,26 @@ fit <- mjoint(
   formSurv = Surv(fuyrs, status) ~ age,
   data = list(hvd, hvd),
   inits = list("gamma" = c(0.11, 1.51, 0.80)),
-  timeVar = "time")
+  timeVar = "time",
+  seed = 12345)
 #> Running multivariate LMM EM algorithm to establish initial parameters...
 #> Finished multivariate LMM EM algorithm...
 #> EM algorithm has converged!
 #> Calculating post model fit statistics...
 ```
+
+The `seed` argument makes the whole fit reproducible, including post-fit
+calculations, for the same data, settings, random-number generator, and
+software versions. It restores the previous R random-number state when
+the fit finishes. The default `seed = NULL` uses the current state as
+usual. The supplied seed does not control subsequent calls to
+[`bootSE()`](https://graemeleehickey.github.io/joineRML/reference/bootSE.md),
+[`dynLong()`](https://graemeleehickey.github.io/joineRML/reference/dynLong.md),
+or
+[`dynSurv()`](https://graemeleehickey.github.io/joineRML/reference/dynSurv.md);
+set the seed separately before those calculations. See
+[`help("mjoint")`](https://graemeleehickey.github.io/joineRML/reference/mjoint.md)
+for details of random-number generation.
 
 Details on the model estimation algorithm are provided in the technical
 details vignette. We note here that this is not necessarily the most
@@ -191,7 +213,7 @@ summary(fit)
 #>     lvmi = log.lvmi ~ time + sex), formLongRandom = list(grad = ~1 | 
 #>     num, lvmi = ~time | num), formSurv = Surv(fuyrs, status) ~ 
 #>     age, data = list(hvd, hvd), timeVar = "time", inits = list(gamma = c(0.11, 
-#>     1.51, 0.8)))
+#>     1.51, 0.8)), seed = 12345L)
 #> 
 #> Data Descriptives:
 #> 
@@ -248,13 +270,17 @@ summary(fit)
 #> gamma_2 3.6801  3.4488  1.0671  0.2859
 #> 
 #> Algorithm Summary:
-#>     Total computational time: 2.2 secs 
-#>     EM algorithm computational time: 2 secs 
+#>     Total computational time: 2.6 secs 
+#>     EM algorithm computational time: 2.3 secs 
 #>     Convergence status: converged
 #>     Convergence criterion: sas 
 #>     Final Monte Carlo sample size: 3674 
 #>     Standard errors calculated using method: approx
 ```
+
+The residual quantities printed by `summary(fit)` are standard
+deviations, also returned by `sigma(fit)`; the stored `coef(fit)$sigma2`
+values are variances.
 
 One can also extract the coefficients, fixed effects, and random effects
 using standard generic functions:
@@ -321,6 +347,96 @@ plot(fit, params = "beta")
 
 ![](joineRML_files/figure-html/hvd_model_conv-2.png)
 
+### Comparing fitted models
+
+Use [`anova()`](https://rdrr.io/r/stats/anova.html) to compare nested
+covariate models fitted to the same subjects, longitudinal responses and
+measurement times, and survival responses. The response transformations,
+random-effects structure, and association structure must also agree.
+Here, the reduced model omits `hs` from the valve-gradient fixed effects
+and retains all other terms. The existing `fit` is the full model.
+Setting `pfs = FALSE` skips the reduced model’s post-fit standard errors
+and random-effect predictions, which are not needed for this comparison.
+
+``` r
+
+fit.reduced <- update(fit,
+  formLongFixed = list("grad" = log.grad ~ time + sex,
+                       "lvmi" = log.lvmi ~ time + sex),
+  pfs = FALSE,
+  seed = 23456)
+#> Running multivariate LMM EM algorithm to establish initial parameters...
+#> Finished multivariate LMM EM algorithm...
+#> EM algorithm has converged!
+```
+
+Supply models from reduced to full. Both must have converged;
+[`anova()`](https://rdrr.io/r/stats/anova.html) also checks that the
+observations and model structures permit the comparison.
+
+``` r
+
+comparison <- anova(fit.reduced, fit)
+knitr::kable(comparison, digits = 4)
+```
+
+|             |  df |    logLik |      AIC |      BIC | L.Ratio |  Df | Pr(\>Chisq) | LR.change |
+|:------------|----:|----------:|---------:|---------:|--------:|----:|------------:|----------:|
+| fit.reduced |  17 | -153.4123 | 340.8246 | 370.7650 |      NA |  NA |          NA |        NA |
+| fit         |  18 | -153.2311 | 342.4622 | 374.1638 |  0.3624 |   1 |      0.5472 |     2e-04 |
+
+The test uses an approximate chi-squared reference distribution, with
+degrees of freedom equal to the number of additional identifiable
+coefficients. The joint likelihoods are re-evaluated at the fitted
+coefficients using common deterministic Halton integration points,
+without refitting either model. Consequently, the table’s
+log-likelihoods, AIC, and BIC may differ from the values stored in the
+fitted objects. BIC uses the number of subjects, not the number of
+longitudinal measurements.
+
+`LR.change` is the absolute change in the likelihood-ratio statistic
+when the integration size increases from half of `nMC` to `nMC` (default
+10,000). A negative statistic or a change exceeding `tol` (default 0.1)
+produces a warning and an `NA` p-value. To investigate integration
+error, increase `nMC`, for example:
+
+``` r
+
+anova(fit.reduced, fit, nMC = 20000)
+```
+
+The tolerance is a numerical diagnostic, not a significance threshold or
+a guaranteed error bound. A negative statistic can also indicate that
+the fits need tighter convergence settings or better initial values.
+Passing the diagnostic does not establish that the maximum was reached
+or that the asymptotic approximation is adequate. This small dataset is
+used to demonstrate the workflow, rather than to draw clinical
+conclusions.
+
+For a descriptive comparison using the stored likelihoods, without
+further integration or a likelihood-ratio test, use:
+
+``` r
+
+anova(fit.reduced, fit, test = FALSE)
+#> Joint model comparison (maximum likelihood)
+#> 
+#> Stored likelihoods; no likelihood-ratio tests.
+#> 
+#>             df  logLik    AIC    BIC
+#> fit.reduced 17 -153.43 340.87 370.81
+#> fit         18 -153.22 342.44 374.15
+```
+
+This option also permits non-nested models or different random-effects
+structures, provided the models have converged and use the same
+observations and response transformations. Likelihood-ratio tests of
+changes to the random-effects structure, including zero variance
+components, are not supported. The [tidying
+vignette](https://graemeleehickey.github.io/joineRML/articles/joineRML-tidy.md)
+shows how to extract model components and format coefficient and
+model-comparison tables.
+
 ### Bootstrap standard errors
 
 Once an `mjoint` model has converged, and assuming the `pfs` argument is
@@ -350,8 +466,13 @@ We can call the `bootSE` object to interrogate it
 fit.se
 ```
 
-or alternatively re-run the `summary` command, passing the additional
-argument of `bootSE = fit.se`
+The residual estimates and percentile confidence intervals printed by
+`fit.se` are on the variance scale; their `SE` column gives standard
+errors of the variance estimates. These are distinct from the residual
+standard deviations printed by `summary(fit)`.
+
+Alternatively, re-run the `summary` command, passing the additional
+argument of `bootSE = fit.se`:
 
 ``` r
 
@@ -446,12 +567,12 @@ the `hvd` data
 
 ``` r
 
-set.seed(123)
 fit.joinerml <- mjoint(formLongFixed = log.lvmi ~ time + age,
                        formLongRandom = ~ time | num,
                        formSurv = Surv(fuyrs, status) ~ age,
                        data = hvd,
-                       timeVar = "time")
+                       timeVar = "time",
+                       seed = 123)
 #> EM algorithm has converged!
 #> Calculating post model fit statistics...
 
@@ -459,7 +580,8 @@ summary(fit.joinerml)
 #> 
 #> Call:
 #> mjoint(formLongFixed = log.lvmi ~ time + age, formLongRandom = ~time | 
-#>     num, formSurv = Surv(fuyrs, status) ~ age, data = hvd, timeVar = "time")
+#>     num, formSurv = Surv(fuyrs, status) ~ age, data = hvd, timeVar = "time", 
+#>     seed = 123L)
 #> 
 #> Data Descriptives:
 #> 
@@ -508,8 +630,8 @@ summary(fit.joinerml)
 #> gamma_1 3.4823  1.6559  2.1030  0.0355
 #> 
 #> Algorithm Summary:
-#>     Total computational time: 0.8 secs 
-#>     EM algorithm computational time: 0.7 secs 
+#>     Total computational time: 1.3 secs 
+#>     EM algorithm computational time: 1.2 secs 
 #>     Convergence status: converged
 #>     Convergence criterion: sas 
 #>     Final Monte Carlo sample size: 3784 
