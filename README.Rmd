@@ -84,6 +84,8 @@ joineRML supplies the broom-compatible methods `tidy()`, `augment()`, and `glanc
 
 From version 0.4.9, you can pass `seed = 12345` directly to `mjoint()` instead of calling `set.seed()` before the fit. A supplied seed applies to that fit and preserves the previous R random-number state.
 
+Use `anova(fit_reduced, fit_full)` to compare nested covariate models fitted to the same observations with the same random-effects structure. The [model-comparison help](https://graemeleehickey.github.io/joineRML/reference/anova.mjoint.html) explains the likelihood-ratio test and its numerical-precision checks. Use `test = FALSE` for a comparison table without a test.
+
 ## Documentation
 
 The [package website](https://graemeleehickey.github.io/joineRML/) includes:

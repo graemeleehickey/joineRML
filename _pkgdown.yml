@@ -41,6 +41,7 @@ reference:
       - joineRML
   - title: Model summaries and inference
     contents:
+      - anova.mjoint
       - summary.mjoint
       - fixef.mjoint
       - ranef.mjoint

@@ -927,8 +927,10 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
     out$Hessian <- postFitCalcs$H
     out$Eb <- postFitCalcs$Eb # Posterior RE means
     out$Vb <- postFitCalcs$Vb # Posterior RE variances
-    out$dmats <- list(l = l, t = t, z = z)
   }
+  # Retain the fitted design matrices for likelihood comparisons, including
+  # when post-fit standard errors were not requested.
+  out$dmats <- list(l = l, t = t, z = z)
   out$call <- Call
   out["seed"] <- list(seed)
   out$inits <- inits

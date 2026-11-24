@@ -2,6 +2,8 @@
 
 ## New features
 
+- Added `anova()` comparisons for fitted joint models. Likelihood-ratio tests require nested covariate models fitted to the same observations, with unchanged random-effects and association structures. Likelihoods are re-evaluated using common Halton integration points, and p-values are withheld when the statistic is negative or numerically unstable. Use `test = FALSE` for a comparison table without a test (#4).
+
 - `mjoint()` now accepts an optional `seed` argument for reproducible model fitting, including Monte Carlo integration and post-fit calculations. The previous R random-number state is restored when a seed is supplied. The default `seed = NULL` retains the existing behaviour (#5).
 
 ## Bug fixes

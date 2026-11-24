@@ -100,6 +100,8 @@ A list with the following components. \describe{
 
   \item{\code{finalnMC}}{the number of Monte Carlo samples requested for the final likelihood evaluation and, when available, the post-fit statistics.}
 
+  \item{\code{dmats}}{the longitudinal, survival, and random-effects design matrices and responses used in fitting. These are retained for model comparisons even when \code{pfs = FALSE}.}
+
   \item{\code{call}}{the matched call.}
 
   \item{\code{seed}}{the supplied random seed, or \code{NULL} if the existing R random-number state was used.}
