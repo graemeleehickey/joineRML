@@ -30,9 +30,7 @@ assumed that a standard univariate joint model is being fitted.}
 the random effects effects of each longitudinal outcome. The length of the
 list must be equal to \code{formLongFixed}.}
 
-\item{formSurv}{a formula specifying the proportional hazards regression
-model (not including the latent association structure). See
-\code{\link[survival]{coxph}} for examples. The response must be right-censored survival data with at least one observed event.}
+\item{formSurv}{A formula specifying the proportional hazards regression model for baseline covariates, with one common baseline hazard. The latent association structure is added separately. The response must be right-censored survival data with at least one observed event. Ordinary covariate terms, including factors, interactions, and unpenalised transformations, are supported. Cox-specific terms \code{strata()}, \code{offset()}, \code{cluster()}, \code{tt()}, \code{frailty()}, \code{pspline()}, and \code{ridge()}, and other penalised terms, are not supported and are rejected before fitting. This also applies when these calls include a package prefix, such as \code{survival::strata()} or \code{stats::offset()}.}
 
 \item{data}{a list of \code{data.frame} objects for each longitudinal outcome
 in which to interpret the variables named in the \code{formLongFixed} and

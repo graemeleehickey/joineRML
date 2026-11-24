@@ -17,9 +17,7 @@
 #' @param formLongRandom a list of one-sided formulae specifying the model for
 #'   the random effects effects of each longitudinal outcome. The length of the
 #'   list must be equal to \code{formLongFixed}.
-#' @param formSurv a formula specifying the proportional hazards regression
-#'   model (not including the latent association structure). See
-#'   \code{\link[survival]{coxph}} for examples. The response must be right-censored survival data with at least one observed event.
+#' @param formSurv A formula specifying the proportional hazards regression model for baseline covariates, with one common baseline hazard. The latent association structure is added separately. The response must be right-censored survival data with at least one observed event. Ordinary covariate terms, including factors, interactions, and unpenalised transformations, are supported. Cox-specific terms \code{strata()}, \code{offset()}, \code{cluster()}, \code{tt()}, \code{frailty()}, \code{pspline()}, and \code{ridge()}, and other penalised terms, are not supported and are rejected before fitting. This also applies when these calls include a package prefix, such as \code{survival::strata()} or \code{stats::offset()}.
 #' @param data a list of \code{data.frame} objects for each longitudinal outcome
 #'   in which to interpret the variables named in the \code{formLongFixed} and
 #'   \code{formLongRandom}. The \code{list} structure enables one to include
@@ -462,7 +460,13 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
 
   # Check the survival model before fitting either sub-model. Omitting rows
   # here would break the correspondence with the longitudinal observations.
+  .mjoint_check_survival_formula(formSurv)
   mf.surv <- model.frame(formSurv, data = survData, na.action = na.pass)
+  penalised <- vapply(mf.surv, inherits, logical(1), what = "coxph.penalty")
+  if (any(penalised)) {
+    stop("Penalised survival terms are not supported in 'formSurv': ",
+         paste(names(mf.surv)[penalised], collapse = ", "), ".", call. = FALSE)
+  }
   if (anyNA(mf.surv)) {
     stop("Missing values in the survival model are not supported")
   }
@@ -956,4 +960,30 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
   class(out) <- "mjoint"
   invisible(out)
 
+}
+
+# Check calls rather than variable names, including calls inside interactions
+# and transformations. Do not evaluate unsupported terms to identify them.
+.mjoint_check_survival_formula <- function(formula) {
+  unsupported <- c("strata", "offset", "cluster", "tt", "frailty",
+                    "frailty.gamma", "frailty.gaussian", "frailty.t",
+                    "pspline", "ridge")
+  find.calls <- function(expr) {
+    if (missing(expr) || !is.call(expr)) return(character())
+    fun <- expr[[1L]]
+    if (is.call(fun) && is.symbol(fun[[1L]]) &&
+        as.character(fun[[1L]]) %in% c("::", ":::") &&
+        as.character(fun[[2L]]) %in% c("survival", "stats")) {
+      fun <- fun[[3L]]
+    }
+    name <- if (is.symbol(fun)) as.character(fun) else ""
+    c(if (name %in% unsupported) paste0(name, "()"),
+      unlist(lapply(as.list(expr)[-1L], find.calls), use.names = FALSE))
+  }
+  bad <- unique(find.calls(formula[[3L]]))
+  if (length(bad)) {
+    stop("Unsupported survival formula term(s): ", paste(bad, collapse = ", "),
+         ". 'formSurv' supports ordinary baseline covariates only, with one common baseline hazard.",
+         call. = FALSE)
+  }
 }

@@ -88,7 +88,7 @@ The main function in the `joineRML` package is the `mjoint()` function. Its main
 
 * `formLongRandom`: a list (of same length as `formLongFixed`) of one-sided formulae specifying the model for random effects in the linear mixed models.
 
-* `formSurv`: a formula specifying the proportional hazards regression model for the time-to-event outcome in the same structure as for `survival::coxph`.
+* `formSurv`: a formula specifying baseline covariates in the proportional hazards regression model for the time-to-event outcome, with one common baseline hazard. The latent association structure is added separately. Factors, interactions, and unpenalised transformations are supported. Cox-specific terms such as `strata()`, `offset()`, `cluster()`, `tt()`, `frailty()`, `pspline()`, and `ridge()` are not supported and are rejected before fitting, including calls prefixed with `survival::` or `stats::`.
 
 * `data`: a list (of same length as `formLongFixed`) of data.frames; one for each longitudinal outcome. It is assumed that the event time data is in the first data.frame (i.e. `data[[1]]`), unless the argument `survData` (which defaults to `NULL`) is specified. If $K>1$ and the data are balanced within patients (i.e. multiple markers measured at common measurement times), then one can specify `data` as a data frame rather than as a list.
 

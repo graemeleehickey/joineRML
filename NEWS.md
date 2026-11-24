@@ -16,6 +16,8 @@
 
 ## Bug fixes
 
+- `mjoint()` now rejects unsupported survival formula terms before fitting, including `strata()`, `offset()`, `cluster()`, `tt()`, frailty terms, and penalised terms. Previously, these could be ignored, cause unclear errors, or produce a model that differed from the specified formula. The survival model supports ordinary baseline covariates with one common baseline hazard, together with the latent association structure.
+
 - Models with a single distinct observed event time now retain the matrix dimensions needed for fitting and the baseline-hazard history.
 - Subject-specific fitted values, residuals, `ranef()`, and `augment()` now explain when posterior random effects are unavailable and advise refitting with `pfs = TRUE` and checking convergence. Population-level fitted values and residuals remain available without post-fit calculations.
 - Parallel bootstrap fitting now stops its R processes on completion or error and preserves existing parallel settings in the calling R session. It uses the `parallel` package directly; `doParallel` and `foreach` are now optional packages used for testing.
