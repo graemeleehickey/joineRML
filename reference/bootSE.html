@@ -227,12 +227,7 @@ indicate the percentage of bootstrap iterations completed? Default is
 
 
 <dt id="arg-ncores">ncores<a class="anchor" aria-label="anchor" href="#arg-ncores"></a></dt>
-<dd><p>integer: if more than one core is available, then the <code>bootSE</code>
-function can run in parallel via the <code><a href="https://rdrr.io/pkg/foreach/man/foreach.html" class="external-link">foreach</a></code>
-function. By default, <code>ncores=1</code>, which defaults to serial mode. Note
-that if <code>ncores</code>&gt;1, then <code>progress</code> is set to <code>FALSE</code> by
-default, as it is not possible to display progress bars for parallel
-processes at the current time.</p></dd>
+<dd><p>Integer: the number of parallel R processes used for bootstrap fitting. The default, <code>ncores = 1</code>, runs sequentially. Progress bars are not displayed when <code>ncores &gt; 1</code>.</p></dd>
 
 
 <dt id="arg-safe-boot">safe.boot<a class="anchor" aria-label="anchor" href="#arg-safe-boot"></a></dt>
@@ -265,8 +260,9 @@ process continues until a model fits successfully. Default is <code>FALSE</code>
   systems with more than one core available, computational time can be
   reduced by passing the argument <code>ncores</code> (with integer value &gt;1) to
   <code>bootSE</code>, which implements parallel processing via the
-  <code><a href="https://rdrr.io/pkg/foreach/man/foreach.html" class="external-link">foreach</a></code> package. <strong>Note:</strong> if parallel
+  <code>parallel</code> package. <strong>Note:</strong> if parallel
   processing is implemented, then the progress bar is not displayed.</p>
+<p>Parallel R processes created by <code>bootSE()</code> are stopped when it finishes, including after an error. Existing parallel settings in the calling R session are preserved.</p>
 <p>Due to random sampling, an <code>mjoint</code> model fitted to some bootstrap
   samples may not converge within the specified control parameter settings.
   The <code>bootSE</code> code discards any models that failed to converge when

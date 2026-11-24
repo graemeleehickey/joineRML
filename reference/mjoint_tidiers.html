@@ -182,7 +182,7 @@ Defaults to <code>FALSE</code>.</p></dd>
     </div>
     <div class="section level2">
     <h2 id="note">Note<a class="anchor" aria-label="anchor" href="#note"></a></h2>
-    <p>Augmented column names use the longitudinal outcome labels. Repeated labels are made unique by adding numbered suffixes.</p>
+    <p>Augmented column names use the longitudinal outcome labels. Repeated labels are made unique by adding numbered suffixes. Because <code><a href="https://generics.r-lib.org/reference/augment.html" class="external-link">augment()</a></code> includes subject-specific fitted values and residuals, it requires posterior random effects from a converged fit with <code>pfs = TRUE</code>.</p>
     </div>
     <div class="section level2">
     <h2 id="author">Author<a class="anchor" aria-label="anchor" href="#author"></a></h2>

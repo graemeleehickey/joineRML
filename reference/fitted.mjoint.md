@@ -35,6 +35,12 @@ fitted(object, level = 0, ...)
 A `list` of length *K* with each element a vector of fitted values for
 the *k*-th longitudinal outcome.
 
+## Details
+
+Subject-specific fitted values (`level = 1`) require posterior random
+effects from a converged fit with `pfs = TRUE`. Population-level fitted
+values (`level = 0`) do not require these post-fit calculations.
+
 ## References
 
 Pinheiro JC, Bates DM. *Mixed-Effects Models in S and S-PLUS.* New York:

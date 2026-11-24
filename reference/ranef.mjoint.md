@@ -32,6 +32,11 @@ individuals and columns the random effects (e.g., intercepts, slopes,
 etc.). If `postVar=TRUE`, the numeric matrix has an extra attribute,
 `postVar`.
 
+## Details
+
+Posterior random effects are available only from a converged fit with
+`pfs = TRUE`.
+
 ## References
 
 Pinheiro JC, Bates DM. *Mixed-Effects Models in S and S-PLUS.* New York:

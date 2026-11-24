@@ -176,7 +176,10 @@ standard errors.
 ## Note
 
 Augmented column names use the longitudinal outcome labels. Repeated
-labels are made unique by adding numbered suffixes.
+labels are made unique by adding numbered suffixes. Because
+[`augment()`](https://generics.r-lib.org/reference/augment.html)
+includes subject-specific fitted values and residuals, it requires
+posterior random effects from a converged fit with `pfs = TRUE`.
 
 ## Author
 

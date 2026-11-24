@@ -168,13 +168,9 @@ bootSE(
 
 - ncores:
 
-  integer: if more than one core is available, then the `bootSE`
-  function can run in parallel via the
-  [`foreach`](https://rdrr.io/pkg/foreach/man/foreach.html) function. By
-  default, `ncores=1`, which defaults to serial mode. Note that if
-  `ncores`\>1, then `progress` is set to `FALSE` by default, as it is
-  not possible to display progress bars for parallel processes at the
-  current time.
+  Integer: the number of parallel R processes used for bootstrap
+  fitting. The default, `ncores = 1`, runs sequentially. Progress bars
+  are not displayed when `ncores > 1`.
 
 - safe.boot:
 
@@ -209,10 +205,13 @@ This function is computationally intensive. A dynamic progress bar is
 displayed showing the percentage of bootstrap models fitted. On computer
 systems with more than one core available, computational time can be
 reduced by passing the argument `ncores` (with integer value \>1) to
-`bootSE`, which implements parallel processing via the
-[`foreach`](https://rdrr.io/pkg/foreach/man/foreach.html) package.
-**Note:** if parallel processing is implemented, then the progress bar
-is not displayed.
+`bootSE`, which implements parallel processing via the `parallel`
+package. **Note:** if parallel processing is implemented, then the
+progress bar is not displayed.
+
+Parallel R processes created by `bootSE()` are stopped when it finishes,
+including after an error. Existing parallel settings in the calling R
+session are preserved.
 
 Due to random sampling, an `mjoint` model fitted to some bootstrap
 samples may not converge within the specified control parameter
