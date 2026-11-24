@@ -24,10 +24,12 @@
 \title{A joint model and software package for time-to-event and multivariate longitudinal data}
 \date{\today}
 \author{
-	G. L. Hickey$^1$ \& P. Philipson$^2$, A. L. Jorgensen$^1$, R. Kolamunnage-Dona$^1$\\
+	Graeme L. Hickey$^1$ \& P. Philipson$^2$,\\
+	A. L. Jorgensen$^1$, R. Kolamunnage-Dona$^1$\\
 	\\[-0.1cm]
 	$^1$\textit{Department of Biostatistics, University of Liverpool, UK}\\
-	$^2$\textit{Department of Mathematics, Physics and Electrical Engineering, Northumbria University, UK} \\
+	$^2$\textit{Department of Mathematics, Physics and Electrical Engineering,}\\
+	\textit{Northumbria University, UK}\\
 }
 
 %\linenumbers
@@ -231,11 +233,11 @@ For the longitudinal data sub-model, when $K > 1$ we first find the maximum like
 Two standard stopping rules for the deterministic EM algorithm used to declare convergence are the relative and absolute differences, defined as
 %
 \begin{eqnarray}
-	\Delta_\text{rel}^{(m+1)} &=& \max\left\{\frac{|\hat{\theta}^{(m+1)} - \hat{\theta}^{(m)}|}{|\hat{\theta}^{(m)}| + \epsilon_1}\right\} < \epsilon_0, \mbox{  and} \label{eqn:rel_conv} \\
-	\Delta_\text{abs}^{(m+1)} &=& \max\left\{|\hat{\theta}^{(m+1)} - \hat{\theta}^{(m)}|\right\} < \epsilon_2 \label{eqn:abs_conv}
+	\Delta_\text{rel}^{(m+1)} &=& \max\left\{\frac{|\hat{\theta}^{(m+1)} - \hat{\theta}^{(m)}|}{|\hat{\theta}^{(m)}| + \epsilon_1}\right\} < \epsilon_2, \mbox{  and} \label{eqn:rel_conv} \\
+	\Delta_\text{abs}^{(m+1)} &=& \max\left\{|\hat{\theta}^{(m+1)} - \hat{\theta}^{(m)}|\right\} < \epsilon_0 \label{eqn:abs_conv}
 \end{eqnarray}
 %
-respectively, for some appropriate choice of $\epsilon_0$, $\epsilon_1$, and $\epsilon_2$. For reference, the \texttt{JM} package implements the relative difference stopping rule (in combination with another rule based on relative change in the likelihood), whereas the \texttt{joineR} package implements the absolute difference stopping rule.
+respectively, where $\epsilon_0$, $\epsilon_1$, and $\epsilon_2$ correspond to the \texttt{mjoint()} control arguments \texttt{tol0}, \texttt{tol1}, and \texttt{tol2}. The monitored parameters are $\beta$, $\gamma$, the entries of $D$, and the residual variances; baseline hazard increments are excluded. The default \texttt{convCrit = "sas"} applies the absolute-change criterion separately to parameters whose current magnitude is at most \texttt{rav} (default 0.1), and the relative-change criterion to the remaining parameters. All must satisfy their applicable criterion. Both criteria use the magnitude of the change, so a large decrease cannot itself satisfy convergence. The alternatives \texttt{"abs"}, \texttt{"rel"}, and \texttt{"either"} apply the absolute rule to all parameters, the relative rule to all parameters, or accept either whole-vector rule, respectively.
 
 The choice of $N$ and the monitoring of convergence are conflated when applying a Monte Carlo EM algorithm (MCEM), and a dynamic approach is required. As noted by \textcite{Wei1990}, it is computationally inefficient to use a large $N$ in the early phase of the MCEM algorithm when the parameter estimates are likely to be far from the maximizer. On the flip side, as the parameter estimates approach the maximizer, the above stopping rules will fail as the changes in parameter estimates will be swamped by Monte Carlo error. Therefore, it has been recommended that one increase $N$ as the estimate moves towards the maximizer. Although this might be done subjectively \cite{Law2002} or by pre-specified rules \cite{McCulloch1997}, an automated approach is preferable. \textcite{Booth1999} proposed an update rule based on a confidence ellipsoid for the maximizer at the $(m+1)$-th iteration, calculated using an approximate sandwich estimator for the maximizer, which accounts for the Monte Carlo error at each iteration. This approach requires additional variance estimation at each iteration, therefore we opt for a simpler approach described by \textcite{Ripatti2002}. We calculate a coefficient of variation at the $(m+1)$-th iteration as
 %
@@ -243,7 +245,7 @@ The choice of $N$ and the monitoring of convergence are conflated when applying 
 	\text{cv}(\Delta_\text{rel}^{(m+1)}) = \frac{\text{sd}(\Delta_\text{rel}^{(m-1)}, \Delta_\text{rel}^{(m)}, \Delta_\text{rel}^{(m+1)})}{\text{mean}(\Delta_\text{rel}^{(m-1)}, \Delta_\text{rel}^{(m)}, \Delta_\text{rel}^{(m+1)})},
 \end{equation*}
 %
-where $\Delta_\text{rel}^{(m+1)}$ is given by \eqref{eqn:rel_conv}, and $\text{sd}(\cdot)$ and $\text{mean}(\cdot)$ are the sample standard deviation and mean functions, respectively. If $\text{cv}(\Delta_\text{rel}^{(m+1)}) > \text{cv}(\Delta_\text{rel}^{(m)})$, then $N := N + \lfloor N/\delta \rfloor$, for some small positive integer $\delta$. Typically, we run the MCEM algorithm with a small $N$ (e.g. a default of $50K$ iterations) before implementing this update rule in order to get into the approximately correct parameter region. Appropriate values for other parameters will be application specific, however we have found $\delta = 3$, $N = 100$, $\epsilon_1 = 0.001$, and $\epsilon_0 = \epsilon_2 = 0.005$ to deliver reasonably accurate estimates.
+where $\Delta_\text{rel}^{(m+1)}$ is given by \eqref{eqn:rel_conv}, and $\text{sd}(\cdot)$ and $\text{mean}(\cdot)$ are the sample standard deviation and mean functions, respectively. If $\text{cv}(\Delta_\text{rel}^{(m+1)}) > \text{cv}(\Delta_\text{rel}^{(m)})$, then $N := N + \lfloor N/\delta \rfloor$, up to the \texttt{nMCmax} limit, where $\delta$ is \texttt{nMCscale} (default 5). The default antithetic method starts with $N=100K$ samples and a burn-in of $100K$ iterations. Its defaults are $\epsilon_0=\epsilon_1=0.001$ and $\epsilon_2=0.005$. With Halton or Sobol integration, the default burn-in is 5 iterations and $\epsilon_2=0.001$. These are starting settings rather than guarantees of adequate precision; convergence traces and sensitivity to tighter settings should be assessed for the application.
 
 As the monotonicity property is lost due to the Monte Carlo integrations in MCEM, convergence might be prematurely declared due to stochasticity if the $\epsilon$ values are too large. To reduce the chance of this occurring, we require that the stopping rule is satisfied for 3 consecutive iterations \cite{Booth1999, Ripatti2002}. However, in any case, trace plots should be inspected to confirm convergence is appropriate.
 
@@ -255,7 +257,19 @@ The observed data likelihood is calculated following the observation by \textcit
 	\prod_{i=1}^n f(y_i \given \hat{\theta}) \left(\int_{-\infty}^{\infty}  f(T_i, \delta_i \given b_i, \hat{\theta}) f(b_i \given y_i, \hat{\theta}) db_i \right),
 \end{equation*}
 %
-where marginal distribution $f(y_i \given \theta)$ is a multivariate normal density with mean $X_i \beta$ and variance-covariance matrix $\Sigma_i + Z_i D Z_i^\top$, $f(b_i \given y_i, \theta)$ is given by \eqref{eqn:bdist}, and $\hat{\theta}$ is the maximum likelihood estimate determined from the EM algorithm. Once calculated, the Akaike information criterion (AIC) and Bayesian information criterion (BIC) are straightforwardly calculated, which are useful for model selection.
+where marginal distribution $f(y_i \given \theta)$ is a multivariate normal density with mean $X_i \beta$ and variance-covariance matrix $\Sigma_i + Z_i D Z_i^\top$, $f(b_i \given y_i, \theta)$ is given by \eqref{eqn:bdist}, and $\hat{\theta}$ denotes the fitted parameters. The reported joint log-likelihood is evaluated at the returned coefficients, including when post-fit calculations are omitted or fitting stops without convergence. It should not be interpreted as a maximised likelihood unless convergence is adequate. The iteration history instead records likelihoods before each parameter update.
+
+The package reports $\mathrm{AIC}=-2\ell(\hat{\theta})+2d$ and $\mathrm{BIC}=-2\ell(\hat{\theta})+d\log n$, where $n$ is the number of subjects, not the number of longitudinal measurements. The parameter count $d$ includes longitudinal fixed effects, survival covariates, association coefficients, random-effects covariance parameters, and residual variances; it excludes baseline hazard increments. Comparisons require the same observations and response transformations.
+
+\subsubsection{Comparing fitted models}
+
+The \texttt{anova()} method supports likelihood-ratio comparisons of nested longitudinal fixed-effects and survival-covariate models. Models must have converged, use the same subjects, longitudinal responses and measurement times, and survival responses, and retain the same random-effects and association structures. Response transformations must agree. Nesting is checked through the column spaces of the fitted design matrices, and each successive model must add at least one identifiable coefficient. Tests of changes to the random-effects structure, including zero variance components, are not supported.
+
+For reduced and full models, the statistic is $L=2\{\ell(\hat{\theta}_{\mathrm{full}})-\ell(\hat{\theta}_{\mathrm{reduced}})\}$, with an approximate chi-squared reference distribution on $d_{\mathrm{full}}-d_{\mathrm{reduced}}$ degrees of freedom. The likelihoods are re-evaluated at the fitted coefficients using common deterministic Halton points, transformed to each model's conditional Gaussian distribution of the random effects. This does not refit the models or alter their stored likelihoods. The comparison table's log-likelihoods, AIC, and BIC use the re-evaluated values and can therefore differ from the stored summaries. The common baseline hazard has the same event-time support and does not contribute to the difference in parameter counts.
+
+With \texttt{nMC} integration points per subject (default 10,000), the method also calculates the statistic using the first $\lfloor\texttt{nMC}/2\rfloor$ points. The absolute difference is reported as \texttt{LR.change}. A negative statistic or a difference greater than \texttt{tol} (default 0.1) produces a warning and a withheld p-value. Increasing \texttt{nMC} assesses sensitivity to integration size; a negative statistic may also require refitting with tighter convergence settings or better initial values. This diagnostic neither bounds the integration error nor establishes that the fits reached their maxima or that the asymptotic reference distribution is adequate.
+
+With \texttt{test = FALSE}, the method reports stored log-likelihoods, AIC, and BIC without further integration or a test. This permits descriptive comparisons of non-nested models or different random-effects structures, subject to the same observations, response transformations, and convergence requirements. The introductory vignette gives worked examples of both types of comparison.
 
 \subsection{Standard error estimation}
 
@@ -281,7 +295,7 @@ We consider two standard error (SE) estimators:
 	        where $\lambda_0(t)$ is substituted by $\hat{\lambda}_0(t)$, which is a function of $\gamma$ (and implicitly, the other parameters via the conditional expectation in the E-step, \eqref{eqn:expectation}) given by \eqref{eqn:hazard_update}. Therefore, we do not calculate approximate SEs for the baseline hazard; however, this is generally not of inferential interest, hence the application of the Cox model formulation in the first place.
 	        %
 	\item \textbf{Bootstrap estimated SEs.}
-			These are estimated by sampling $n$ subjects with replacement and re-labelling the subjects with indices $i^\prime = 1, \dots, n$. We then re-fit the model to the bootstrap-sampled dataset. It is important to note that we re-sample patients, not individual data points. This is repeated $B$-times. For each iteration, we extract the model parameter estimates for $(\beta^\top, \text{vech}(D), \sigma_1^2, \dots, \sigma_K^2, \gamma_v^\top, \gamma_y^\top)$. Note that as the the event times might be tied, the dimension of $\lambda_0(t)$ evaluated at the unique failure times will vary for each iteration; therefore, for simplicity, we do not consider standard error estimates of the baseline hazard. When $B$ is sufficiently large, the SEs can be estimated from the estimated coefficients. Alternatively, $100(1-\alpha)$\%-confidence intervals can be estimated from the the $100\alpha/2$-th and $100(1-\alpha/2)$-th percentiles.
+			These are estimated by sampling $n$ subjects with replacement and re-labelling the subjects with indices $i^\prime = 1, \dots, n$. We then re-fit the model to the bootstrap-sampled dataset. It is important to note that we re-sample patients, not individual data points. This is repeated $B$ times. For each iteration, we extract estimates of $\beta$, $D$, the residual variances, and $\gamma$. As the event times might be tied, the number of baseline hazard increments can vary between bootstrap samples, so we do not consider their standard errors here. When $B$ is sufficiently large, standard errors are estimated by the sample standard deviations of the bootstrap estimates. Alternatively, $100(1-\alpha)$\% confidence intervals can be estimated from the $100\alpha/2$-th and $100(1-\alpha/2)$-th percentiles. The residual estimates and intervals remain on the variance scale; their standard errors quantify uncertainty in those variance estimates.
 			%
 \end{enumerate}
 %

@@ -38,6 +38,7 @@
 
 ## Documentation fixes
 
+- Updated the introductory and tidying vignettes with reproducible fitting, data requirements, residual-scale explanations, and worked model comparisons. Updated the technical vignette and website PDF to describe the current convergence criteria, likelihood evaluation, and numerical checks for likelihood-ratio tests.
 - Expanded the tidying vignette with model extraction and table examples using modelsummary and gtsummary. These packages remain optional.
 - Corrected the `tidy()` examples in the broom vignette and help page to use `conf.int = TRUE`, so the returned tables include confidence intervals. Also corrected the vignette's bootstrap example to use `bootSE`. Thanks to @eribul for reporting the confidence-interval issue (#80).
 

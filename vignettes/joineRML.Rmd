@@ -94,10 +94,11 @@ The main function in the `joineRML` package is the `mjoint()` function. Its main
 
 * `timeVar`: the column name indicating the time variable in the linear mixed effects model. If $K>1$ and the data frames have different column names for time, then `timeVar` can alternatively be specified as a vector of strings of length $K$.
 
+Subject IDs must be non-missing and identify the same subjects in every dataset. Records are matched by their ID labels, so row order and factor-level order can differ between datasets. Measurement schedules may differ between longitudinal outcomes, but each subject must contribute observations for every outcome. A separate `survData` must contain exactly one record per subject, with the same IDs as the longitudinal data and no missing values in the variables used by the survival model. At least one observed event is required.
+
 We can fit a bivariate joint model to the log-transformed valve gradient and LVMI indices in the `hvd` subset using
 
 ```{r hvd_model_fit}
-set.seed(12345)
 fit <- mjoint(
   formLongFixed = list("grad" = log.grad ~ time + sex + hs, 
                        "lvmi" = log.lvmi ~ time + sex),
@@ -106,8 +107,11 @@ fit <- mjoint(
   formSurv = Surv(fuyrs, status) ~ age,
   data = list(hvd, hvd),
   inits = list("gamma" = c(0.11, 1.51, 0.80)),
-  timeVar = "time")
+  timeVar = "time",
+  seed = 12345)
 ```
+
+The `seed` argument makes the whole fit reproducible, including post-fit calculations, for the same data, settings, random-number generator, and software versions. It restores the previous R random-number state when the fit finishes. The default `seed = NULL` uses the current state as usual. The supplied seed does not control subsequent calls to `bootSE()`, `dynLong()`, or `dynSurv()`; set the seed separately before those calculations. See `help("mjoint")` for details of random-number generation.
 
 Details on the model estimation algorithm are provided in the technical details vignette. We note here that this is not necessarily the most appropriate model for the data, and is included only for the purposes of demonstration. There are a number of other useful arguments in the `mjoint` function; for example, `inits` for specifying (partial) initial values, `control` for controlling the optimization algorithm, and `verbose` for monitoring the convergence output in real-time. A full list of all arguments with explanation are given in the help documentation, accessed by running `help("mjoint")`.
 
@@ -118,6 +122,8 @@ Once we have a fitted `mjoint` object, we can begin to extract relevant informat
 ```{r hvd_model_summary}
 summary(fit)
 ```
+
+The residual quantities printed by `summary(fit)` are standard deviations, also returned by `sigma(fit)`; the stored `coef(fit)$sigma2` values are variances.
 
 One can also extract the coefficients, fixed effects, and random effects using standard generic functions:
 
@@ -134,6 +140,43 @@ Although a model fit may indicate convergence, it is generally a good idea to ex
 plot(fit, params = "gamma")
 plot(fit, params = "beta")
 ```
+
+## Comparing fitted models
+
+Use `anova()` to compare nested covariate models fitted to the same subjects, longitudinal responses and measurement times, and survival responses. The response transformations, random-effects structure, and association structure must also agree. Here, the reduced model omits `hs` from the valve-gradient fixed effects and retains all other terms. The existing `fit` is the full model. Setting `pfs = FALSE` skips the reduced model's post-fit standard errors and random-effect predictions, which are not needed for this comparison.
+
+```{r hvd_model_reduced}
+fit.reduced <- update(fit,
+  formLongFixed = list("grad" = log.grad ~ time + sex,
+                       "lvmi" = log.lvmi ~ time + sex),
+  pfs = FALSE,
+  seed = 23456)
+```
+
+Supply models from reduced to full. Both must have converged; `anova()` also checks that the observations and model structures permit the comparison.
+
+```{r hvd_model_comparison}
+comparison <- anova(fit.reduced, fit)
+knitr::kable(comparison, digits = 4)
+```
+
+The test uses an approximate chi-squared reference distribution, with degrees of freedom equal to the number of additional identifiable coefficients. The joint likelihoods are re-evaluated at the fitted coefficients using common deterministic Halton integration points, without refitting either model. Consequently, the table's log-likelihoods, AIC, and BIC may differ from the values stored in the fitted objects. BIC uses the number of subjects, not the number of longitudinal measurements.
+
+`LR.change` is the absolute change in the likelihood-ratio statistic when the integration size increases from half of `nMC` to `nMC` (default 10,000). A negative statistic or a change exceeding `tol` (default 0.1) produces a warning and an `NA` p-value. To investigate integration error, increase `nMC`, for example:
+
+```{r hvd_model_comparison_precision, eval=FALSE, purl=FALSE}
+anova(fit.reduced, fit, nMC = 20000)
+```
+
+The tolerance is a numerical diagnostic, not a significance threshold or a guaranteed error bound. A negative statistic can also indicate that the fits need tighter convergence settings or better initial values. Passing the diagnostic does not establish that the maximum was reached or that the asymptotic approximation is adequate. This small dataset is used to demonstrate the workflow, rather than to draw clinical conclusions.
+
+For a descriptive comparison using the stored likelihoods, without further integration or a likelihood-ratio test, use:
+
+```{r hvd_model_comparison_descriptive}
+anova(fit.reduced, fit, test = FALSE)
+```
+
+This option also permits non-nested models or different random-effects structures, provided the models have converged and use the same observations and response transformations. Likelihood-ratio tests of changes to the random-effects structure, including zero variance components, are not supported. The [tidying vignette](joineRML-tidy.html) shows how to extract model components and format coefficient and model-comparison tables.
 
 ## Bootstrap standard errors
 
@@ -153,7 +196,9 @@ We can call the `bootSE` object to interrogate it
 fit.se
 ```
 
-or alternatively re-run the `summary` command, passing the additional argument of `bootSE = fit.se`
+The residual estimates and percentile confidence intervals printed by `fit.se` are on the variance scale; their `SE` column gives standard errors of the variance estimates. These are distinct from the residual standard deviations printed by `summary(fit)`.
+
+Alternatively, re-run the `summary` command, passing the additional argument of `bootSE = fit.se`:
 
 ```{r hvd_model_boot_summary, eval=FALSE, purl=FALSE}
 summary(fit, bootSE = fit.se)
@@ -203,12 +248,12 @@ summary(fit.joiner)
 To fit a univariate model in `joineRML` we run the following code for the `hvd` data
 
 ```{r joineRML}
-set.seed(123)
 fit.joinerml <- mjoint(formLongFixed = log.lvmi ~ time + age,
                        formLongRandom = ~ time | num,
                        formSurv = Surv(fuyrs, status) ~ age,
                        data = hvd,
-                       timeVar = "time")
+                       timeVar = "time",
+                       seed = 123)
 
 summary(fit.joinerml)
 ```
