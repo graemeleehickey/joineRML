@@ -57,6 +57,20 @@
 
 ### Bug fixes
 
+- Simulated dynamic predictions now sample random effects conditional on
+  each new parameter draw using Gaussian rejection sampling. This
+  replaces the single Metropolis-Hastings update that could retain
+  random effects from the preceding parameter draw and distort predicted
+  values and intervals. The `scale` argument is deprecated and ignored;
+  `max.proposals` limits attempts for each draw, and returned
+  `proposals` and `accept` values describe rejection-sampling
+  efficiency. Failure stops the prediction without discarding parameter
+  draws. The parameter-distribution approximation remains unchanged.
+
+- Dynamic survival predictions now accumulate hazards between the
+  conditioning and prediction times, avoiding undefined ratios when both
+  unconditional survival probabilities round to zero.
+
 - Random-effects polynomial, spline, and scaled time terms now use the
   same fitted basis at measurement, event, and prediction times. Older
   models fitted with inconsistent bases must be refitted; prediction
@@ -125,11 +139,6 @@
   subject ID, independently of row order or factor-level order. Missing
   IDs, unmatched subject sets, duplicate survival records, and missing
   survival-model values are rejected before fitting.
-
-- Simulated dynamic predictions now use the correct Metropolis-Hastings
-  proposal-density correction, evaluated on the log scale. This changes
-  the distribution of the sampled random effects and can change
-  predicted values and intervals.
 
 - The default `"sas"` convergence criterion now uses absolute parameter
   changes consistently. Models can require additional iterations and

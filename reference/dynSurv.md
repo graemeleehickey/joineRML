@@ -17,7 +17,8 @@ dynSurv(
   M = 200,
   scale = 2,
   ci,
-  progress = TRUE
+  progress = TRUE,
+  max.proposals = 10000
 )
 ```
 
@@ -52,8 +53,8 @@ dynSurv(
 
   an optional time that must be greater than the last observed
   measurement time. If omitted (default is `u=NULL`), then conditional
-  failure probabilities are reported for *all* observed failure times in
-  the `mjoint` object data from the last known follow-up time of the
+  survival probabilities are reported for *all* observed failure times
+  in the `mjoint` object data from the last known follow-up time of the
   subject.
 
 - horizon:
@@ -77,14 +78,13 @@ dynSurv(
 
 - M:
 
-  for `type="simulated"`, the number of simulations to performs. Default
-  is `M=200`.
+  for `type="simulated"`, the number of simulations. Must be a positive
+  integer. Default is `M=200`.
 
 - scale:
 
-  a numeric scalar that scales the variance parameter of the proposal
-  distribution for the Metropolis-Hastings algorithm, which therefore
-  controls the acceptance rate of the sampling algorithm.
+  deprecated; ignored. Supplying it produces a warning. The conditional
+  rejection sampler does not require a proposal scale.
 
 - ci:
 
@@ -98,33 +98,46 @@ dynSurv(
   logical: should a progress bar be shown on the console to indicate the
   percentage of simulations completed? Default is `progress=TRUE`.
 
+- max.proposals:
+
+  maximum number of proposals per parameter draw for `type="simulated"`.
+  Must be a positive integer; defaults to `10000`. The prediction stops
+  if this limit is exhausted.
+
 ## Value
 
 A list object inheriting from class `dynSurv`. The list returns the
 arguments of the function and a `data.frame` with first column (named
 `u`) denoting times and the subsequent columns returning summary
-statistics for the conditional failure probabilities For
+statistics for the conditional survival probabilities. For
 `type="first-order"`, a single column named `surv` is appended. For
 `type="simulated"`, four columns named `mean`, `median`, `lower` and
 `upper` are appended, denoting the mean, median and lower and upper
-confidence intervals from the Monte Carlo draws. Additional objects are
-returned that are used in the intermediate calculations.
+confidence limits from the Monte Carlo draws. Additional objects are
+returned that are used in the intermediate calculations. For simulated
+predictions, `proposals` records the number of proposals for each of the
+`M` accepted random-effects draws, `accept` is `M / sum(proposals)`, and
+`sampler` is `"conditional-rejection"`. The former `scale` setting is
+ignored. The `b.hat` component contains the conditional mode for
+first-order predictions and is `NULL` for simulated predictions.
 
 ## Details
 
 Dynamic predictions for the time-to-event data sub-model based on an
 observed measurement history for the longitudinal outcomes of a new
 subject are based on either a first-order approximation or Monte Carlo
-simulation approach, both of which are described in Rizopoulos (2011).
-Namely, given that the subject was last observed at time *t*, we
-calculate the conditional survival probability at time \\u \> t\\ as
+simulation approach. See Rizopoulos (2011) for the prediction framework.
+Given that the subject was last observed at time *t*, we calculate the
+conditional survival probability at time \\u \> t\\ as
 
 \$\$P\[T \ge u \| T \ge t; y, \theta\] \approx \frac{S(u \| \hat{b};
 \theta)}{S(t \| \hat{b}; \theta)},\$\$
 
 where \\T\\ is the failure time for the new subject, \\y\\ is the
 stacked-vector of longitudinal measurements up to time *t* and \\S(u \|
-\hat{b}; \theta)\\ is the survival function.
+\hat{b}; \theta)\\ is the survival function. The ratio is evaluated from
+hazard increments between \\t\\ and \\u\\, avoiding division of survival
+probabilities that may both round to zero.
 
 Prediction matrices use the transformations, factor levels, and
 contrasts retained when the model was fitted. Changing
@@ -170,18 +183,27 @@ Random-effects covariance matrices and baseline-hazard increments retain
 their existing adjustments to ensure positive definiteness and
 positivity, respectively.
 
-The random effects are updated using the conditional posterior density
+For each parameter draw, random effects are sampled from \\f(b \| y, T
+\ge t; \theta)\\ by Gaussian rejection sampling. The longitudinal
+conditional distribution is \\N(m,V)\\. Its density is multiplied by the
+survival contribution \\\exp\\\ell(b)\\\\, where \\\ell(b) = -\sum_j h_j
+\exp(a_j^T b)\\ is concave and \\h_j \ge 0\\. At an approximate
+conditional mode \\b_0\\, put \\g_0 = \nabla\ell(b_0)\\. A tangent bound
+gives the proposal \\N(m + V g_0,V)\\, accepted with log probability
+\\\ell(b) - \ell(b_0) - g_0^T(b-b_0)\\. This samples the conditional
+distribution without burn-in; an approximate mode affects efficiency,
+rather than the target distribution. Acceptance is evaluated on the log
+scale to avoid cancellation and overflow.
 
-\$\$f(b \| y, T \ge t; \theta)\$\$
-
-by means of a Metropolis-Hastings algorithm with independent
-multivariate non-central *t*-distribution proposal distributions with
-non-centrality parameter \\\hat{b}\\ from the first-order prediction and
-variance-covariance matrix equal to `scale` \\\times\\ the inverse of
-the negative Hessian of the posterior distribution. The choice of
-`scale` can be used to tune the acceptance rate of the
-Metropolis-Hastings sampler. This simulation algorithm is iterated `M`
-times, at each time calculating the conditional survival probability.
+Each parameter draw is held fixed until a random-effects draw is
+accepted. Exhausting `max.proposals` stops the prediction and identifies
+the simulation and conditioning time; parameter draws are never
+discarded and replaced. Strong survival conditioning, particularly in
+several independent random-effects directions, can require many
+proposals. Increasing `max.proposals` allows more attempts but does not
+improve the approximation used to sample the model parameters. The
+conditional sampler alone does not establish prediction-interval
+coverage.
 
 ## References
 

@@ -70,7 +70,8 @@
 <span>  <span class="va">ci</span>,</span>
 <span>  progress <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  ntimes <span class="op">=</span> <span class="fl">100</span>,</span>
-<span>  level <span class="op">=</span> <span class="fl">1</span></span>
+<span>  level <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  max.proposals <span class="op">=</span> <span class="fl">10000</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -106,7 +107,7 @@ required for dynamic prediction. Defaults to <code>newSurvData=NULL</code>.</p><
 <dt id="arg-u">u<a class="anchor" aria-label="anchor" href="#arg-u"></a></dt>
 <dd><p>an optional time that must be greater than the last observed
 measurement time. If omitted (default is <code>u=NULL</code>), then conditional
-failure probabilities are reported for <em>all</em> observed failure times in
+survival probabilities are reported for <em>all</em> observed failure times in
 the <code>mjoint</code> object data from the last known follow-up time of the
 subject.</p></dd>
 
@@ -119,14 +120,13 @@ Defaults to the computationally faster first-order prediction method.</p></dd>
 
 
 <dt id="arg-m">M<a class="anchor" aria-label="anchor" href="#arg-m"></a></dt>
-<dd><p>for <code>type="simulated"</code>, the number of simulations to performs.
+<dd><p>for <code>type="simulated"</code>, the number of simulations. Must be a positive integer.
 Default is <code>M=200</code>.</p></dd>
 
 
 <dt id="arg-scale">scale<a class="anchor" aria-label="anchor" href="#arg-scale"></a></dt>
-<dd><p>a numeric scalar that scales the variance parameter of the
-proposal distribution for the Metropolis-Hastings algorithm, which
-therefore controls the acceptance rate of the sampling algorithm.</p></dd>
+<dd><p>deprecated; ignored. Supplying it produces a warning. The
+conditional rejection sampler does not require a proposal scale.</p></dd>
 
 
 <dt id="arg-ci">ci<a class="anchor" aria-label="anchor" href="#arg-ci"></a></dt>
@@ -154,6 +154,12 @@ to innermost grouping, with level 0 corresponding to the population model
 fit and level 1 corresponding to subject-specific model fit. Defaults to
 <code>level=1</code>.</p></dd>
 
+
+<dt id="arg-max-proposals">max.proposals<a class="anchor" aria-label="anchor" href="#arg-max-proposals"></a></dt>
+<dd><p>maximum number of proposals per parameter draw for
+<code>type="simulated"</code>. Must be a positive integer; defaults to
+<code>10000</code>. The prediction stops if this limit is exhausted.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
@@ -162,14 +168,18 @@ fit and level 1 corresponding to subject-specific model fit. Defaults to
   <code>data.frame</code>s of 2 columns, with first column (named
   <code>timeVar[k]</code>; see <code><a href="mjoint.html">mjoint</a></code>) denoting times and the second
   column (named <code>y.pred</code>) denoting the expected outcome at each time
-  point.</p>
+  point.
+  For simulated predictions, <code>proposals</code> records the number of proposals
+  for each of the <code>M</code> accepted random-effects draws, <code>accept</code> is
+  <code>M / sum(proposals)</code>, and <code>sampler</code> is
+  <code>"conditional-rejection"</code>. The former <code>scale</code> setting is ignored.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>Dynamic predictions for the longitudinal data sub-model based on an
   observed measurement history for the longitudinal outcomes of a new subject
   are based on either a first-order approximation or Monte Carlo simulation
-  approach, both of which are described in Rizopoulos (2011). Namely, given
+  approach. See Rizopoulos (2011) for the prediction framework. Given
   that the subject was last observed at time <em>t</em>, we calculate the
   conditional expectation of each longitudinal outcome at time <em>u</em> as</p>
 <p>$$E[y_k(u) | T \ge t, y, \theta] \approx x^T(u)\beta_k +
@@ -208,16 +218,26 @@ fit and level 1 corresponding to subject-specific model fit. Defaults to
   its accuracy in small samples or near a variance boundary. Random-effects
   covariance matrices and baseline-hazard increments retain their existing
   adjustments to ensure positive definiteness and positivity, respectively.</p>
-<p>The random effects are updated using the conditional posterior density</p>
-<p>$$f(b | y, T \ge t; \theta)$$</p>
-<p>by means of a Metropolis-Hastings algorithm with independent multivariate
-  non-central <em>t</em>-distribution proposal distributions with
-  non-centrality parameter \(\hat{b}\) from the first-order prediction and
-  variance-covariance matrix equal to <code>scale</code> \(\times\) the inverse
-  of the negative Hessian of the posterior distribution. The choice of
-  <code>scale</code> can be used to tune the acceptance rate of the
-  Metropolis-Hastings sampler. This simulation algorithm is iterated <code>M</code>
-  times, at each time calculating the conditional expected longitudinal value.</p>
+<p>For each parameter draw, random effects are sampled from
+  \(f(b | y, T \ge t; \theta)\) by Gaussian rejection sampling. The
+  longitudinal conditional distribution is \(N(m,V)\). Its density is
+  multiplied by the survival contribution \(\exp\{\ell(b)\}\), where
+  \(\ell(b) = -\sum_j h_j \exp(a_j^T b)\) is concave and \(h_j \ge 0\).
+  At an approximate conditional mode \(b_0\), put
+  \(g_0 = \nabla\ell(b_0)\). A tangent bound gives the proposal
+  \(N(m + V g_0,V)\), accepted with log probability
+  \(\ell(b) - \ell(b_0) - g_0^T(b-b_0)\). This samples the conditional
+  distribution without burn-in; an approximate mode affects efficiency,
+  rather than the target distribution. Acceptance is evaluated on the log
+  scale to avoid cancellation and overflow.</p>
+<p>Each parameter draw is held fixed until a random-effects draw is accepted.
+  Exhausting <code>max.proposals</code> stops the prediction and identifies the
+  simulation and conditioning time; parameter draws are never discarded and
+  replaced. Strong survival conditioning, particularly in several independent
+  random-effects directions, can require many proposals. Increasing
+  <code>max.proposals</code> allows more attempts but does not improve the
+  approximation used to sample the model parameters. The conditional sampler
+  alone does not establish prediction-interval coverage.</p>
     </div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>

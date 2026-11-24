@@ -280,8 +280,8 @@ summary(fit)
 #> gamma_2 3.6801  3.4488  1.0671  0.2859
 #> 
 #> Algorithm Summary:
-#>     Total computational time: 3.6 secs 
-#>     EM algorithm computational time: 3.1 secs 
+#>     Total computational time: 3.7 secs 
+#>     EM algorithm computational time: 3.2 secs 
 #>     Convergence status: converged
 #>     Convergence criterion: sas 
 #>     Final Monte Carlo sample size: 3674 
@@ -366,9 +366,9 @@ for future longitudinal values and
 for conditional survival probabilities, given a subject’s observed
 measurement history. Their default `type = "first-order"` uses the
 fitted parameters and the conditional random-effects mode. Setting
-`type = "simulated"` also samples parameters and updates the random
-effects; set the seed separately before each prediction call for
-reproducibility. See
+`type = "simulated"` also samples parameters and draws random effects
+conditional on each sampled parameter vector; set the seed separately
+before each prediction call for reproducibility. See
 [`help("dynLong")`](https://graemeleehickey.github.io/joineRML/reference/dynLong.md)
 and
 [`help("dynSurv")`](https://graemeleehickey.github.io/joineRML/reference/dynSurv.md)
@@ -404,6 +404,28 @@ unusable covariance matrices, and numerical overflow or underflow
 produce an error. The approximation remains asymptotic, so positive
 variance draws alone do not establish reliable prediction intervals in
 small samples or near a variance boundary.
+
+For each sampled parameter vector, Gaussian rejection sampling draws
+random effects conditional on the observed measurements and survival to
+the last observation time. The parameter vector stays fixed until a
+random-effects draw is accepted, so no burn-in is needed. The proposal
+uses a tangent bound to the concave log-survival contribution; an
+approximate conditional mode affects efficiency rather than the
+conditional distribution being sampled. The former `scale` argument is
+deprecated and ignored, with a warning if supplied.
+
+The default `max.proposals = 10000` limits attempts for each parameter
+draw. If the limit is exhausted, prediction stops and reports the
+simulation number and conditioning time; it does not discard that
+parameter draw. Strong survival conditioning can require many proposals.
+Check the fit and its uncertainty before increasing the limit. The
+returned `proposals` vector gives the number of attempts for each
+accepted draw, and `accept` is `M / sum(proposals)`. These describe
+sampling efficiency, not the accuracy of the parameter approximation or
+prediction-interval coverage. Conditional survival probabilities are
+calculated from hazard increments between the conditioning and
+prediction times, avoiding division of probabilities that may both round
+to zero.
 
 ### Comparing fitted models
 
@@ -688,8 +710,8 @@ summary(fit.joinerml)
 #> gamma_1 3.4823  1.6559  2.1030  0.0355
 #> 
 #> Algorithm Summary:
-#>     Total computational time: 1.6 secs 
-#>     EM algorithm computational time: 1.5 secs 
+#>     Total computational time: 1.4 secs 
+#>     EM algorithm computational time: 1.3 secs 
 #>     Convergence status: converged
 #>     Convergence criterion: sas 
 #>     Final Monte Carlo sample size: 3784 
