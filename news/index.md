@@ -237,13 +237,13 @@ CRAN release: 2020-02-17
 
 - Graeme Hickey taken over the package as creator and maintainer.
 
-- Updates to DESCRIPTION
+- Updates to DESCRIPTION.
 
-- Updates to Makevars and Makevars.win
+- Updates to Makevars and Makevars.win.
 
-- Updates to appveyor.yml and .travis.yml settings
+- Updates to appveyor.yml and .travis.yml settings.
 
-- Updates to .gitignore
+- Updates to .gitignore.
 
 ## joineRML 0.4.2
 
@@ -319,7 +319,7 @@ CRAN release: 2017-11-11
 - Catches errors in bootstrap due to “bad” data and automatically
   restarts the bootstrap
   ([\#57](https://github.com/graemeleehickey/joineRML/issues/57)
-  [@ellessenne](https://github.com/ellessenne))
+  [@ellessenne](https://github.com/ellessenne)).
 
 ### Housekeeping
 
