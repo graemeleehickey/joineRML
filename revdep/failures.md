@@ -1,49 +1,13 @@
-# JMbdirect (0.1.1)
+# JMbdirect 0.1.1: installation failure
 
-* Email: <mailto:atanustat@gmail.com>
-* GitHub mirror: <https://github.com/cran/JMbdirect>
+Both joineRML 0.4.8 and 0.4.9 runs failed while installing JMbdirect against FastJM 1.7.2:
 
-Run `revdepcheck::revdep_details(, "JMbdirect")` for more info
-
-## Error before installation
-
-### Devel
-
-```
-* using log directory ‘/Users/hickeg3/GitHub/joineRML/revdep/checks.noindex/JMbdirect/new/JMbdirect.Rcheck’
-* using R version 4.5.3 (2026-03-11)
-* using platform: aarch64-apple-darwin20
-* R was compiled by
-    Apple clang version 16.0.0 (clang-1600.0.26.6)
-    GNU Fortran (GCC) 14.2.0
-* running under: macOS Tahoe 26.5
-* using session charset: UTF-8
-* using options ‘--no-manual --no-build-vignettes’
-* checking for file ‘JMbdirect/DESCRIPTION’ ... OK
-...
-* checking contents of ‘data’ directory ... OK
-* checking data for non-ASCII characters ... OK
-* checking LazyData ... OK
-* checking data for ASCII and uncompressed saves ... OK
-* checking examples ... OK
-* DONE
-
-Status: OK
-
-
-
-
-
-
-
-```
-### CRAN
-
+```text
+Error: object ‘survfitjmcs’ is not exported by 'namespace:FastJM'
+Execution halted
+ERROR: lazy loading failed for package ‘JMbdirect’
 ```
 
+JMbdirect imports this function from FastJM in its `NAMESPACE`. The same installation failure occurs with both joineRML versions and prevents subsequent checks. This is an existing dependency incompatibility, not evidence of a joineRML 0.4.9 regression. JMbdirect's compatibility remains unverified until it can be installed with compatible dependencies.
 
-
-
-
-
-```
+The complete installation output is retained in the [CRAN-version logs](logs/cran.log) and [candidate-version logs](logs/candidate.log). No dependencies were patched or downgraded for this comparison.

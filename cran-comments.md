@@ -16,7 +16,8 @@
 
 ## Reverse dependencies
 
-We checked 4 reverse dependencies, comparing R CMD check results across the CRAN and development versions of this package.
+On 24 November 2026, we compared all four current CRAN reverse dependencies using joineRML 0.4.8 and the 0.4.9 candidate on macOS Tahoe 26.7.3 with R 4.5.3 and identical supporting package versions. Checks included examples, available tests, and R code from vignettes; PDF manuals and vignette outputs were not rebuilt.
 
-* We saw 0 new problems.
-* One package (`JMbdirect`) could not be fully checked locally; no evidence of a regression was found in the completed checks.
+* No new problems were found. BCClong 1.0.3 and jmBIG 0.1.4 completed with no errors, warnings, or notes.
+* Broom 1.0.13 had the same spelling NOTE and unrelated survival deprecation warning in both runs. Its 23 skipped tests concerned unavailable optional packages. All 39 joineRML-specific expectations passed with both versions, without warnings or skips.
+* JMbdirect 0.1.1 failed to install with both versions because it imports `survfitjmcs`, which FastJM 1.7.2 does not export. This existing dependency incompatibility prevents a complete assessment of JMbdirect.

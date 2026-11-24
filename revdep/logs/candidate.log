@@ -1,0 +1,486 @@
+Reverse-dependency checks, 24 November 2026
+joineRML 0.4.9
+Candidate source: de53539b81355654b69ce2d0eda2d3b9cc0183c0
+Temporary workspace paths are replaced by <WORKDIR>.
+
+
+===== JMbdirect: 00check.log =====
+
+* using log directory ‘<WORKDIR>/checks/JMbdirect/new/JMbdirect.Rcheck’
+* using R version 4.5.3 (2026-03-11)
+* using platform: aarch64-apple-darwin20
+* R was compiled by
+    Apple clang version 16.0.0 (clang-1600.0.26.6)
+    GNU Fortran (GCC) 14.2.0
+* running under: macOS Tahoe 26.7.3
+* using session charset: UTF-8
+* using options ‘--no-manual --no-build-vignettes’
+* checking for file ‘JMbdirect/DESCRIPTION’ ... OK
+* checking extension type ... Package
+* this is package ‘JMbdirect’ version ‘0.1.1’
+* package encoding: UTF-8
+* checking package namespace information ... OK
+* checking package dependencies ... OK
+* checking if this is a source package ... OK
+* checking if there is a namespace ... OK
+* checking for executable files ... OK
+* checking for hidden files and directories ... OK
+* checking for portable file names ... OK
+* checking for sufficient/correct file permissions ... OK
+* checking whether package ‘JMbdirect’ can be installed ... ERROR
+Installation failed.
+See ‘<WORKDIR>/checks/JMbdirect/new/JMbdirect.Rcheck/00install.out’ for details.
+* DONE
+Status: 1 ERROR
+
+
+===== JMbdirect: 00install.out =====
+
+* installing *source* package ‘JMbdirect’ ...
+** this is package ‘JMbdirect’ version ‘0.1.1’
+** package ‘JMbdirect’ successfully unpacked and MD5 sums checked
+** using staged installation
+** R
+** data
+*** moving datasets to lazyload DB
+** byte-compile and prepare package for lazy loading
+Error: object ‘survfitjmcs’ is not exported by 'namespace:FastJM'
+Execution halted
+ERROR: lazy loading failed for package ‘JMbdirect’
+* removing ‘<WORKDIR>/checks/JMbdirect/new/JMbdirect.Rcheck/JMbdirect’
+
+
+===== jmBIG: 00check.log =====
+
+* using log directory ‘<WORKDIR>/checks/jmBIG/new/jmBIG.Rcheck’
+* using R version 4.5.3 (2026-03-11)
+* using platform: aarch64-apple-darwin20
+* R was compiled by
+    Apple clang version 16.0.0 (clang-1600.0.26.6)
+    GNU Fortran (GCC) 14.2.0
+* running under: macOS Tahoe 26.7.3
+* using session charset: UTF-8
+* using options ‘--no-manual --no-build-vignettes’
+* checking for file ‘jmBIG/DESCRIPTION’ ... OK
+* checking extension type ... Package
+* this is package ‘jmBIG’ version ‘0.1.4’
+* package encoding: UTF-8
+* checking package namespace information ... OK
+* checking package dependencies ... OK
+* checking if this is a source package ... OK
+* checking if there is a namespace ... OK
+* checking for executable files ... OK
+* checking for hidden files and directories ... OK
+* checking for portable file names ... OK
+* checking for sufficient/correct file permissions ... OK
+* checking whether package ‘jmBIG’ can be installed ... OK
+* checking installed package size ... OK
+* checking package directory ... OK
+* checking DESCRIPTION meta-information ... OK
+* checking top-level files ... OK
+* checking for left-over files ... OK
+* checking index information ... OK
+* checking package subdirectories ... OK
+* checking code files for non-ASCII characters ... OK
+* checking R files for syntax errors ... OK
+* checking whether the package can be loaded ... OK
+* checking whether the package can be loaded with stated dependencies ... OK
+* checking whether the package can be unloaded cleanly ... OK
+* checking whether the namespace can be loaded with stated dependencies ... OK
+* checking whether the namespace can be unloaded cleanly ... OK
+* checking loading without being on the library search path ... OK
+* checking dependencies in R code ... OK
+* checking S3 generic/method consistency ... OK
+* checking replacement functions ... OK
+* checking foreign function calls ... OK
+* checking R code for possible problems ... OK
+* checking Rd files ... OK
+* checking Rd metadata ... OK
+* checking Rd cross-references ... OK
+* checking for missing documentation entries ... OK
+* checking for code/documentation mismatches ... OK
+* checking Rd \usage sections ... OK
+* checking Rd contents ... OK
+* checking for unstated dependencies in examples ... OK
+* checking contents of ‘data’ directory ... OK
+* checking data for non-ASCII characters ... OK
+* checking LazyData ... OK
+* checking data for ASCII and uncompressed saves ... OK
+* checking examples ... OK
+* DONE
+Status: OK
+
+
+===== BCClong: 00check.log =====
+
+* using log directory ‘<WORKDIR>/checks/BCClong/new/BCClong.Rcheck’
+* using R version 4.5.3 (2026-03-11)
+* using platform: aarch64-apple-darwin20
+* R was compiled by
+    Apple clang version 16.0.0 (clang-1600.0.26.6)
+    GNU Fortran (GCC) 14.2.0
+* running under: macOS Tahoe 26.7.3
+* using session charset: UTF-8
+* using options ‘--no-manual --no-build-vignettes’
+* checking for file ‘BCClong/DESCRIPTION’ ... OK
+* checking extension type ... Package
+* this is package ‘BCClong’ version ‘1.0.3’
+* package encoding: UTF-8
+* checking package namespace information ... OK
+* checking package dependencies ... OK
+* checking if this is a source package ... OK
+* checking if there is a namespace ... OK
+* checking for executable files ... OK
+* checking for hidden files and directories ... OK
+* checking for portable file names ... OK
+* checking for sufficient/correct file permissions ... OK
+* checking whether package ‘BCClong’ can be installed ... OK
+* used C++ compiler: ‘Apple clang version 21.0.0 (clang-2100.3.34.2)’
+* used SDK: ‘MacOSX27.0.sdk’
+* checking installed package size ... INFO
+  installed size is  5.1Mb
+  sub-directories of 1Mb or more:
+    data   3.3Mb
+    doc    1.2Mb
+* checking package directory ... OK
+* checking ‘build’ directory ... OK
+* checking DESCRIPTION meta-information ... OK
+* checking top-level files ... OK
+* checking for left-over files ... OK
+* checking index information ... OK
+* checking package subdirectories ... OK
+* checking code files for non-ASCII characters ... OK
+* checking R files for syntax errors ... OK
+* checking whether the package can be loaded ... OK
+* checking whether the package can be loaded with stated dependencies ... OK
+* checking whether the package can be unloaded cleanly ... OK
+* checking whether the namespace can be loaded with stated dependencies ... OK
+* checking whether the namespace can be unloaded cleanly ... OK
+* checking loading without being on the library search path ... OK
+* checking dependencies in R code ... OK
+* checking S3 generic/method consistency ... OK
+* checking replacement functions ... OK
+* checking foreign function calls ... OK
+* checking R code for possible problems ... OK
+* checking Rd files ... OK
+* checking Rd metadata ... OK
+* checking Rd cross-references ... OK
+* checking for missing documentation entries ... OK
+* checking for code/documentation mismatches ... OK
+* checking Rd \usage sections ... OK
+* checking Rd contents ... OK
+* checking for unstated dependencies in examples ... OK
+* checking contents of ‘data’ directory ... OK
+* checking data for non-ASCII characters ... OK
+* checking data for ASCII and uncompressed saves ... OK
+* checking line endings in C/C++/Fortran sources/headers ... OK
+* checking line endings in Makefiles ... OK
+* checking compilation flags in Makevars ... OK
+* checking for GNU extensions in Makefiles ... OK
+* checking for portable use of $(BLAS_LIBS) and $(LAPACK_LIBS) ... OK
+* checking use of PKG_*FLAGS in Makefiles ... OK
+* checking compiled code ... OK
+* checking installed files from ‘inst/doc’ ... OK
+* checking files in ‘vignettes’ ... OK
+* checking examples ... OK
+* checking for unstated dependencies in ‘tests’ ... OK
+* checking tests ... OK
+  Running ‘testthat.R’
+* checking for unstated dependencies in vignettes ... OK
+* checking package vignettes ... OK
+* checking running R code from vignettes ... OK
+  ‘ContinuousData.Rmd’ using ‘UTF-8’... OK
+  ‘MixedTypeData.Rmd’ using ‘UTF-8’... OK
+* checking re-building of vignette outputs ... SKIPPED
+* DONE
+Status: OK
+
+
+===== BCClong: tests/testthat.Rout =====
+
+
+R version 4.5.3 (2026-03-11) -- "Reassured Reassurer"
+Copyright (C) 2026 The R Foundation for Statistical Computing
+Platform: aarch64-apple-darwin20
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> # This file is part of the standard setup for testthat.
+> # It is recommended that you do not modify it.
+> #
+> # Where should you do additional test configuration?
+> # Learn more about the roles of various files in:
+> # * https://r-pkgs.org/tests.html
+> # * https://testthat.r-lib.org/reference/test_package.html#special-files
+>
+> library(testthat)
+> library(BCClong)
+>
+> test_check("BCClong")
+------------------------------------------------------------
+------------------------------------------------------------
+Running BCC Model
+------------------------------------------------------------
+------------------------------------------------------------
+iter = 1
+iter = 2
+iter = 3
+iter = 4
+iter = 5
+iter = 6
+iter = 7
+iter = 8
+It took 0.616 seconds
+------------------------------------------------------------
+------------------------------------------------------------
+Post-Processing Results
+------------------------------------------------------------
+------------------------------------------------------------
+[ FAIL 0 | WARN 0 | SKIP 0 | PASS 29 ]
+>
+> proc.time()
+   user  system elapsed
+  5.041   0.357   5.689
+
+
+===== broom: 00check.log =====
+
+* using log directory ‘<WORKDIR>/checks/broom/new/broom.Rcheck’
+* using R version 4.5.3 (2026-03-11)
+* using platform: aarch64-apple-darwin20
+* R was compiled by
+    Apple clang version 16.0.0 (clang-1600.0.26.6)
+    GNU Fortran (GCC) 14.2.0
+* running under: macOS Tahoe 26.7.3
+* using session charset: UTF-8
+* using options ‘--no-manual --no-build-vignettes’
+* checking for file ‘broom/DESCRIPTION’ ... OK
+* checking extension type ... Package
+* this is package ‘broom’ version ‘1.0.13’
+* package encoding: UTF-8
+* checking package namespace information ... OK
+* checking package dependencies ... INFO
+Packages suggested but not available for checking:
+  'AUC', 'binGroup', 'btergm', 'drc', 'ergm', 'gee', 'glmnetUtils',
+  'gmm', 'irlba', 'Kendall', 'ks', 'lm.beta', 'lmodel2', 'mediation',
+  'mfx', 'modeldata', 'plm', 'poLCA', 'robust', 'spatialreg',
+  'systemfit', 'vars'
+* checking if this is a source package ... OK
+* checking if there is a namespace ... OK
+* checking for executable files ... OK
+* checking for hidden files and directories ... OK
+* checking for portable file names ... OK
+* checking for sufficient/correct file permissions ... OK
+* checking whether package ‘broom’ can be installed ... OK
+* checking installed package size ... OK
+* checking package directory ... OK
+* checking ‘build’ directory ... OK
+* checking DESCRIPTION meta-information ... OK
+* checking top-level files ... OK
+* checking for left-over files ... OK
+* checking index information ... OK
+* checking package subdirectories ... OK
+* checking code files for non-ASCII characters ... OK
+* checking R files for syntax errors ... OK
+* checking whether the package can be loaded ... OK
+* checking whether the package can be loaded with stated dependencies ... OK
+* checking whether the package can be unloaded cleanly ... OK
+* checking whether the namespace can be loaded with stated dependencies ... OK
+* checking whether the namespace can be unloaded cleanly ... OK
+* checking whether startup messages can be suppressed ... OK
+* checking dependencies in R code ... OK
+* checking S3 generic/method consistency ... OK
+* checking replacement functions ... OK
+* checking foreign function calls ... OK
+* checking R code for possible problems ... OK
+* checking Rd files ... OK
+* checking Rd metadata ... OK
+* checking Rd cross-references ... INFO
+Packages unavailable to check Rd xrefs: ‘mfx’, ‘drc’, ‘robust’, ‘plm’, ‘poLCA’, ‘spatialreg’, ‘binGroup’, ‘ergm’, ‘gmm’, ‘lmodel2’, ‘vars’, ‘Kendall’, ‘btergm’, ‘ks’, ‘lm.beta’, ‘mediation’, ‘AUC’, ‘systemfit’, ‘irlba’
+* checking for missing documentation entries ... OK
+* checking for code/documentation mismatches ... OK
+* checking Rd \usage sections ... OK
+* checking Rd contents ... OK
+* checking for unstated dependencies in examples ... OK
+* checking installed files from ‘inst/doc’ ... OK
+* checking files in ‘vignettes’ ... OK
+* checking examples ... OK
+* checking for unstated dependencies in ‘tests’ ... OK
+* checking tests ... NOTE
+  Running ‘spelling.R’
+  Comparing ‘spelling.Rout’ to ‘spelling.Rout.save’ ...10,21c10
+< Potential spelling errors:
+<   WORD             FOUND IN
+< cli              NEWS.md:44
+< codebases        maintenance.Rmd:15
+< maintainership   NEWS.md:11
+< namespacing      NEWS.md:15
+< PBC              broom.Rd:38
+< pre              NEWS.md:15
+< ROR              broom.Rd:38
+< testthat         NEWS.md:46
+< tidyup           maintenance.Rmd:15
+< If these are false positive, run `spelling::update_wordlist()`.All Done!
+---
+> All Done!
+  Running ‘testthat.R’
+* checking for unstated dependencies in vignettes ... OK
+* checking package vignettes ... OK
+* checking running R code from vignettes ... OK
+  ‘adding-tidiers.Rmd’ using ‘UTF-8’... OK
+  ‘available-methods.Rmd’ using ‘UTF-8’... OK
+  ‘bootstrapping.Rmd’ using ‘UTF-8’... OK
+  ‘broom_and_dplyr.Rmd’ using ‘UTF-8’... OK
+  ‘broom.Rmd’ using ‘UTF-8’... OK
+  ‘kmeans.Rmd’ using ‘UTF-8’... OK
+* checking re-building of vignette outputs ... SKIPPED
+* DONE
+Status: 1 NOTE
+
+
+===== broom: tests/testthat.Rout =====
+
+
+R version 4.5.3 (2026-03-11) -- "Reassured Reassurer"
+Copyright (C) 2026 The R Foundation for Statistical Computing
+Platform: aarch64-apple-darwin20
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> # This file is part of the standard setup for testthat.
+> # It is recommended that you do not modify it.
+> #
+> # Where should you do additional test configuration?
+> # Learn more about the roles of various files in:
+> # * https://r-pkgs.org/testing-design.html#sec-tests-files-overview
+> # * https://testthat.r-lib.org/articles/special-files.html
+>
+> library(testthat)
+> library(broom)
+>
+> test_check("broom")
+
+Attaching package: 'dplyr'
+
+The following object is masked from 'package:car':
+
+    recode
+
+The following objects are masked from 'package:stats':
+
+    filter, lag
+
+The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union
+
+Original model not retained as part of coeftest object.
+i For additional model summary information (r.squared, df, etc.), consider passing `glance.coeftest()` an object where the underlying model has been saved, i.e.  `lmtest::coeftest(..., save = TRUE)`.
+This message is displayed once per session.
+
+Re-fitting to get Hessian
+
+[ FAIL 0 | WARN 1 | SKIP 23 | PASS 3083 ]
+
+══ Skipped tests (23) ══════════════════════════════════════════════════════════
+• {AUC} is not installed (1): 'test-auc.R:6:1'
+• {binGroup} is not installed (1): 'test-bingroup.R:6:1'
+• {btergm} is not installed (1): 'test-btergm.R:7:1'
+• {drc} is not installed (1): 'test-drc.R:6:1'
+• {ergm} is not installed (1): 'test-ergm.R:6:1'
+• {glmnetUtils} is not installed (1): 'test-glmnetUtils.R:6:1'
+• {gmm} is not installed (1): 'test-gmm.R:6:1'
+• {irlba} is not installed (1): 'test-list-irlba.R:6:1'
+• {Kendall} is not installed (1): 'test-kendall.R:6:1'
+• {ks} is not installed (1): 'test-ks.R:6:1'
+• {lm.beta} is not installed (1): 'test-lmbeta-lm-beta.R:6:1'
+• {lmodel2} is not installed (1): 'test-lmodel2.R:6:1'
+• {mediation} is not installed (1): 'test-mediation.R:6:1'
+• {mfx} is not installed (1): 'test-mfx.R:6:1'
+• {modeldata} is not installed (3): 'test-cluster.R:9:1', 'test-mclust.R:12:1',
+  'test-stats-htest.R:4:1'
+• {plm} is not installed (1): 'test-plm.R:6:1'
+• {poLCA} is not installed (1): 'test-polca.R:6:1'
+• {robust} is not installed (1): 'test-robust.R:6:1'
+• {spatialreg} is not installed (1): 'test-spdep.R:9:1'
+• {systemfit} is not installed (1): 'test-systemfit.R:6:1'
+• {vars} is not installed (1): 'test-vars.R:3:1'
+
+══ Warnings ════════════════════════════════════════════════════════════════════
+── Warning ('test-survival-survfit.R:15:1'): (code run outside of `test_that()`) ──
+type= 'mstate' is deprecated, use a factor variable as status
+Backtrace:
+    ▆
+ 1. ├─stats::model.frame(...)
+ 2. └─stats::model.frame.default(...)
+ 3.   └─base::eval(predvars, data, env)
+ 4.     └─base::eval(predvars, data, env)
+ 5.       └─survival::Surv(stop, status * as.numeric(event), type = "mstate")
+
+[ FAIL 0 | WARN 1 | SKIP 23 | PASS 3083 ]
+>
+> proc.time()
+   user  system elapsed
+ 12.354   2.595  19.468
+
+
+===== broom: additional joineRML checks =====
+
+joineRML: Registered S3 methods overwritten by 'joineRML':
+  method         from
+  augment.mjoint broom
+  glance.mjoint  broom
+  tidy.mjoint    broom
+.......................................
+
+══ DONE ════════════════════════════════════════════════════════════════════════
+Woot!
+     nb  failed skipped   error warning  passed
+     39       0       0       0       0      39
+joineRML version: 0.4.9
+broom version: 1.0.13
+
+
+===== jmBIG: additional joineRML checks =====
+
+Registered S3 method overwritten by 'lme4':
+  method           from
+  na.action.merMod car
+Registered S3 methods overwritten by 'joineRML':
+  method         from
+  augment.mjoint broom
+  glance.mjoint  broom
+  tidy.mjoint    broom
+$status
+[1] "passed"
+
+$survival
+  u      mean    median     lower     upper
+1 8 0.6948486 0.7285939 0.2355941 0.9625754
+
+$status
+[1] "passed"
+
+$survival
+  u      mean    median        lower     upper
+1 8 0.5662299 0.5585284 0.0002546411 0.9814288
