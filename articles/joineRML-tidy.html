@@ -69,7 +69,7 @@
 
       <h1>joineRML and the broom package</h1>
                         <h4 data-toc-skip class="author">Alessandro
-Gasparini</h4>
+Gasparini and Graeme L. Hickey</h4>
             
             <h4 data-toc-skip class="date">2026-11-24</h4>
       
@@ -82,27 +82,23 @@ Gasparini</h4>
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
-<p>Tidiers for objects of class <code>mjoint</code> have been included
-in latest release of <code>joineRML</code> package (0.4.5).</p>
-<p>The purpose of these tidiers are described in the introductory
-vignette to <code>broom</code>:</p>
-<blockquote>
-<p>The broom package takes the messy output of built-in functions in R,
-such as <code>lm</code>, <code>nls</code>, or <code>t.test</code>, and
-turns them into tidy data frames.</p>
-</blockquote>
-<p>There are three distinct tidiers included with
-<code>broom</code>:</p>
+<p>joineRML provides three broom-compatible methods for fitted joint
+models:</p>
 <ul>
-<li><p><code>tidy</code>: constructs a data frame that summarises the
-model estimates;</p></li>
-<li><p><code>augment</code>: add columns to the original data that was
-modeled;</p></li>
-<li><p><code>glance</code>: construct a concise one-row summary of the
-model.</p></li>
+<li>
+<code><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy()</a></code> returns coefficient estimates, standard errors,
+and optional confidence intervals.</li>
+<li>
+<code><a href="https://generics.r-lib.org/reference/augment.html" class="external-link">augment()</a></code> adds longitudinal fitted values and residuals
+to the original observations.</li>
+<li>
+<code><a href="https://generics.r-lib.org/reference/glance.html" class="external-link">glance()</a></code> returns a one-row summary of model fit and
+sample sizes.</li>
 </ul>
-<p>These methods are specifically useful when plotting results of a
-joint model or when comparing several models (e.g. in terms of fit).</p>
+<p>These methods support plots, model comparisons, and tables. They can
+be used without loading broom; if broom is loaded, the same joineRML
+methods are used regardless of package loading order. Unsupported
+arguments cause an error rather than being silently ignored.</p>
 </div>
 <div class="section level2">
 <h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
@@ -149,63 +145,107 @@ these examples:</p>
 estimates.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 3 × 5</span></span></span>
-<span><span class="co">##   term    estimate std.error statistic p.value</span></span>
-<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span> age        0.137    0.066<span style="text-decoration: underline;">5</span>     2.05   0.040<span style="text-decoration: underline;">1</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span> gamma_1    2.85     3.73       0.763  0.446 </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">3</span> gamma_2    3.68     3.45       1.07   0.286</span></span></code></pre>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 3 × 8</span></span></span>
+<span><span class="co">##   term    estimate std.error statistic p.value component outcome effect     </span></span>
+<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> age        0.137    0.066<span style="text-decoration: underline;">5</span>     2.05   0.040<span style="text-decoration: underline;">1</span> survival  event   fixed      </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> gamma_1    2.85     3.73       0.763  0.446  survival  grad    association</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span> gamma_2    3.68     3.45       1.07   0.286  survival  lvmi    association</span></span></code></pre>
 <p>By default the <code>tidy</code> method returns the estimated
 coefficients for the survival component of the joint model; however, it
 is possible to extract each component by setting the
 <code>component</code> argument:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">fit</span>, component <span class="op">=</span> <span class="st">"longitudinal"</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 7 × 5</span></span></span>
-<span><span class="co">##   term                estimate std.error statistic  p.value</span></span>
-<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span> (Intercept)_1        2.52       0.165     15.2   1.70<span style="color: #949494;">e</span><span style="color: #BB0000;">-52</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span> time_1               0.009<span style="text-decoration: underline;">51</span>    0.030<span style="text-decoration: underline;">7</span>     0.310 7.56<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">3</span> sex_1                0.034<span style="text-decoration: underline;">4</span>     0.231      0.149 8.82<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">4</span> hsStentless valve_1  0.082<span style="text-decoration: underline;">5</span>     0.199      0.415 6.78<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">5</span> (Intercept)_2        4.99       0.081<span style="text-decoration: underline;">8</span>    61.1   0   <span style="color: #949494;"> </span>   </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">6</span> time_2               0.025<span style="text-decoration: underline;">8</span>     0.012<span style="text-decoration: underline;">9</span>     2.00  4.58<span style="color: #949494;">e</span><span style="color: #BB0000;">- 2</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">7</span> sex_2               -<span style="color: #BB0000;">0.197</span>      0.211     -<span style="color: #BB0000;">0.934</span> 3.50<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span></span></span></code></pre>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 7 × 8</span></span></span>
+<span><span class="co">##   term            estimate std.error statistic  p.value component outcome effect</span></span>
+<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> (Intercept)_1    2.52       0.165     15.2   1.70<span style="color: #949494;">e</span><span style="color: #BB0000;">-52</span> longitud… grad    fixed </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> time_1           0.009<span style="text-decoration: underline;">51</span>    0.030<span style="text-decoration: underline;">7</span>     0.310 7.56<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span> longitud… grad    fixed </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span> sex_1            0.034<span style="text-decoration: underline;">4</span>     0.231      0.149 8.82<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span> longitud… grad    fixed </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">4</span> hsStentless va…  0.082<span style="text-decoration: underline;">5</span>     0.199      0.415 6.78<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span> longitud… grad    fixed </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">5</span> (Intercept)_2    4.99       0.081<span style="text-decoration: underline;">8</span>    61.1   0   <span style="color: #949494;"> </span>    longitud… lvmi    fixed </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">6</span> time_2           0.025<span style="text-decoration: underline;">8</span>     0.012<span style="text-decoration: underline;">9</span>     2.00  4.58<span style="color: #949494;">e</span><span style="color: #BB0000;">- 2</span> longitud… lvmi    fixed </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">7</span> sex_2           -<span style="color: #BB0000;">0.197</span>      0.211     -<span style="color: #BB0000;">0.934</span> 3.50<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span> longitud… lvmi    fixed</span></span></code></pre>
+<p>Use <code>component = "all"</code> to combine both components. The
+<code>component</code>, <code>outcome</code>, and <code>effect</code>
+columns distinguish longitudinal fixed effects, survival covariates, and
+latent association coefficients. Outcome labels use the names supplied
+in <code>formLongFixed</code>, or the response expressions if the list
+was unnamed. Existing coefficient names are retained.</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">fit</span>, component <span class="op">=</span> <span class="st">"all"</span>, conf.int <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 10 × 10</span></span></span>
+<span><span class="co">##    term       estimate std.error statistic  p.value conf.low conf.high component</span></span>
+<span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> (Intercep…  2.52       0.165     15.2   1.70<span style="color: #949494;">e</span><span style="color: #BB0000;">-52</span>  2.20<span style="color: #949494;">e</span>+0    2.85   longitud…</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> time_1      0.009<span style="text-decoration: underline;">51</span>    0.030<span style="text-decoration: underline;">7</span>     0.310 7.56<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span> -<span style="color: #BB0000;">5.06</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span>    0.069<span style="text-decoration: underline;">6</span> longitud…</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> sex_1       0.034<span style="text-decoration: underline;">4</span>     0.231      0.149 8.82<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span> -<span style="color: #BB0000;">4.19</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span>    0.488  longitud…</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> hsStentle…  0.082<span style="text-decoration: underline;">5</span>     0.199      0.415 6.78<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span> -<span style="color: #BB0000;">3.08</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span>    0.473  longitud…</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> (Intercep…  4.99       0.081<span style="text-decoration: underline;">8</span>    61.1   0   <span style="color: #949494;"> </span>     4.83<span style="color: #949494;">e</span>+0    5.15   longitud…</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> time_2      0.025<span style="text-decoration: underline;">8</span>     0.012<span style="text-decoration: underline;">9</span>     2.00  4.58<span style="color: #949494;">e</span><span style="color: #BB0000;">- 2</span>  4.84<span style="color: #949494;">e</span><span style="color: #BB0000;">-4</span>    0.051<span style="text-decoration: underline;">2</span> longitud…</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> sex_2      -<span style="color: #BB0000;">0.197</span>      0.211     -<span style="color: #BB0000;">0.934</span> 3.50<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span> -<span style="color: #BB0000;">6.09</span><span style="color: #949494;">e</span><span style="color: #BB0000;">-1</span>    0.216  longitud…</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> age         0.137      0.066<span style="text-decoration: underline;">5</span>     2.05  4.01<span style="color: #949494;">e</span><span style="color: #BB0000;">- 2</span>  6.17<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span>    0.267  survival </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> gamma_1     2.85       3.73       0.763 4.46<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span> -<span style="color: #BB0000;">4.47</span><span style="color: #949494;">e</span>+0   10.2    survival </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">10</span> gamma_2     3.68       3.45       1.07  2.86<span style="color: #949494;">e</span><span style="color: #BB0000;">- 1</span> -<span style="color: #BB0000;">3.08</span><span style="color: #949494;">e</span>+0   10.4    survival </span></span>
+<span><span class="co">## <span style="color: #949494;"># ℹ 2 more variables: outcome &lt;chr&gt;, effect &lt;chr&gt;</span></span></span></code></pre>
 <p>It is also possible to require confidence intervals to be calculated
 by setting <code>conf.int = TRUE</code>, and modify the confidence level
 by setting the <code>conf.level</code> argument:</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">fit</span>, conf.int <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 3 × 7</span></span></span>
-<span><span class="co">##   term    estimate std.error statistic p.value conf.low conf.high</span></span>
-<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span> age        0.137    0.066<span style="text-decoration: underline;">5</span>     2.05   0.040<span style="text-decoration: underline;">1</span>  0.006<span style="text-decoration: underline;">17</span>     0.267</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span> gamma_1    2.85     3.73       0.763  0.446  -<span style="color: #BB0000;">4.47</span>       10.2  </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">3</span> gamma_2    3.68     3.45       1.07   0.286  -<span style="color: #BB0000;">3.08</span>       10.4</span></span></code></pre>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">fit</span>, conf.int <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 3 × 10</span></span></span>
+<span><span class="co">##   term    estimate std.error statistic p.value conf.low conf.high component</span></span>
+<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> age        0.137    0.066<span style="text-decoration: underline;">5</span>     2.05   0.040<span style="text-decoration: underline;">1</span>  0.006<span style="text-decoration: underline;">17</span>     0.267 survival </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> gamma_1    2.85     3.73       0.763  0.446  -<span style="color: #BB0000;">4.47</span>       10.2   survival </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span> gamma_2    3.68     3.45       1.07   0.286  -<span style="color: #BB0000;">3.08</span>       10.4   survival </span></span>
+<span><span class="co">## <span style="color: #949494;"># ℹ 2 more variables: outcome &lt;chr&gt;, effect &lt;chr&gt;</span></span></span></code></pre>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">fit</span>, conf.int <span class="op">=</span> <span class="cn">TRUE</span>, conf.level <span class="op">=</span> <span class="fl">0.99</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 3 × 7</span></span></span>
-<span><span class="co">##   term    estimate std.error statistic p.value conf.low conf.high</span></span>
-<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span> age        0.137    0.066<span style="text-decoration: underline;">5</span>     2.05   0.040<span style="text-decoration: underline;">1</span>  -<span style="color: #BB0000;">0.034</span><span style="color: #BB0000; text-decoration: underline;">8</span>     0.308</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span> gamma_1    2.85     3.73       0.763  0.446   -<span style="color: #BB0000;">6.77</span>      12.5  </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">3</span> gamma_2    3.68     3.45       1.07   0.286   -<span style="color: #BB0000;">5.20</span>      12.6</span></span></code></pre>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 3 × 10</span></span></span>
+<span><span class="co">##   term    estimate std.error statistic p.value conf.low conf.high component</span></span>
+<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> age        0.137    0.066<span style="text-decoration: underline;">5</span>     2.05   0.040<span style="text-decoration: underline;">1</span>  -<span style="color: #BB0000;">0.034</span><span style="color: #BB0000; text-decoration: underline;">8</span>     0.308 survival </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> gamma_1    2.85     3.73       0.763  0.446   -<span style="color: #BB0000;">6.77</span>      12.5   survival </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span> gamma_2    3.68     3.45       1.07   0.286   -<span style="color: #BB0000;">5.20</span>      12.6   survival </span></span>
+<span><span class="co">## <span style="color: #949494;"># ℹ 2 more variables: outcome &lt;chr&gt;, effect &lt;chr&gt;</span></span></span></code></pre>
+<p>For the survival component, <code>exponentiate = TRUE</code> returns
+exponentiated estimates and confidence limits. Standard errors and test
+statistics remain on the log-hazard scale. For a baseline covariate, the
+exponentiated coefficient is its conditional hazard ratio per unit
+increase, holding other terms fixed. For an association coefficient, the
+unit refers to its latent process rather than the observed marker.
+Exponentiation is rejected for longitudinal or combined output.</p>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">fit</span>, conf.int <span class="op">=</span> <span class="cn">TRUE</span>, exponentiate <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 3 × 10</span></span></span>
+<span><span class="co">##   term    estimate std.error statistic p.value conf.low conf.high component</span></span>
+<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> age         1.15    0.066<span style="text-decoration: underline;">5</span>     2.05   0.040<span style="text-decoration: underline;">1</span>   1.01        1.31 survival </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> gamma_1    17.2     3.73       0.763  0.446    0.011<span style="text-decoration: underline;">5</span>  <span style="text-decoration: underline;">25</span>945.   survival </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span> gamma_2    39.7     3.45       1.07   0.286    0.046<span style="text-decoration: underline;">0</span>  <span style="text-decoration: underline;">34</span>187.   survival </span></span>
+<span><span class="co">## <span style="color: #949494;"># ℹ 2 more variables: outcome &lt;chr&gt;, effect &lt;chr&gt;</span></span></span></code></pre>
 <p>The standard errors reported by default are based on the empirical
 information matrix, as in <code>mjoint</code>. It is of course possible
 to use bootstrapped standard errors as follows:</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">bSE</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bootSE.html">bootSE</a></span><span class="op">(</span><span class="va">fit</span>, </span>
 <span>              nboot <span class="op">=</span> <span class="fl">100</span>, </span>
 <span>              safe.boot <span class="op">=</span> <span class="cn">TRUE</span>, </span>
 <span>              progress <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>              ncores <span class="op">=</span> <span class="fl">1L</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">fit</span>, bootSE <span class="op">=</span> <span class="va">bSE</span>, conf.int <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<p>The spelling <code>boot_se = bSE</code>, used by broom, is also
+accepted. Supply only one of <code>bootSE</code> and
+<code>boot_se</code>. Both use the supplied bootstrap standard errors in
+normal-approximation confidence intervals.</p>
 <p>The results of this example are not included as it would take too
 long to run for CRAN.</p>
 <p>The <code>tidy</code> method is useful for custom plotting
 (e.g. forest plots) of results from <code>joineRML</code> models, all in
 a tidy framework:</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span><span class="va">out</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">fit</span>, conf.int <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">out</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">term</span>, y <span class="op">=</span> <span class="va">estimate</span>, ymin <span class="op">=</span> <span class="va">conf.low</span>, ymax <span class="op">=</span> <span class="va">conf.high</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
@@ -221,7 +261,7 @@ a tidy framework:</p>
 predictions from the joint model. In particular, population-level and
 individual-level fitted values and residuals are added to the data frame
 returned by the method:</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">preds</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://generics.r-lib.org/reference/augment.html" class="external-link">augment</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">preds</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"num"</span>, <span class="st">"log.grad"</span>, <span class="st">".fitted_grad_0"</span>, <span class="st">".fitted_grad_1"</span>, <span class="st">".resid_grad_0"</span>, <span class="st">".resid_grad_1"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 6 × 6</span></span></span>
@@ -233,7 +273,7 @@ returned by the method:</p>
 <span><span class="co">## <span style="color: #BCBCBC;">4</span> 10        2.20           2.56           2.40        -<span style="color: #BB0000;">0.364</span>        -<span style="color: #BB0000;">0.201</span></span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">5</span> 10        2.20           2.60           2.43        -<span style="color: #BB0000;">0.398</span>        -<span style="color: #BB0000;">0.236</span></span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">6</span> 11        3.69           2.61           2.65         1.08          1.04</span></span></code></pre>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">preds</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"num"</span>, <span class="st">"log.lvmi"</span>, <span class="st">".fitted_lvmi_0"</span>, <span class="st">".fitted_lvmi_1"</span>, <span class="st">".resid_lvmi_0"</span>, <span class="st">".resid_lvmi_1"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 6 × 6</span></span></span>
 <span><span class="co">##   num   log.lvmi .fitted_lvmi_0 .fitted_lvmi_1 .resid_lvmi_0 .resid_lvmi_1</span></span>
@@ -244,9 +284,18 @@ returned by the method:</p>
 <span><span class="co">## <span style="color: #BCBCBC;">4</span> 10        5.14           5.10           5.06        0.037<span style="text-decoration: underline;">7</span>        0.072<span style="text-decoration: underline;">3</span></span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">5</span> 10        5.13           5.19           5.17       -<span style="color: #BB0000;">0.063</span><span style="color: #BB0000; text-decoration: underline;">5</span>       -<span style="color: #BB0000;">0.039</span><span style="color: #BB0000; text-decoration: underline;">7</span></span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">6</span> 11        5.03           5.00           5.05        0.030<span style="text-decoration: underline;">3</span>       -<span style="color: #BB0000;">0.026</span><span style="color: #BB0000; text-decoration: underline;">3</span></span></span></code></pre>
+<p>By default, rows follow the fitted subject-time order. Supplying
+<code>data = hvd</code> returns the original observations in that
+dataset’s order, matched by subject ID and measurement time. All
+original columns must be present and unchanged; subject-time pairs must
+be unique if reordering is needed. Outcomes with different observation
+schedules cannot be combined into this single data frame.
+<code><a href="https://generics.r-lib.org/reference/augment.html" class="external-link">augment()</a></code> does not accept <code>newdata</code>; use
+<code><a href="../reference/dynLong.html">dynLong()</a></code> or <code><a href="../reference/dynSurv.html">dynSurv()</a></code> for dynamic
+predictions.</p>
 <p>We can plot the resulting predictions for four distinct
 individuals:</p>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">out</span> <span class="op">&lt;-</span> <span class="va">preds</span><span class="op">[</span><span class="va">preds</span><span class="op">$</span><span class="va">num</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">26</span>, <span class="fl">36</span>, <span class="fl">227</span>, <span class="fl">244</span><span class="op">)</span>, <span class="op">]</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">out</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">time</span>, colour <span class="op">=</span> <span class="va">num</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">log.grad</span>, linetype <span class="op">=</span> <span class="st">"Measured"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
@@ -260,15 +309,27 @@ individuals:</p>
 </h3>
 <p>The <code>glance</code> method allows extracting summary statistics
 from the joint model:</p>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://generics.r-lib.org/reference/glance.html" class="external-link">glance</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 1 × 5</span></span></span>
-<span><span class="co">##   sigma2_1 sigma2_2   AIC   BIC logLik</span></span>
-<span><span class="co">##      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span>    0.517    0.158  342.  374.  -<span style="color: #BB0000;">153.</span></span></span></code></pre>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 1 × 11</span></span></span>
+<span><span class="co">##   sigma2_1 sigma2_2   AIC   BIC logLik  nobs nevent  npar converged</span></span>
+<span><span class="co">##      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>    </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span>    0.517    0.158  342.  374.  -<span style="color: #BB0000;">153.</span>    43      8    18 TRUE     </span></span>
+<span><span class="co">## <span style="color: #949494;"># ℹ 2 more variables: nobs_longitudinal_1 &lt;int&gt;, nobs_longitudinal_2 &lt;int&gt;</span></span></span></code></pre>
+<p><code>nobs</code> is the number of subjects, agreeing with
+<code>nobs(fit)</code> and the sample size used by BIC.
+<code>nevent</code> counts observed events, and
+<code>nobs_longitudinal_1</code>, <code>nobs_longitudinal_2</code>, and
+so on count measurements for each outcome in formula order.
+<code>npar</code> is the parameter count used by AIC and BIC, excluding
+baseline hazard increments. <code>converged</code> records whether the
+fitting criterion was met. The existing <code>sigma2_j</code> columns
+contain residual standard deviations, despite their historical names.
+These summaries are available even when post-fit standard errors were
+not requested.</p>
 <p>This allows comparing competing models easily. Say for instance that
 we fit a second model with only random intercepts:</p>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">67890</span><span class="op">)</span></span>
 <span><span class="va">fit2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mjoint.html">mjoint</a></span><span class="op">(</span></span>
 <span>  formLongFixed <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
@@ -288,25 +349,770 @@ we fit a second model with only random intercepts:</p>
 <pre><code><span><span class="co">## EM algorithm has converged!</span></span></code></pre>
 <pre><code><span><span class="co">## Calculating post model fit statistics...</span></span></code></pre>
 <p>We can go ahead and compare the models in terms of AIC and BIC:</p>
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://generics.r-lib.org/reference/glance.html" class="external-link">glance</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 1 × 5</span></span></span>
-<span><span class="co">##   sigma2_1 sigma2_2   AIC   BIC logLik</span></span>
-<span><span class="co">##      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span>    0.517    0.158  342.  374.  -<span style="color: #BB0000;">153.</span></span></span></code></pre>
-<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 1 × 11</span></span></span>
+<span><span class="co">##   sigma2_1 sigma2_2   AIC   BIC logLik  nobs nevent  npar converged</span></span>
+<span><span class="co">##      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>    </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span>    0.517    0.158  342.  374.  -<span style="color: #BB0000;">153.</span>    43      8    18 TRUE     </span></span>
+<span><span class="co">## <span style="color: #949494;"># ℹ 2 more variables: nobs_longitudinal_1 &lt;int&gt;, nobs_longitudinal_2 &lt;int&gt;</span></span></span></code></pre>
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://generics.r-lib.org/reference/glance.html" class="external-link">glance</a></span><span class="op">(</span><span class="va">fit2</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 1 × 5</span></span></span>
-<span><span class="co">##   sigma2_1 sigma2_2   AIC   BIC logLik</span></span>
-<span><span class="co">##      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span>    0.515    0.173  342.  369.  -<span style="color: #BB0000;">156.</span></span></span></code></pre>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 1 × 11</span></span></span>
+<span><span class="co">##   sigma2_1 sigma2_2   AIC   BIC logLik  nobs nevent  npar converged</span></span>
+<span><span class="co">##      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>    </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span>    0.515    0.173  342.  369.  -<span style="color: #BB0000;">156.</span>    43      8    15 TRUE     </span></span>
+<span><span class="co">## <span style="color: #949494;"># ℹ 2 more variables: nobs_longitudinal_1 &lt;int&gt;, nobs_longitudinal_2 &lt;int&gt;</span></span></span></code></pre>
+<p>Compare AIC and BIC only for models fitted to the same observations,
+and check convergence before interpreting the comparison.</p>
+</div>
+<div class="section level3">
+<h3 id="extracting-a-model-component">Extracting a model component<a class="anchor" aria-label="anchor" href="#extracting-a-model-component"></a>
+</h3>
+<p>The following methods describe a selected longitudinal fixed-effects
+model. Coefficient names and covariance-matrix names agree with its
+design columns:</p>
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/nobs.html" class="external-link">nobs</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 43</span></span></code></pre>
+<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/terms.html" class="external-link">terms</a></span><span class="op">(</span><span class="va">fit</span>, process <span class="op">=</span> <span class="st">"Longitudinal"</span>, k <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## log.lvmi ~ time + sex</span></span>
+<span><span class="co">## attr(,"variables")</span></span>
+<span><span class="co">## list(log.lvmi, time, sex)</span></span>
+<span><span class="co">## attr(,"factors")</span></span>
+<span><span class="co">##          time sex</span></span>
+<span><span class="co">## log.lvmi    0   0</span></span>
+<span><span class="co">## time        1   0</span></span>
+<span><span class="co">## sex         0   1</span></span>
+<span><span class="co">## attr(,"term.labels")</span></span>
+<span><span class="co">## [1] "time" "sex" </span></span>
+<span><span class="co">## attr(,"order")</span></span>
+<span><span class="co">## [1] 1 1</span></span>
+<span><span class="co">## attr(,"intercept")</span></span>
+<span><span class="co">## [1] 1</span></span>
+<span><span class="co">## attr(,"response")</span></span>
+<span><span class="co">## [1] 1</span></span>
+<span><span class="co">## attr(,".Environment")</span></span>
+<span><span class="co">## &lt;environment: R_GlobalEnv&gt;</span></span>
+<span><span class="co">## attr(,"predvars")</span></span>
+<span><span class="co">## list(log.lvmi, time, sex)</span></span>
+<span><span class="co">## attr(,"dataClasses")</span></span>
+<span><span class="co">##  log.lvmi      time       sex </span></span>
+<span><span class="co">## "numeric" "numeric" "numeric"</span></span></code></pre>
+<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/model.frame.html" class="external-link">model.frame</a></span><span class="op">(</span><span class="va">fit</span>, process <span class="op">=</span> <span class="st">"Longitudinal"</span>, k <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##    log.lvmi      time sex</span></span>
+<span><span class="co">## 1  4.778955 0.0109589   0</span></span>
+<span><span class="co">## 2  4.778955 3.6794520   0</span></span>
+<span><span class="co">## 3  4.924569 4.6958900   0</span></span>
+<span><span class="co">## 43 5.137150 4.1205480   0</span></span>
+<span><span class="co">## 44 5.129366 7.7342470   0</span></span>
+<span><span class="co">## 45 5.027165 0.1534247   0</span></span></code></pre>
+<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/model.matrix.html" class="external-link">model.matrix</a></span><span class="op">(</span><span class="va">fit</span>, process <span class="op">=</span> <span class="st">"Longitudinal"</span>, k <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##    (Intercept)      time sex</span></span>
+<span><span class="co">## 1            1 0.0109589   0</span></span>
+<span><span class="co">## 2            1 3.6794520   0</span></span>
+<span><span class="co">## 3            1 4.6958900   0</span></span>
+<span><span class="co">## 43           1 4.1205480   0</span></span>
+<span><span class="co">## 44           1 7.7342470   0</span></span>
+<span><span class="co">## 45           1 0.1534247   0</span></span></code></pre>
+<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef</a></span><span class="op">(</span><span class="va">fit</span>, process <span class="op">=</span> <span class="st">"Longitudinal"</span>, k <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## (Intercept)        time         sex </span></span>
+<span><span class="co">##  4.99293606  0.02584591 -0.19671311</span></span></code></pre>
+<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/vcov.html" class="external-link">vcov</a></span><span class="op">(</span><span class="va">fit</span>, process <span class="op">=</span> <span class="st">"Longitudinal"</span>, k <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##               (Intercept)          time           sex</span></span>
+<span><span class="co">## (Intercept)  0.0066862346 -0.0002348949 -0.0015748512</span></span>
+<span><span class="co">## time        -0.0002348949  0.0001674460 -0.0005463331</span></span>
+<span><span class="co">## sex         -0.0015748512 -0.0005463331  0.0443159100</span></span></code></pre>
+<p>Model frames contain evaluated terms, including transformations.
+Fitted contrasts are retained, so extraction is unaffected by subsequent
+changes to the original dataset or R’s contrast options. These methods
+extract the fitted observations and do not accept new data.</p>
+<p>Use <code>process = "Event"</code> for the survival formula. Its
+design matrix contains baseline covariates, without an intercept or
+latent association columns. Event coefficient and covariance selections
+include both baseline covariates and association coefficients:</p>
+<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/model.matrix.html" class="external-link">model.matrix</a></span><span class="op">(</span><span class="va">fit</span>, process <span class="op">=</span> <span class="st">"Event"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##         age</span></span>
+<span><span class="co">## 1  75.06027</span></span>
+<span><span class="co">## 43 72.12329</span></span>
+<span><span class="co">## 45 70.56712</span></span>
+<span><span class="co">## 51 50.97534</span></span>
+<span><span class="co">## 56 69.94247</span></span>
+<span><span class="co">## 62 72.30685</span></span></code></pre>
+<div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef</a></span><span class="op">(</span><span class="va">fit</span>, process <span class="op">=</span> <span class="st">"Event"</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##       age   gamma_1   gamma_2 </span></span>
+<span><span class="co">## 0.1365893 2.8471790 3.6800987</span></span></code></pre>
+<div class="sourceCode" id="cb55"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/vcov.html" class="external-link">vcov</a></span><span class="op">(</span><span class="va">fit</span>, process <span class="op">=</span> <span class="st">"Event"</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##                  age     gamma_1     gamma_2</span></span>
+<span><span class="co">## age      0.004427543 -0.03287174 -0.03879102</span></span>
+<span><span class="co">## gamma_1 -0.032871736 13.93535531 -6.12718700</span></span>
+<span><span class="co">## gamma_2 -0.038791016 -6.12718700 11.89414499</span></span></code></pre>
+<p>The default <code>coef(fit)</code> still returns the original
+parameter list, and <code>vcov(fit)</code> still returns the covariance
+matrix for all main parameters. Selecting longitudinal coefficients
+without <code>k</code> returns all outcomes, retaining their numbered
+suffixes. Covariance extraction requires available post-fit standard
+errors.</p>
+</div>
+<div class="section level3">
+<h3 id="tables-with-modelsummary-and-gtsummary">Tables with modelsummary and gtsummary<a class="anchor" aria-label="anchor" href="#tables-with-modelsummary-and-gtsummary"></a>
+</h3>
+<p>These optional packages can format the extracted results. Supplying
+the tidied estimates explicitly makes the selected component and
+reported sample sizes clear.</p>
+<p>For modelsummary, combine <code><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy()</a></code> and
+<code><a href="https://generics.r-lib.org/reference/glance.html" class="external-link">glance()</a></code> in a <code>modelsummary_list</code> object:</p>
+<div class="sourceCode" id="cb57"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">table_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/structure.html" class="external-link">structure</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>tidy <span class="op">=</span> <span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">fit</span>, conf.int <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, glance <span class="op">=</span> <span class="fu"><a href="https://generics.r-lib.org/reference/glance.html" class="external-link">glance</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  class <span class="op">=</span> <span class="st">"modelsummary_list"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu">modelsummary</span><span class="fu">::</span><span class="fu"><a href="https://modelsummary.com/man/modelsummary.html" class="external-link">modelsummary</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"Joint model"</span> <span class="op">=</span> <span class="va">table_model</span><span class="op">)</span>,</span>
+<span>  gof_map <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>    raw <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"nobs"</span>, <span class="st">"nevent"</span>, <span class="st">"AIC"</span>, <span class="st">"BIC"</span><span class="op">)</span>,</span>
+<span>    clean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Subjects"</span>, <span class="st">"Events"</span>, <span class="st">"AIC"</span>, <span class="st">"BIC"</span><span class="op">)</span>,</span>
+<span>    fmt <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span></span>
+<span>  <span class="op">)</span>,</span>
+<span>  output <span class="op">=</span> <span class="st">"markdown"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<table style="width:35%;" class="table">
+<colgroup>
+<col width="15%">
+<col width="19%">
+</colgroup>
+<thead><tr class="header">
+<th></th>
+<th>Joint model</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>age</td>
+<td>0.137</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>(0.067)</td>
+</tr>
+<tr class="odd">
+<td>gamma_1</td>
+<td>2.847</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>(3.733)</td>
+</tr>
+<tr class="odd">
+<td>gamma_2</td>
+<td>3.680</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>(3.449)</td>
+</tr>
+<tr class="odd">
+<td>Subjects</td>
+<td>43</td>
+</tr>
+<tr class="even">
+<td>Events</td>
+<td>8</td>
+</tr>
+<tr class="odd">
+<td>AIC</td>
+<td>342.4</td>
+</tr>
+<tr class="even">
+<td>BIC</td>
+<td>374.1</td>
+</tr>
+</tbody>
+</table>
+<p>For gtsummary, format the combined coefficient table directly. This
+retains all outcome labels and avoids treating the joint model as a
+single regression formula:</p>
+<div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">table_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">fit</span>, component <span class="op">=</span> <span class="st">"all"</span>, conf.int <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">table_data</span> <span class="op">&lt;-</span> <span class="va">table_data</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"component"</span>, <span class="st">"outcome"</span>, <span class="st">"term"</span>, <span class="st">"estimate"</span>,</span>
+<span>                           <span class="st">"conf.low"</span>, <span class="st">"conf.high"</span>, <span class="st">"p.value"</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="fu">gtsummary</span><span class="fu">::</span><span class="fu"><a href="https://www.danieldsjoberg.com/gtsummary/reference/as_gtsummary.html" class="external-link">as_gtsummary</a></span><span class="op">(</span><span class="va">table_data</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">gtsummary</span><span class="fu">::</span><span class="fu"><a href="https://www.danieldsjoberg.com/gtsummary/reference/modify.html" class="external-link">modify_header</a></span><span class="op">(</span></span>
+<span>    component <span class="op">=</span> <span class="st">"Component"</span>, outcome <span class="op">=</span> <span class="st">"Outcome"</span>, term <span class="op">=</span> <span class="st">"Term"</span>,</span>
+<span>    estimate <span class="op">=</span> <span class="st">"Estimate"</span>, conf.low <span class="op">=</span> <span class="st">"Lower 95% CI"</span>,</span>
+<span>    conf.high <span class="op">=</span> <span class="st">"Upper 95% CI"</span>, p.value <span class="op">=</span> <span class="st">"p-value"</span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">gtsummary</span><span class="fu">::</span><span class="fu"><a href="https://www.danieldsjoberg.com/gtsummary/reference/modify_fmt_fun.html" class="external-link">modify_fmt_fun</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">estimate</span>, <span class="va">conf.low</span>, <span class="va">conf.high</span><span class="op">)</span> <span class="op">~</span> <span class="fu">gtsummary</span><span class="fu">::</span><span class="fu"><a href="https://www.danieldsjoberg.com/gtsummary/reference/label_style.html" class="external-link">label_style_number</a></span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>,</span>
+<span>    <span class="va">p.value</span> <span class="op">~</span> <span class="fu">gtsummary</span><span class="fu">::</span><span class="fu"><a href="https://www.danieldsjoberg.com/gtsummary/reference/label_style.html" class="external-link">label_style_pvalue</a></span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span></code></pre></div>
+<div id="qoeowbvvsh" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#qoeowbvvsh table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#qoeowbvvsh thead, #qoeowbvvsh tbody, #qoeowbvvsh tfoot, #qoeowbvvsh tr, #qoeowbvvsh td, #qoeowbvvsh th {
+  border-style: none;
+}
+
+#qoeowbvvsh p {
+  margin: 0;
+  padding: 0;
+}
+
+#qoeowbvvsh .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#qoeowbvvsh .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#qoeowbvvsh .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#qoeowbvvsh .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#qoeowbvvsh .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#qoeowbvvsh .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#qoeowbvvsh .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#qoeowbvvsh .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#qoeowbvvsh .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#qoeowbvvsh .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#qoeowbvvsh .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#qoeowbvvsh .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#qoeowbvvsh .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#qoeowbvvsh .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#qoeowbvvsh .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#qoeowbvvsh .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#qoeowbvvsh .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#qoeowbvvsh .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#qoeowbvvsh .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#qoeowbvvsh .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#qoeowbvvsh .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#qoeowbvvsh .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#qoeowbvvsh .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#qoeowbvvsh .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#qoeowbvvsh .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#qoeowbvvsh .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#qoeowbvvsh .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#qoeowbvvsh .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#qoeowbvvsh .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#qoeowbvvsh .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#qoeowbvvsh .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#qoeowbvvsh .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#qoeowbvvsh .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#qoeowbvvsh .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#qoeowbvvsh .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#qoeowbvvsh .gt_left {
+  text-align: left;
+}
+
+#qoeowbvvsh .gt_center {
+  text-align: center;
+}
+
+#qoeowbvvsh .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#qoeowbvvsh .gt_font_normal {
+  font-weight: normal;
+}
+
+#qoeowbvvsh .gt_font_bold {
+  font-weight: bold;
+}
+
+#qoeowbvvsh .gt_font_italic {
+  font-style: italic;
+}
+
+#qoeowbvvsh .gt_super {
+  font-size: 65%;
+}
+
+#qoeowbvvsh .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#qoeowbvvsh .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#qoeowbvvsh .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#qoeowbvvsh .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#qoeowbvvsh .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#qoeowbvvsh .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#qoeowbvvsh .gt_indent_5 {
+  text-indent: 25px;
+}
+
+#qoeowbvvsh .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#qoeowbvvsh div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
+}
+</style>
+<table class="table gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<thead><tr class="gt_col_headings">
+<th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="component"><span class="gt_from_md">Component</span></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="outcome"><span class="gt_from_md">Outcome</span></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="term"><span class="gt_from_md">Term</span></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="estimate"><span class="gt_from_md">Estimate</span></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="conf.low"><span class="gt_from_md">Lower 95% CI</span></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="conf.high"><span class="gt_from_md">Upper 95% CI</span></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="p.value"><span class="gt_from_md">p-value</span></th>
+    </tr></thead>
+<tbody class="gt_table_body">
+<tr>
+<td headers="component" class="gt_row gt_center">longitudinal</td>
+<td headers="outcome" class="gt_row gt_center">grad</td>
+<td headers="term" class="gt_row gt_center">(Intercept)_1</td>
+<td headers="estimate" class="gt_row gt_center">2.522</td>
+<td headers="conf.low" class="gt_row gt_center">2.198</td>
+<td headers="conf.high" class="gt_row gt_center">2.846</td>
+<td headers="p.value" class="gt_row gt_center">&lt;0.001</td>
+</tr>
+<tr>
+<td headers="component" class="gt_row gt_center">longitudinal</td>
+<td headers="outcome" class="gt_row gt_center">grad</td>
+<td headers="term" class="gt_row gt_center">time_1</td>
+<td headers="estimate" class="gt_row gt_center">0.010</td>
+<td headers="conf.low" class="gt_row gt_center">-0.051</td>
+<td headers="conf.high" class="gt_row gt_center">0.070</td>
+<td headers="p.value" class="gt_row gt_center">0.756</td>
+</tr>
+<tr>
+<td headers="component" class="gt_row gt_center">longitudinal</td>
+<td headers="outcome" class="gt_row gt_center">grad</td>
+<td headers="term" class="gt_row gt_center">sex_1</td>
+<td headers="estimate" class="gt_row gt_center">0.034</td>
+<td headers="conf.low" class="gt_row gt_center">-0.419</td>
+<td headers="conf.high" class="gt_row gt_center">0.488</td>
+<td headers="p.value" class="gt_row gt_center">0.882</td>
+</tr>
+<tr>
+<td headers="component" class="gt_row gt_center">longitudinal</td>
+<td headers="outcome" class="gt_row gt_center">grad</td>
+<td headers="term" class="gt_row gt_center">hsStentless valve_1</td>
+<td headers="estimate" class="gt_row gt_center">0.083</td>
+<td headers="conf.low" class="gt_row gt_center">-0.308</td>
+<td headers="conf.high" class="gt_row gt_center">0.473</td>
+<td headers="p.value" class="gt_row gt_center">0.678</td>
+</tr>
+<tr>
+<td headers="component" class="gt_row gt_center">longitudinal</td>
+<td headers="outcome" class="gt_row gt_center">lvmi</td>
+<td headers="term" class="gt_row gt_center">(Intercept)_2</td>
+<td headers="estimate" class="gt_row gt_center">4.993</td>
+<td headers="conf.low" class="gt_row gt_center">4.833</td>
+<td headers="conf.high" class="gt_row gt_center">5.153</td>
+<td headers="p.value" class="gt_row gt_center">&lt;0.001</td>
+</tr>
+<tr>
+<td headers="component" class="gt_row gt_center">longitudinal</td>
+<td headers="outcome" class="gt_row gt_center">lvmi</td>
+<td headers="term" class="gt_row gt_center">time_2</td>
+<td headers="estimate" class="gt_row gt_center">0.026</td>
+<td headers="conf.low" class="gt_row gt_center">0.000</td>
+<td headers="conf.high" class="gt_row gt_center">0.051</td>
+<td headers="p.value" class="gt_row gt_center">0.046</td>
+</tr>
+<tr>
+<td headers="component" class="gt_row gt_center">longitudinal</td>
+<td headers="outcome" class="gt_row gt_center">lvmi</td>
+<td headers="term" class="gt_row gt_center">sex_2</td>
+<td headers="estimate" class="gt_row gt_center">-0.197</td>
+<td headers="conf.low" class="gt_row gt_center">-0.609</td>
+<td headers="conf.high" class="gt_row gt_center">0.216</td>
+<td headers="p.value" class="gt_row gt_center">0.350</td>
+</tr>
+<tr>
+<td headers="component" class="gt_row gt_center">survival</td>
+<td headers="outcome" class="gt_row gt_center">event</td>
+<td headers="term" class="gt_row gt_center">age</td>
+<td headers="estimate" class="gt_row gt_center">0.137</td>
+<td headers="conf.low" class="gt_row gt_center">0.006</td>
+<td headers="conf.high" class="gt_row gt_center">0.267</td>
+<td headers="p.value" class="gt_row gt_center">0.040</td>
+</tr>
+<tr>
+<td headers="component" class="gt_row gt_center">survival</td>
+<td headers="outcome" class="gt_row gt_center">grad</td>
+<td headers="term" class="gt_row gt_center">gamma_1</td>
+<td headers="estimate" class="gt_row gt_center">2.847</td>
+<td headers="conf.low" class="gt_row gt_center">-4.469</td>
+<td headers="conf.high" class="gt_row gt_center">10.164</td>
+<td headers="p.value" class="gt_row gt_center">0.446</td>
+</tr>
+<tr>
+<td headers="component" class="gt_row gt_center">survival</td>
+<td headers="outcome" class="gt_row gt_center">lvmi</td>
+<td headers="term" class="gt_row gt_center">gamma_2</td>
+<td headers="estimate" class="gt_row gt_center">3.680</td>
+<td headers="conf.low" class="gt_row gt_center">-3.079</td>
+<td headers="conf.high" class="gt_row gt_center">10.440</td>
+<td headers="p.value" class="gt_row gt_center">0.286</td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 <div class="section level3">
 <h3 id="additional-examples">Additional examples<a class="anchor" aria-label="anchor" href="#additional-examples"></a>
 </h3>
 <p>Several examples of how to use <code>broom</code> including more
 details are available on its introductory vignette:</p>
-<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb59"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/vignette.html" class="external-link">vignette</a></span><span class="op">(</span>topic <span class="op">=</span> <span class="st">"broom"</span>, package <span class="op">=</span> <span class="st">"broom"</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>

@@ -14,7 +14,9 @@ tidy(
   bootSE = NULL,
   conf.int = FALSE,
   conf.level = 0.95,
-  ...
+  ...,
+  boot_se = NULL,
+  exponentiate = FALSE
 )
 
 # S3 method for class 'mjoint'
@@ -32,8 +34,7 @@ glance(x, ...)
 
 - component:
 
-  Either `survival` (the survival component of the model, default) or
-  `longitudinal` (the longitudinal component).
+  Select `"survival"` (the default), `"longitudinal"`, or `"all"`.
 
 - bootSE:
 
@@ -52,12 +53,31 @@ glance(x, ...)
 
 - ...:
 
-  extra arguments (not used)
+  Additional arguments. Unsupported arguments cause an error, including
+  `newdata` for
+  [`augment()`](https://generics.r-lib.org/reference/augment.html).
+
+- boot_se:
+
+  An alias for `bootSE`, matching broom's argument name. Supply only one
+  of these arguments.
+
+- exponentiate:
+
+  Logical; exponentiate survival estimates and confidence limits.
+  Standard errors and test statistics remain on the log-hazard scale.
+  Only supported for `component = "survival"`. Exponentiated association
+  coefficients refer to a one-unit change in the associated latent
+  process, not a one-unit change in the observed marker.
 
 - data:
 
-  Original data this was fitted on, in a list (e.g. `list(data)`). This
-  will be extracted from `x` if not given.
+  Original data as a data frame or list of identical data frames.
+  Extracted from `x` by default. Supplied records are matched by subject
+  ID and measurement time and returned in the supplied order; these
+  pairs must be unique when reordering is required. All original columns
+  must be present and unchanged. Different observation schedules across
+  outcomes cannot be combined into a single augmented data frame.
 
 ## Value
 
@@ -95,7 +115,12 @@ structure depends on the method chosen.
 
   The upper bound of a confidence interval on `estimate`, if required
 
-.
+. Additional columns identify the `component`, `outcome`, and `effect`
+(`"fixed"` or `"association"`). Outcome labels use the names of
+`formLongFixed`, falling back to the response expressions. Survival
+covariates are labelled `"event"`; association coefficients are labelled
+by their corresponding longitudinal outcome. Existing term names are
+retained.
 
 `augment` returns one row for each original observation, with columns
 (each prepended by a .) added. Included are the columns:
@@ -142,13 +167,16 @@ individual-level fitted values and residuals.
 
   the data's log-likelihood under the model
 
-.
+. Additional columns are `nobs` (subjects), `nevent` (observed events),
+`npar` (the parameter count used by AIC and BIC, excluding baseline
+hazard increments), `converged`, and `nobs_longitudinal_j` (measurement
+counts for outcome *j*). This summary is available without post-fit
+standard errors.
 
 ## Note
 
-If fitting a joint model with a single longitudinal process, please make
-sure you are using a named `list` to define the formula for the fixed
-and random effects of the longitudinal submodel.
+Augmented column names use the longitudinal outcome labels. Repeated
+labels are made unique by adding numbered suffixes.
 
 ## Author
 

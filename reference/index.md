@@ -70,6 +70,17 @@
 
   Extract model formulae from an `mjoint` object
 
+- [`nobs(`*`<mjoint>`*`)`](https://graemeleehickey.github.io/joineRML/reference/nobs.mjoint.md)
+  : Extract the number of subjects
+
+- [`coef(`*`<mjoint>`*`)`](https://graemeleehickey.github.io/joineRML/reference/coef.mjoint.md)
+  : Extract joint-model coefficients
+
+- [`model.frame(`*`<mjoint>`*`)`](https://graemeleehickey.github.io/joineRML/reference/model-extraction.md)
+  [`terms(`*`<mjoint>`*`)`](https://graemeleehickey.github.io/joineRML/reference/model-extraction.md)
+  [`model.matrix(`*`<mjoint>`*`)`](https://graemeleehickey.github.io/joineRML/reference/model-extraction.md)
+  : Extract model terms, frames, and design matrices
+
 ## Prediction and dynamic prediction
 
 - [`fitted(`*`<mjoint>`*`)`](https://graemeleehickey.github.io/joineRML/reference/fitted.mjoint.md)

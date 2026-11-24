@@ -10,6 +10,7 @@
 <url><loc>https://graemeleehickey.github.io/joineRML/reference/anova.mjoint.html</loc></url>
 <url><loc>https://graemeleehickey.github.io/joineRML/reference/baseHaz.html</loc></url>
 <url><loc>https://graemeleehickey.github.io/joineRML/reference/bootSE.html</loc></url>
+<url><loc>https://graemeleehickey.github.io/joineRML/reference/coef.mjoint.html</loc></url>
 <url><loc>https://graemeleehickey.github.io/joineRML/reference/confint.mjoint.html</loc></url>
 <url><loc>https://graemeleehickey.github.io/joineRML/reference/dynLong.html</loc></url>
 <url><loc>https://graemeleehickey.github.io/joineRML/reference/dynSurv.html</loc></url>
@@ -26,6 +27,8 @@
 <url><loc>https://graemeleehickey.github.io/joineRML/reference/mjoint.html</loc></url>
 <url><loc>https://graemeleehickey.github.io/joineRML/reference/mjoint.object.html</loc></url>
 <url><loc>https://graemeleehickey.github.io/joineRML/reference/mjoint_tidiers.html</loc></url>
+<url><loc>https://graemeleehickey.github.io/joineRML/reference/model-extraction.html</loc></url>
+<url><loc>https://graemeleehickey.github.io/joineRML/reference/nobs.mjoint.html</loc></url>
 <url><loc>https://graemeleehickey.github.io/joineRML/reference/pbc2.html</loc></url>
 <url><loc>https://graemeleehickey.github.io/joineRML/reference/plot.dynLong.html</loc></url>
 <url><loc>https://graemeleehickey.github.io/joineRML/reference/plot.dynSurv.html</loc></url>

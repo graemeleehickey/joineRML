@@ -5,13 +5,13 @@
   have methods for the generic functions coef, logLik,
   plot, print, ranef, fixef, summary,
   AIC, getVarCov, vcov, confint, sigma,
-  fitted, residuals, and formula."><meta property="og:description" content="An object returned by the mjoint function, inheriting
+  fitted, residuals, formula, nobs, terms, model.frame, and model.matrix."><meta property="og:description" content="An object returned by the mjoint function, inheriting
   from class mjoint and representing a fitted joint model for
   multivariate longitudinal and time-to-event data. Objects of this class
   have methods for the generic functions coef, logLik,
   plot, print, ranef, fixef, summary,
   AIC, getVarCov, vcov, confint, sigma,
-  fitted, residuals, and formula."></head><body>
+  fitted, residuals, formula, nobs, terms, model.frame, and model.matrix."></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
@@ -66,7 +66,7 @@
   have methods for the generic functions <code>coef</code>, <code>logLik</code>,
   <code>plot</code>, <code>print</code>, <code>ranef</code>, <code>fixef</code>, <code>summary</code>,
   <code>AIC</code>, <code>getVarCov</code>, <code>vcov</code>, <code>confint</code>, <code>sigma</code>,
-  <code>fitted</code>, <code>residuals</code>, and <code>formula</code>.</p>
+  <code>fitted</code>, <code>residuals</code>, <code>formula</code>, <code>nobs</code>, <code>terms</code>, <code>model.frame</code>, and <code>model.matrix</code>.</p>
     </div>
 
     <div class="section level2">
@@ -143,6 +143,10 @@
 
   <dt><code>survData</code></dt>
 <dd><p>a data.frame of the time-to-event dataset.</p></dd>
+
+
+  <dt><code>model.frames</code></dt>
+<dd><p>evaluated model frames for each longitudinal fixed-effects formula and the event formula. Longitudinal frames also retain the fitted factor contrasts. Used by <code><a href="https://rdrr.io/r/stats/terms.html" class="external-link">terms()</a></code>, <code><a href="https://rdrr.io/r/stats/model.frame.html" class="external-link">model.frame()</a></code>, and <code><a href="https://rdrr.io/r/stats/model.matrix.html" class="external-link">model.matrix()</a></code>.</p></dd>
 
 
   <dt><code>timeVar</code></dt>

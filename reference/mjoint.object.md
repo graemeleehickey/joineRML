@@ -5,7 +5,8 @@ An object returned by the `mjoint` function, inheriting from class
 longitudinal and time-to-event data. Objects of this class have methods
 for the generic functions `coef`, `logLik`, `plot`, `print`, `ranef`,
 `fixef`, `summary`, `AIC`, `getVarCov`, `vcov`, `confint`, `sigma`,
-`fitted`, `residuals`, and `formula`.
+`fitted`, `residuals`, `formula`, `nobs`, `terms`, `model.frame`, and
+`model.matrix`.
 
 ## Usage
 
@@ -85,6 +86,14 @@ A list with the following components.
 - `survData`:
 
   a data.frame of the time-to-event dataset.
+
+- `model.frames`:
+
+  evaluated model frames for each longitudinal fixed-effects formula and
+  the event formula. Longitudinal frames also retain the fitted factor
+  contrasts. Used by [`terms()`](https://rdrr.io/r/stats/terms.html),
+  [`model.frame()`](https://rdrr.io/r/stats/model.frame.html), and
+  [`model.matrix()`](https://rdrr.io/r/stats/model.matrix.html).
 
 - `timeVar`:
 

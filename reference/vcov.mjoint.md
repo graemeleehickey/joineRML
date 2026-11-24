@@ -7,7 +7,7 @@ fitted `mjoint` model object.
 
 ``` r
 # S3 method for class 'mjoint'
-vcov(object, correlation = FALSE, ...)
+vcov(object, correlation = FALSE, ..., process = NULL, k = NULL)
 ```
 
 ## Arguments
@@ -25,6 +25,18 @@ vcov(object, correlation = FALSE, ...)
 - ...:
 
   additional arguments; currently none are used.
+
+- process:
+
+  `NULL` (the default) returns the covariance matrix for all main
+  parameters. Select `"Longitudinal"` or `"Event"` for the corresponding
+  regression coefficients.
+
+- k:
+
+  With `process = "Longitudinal"`, optionally select one outcome. Names
+  and order match the same selection in
+  [`coef()`](https://rdrr.io/r/stats/coef.html).
 
 ## Value
 

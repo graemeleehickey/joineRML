@@ -66,7 +66,9 @@ and multivariate longitudinal data of the <code>mjoint</code> class from the
 <span>  bootSE <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  conf.int <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  conf.level <span class="op">=</span> <span class="fl">0.95</span>,</span>
-<span>  <span class="va">...</span></span>
+<span>  <span class="va">...</span>,</span>
+<span>  boot_se <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  exponentiate <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S3 method for class 'mjoint'</span></span>
@@ -85,8 +87,7 @@ and multivariate longitudinal data of the <code>mjoint</code> class from the
 
 
 <dt id="arg-component">component<a class="anchor" aria-label="anchor" href="#arg-component"></a></dt>
-<dd><p>Either <code>survival</code> (the survival component of the model,
-default) or <code>longitudinal</code> (the longitudinal component).</p></dd>
+<dd><p>Select <code>"survival"</code> (the default), <code>"longitudinal"</code>, or <code>"all"</code>.</p></dd>
 
 
 <dt id="arg-bootse">bootSE<a class="anchor" aria-label="anchor" href="#arg-bootse"></a></dt>
@@ -105,12 +106,19 @@ Defaults to <code>FALSE</code>.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
-<dd><p>extra arguments (not used)</p></dd>
+<dd><p>Additional arguments. Unsupported arguments cause an error, including <code>newdata</code> for <code><a href="https://generics.r-lib.org/reference/augment.html" class="external-link">augment()</a></code>.</p></dd>
+
+
+<dt id="arg-boot-se">boot_se<a class="anchor" aria-label="anchor" href="#arg-boot-se"></a></dt>
+<dd><p>An alias for <code>bootSE</code>, matching broom's argument name. Supply only one of these arguments.</p></dd>
+
+
+<dt id="arg-exponentiate">exponentiate<a class="anchor" aria-label="anchor" href="#arg-exponentiate"></a></dt>
+<dd><p>Logical; exponentiate survival estimates and confidence limits. Standard errors and test statistics remain on the log-hazard scale. Only supported for <code>component = "survival"</code>. Exponentiated association coefficients refer to a one-unit change in the associated latent process, not a one-unit change in the observed marker.</p></dd>
 
 
 <dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
-<dd><p>Original data this was fitted on, in a list (e.g.
-<code>list(data)</code>). This will be extracted from <code>x</code> if not given.</p></dd>
+<dd><p>Original data as a data frame or list of identical data frames. Extracted from <code>x</code> by default. Supplied records are matched by subject ID and measurement time and returned in the supplied order; these pairs must be unique when reordering is required. All original columns must be present and unchanged. Different observation schedules across outcomes cannot be combined into a single augmented data frame.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -138,7 +146,7 @@ Defaults to <code>FALSE</code>.</p></dd>
   <dt>conf.high</dt>
 <dd><p>The upper bound of a confidence interval on
   <code>estimate</code>, if required</p></dd>
-</dl><p>.</p>
+</dl><p>. Additional columns identify the <code>component</code>, <code>outcome</code>, and <code>effect</code> (<code>"fixed"</code> or <code>"association"</code>). Outcome labels use the names of <code>formLongFixed</code>, falling back to the response expressions. Survival covariates are labelled <code>"event"</code>; association coefficients are labelled by their corresponding longitudinal outcome. Existing term names are retained.</p>
 <p><code>augment</code> returns one row for each original observation, with
   columns (each prepended by a .) added. Included are the columns:</p>
 <dl><dt>.fitted_j_0</dt>
@@ -170,13 +178,11 @@ Defaults to <code>FALSE</code>.</p></dd>
  <dt>logLik</dt>
 <dd><p>the data's log-likelihood
   under the model</p></dd>
-</dl><p>.</p>
+</dl><p>. Additional columns are <code>nobs</code> (subjects), <code>nevent</code> (observed events), <code>npar</code> (the parameter count used by AIC and BIC, excluding baseline hazard increments), <code>converged</code>, and <code>nobs_longitudinal_j</code> (measurement counts for outcome <em>j</em>). This summary is available without post-fit standard errors.</p>
     </div>
     <div class="section level2">
     <h2 id="note">Note<a class="anchor" aria-label="anchor" href="#note"></a></h2>
-    <p>If fitting a joint model with a single longitudinal process, please
-  make sure you are using a named <code>list</code> to define the formula for the
-  fixed and random effects of the longitudinal submodel.</p>
+    <p>Augmented column names use the longitudinal outcome labels. Repeated labels are made unique by adding numbered suffixes.</p>
     </div>
     <div class="section level2">
     <h2 id="author">Author<a class="anchor" aria-label="anchor" href="#author"></a></h2>
