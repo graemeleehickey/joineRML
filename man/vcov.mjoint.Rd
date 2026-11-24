@@ -5,7 +5,7 @@
 \title{Extract an approximate variance-covariance matrix of estimated parameters
 from an \code{mjoint} object}
 \usage{
-\method{vcov}{mjoint}(object, correlation = FALSE, ...)
+\method{vcov}{mjoint}(object, correlation = FALSE, ..., process = NULL, k = NULL)
 }
 \arguments{
 \item{object}{an object inheriting from class \code{mjoint} for a joint model
@@ -15,6 +15,10 @@ of time-to-event and multivariate longitudinal data.}
 otherwise returns the variance-covariance matrix (default).}
 
 \item{...}{additional arguments; currently none are used.}
+
+\item{process}{\code{NULL} (the default) returns the covariance matrix for all main parameters. Select \code{"Longitudinal"} or \code{"Event"} for the corresponding regression coefficients.}
+
+\item{k}{With \code{process = "Longitudinal"}, optionally select one outcome. Names and order match the same selection in \code{coef()}.}
 }
 \value{
 A variance-covariance matrix.

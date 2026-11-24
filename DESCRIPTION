@@ -71,10 +71,13 @@ LinkingTo:
     RcppArmadillo
 RoxygenNote: 7.3.3
 Suggests:
+    broom,
     dplyr,
+    gtsummary,
     JM,
     joineR,
     knitr,
+    modelsummary,
     pkgdown,
     rmarkdown,
     testthat (>= 3.0.0)

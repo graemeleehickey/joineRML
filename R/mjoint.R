@@ -542,8 +542,10 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
     yik[[k]] <- by(model.response(mf.fixed[[k]], "numeric"), data[[k]][, id], as.vector)
 
     # X design matrix
-    Xik[[k]] <- data.frame("id" = data[[k]][, id],
-                           model.matrix(formLongFixed[[k]], data[[k]]))
+    X.fixed <- model.matrix(formLongFixed[[k]], data[[k]])
+    attr(mf.fixed[[k]], "contrasts") <-
+      lfit[[k]]$contrasts[names(attr(X.fixed, "contrasts"))]
+    Xik[[k]] <- data.frame("id" = data[[k]][, id], X.fixed)
 
     # n_k (number of observations per each k)
     nk[k] <- nrow(Xik[[k]])
@@ -918,6 +920,7 @@ mjoint <- function(formLongFixed, formLongRandom, formSurv, data, survData = NUL
                    "n" = n, "nk" = nk)
   out$sfit <- sfit
   out$lfit <- lfit
+  out$model.frames <- list(longitudinal = mf.fixed, event = mf.surv)
   out$log.lik0 <- log.lik0
   out$log.lik <- log.lik
   out$ll.hx <- ll.hx

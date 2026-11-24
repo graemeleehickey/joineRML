@@ -40,16 +40,20 @@ small_joint_data <- function() {
 fit_small_joint <- function(data = small_joint_data(),
                             formLongFixed = list(y1 = y1 ~ time),
                             formLongRandom = list(y1 = ~ 1 | id),
-                            pfs = TRUE, mcmaxIter = 4) {
+                            pfs = TRUE, mcmaxIter = 4,
+                            formSurv = Surv(T, status) ~ 1) {
   # A fixed iteration count and fixed integration nodes make these checks fast
   # and reproducible. These settings are not intended for statistical analysis.
+  survdat <- if (is.data.frame(data)) data else data[[1]]
+  survmat <- model.matrix(formSurv, survdat)
+  q <- sum(attr(survmat, "assign") != 0)
   suppressMessages(mjoint(
     formLongFixed = formLongFixed,
     formLongRandom = formLongRandom,
-    formSurv = Surv(T, status) ~ 1,
+    formSurv = formSurv,
     data = data,
     timeVar = "time",
-    inits = list(gamma = rep(0.1, length(formLongFixed))),
+    inits = list(gamma = rep(0.1, length(formLongFixed) + q)),
     pfs = pfs,
     control = list(type = "halton", nMC = 128, nMCmax = 128,
                    burnin = 1, mcmaxIter = mcmaxIter, convCrit = "abs",

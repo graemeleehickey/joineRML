@@ -53,6 +53,8 @@ A list with the following components. \describe{
 
   \item{\code{survData}}{a data.frame of the time-to-event dataset.}
 
+  \item{\code{model.frames}}{evaluated model frames for each longitudinal fixed-effects formula and the event formula. Longitudinal frames also retain the fitted factor contrasts. Used by \code{terms()}, \code{model.frame()}, and \code{model.matrix()}.}
+
   \item{\code{timeVar}}{a character string vector of length K denoting the
   column name(s) for time in \code{data}.}
 
@@ -133,7 +135,7 @@ An object returned by the \code{mjoint} function, inheriting
   have methods for the generic functions \code{coef}, \code{logLik},
   \code{plot}, \code{print}, \code{ranef}, \code{fixef}, \code{summary},
   \code{AIC}, \code{getVarCov}, \code{vcov}, \code{confint}, \code{sigma},
-  \code{fitted}, \code{residuals}, and \code{formula}.
+  \code{fitted}, \code{residuals}, \code{formula}, \code{nobs}, \code{terms}, \code{model.frame}, and \code{model.matrix}.
 }
 \section{Post model fit statistics}{
 

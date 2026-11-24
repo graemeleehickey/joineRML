@@ -2,12 +2,17 @@
 
 ## New features
 
+- Added `nobs()` for the number of subjects. `glance()` now also reports event counts, measurement counts for each longitudinal outcome, the parameter count used by AIC and BIC, and convergence status, including fits without post-fit standard errors.
+- Added `terms()`, `model.frame()`, and `model.matrix()` methods for a selected longitudinal outcome or the event model. New fits retain evaluated model frames and contrasts. `coef()` and `vcov()` can now select matching sets of regression coefficients while preserving their existing default results.
+- Extended `tidy()` with component and outcome labels, an option to return both model components, and exponentiated survival estimates and confidence limits. Both `bootSE` and broom's `boot_se` argument are accepted. Standard errors and test statistics remain on the log-hazard scale when estimates are exponentiated.
+
 - Added `anova()` comparisons for fitted joint models. Likelihood-ratio tests require nested covariate models fitted to the same observations, with unchanged random-effects and association structures. Likelihoods are re-evaluated using common Halton integration points, and p-values are withheld when the statistic is negative or numerically unstable. Use `test = FALSE` for a comparison table without a test (#4).
 
 - `mjoint()` now accepts an optional `seed` argument for reproducible model fitting, including Monte Carlo integration and post-fit calculations. The previous R random-number state is restored when a seed is supplied. The default `seed = NULL` retains the existing behaviour (#5).
 
 ## Bug fixes
 
+- Tidying methods now reject unsupported arguments instead of silently ignoring them. The joineRML methods are used consistently when broom is loaded before or after joineRML. `augment()` matches supplied original data by subject and measurement time, preserving the supplied row order, and rejects changed observations or incompatible observation schedules.
 - Longitudinal and survival records are now matched explicitly by subject ID, independently of row order or factor-level order. Missing IDs, unmatched subject sets, duplicate survival records, and missing survival-model values are rejected before fitting.
 - Simulated dynamic predictions now use the correct Metropolis-Hastings proposal-density correction, evaluated on the log scale. This changes the distribution of the sampled random effects and can change predicted values and intervals.
 - The default `"sas"` convergence criterion now uses absolute parameter changes consistently. Models can require additional iterations and return different estimates when the previous rule stopped prematurely.
@@ -27,6 +32,7 @@
 
 ## Documentation fixes
 
+- Expanded the tidying vignette with model extraction and table examples using modelsummary and gtsummary. These packages remain optional.
 - Corrected the `tidy()` examples in the broom vignette and help page to use `conf.int = TRUE`, so the returned tables include confidence intervals. Also corrected the vignette's bootstrap example to use `bootSE`. Thanks to @eribul for reporting the confidence-interval issue (#80).
 
 # joineRML 0.4.8

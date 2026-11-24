@@ -40,12 +40,13 @@ formula.mjoint <- function(x, process = c("Longitudinal", "Event"), k = 1, ...) 
   formOut <- NULL
 
   if (process == "Longitudinal") {
-    if (is.null(k) || is.na(k)) {
-      stop("Must specify a longitudinal outcome.")
+    if (is.null(k) || (length(k) == 1L && is.na(k))) {
+      stop("Must specify a longitudinal outcome. 'k' must be a valid outcome number.")
     }
-    if (k > K) {
-      stop("Incompatible with dimensions of the joint model.")
+    if (is.numeric(k) && length(k) == 1L && is.finite(k) && k > K) {
+      stop("Incompatible with dimensions of the joint model. 'k' exceeds the number of outcomes.")
     }
+    k <- .mjoint_outcome(x, k)
     formOut <- x$formLongFixed[[k]]
   } else {
     formOut <- x$formSurv

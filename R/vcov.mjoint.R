@@ -7,6 +7,8 @@
 #' @inheritParams confint.mjoint
 #' @param correlation logical: if \code{TRUE} returns the correlation matrix,
 #'   otherwise returns the variance-covariance matrix (default).
+#' @param process \code{NULL} (the default) returns the covariance matrix for all main parameters. Select \code{"Longitudinal"} or \code{"Event"} for the corresponding regression coefficients.
+#' @param k With \code{process = "Longitudinal"}, optionally select one outcome. Names and order match the same selection in \code{coef()}.
 #'
 #' @details This is a generic function that extracts the variance-covariance
 #'   matrix of parameters from an \code{mjoint} model fit. It is based on a
@@ -78,7 +80,7 @@
 #'
 #' vcov(fit2)
 #' }
-vcov.mjoint <- function(object, correlation = FALSE, ...) {
+vcov.mjoint <- function(object, correlation = FALSE, ..., process = NULL, k = NULL) {
 
   # Have used code by Dimitris Rizopoulos here after having some
   # issues inverting the matrix.
@@ -86,6 +88,11 @@ vcov.mjoint <- function(object, correlation = FALSE, ...) {
 
   if (!inherits(object, "mjoint")) {
     stop("Use only with 'mjoint' model objects.\n")
+  }
+
+  .mjoint_check_dots(...)
+  if (is.null(object$Hessian)) {
+    stop("No approximate covariance matrix is available; refit with 'pfs = TRUE' and check convergence.")
   }
 
   out <- try(qr.solve(object$Hessian, tol = 1e-12), silent = TRUE)
@@ -99,6 +106,17 @@ vcov.mjoint <- function(object, correlation = FALSE, ...) {
     vmat <- structure(MASS::ginv(object$Hessian), dimnames = dimnames(object$Hessian))
   }
   vmat <- (vmat + t(vmat)) / 2
+
+  if (!is.null(process)) {
+    selection <- .mjoint_coef_selection(object, process, k)
+    nd <- sum(object$dims$r) * (sum(object$dims$r) + 1) / 2
+    nb <- sum(object$dims$p)
+    indices <- nd + selection$index + ifelse(selection$index > nb, object$dims$K, 0)
+    vmat <- vmat[indices, indices, drop = FALSE]
+    dimnames(vmat) <- list(selection$names, selection$names)
+  } else if (!is.null(k)) {
+    stop("Specify 'process = \"Longitudinal\"' when selecting 'k'.")
+  }
 
   if (!correlation) {
     vmat

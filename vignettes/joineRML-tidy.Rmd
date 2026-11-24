@@ -1,6 +1,6 @@
 ---
 title: "joineRML and the broom package"
-author: "Alessandro Gasparini"
+author: "Alessandro Gasparini and Graeme L. Hickey"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
@@ -26,21 +26,13 @@ library(knitr)
 
 # Introduction
 
-Tidiers for objects of class `mjoint` have been included in latest release of `joineRML` package (0.4.5).
+joineRML provides three broom-compatible methods for fitted joint models:
 
-The purpose of these tidiers are described in the introductory vignette to `broom`:
+* `tidy()` returns coefficient estimates, standard errors, and optional confidence intervals.
+* `augment()` adds longitudinal fitted values and residuals to the original observations.
+* `glance()` returns a one-row summary of model fit and sample sizes.
 
-> The broom package takes the messy output of built-in functions in R, such as `lm`, `nls`, or `t.test`, and turns them into tidy data frames.
-
-There are three distinct tidiers included with `broom`:
-
-* `tidy`: constructs a data frame that summarises the model estimates;
-
-* `augment`: add columns to the original data that was modeled;
-
-* `glance`: construct a concise one-row summary of the model. 
-
-These methods are specifically useful when plotting results of a joint model or when comparing several models (e.g. in terms of fit).
+These methods support plots, model comparisons, and tables. They can be used without loading broom; if broom is loaded, the same joineRML methods are used regardless of package loading order. Unsupported arguments cause an error rather than being silently ignored.
 
 # Example
 
@@ -95,11 +87,23 @@ By default the `tidy` method returns the estimated coefficients for the survival
 tidy(fit, component = "longitudinal")
 ```
 
+Use `component = "all"` to combine both components. The `component`, `outcome`, and `effect` columns distinguish longitudinal fixed effects, survival covariates, and latent association coefficients. Outcome labels use the names supplied in `formLongFixed`, or the response expressions if the list was unnamed. Existing coefficient names are retained.
+
+```{r tidy-all}
+tidy(fit, component = "all", conf.int = TRUE)
+```
+
 It is also possible to require confidence intervals to be calculated by setting `conf.int = TRUE`, and modify the confidence level by setting the `conf.level` argument:
 
 ```{r tidy-ci}
 tidy(fit, conf.int = TRUE)
 tidy(fit, conf.int = TRUE, conf.level = 0.99)
+```
+
+For the survival component, `exponentiate = TRUE` returns exponentiated estimates and confidence limits. Standard errors and test statistics remain on the log-hazard scale. For a baseline covariate, the exponentiated coefficient is its conditional hazard ratio per unit increase, holding other terms fixed. For an association coefficient, the unit refers to its latent process rather than the observed marker. Exponentiation is rejected for longitudinal or combined output.
+
+```{r tidy-hazard-ratios}
+tidy(fit, conf.int = TRUE, exponentiate = TRUE)
 ```
 
 The standard errors reported by default are based on the empirical information matrix, as in `mjoint`. It is of course possible to use bootstrapped standard errors as follows:
@@ -112,6 +116,8 @@ bSE <- bootSE(fit,
               ncores = 1L)
 tidy(fit, bootSE = bSE, conf.int = TRUE)
 ```
+
+The spelling `boot_se = bSE`, used by broom, is also accepted. Supply only one of `bootSE` and `boot_se`. Both use the supplied bootstrap standard errors in normal-approximation confidence intervals.
 
 The results of this example are not included as it would take too long to run for CRAN.
 
@@ -138,6 +144,8 @@ head(preds[, c("num", "log.grad", ".fitted_grad_0", ".fitted_grad_1", ".resid_gr
 head(preds[, c("num", "log.lvmi", ".fitted_lvmi_0", ".fitted_lvmi_1", ".resid_lvmi_0", ".resid_lvmi_1")])
 ```
 
+By default, rows follow the fitted subject-time order. Supplying `data = hvd` returns the original observations in that dataset's order, matched by subject ID and measurement time. All original columns must be present and unchanged; subject-time pairs must be unique if reordering is needed. Outcomes with different observation schedules cannot be combined into this single data frame. `augment()` does not accept `newdata`; use `dynLong()` or `dynSurv()` for dynamic predictions.
+
 We can plot the resulting predictions for four distinct individuals:
 
 ```{r augment-plot}
@@ -155,6 +163,8 @@ The `glance` method allows extracting summary statistics from the joint model:
 ```{r glance-fit}
 glance(fit)
 ```
+
+`nobs` is the number of subjects, agreeing with `nobs(fit)` and the sample size used by BIC. `nevent` counts observed events, and `nobs_longitudinal_1`, `nobs_longitudinal_2`, and so on count measurements for each outcome in formula order. `npar` is the parameter count used by AIC and BIC, excluding baseline hazard increments. `converged` records whether the fitting criterion was met. The existing `sigma2_j` columns contain residual standard deviations, despite their historical names. These summaries are available even when post-fit standard errors were not requested.
 
 This allows comparing competing models easily. Say for instance that we fit a second model with only random intercepts:
 
@@ -180,6 +190,73 @@ We can go ahead and compare the models in terms of AIC and BIC:
 ```{r glance-comparison}
 glance(fit)
 glance(fit2)
+```
+
+Compare AIC and BIC only for models fitted to the same observations, and check convergence before interpreting the comparison.
+
+## Extracting a model component
+
+The following methods describe a selected longitudinal fixed-effects model. Coefficient names and covariance-matrix names agree with its design columns:
+
+```{r model-extraction}
+nobs(fit)
+terms(fit, process = "Longitudinal", k = 2)
+head(model.frame(fit, process = "Longitudinal", k = 2))
+head(model.matrix(fit, process = "Longitudinal", k = 2))
+coef(fit, process = "Longitudinal", k = 2)
+vcov(fit, process = "Longitudinal", k = 2)
+```
+
+Model frames contain evaluated terms, including transformations. Fitted contrasts are retained, so extraction is unaffected by subsequent changes to the original dataset or R's contrast options. These methods extract the fitted observations and do not accept new data.
+
+Use `process = "Event"` for the survival formula. Its design matrix contains baseline covariates, without an intercept or latent association columns. Event coefficient and covariance selections include both baseline covariates and association coefficients:
+
+```{r event-extraction}
+head(model.matrix(fit, process = "Event"))
+coef(fit, process = "Event")
+vcov(fit, process = "Event")
+```
+
+The default `coef(fit)` still returns the original parameter list, and `vcov(fit)` still returns the covariance matrix for all main parameters. Selecting longitudinal coefficients without `k` returns all outcomes, retaining their numbered suffixes. Covariance extraction requires available post-fit standard errors.
+
+## Tables with modelsummary and gtsummary
+
+These optional packages can format the extracted results. Supplying the tidied estimates explicitly makes the selected component and reported sample sizes clear.
+
+For modelsummary, combine `tidy()` and `glance()` in a `modelsummary_list` object:
+
+```{r modelsummary-table, eval=requireNamespace("modelsummary", quietly=TRUE)}
+table_model <- structure(
+  list(tidy = tidy(fit, conf.int = TRUE), glance = glance(fit)),
+  class = "modelsummary_list"
+)
+modelsummary::modelsummary(
+  list("Joint model" = table_model),
+  gof_map = data.frame(
+    raw = c("nobs", "nevent", "AIC", "BIC"),
+    clean = c("Subjects", "Events", "AIC", "BIC"),
+    fmt = c(0, 0, 1, 1)
+  ),
+  output = "markdown"
+)
+```
+
+For gtsummary, format the combined coefficient table directly. This retains all outcome labels and avoids treating the joint model as a single regression formula:
+
+```{r gtsummary-table, eval=requireNamespace("gtsummary", quietly=TRUE)}
+table_data <- tidy(fit, component = "all", conf.int = TRUE)
+table_data <- table_data[c("component", "outcome", "term", "estimate",
+                           "conf.low", "conf.high", "p.value")]
+gtsummary::as_gtsummary(table_data) |>
+  gtsummary::modify_header(
+    component = "Component", outcome = "Outcome", term = "Term",
+    estimate = "Estimate", conf.low = "Lower 95% CI",
+    conf.high = "Upper 95% CI", p.value = "p-value"
+  ) |>
+  gtsummary::modify_fmt_fun(
+    c(estimate, conf.low, conf.high) ~ gtsummary::label_style_number(digits = 3),
+    p.value ~ gtsummary::label_style_pvalue(digits = 3)
+  )
 ```
 
 ## Additional examples

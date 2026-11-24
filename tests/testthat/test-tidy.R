@@ -92,15 +92,19 @@ test_that("augment returns the same output whether we pass 'data' or not", {
 test_that("glance works on mjoint models with a single longitudinal process", {
   glnc <- glance(fit1)
   expect_equal(nrow(glnc), 1)
-  expect_equal(ncol(glnc), 4)
-  expect_equal(names(glnc), c("sigma2_1", "AIC", "BIC", "logLik"))
+  expect_equal(ncol(glnc), 9)
+  expect_equal(names(glnc), c("sigma2_1", "AIC", "BIC", "logLik",
+                             "nobs", "nevent", "npar", "converged",
+                             "nobs_longitudinal_1"))
 })
 
 test_that("glance works on mjoint models with more than one longitudinal process", {
   glnc <- glance(fit2)
   expect_equal(nrow(glnc), 1)
-  expect_equal(ncol(glnc), 5)
-  expect_equal(names(glnc), c("sigma2_1", "sigma2_2", "AIC", "BIC", "logLik"))
+  expect_equal(ncol(glnc), 11)
+  expect_equal(names(glnc), c("sigma2_1", "sigma2_2", "AIC", "BIC", "logLik",
+                             "nobs", "nevent", "npar", "converged",
+                             "nobs_longitudinal_1", "nobs_longitudinal_2"))
 })
 
 test_that("tidy fails if passing a bootSE object that is not a bootSE object", {

@@ -51,6 +51,9 @@ reference:
       - sigma.mjoint
       - logLik.mjoint
       - formula.mjoint
+      - nobs.mjoint
+      - coef.mjoint
+      - model-extraction
   - title: Prediction and dynamic prediction
     contents:
       - fitted.mjoint

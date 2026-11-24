@@ -14,7 +14,9 @@ longitudinal data}
   bootSE = NULL,
   conf.int = FALSE,
   conf.level = 0.95,
-  ...
+  ...,
+  boot_se = NULL,
+  exponentiate = FALSE
 )
 
 \method{augment}{mjoint}(x, data = x$data, ...)
@@ -24,8 +26,7 @@ longitudinal data}
 \arguments{
 \item{x}{An object of class \code{mjoint}.}
 
-\item{component}{Either \code{survival} (the survival component of the model,
-default) or \code{longitudinal} (the longitudinal component).}
+\item{component}{Select \code{"survival"} (the default), \code{"longitudinal"}, or \code{"all"}.}
 
 \item{bootSE}{An object of class \code{bootSE} for the corresponding model.
 If \code{bootSE = NULL} (the default), the function will use approximate
@@ -36,10 +37,13 @@ Defaults to \code{FALSE}.}
 
 \item{conf.level}{The confidence level required.}
 
-\item{...}{extra arguments (not used)}
+\item{...}{Additional arguments. Unsupported arguments cause an error, including \code{newdata} for \code{augment()}.}
 
-\item{data}{Original data this was fitted on, in a list (e.g.
-\code{list(data)}). This will be extracted from \code{x} if not given.}
+\item{boot_se}{An alias for \code{bootSE}, matching broom's argument name. Supply only one of these arguments.}
+
+\item{exponentiate}{Logical; exponentiate survival estimates and confidence limits. Standard errors and test statistics remain on the log-hazard scale. Only supported for \code{component = "survival"}. Exponentiated association coefficients refer to a one-unit change in the associated latent process, not a one-unit change in the observed marker.}
+
+\item{data}{Original data as a data frame or list of identical data frames. Extracted from \code{x} by default. Supplied records are matched by subject ID and measurement time and returned in the supplied order; these pairs must be unique when reordering is required. All original columns must be present and unchanged. Different observation schedules across outcomes cannot be combined into a single augmented data frame.}
 }
 \value{
 All tidying methods return a \code{data.frame} without rownames. The
@@ -52,7 +56,7 @@ All tidying methods return a \code{data.frame} without rownames. The
   \item{p.value}{P-value computed from Z-statistic} \item{conf.low}{The lower
   bound of a confidence interval on \code{estimate}, if required}
   \item{conf.high}{The upper bound of a confidence interval on
-  \code{estimate}, if required}.
+  \code{estimate}, if required}. Additional columns identify the \code{component}, \code{outcome}, and \code{effect} (\code{"fixed"} or \code{"association"}). Outcome labels use the names of \code{formLongFixed}, falling back to the response expressions. Survival covariates are labelled \code{"event"}; association coefficients are labelled by their corresponding longitudinal outcome. Existing term names are retained.
 
 \code{augment} returns one row for each original observation, with
   columns (each prepended by a .) added. Included are the columns:
@@ -69,7 +73,7 @@ All tidying methods return a \code{data.frame} without rownames. The
   square root of the estimated residual variance for the j-th longitudinal
   process} \item{AIC}{the Akaike Information Criterion} \item{BIC}{the
   Bayesian Information Criterion} \item{logLik}{the data's log-likelihood
-  under the model}.
+  under the model}. Additional columns are \code{nobs} (subjects), \code{nevent} (observed events), \code{npar} (the parameter count used by AIC and BIC, excluding baseline hazard increments), \code{converged}, and \code{nobs_longitudinal_j} (measurement counts for outcome \emph{j}). This summary is available without post-fit standard errors.
 }
 \description{
 These methods tidy the coefficients of joint models for time-to-event data
@@ -77,9 +81,7 @@ and multivariate longitudinal data of the \code{mjoint} class from the
 \code{joineRML} package.
 }
 \note{
-If fitting a joint model with a single longitudinal process, please
-  make sure you are using a named \code{list} to define the formula for the
-  fixed and random effects of the longitudinal submodel.
+Augmented column names use the longitudinal outcome labels. Repeated labels are made unique by adding numbered suffixes.
 }
 \examples{
 \dontrun{
